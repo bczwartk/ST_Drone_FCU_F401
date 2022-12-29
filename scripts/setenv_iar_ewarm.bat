@@ -1,4 +1,16 @@
-set PATH=c:\Program Files\IAR Systems\Embedded Workbench 9.1\common\bin;c:\Program Files\IAR Systems\Embedded Workbench 9.1\arm\bin;c:\Parasoft\apps\cpptest-pro-2022.2.0;c:\Parasoft\apps\cpptest-pro-2022.2.0\bin;%PATH%
+@echo on
+
+setlocal ENABLEDELAYEDEXPANSION
+
+rem the defaults
+set CPPTEST_HOME=c:\Parasoft\apps\cpptest-pro-2022.2.0
+set IAR_HOME=c:\Program Files\IAR Systems\Embedded Workbench 9.1
+
+IF %COMPUTERNAME%==HOUND2 (
+    set IAR_HOME=E:\apps\EWARM_9.1
+)
+
+set PATH=%IAR_HOME%\common\bin;%IAR_HOME%\arm\bin;%CPPTEST_HOME%;%CPPTEST_HOME%\bin;%PATH%
 
 iccarm --version
 ilinkarm --version
