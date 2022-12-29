@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <settings>
     <Stack>
         <FillEnabled>0</FillEnabled>
@@ -18,7 +18,7 @@
     </JLinkDriver>
     <stlink>
         <stlinkserialNo>88CF569B</stlinkserialNo>
-        <stlinkfoundProbes></stlinkfoundProbes>
+        <stlinkfoundProbes />
     </stlink>
     <DebugChecksum>
         <Checksum>713918945</Checksum>
@@ -100,7 +100,7 @@
         <Mode>3</Mode>
         <Graph>0</Graph>
         <Symbiont>0</Symbiont>
-        <Exclusions></Exclusions>
+        <Exclusions />
     </DriverProfiling>
     <CallStackLog>
         <Enabled>0</Enabled>
@@ -111,6 +111,20 @@
     <Disassemble_mode>
         <mode>0</mode>
     </Disassemble_mode>
+    <PlDriver>
+        <MemConfigValue>E:\apps\EWARM_9.1\arm\CONFIG\debugger\ST\STM32F401VC.ddf</MemConfigValue>
+    </PlDriver>
+    <StLinkDriver>
+        <LeaveTargetRunning>_ 0</LeaveTargetRunning>
+        <CStepIntDis>_ 0</CStepIntDis>
+    </StLinkDriver>
+    <ArmDriver>
+        <EnforceMemoryConfiguration>1</EnforceMemoryConfiguration>
+        <EnableCache>0</EnableCache>
+    </ArmDriver>
+    <DisassembleMode>
+        <mode>0</mode>
+    </DisassembleMode>
     <Breakpoints2>
         <Count>0</Count>
     </Breakpoints2>

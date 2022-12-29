@@ -23,9 +23,9 @@
 
 if ($debugfile -eq "")
 {
-& "E:\apps\EWARM_9.1\common\bin\cspybat" -f "E:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official latest release 221117\EWARM\settings\ToyDrone.ToyDrone_Configuration.general.xcl" --backend -f "E:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official latest release 221117\EWARM\settings\ToyDrone.ToyDrone_Configuration.driver.xcl" 
+& "E:\apps\EWARM_9.1\common\bin\cspybat" -f "E:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official latest release 221117\EWARM\settings\ToyDrone.cpptest.general.xcl" --backend -f "E:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official latest release 221117\EWARM\settings\ToyDrone.cpptest.driver.xcl" 
 }
 else
 {
-& "E:\apps\EWARM_9.1\common\bin\cspybat" -f "E:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official latest release 221117\EWARM\settings\ToyDrone.ToyDrone_Configuration.general.xcl" --debug_file=$debugfile --backend -f "E:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official latest release 221117\EWARM\settings\ToyDrone.ToyDrone_Configuration.driver.xcl" 
+& "E:\apps\EWARM_9.1\common\bin\cspybat" -f "E:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official latest release 221117\EWARM\settings\ToyDrone.cpptest.general.xcl" --debug_file=$debugfile --backend -f "E:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official latest release 221117\EWARM\settings\ToyDrone.cpptest.driver.xcl" 
 }
