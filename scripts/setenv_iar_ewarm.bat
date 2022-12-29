@@ -1,6 +1,6 @@
 @echo on
 
-setlocal ENABLEDELAYEDEXPANSION
+rem setlocal ENABLEDELAYEDEXPANSION
 
 rem the defaults
 set CPPTEST_HOME=c:\Parasoft\apps\cpptest-pro-2022.2.0
@@ -12,7 +12,7 @@ IF %COMPUTERNAME%==HOUND2 (
 
 set PATH=%IAR_HOME%\common\bin;%IAR_HOME%\arm\bin;%CPPTEST_HOME%;%CPPTEST_HOME%\bin;%PATH%
 
+iarbuild --version
 iccarm --version
 ilinkarm --version
-rem iarbuild --version
 cpptestcli -version
