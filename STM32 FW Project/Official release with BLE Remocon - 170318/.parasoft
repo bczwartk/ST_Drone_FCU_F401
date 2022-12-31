@@ -1,8 +1,9 @@
-#Thu Dec 29 23:13:49 CET 2022
+#Thu Dec 29 23:19:24 CET 2022
 /ST_Drone_FCU_F401_Official_BLE_Remocon_170318//com.parasoft.xtest.checkers.api.cpp.options.compiler.command.c.win32.x86=iccarm
 /ST_Drone_FCU_F401_Official_BLE_Remocon_170318//com.parasoft.xtest.checkers.api.cpp.options.compiler.command.cpp.win32.x86=iccarm
 /ST_Drone_FCU_F401_Official_BLE_Remocon_170318//com.parasoft.xtest.checkers.api.cpp.options.compiler.family.win32.x86=iccarm_9_10
 /ST_Drone_FCU_F401_Official_BLE_Remocon_170318//com.parasoft.xtest.checkers.api.cpp.options.extractor.id=options_dir_extractor_id
 /ST_Drone_FCU_F401_Official_BLE_Remocon_170318//com.parasoft.xtest.checkers.api.cpp.options.linker.command.win32.x86=ilinkarm
 /ST_Drone_FCU_F401_Official_BLE_Remocon_170318//com.parasoft.xtest.checkers.api.cpp.options.ode_options_dir=${project_loc}/EWARM/cpptest/cpptestscan.bdf
+/ST_Drone_FCU_F401_Official_BLE_Remocon_170318//com.parasoft.xtest.checkers.api.cpp.options.preference.store.version=1.1
 project.path=/ST_Drone_FCU_F401_Official_BLE_Remocon_170318
