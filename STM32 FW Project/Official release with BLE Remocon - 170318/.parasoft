@@ -1,4 +1,6 @@
-#Sun Jan 01 12:57:42 CET 2023
+#Sun Jan 01 13:52:53 CET 2023
+/ST_Drone_FCU_F401_Official_BLE_Remocon_170318//com.parasoft.eclipse.excludedfiles=**%2FDrivers%2F**;**%2FMiddlewares%2F**
+/ST_Drone_FCU_F401_Official_BLE_Remocon_170318//com.parasoft.xtest.checkers.api.cpp.options.advanced.options=xharness.routineManager+%22symbol_file%3D*core_cm4.h%22+command%3DsetProperty+property%3DcanAddCoverageIn+value%3Doff;xharness.routineManager+%22symbol_file%3D*stm32f4xx_hal_cortex.h%22+command%3DsetProperty+property%3DcanAddCoverageIn+value%3Doff
 /ST_Drone_FCU_F401_Official_BLE_Remocon_170318//com.parasoft.xtest.checkers.api.cpp.options.compiler.command.c.win32.x86=iccarm
 /ST_Drone_FCU_F401_Official_BLE_Remocon_170318//com.parasoft.xtest.checkers.api.cpp.options.compiler.command.cpp.win32.x86=iccarm
 /ST_Drone_FCU_F401_Official_BLE_Remocon_170318//com.parasoft.xtest.checkers.api.cpp.options.compiler.family.win32.x86=iccarm_9_10
