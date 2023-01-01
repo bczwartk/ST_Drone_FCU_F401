@@ -54,10 +54,11 @@ Run first unit tests
 * Looks good.  Some improvements to be implemented:
   * disable coverage on HAL, Drivers, CMSIS and Middleware code
   * do not instrument interrupts and other HAL code under Src/
-  * This was implemented by adding resources to skip (.project), and then
-    by disabling coverage instrumentation in test config's instrumentation settings.
-    Header files needed special options in .project. 
-    All this is also used by SCA to control scope.
+* This was implemented by
+  * adding resources to skip (.parasoft), and 
+  * disabling coverage instrumentation in test config's instrumentation settings.
+  * Header files needed special options in .parasoft. 
+  * All this is also used by SCA to control scope of analysis.
 
 
 Run unit tests and static analysis from command line
