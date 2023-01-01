@@ -16,6 +16,8 @@ CPPTEST_TEST(TS_timer_test_ClearTimer);
 CPPTEST_TEST(TS_timer_test_StopTimer);
 CPPTEST_TEST(TS_timer_test_SetupTimer);
 CPPTEST_TEST(TS_timer_test_isTimerEventExist);
+CPPTEST_TEST(TS_timer_test_StartTimer);
+CPPTEST_TEST(TS_timer_test_TimerProcess_flag_0);
 CPPTEST_TEST_SUITE_END();
         
 
@@ -23,6 +25,8 @@ void TS_timer_test_ClearTimer(void);
 void TS_timer_test_StopTimer(void);
 void TS_timer_test_SetupTimer(void);
 void TS_timer_test_isTimerEventExist(void);
+void TS_timer_test_StartTimer(void);
+void TS_timer_test_TimerProcess_flag_0(void);
 CPPTEST_TEST_SUITE_REGISTRATION(TS_timer);
 
 void TS_timer_testSuiteSetUp(void);
@@ -149,3 +153,58 @@ void TS_timer_test_isTimerEventExist()
     }
 }
 /* CPPTEST_TEST_CASE_END test_isTimerEventExist */
+
+const uint32_t START_TIMER_TICK = 100U;
+void CppTest_StubCallback_HAL_GetTick(CppTest_StubCallInfo* stubCallInfo, uint32_t* __return)
+{
+	*__return = START_TIMER_TICK;
+}
+
+/* CPPTEST_TEST_CASE_BEGIN test_StartTimer */
+/* CPPTEST_TEST_CASE_CONTEXT void StartTimer(tUserTimer *) */
+void TS_timer_test_StartTimer()
+{
+	CPPTEST_REGISTER_STUB_CALLBACK("HAL_GetTick", &CppTest_StubCallback_HAL_GetTick);
+
+    /* Pre-condition initialization */
+    /* Initializing argument 1 (t) */ 
+	const uint32_t INTERVAL = 200U;
+    tUserTimer _t_10 ;
+     uint32_t _t_10_target_tick_11 = _t_10.target_tick  = 0u;
+     uint32_t _t_10_interval_11 = _t_10.interval  = INTERVAL;
+     uint32_t _t_10_flag_11 = _t_10.flag  = 0u;
+     uint32_t _t_10_flag2_11 = _t_10.flag2  = 0u;
+     uint32_t _t_10_event_cnt_11 = _t_10.event_cnt  = 0u;
+    tUserTimer * _t  = & _t_10;
+    {
+        /* Tested function call */
+        StartTimer(_t);
+        /* Post-condition check */
+        CPPTEST_ASSERT_UINTEGER_EQUAL(INTERVAL + START_TIMER_TICK, _t->target_tick);
+        CPPTEST_ASSERT_UINTEGER_EQUAL(1U, _t->flag);
+    }
+}
+/* CPPTEST_TEST_CASE_END test_StartTimer */
+
+/* CPPTEST_TEST_CASE_BEGIN test_TimerProcess_flag_0 */
+/* CPPTEST_TEST_CASE_CONTEXT void TimerProcess(tUserTimer *) */
+void TS_timer_test_TimerProcess_flag_0()
+{
+    /* Pre-condition initialization */
+    /* Initializing argument 1 (t) */ 
+    tUserTimer _t_12 ;
+     uint32_t _t_12_target_tick_13 = _t_12.target_tick  = 0u;
+     uint32_t _t_12_interval_13 = _t_12.interval  = 0u;
+     uint32_t _t_12_flag_13 = _t_12.flag  = 0u;
+     uint32_t _t_12_flag2_13 = _t_12.flag2  = 0u;
+     uint32_t _t_12_event_cnt_13 = _t_12.event_cnt  = 0u;
+    tUserTimer * _t  = & _t_12;
+    {
+        /* Tested function call */
+        TimerProcess(_t);
+        /* Post-condition check */
+        CPPTEST_ASSERT_UINTEGER_EQUAL(0U, _t->event_cnt);
+        CPPTEST_ASSERT_UINTEGER_EQUAL(0U, _t->target_tick);
+    }
+}
+/* CPPTEST_TEST_CASE_END test_TimerProcess_flag_0 */
