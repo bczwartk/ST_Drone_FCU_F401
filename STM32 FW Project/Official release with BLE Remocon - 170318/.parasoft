@@ -1,5 +1,5 @@
-#Sun Jan 01 13:52:53 CET 2023
-/ST_Drone_FCU_F401_Official_BLE_Remocon_170318//com.parasoft.eclipse.excludedfiles=**%2FDrivers%2F**;**%2FMiddlewares%2F**
+#Sun Jan 01 14:18:16 CET 2023
+/ST_Drone_FCU_F401_Official_BLE_Remocon_170318//com.parasoft.eclipse.excludedfiles=**%2FDrivers%2F**;**%2FMiddlewares%2F**;Src%2Fstm32f4xx_hal_msp.c;Src%2Fstm32f4xx_it.c;Src%2Fstm32f4xx_nucleo.c
 /ST_Drone_FCU_F401_Official_BLE_Remocon_170318//com.parasoft.xtest.checkers.api.cpp.options.advanced.options=xharness.routineManager+%22symbol_file%3D*core_cm4.h%22+command%3DsetProperty+property%3DcanAddCoverageIn+value%3Doff;xharness.routineManager+%22symbol_file%3D*stm32f4xx_hal_cortex.h%22+command%3DsetProperty+property%3DcanAddCoverageIn+value%3Doff
 /ST_Drone_FCU_F401_Official_BLE_Remocon_170318//com.parasoft.xtest.checkers.api.cpp.options.compiler.command.c.win32.x86=iccarm
 /ST_Drone_FCU_F401_Official_BLE_Remocon_170318//com.parasoft.xtest.checkers.api.cpp.options.compiler.command.cpp.win32.x86=iccarm
@@ -17,4 +17,6 @@
 /ST_Drone_FCU_F401_Official_BLE_Remocon_170318/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_fsmc.c//com.parasoft.xtest.execution.api.cpp.options.instrument.file=false
 /ST_Drone_FCU_F401_Official_BLE_Remocon_170318/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_sdmmc.c//com.parasoft.xtest.execution.api.cpp.options.instrument.file=false
 /ST_Drone_FCU_F401_Official_BLE_Remocon_170318/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_usb.c//com.parasoft.xtest.execution.api.cpp.options.instrument.file=false
+/ST_Drone_FCU_F401_Official_BLE_Remocon_170318/Src/stm32f4xx_hal_msp.c//com.parasoft.xtest.execution.api.cpp.options.instrument.file=false
+/ST_Drone_FCU_F401_Official_BLE_Remocon_170318/Src/stm32f4xx_it.c//com.parasoft.xtest.execution.api.cpp.options.instrument.file=false
 project.path=/ST_Drone_FCU_F401_Official_BLE_Remocon_170318
