@@ -19,20 +19,30 @@ Building the project
 
 Prepare IAR EWARM project for C/C++test
 ---------------------------------------
-* Create "cpptest" project configuration with full runtime library and simulator enabled
+* In EWARM open the workspace Project.eww
+* Create a new "cpptest" project configuration with full runtime library and simulator enabled
+
+
+
+Build and create BDF
+--------------------
 * Prepare make_bdf.bat script to be run from the root of the project
   For IAR EWARM 9.30.1 the resulting BDF is stored under ...\EWARM\cpptest\...
 * Include paths in the BDF need to be fixed as the trailing backslashes 
   added by iarbuild confuse C/C++test unit testing.  See update_bdf.py script.
-* Run scripts\make_bdf.bat from the root of cloned project to create the final BDF
+* Run scripts\make_bdf.bat from the root of cloned project to create the final BDF at:
+    ...\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official release with BLE Remocon - 170318\EWARM\cpptest\cpptestscan.bdf
 
 
 Create C/C++test project and configuration
 ------------------------------------------ 
-* Created project and selected proper compiler.
+* Created project (ST_Drone_FCU_F401_Official_BLE_Remocon_170318)
+* Updated Build Settings:
+  * Selected use of BDF and updated path to be: ${project_loc}/EWARM/cpptest/cpptestscan.bdf
+  * Selected proper compiler: iccarm_9_10 was the closest.
 * Created test configuration based on the builtin one:
-  * set project name and config, 
-  * update flow to find .cspy.bat,
+  * set project name and EWARM config in test config's parameters, 
+  * updated flow to find .cspy.bat,
   * enabled reporting UT details,
   * enabled a few coverage metrics.
   
