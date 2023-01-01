@@ -2,6 +2,8 @@ Cloning the project
 -------------------
 Clone command:
     git clone https://github.com/bczwartk/ST_Drone_FCU_F401.git ST_Drone_FCU_F401_cpptest
+    cd ./ST_Drone_FCU_F401_cpptest/
+    git checkout cpptest
 The project was forked from:
     https://github.com/STMicroelectronics-CentralLabs/ST_Drone_FCU_F401.git
 
