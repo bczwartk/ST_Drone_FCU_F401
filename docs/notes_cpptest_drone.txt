@@ -41,4 +41,21 @@ Run first unit tests
 --------------------
 * Create simple unit tests.
 * Run unit tests, make sure results are correct.
+* Looks good.  Some improvements to be implemented:
+  * disable coverage on HAL, Drivers, CMSIS and Middleware code
+  * do not instrument interrupts and other HAL code under Src/
+  * This was implemented by adding resources to skip (.project), and then
+    by disabling coverage instrumentation in test config's instrumentation settings.
+    Header files needed special options in .project. 
+    All this is also used by SCA to control scope.
+
+
+Run unit tests and static analysis from command line
+----------------------------------------------------
+* Created scripts cpptest_run_sca.bat and cpptest_run_ut.bat.
+* The scripts should be run from the top of cloned tree and can report to DTP if needed
+  (by adding -publish at the scripts' command lines).
+  Note: the scripts expect that BDF is already in place.
+* Improvement: create a single script that implements full workflow: clone, build/BDF, SCA, UT+CC.
+
 
