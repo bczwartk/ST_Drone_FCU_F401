@@ -578,13 +578,15 @@ int32_t BytesToWrite;
         mytimcnt++;
         if (rc_connection_flag && rc_enable_motor)
         {
-          if (mytimcnt%50 == 0)
-          BSP_LED_On(LED2);
+          if (mytimcnt%50 == 0) {
+            BSP_LED_On(LED2);
+          }
         }
         else
         {
-          if (mytimcnt%50 == 0)
+          if (mytimcnt%50 == 0) {
             BSP_LED_Toggle(LED2);
+          }
         }
     }
   
@@ -1189,24 +1191,23 @@ void BlueNRG_Init(void)
     aci_hal_set_tx_power_level(1,4);    /* -2.1dBm */
     
     ret = Add_ConsoleW2ST_Service();
-    if(ret == BLE_STATUS_SUCCESS)
+    if (ret == BLE_STATUS_SUCCESS) {
        PRINTF("Console Service W2ST added successfully\r\n");
-    else{
+    } else {
        testStatus = COMPONENT_ERROR;
        PRINTF("\r\nError while adding Console Service W2ST\r\n");
     }
     
     ret = Add_ConfigW2ST_Service();
-    if(ret == BLE_STATUS_SUCCESS)
+    if (ret == BLE_STATUS_SUCCESS) {
        PRINTF("Config  Service W2ST added successfully\r\n");
-    else{
+    } else {
        testStatus = COMPONENT_ERROR;
        PRINTF("\r\nError while adding Config Service W2ST\r\n");
     }
     
     PRINTF("\r\nAll test passed!\r\n");
-  }
-  else {
+  } else {
        testStatus = COMPONENT_ERROR;
        PRINTF("\r\nError in BlueNRG tests. ******\r\n");
   }

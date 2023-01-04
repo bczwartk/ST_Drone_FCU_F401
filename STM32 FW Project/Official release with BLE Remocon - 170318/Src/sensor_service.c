@@ -153,8 +153,9 @@ tBleStatus Add_ConfigW2ST_Service(void)
   COPY_CONFIG_SERVICE_UUID(uuid);
   ret = aci_gatt_add_serv(UUID_TYPE_128,  uuid, PRIMARY_SERVICE, 1+3,&ConfigServW2STHandle);
 
-  if (ret != BLE_STATUS_SUCCESS)
+  if (ret != BLE_STATUS_SUCCESS) {
     goto fail;
+  }
 
   COPY_CONFIG_W2ST_CHAR_UUID(uuid);
   ret =  aci_gatt_add_char(ConfigServW2STHandle, UUID_TYPE_128, uuid, 20 /* Max Dimension */,
@@ -796,8 +797,9 @@ void Read_Request_CB(uint16_t handle)
   }
 
   //EXIT:
-  if(connection_handle != 0)
+  if(connection_handle != 0) {
     aci_gatt_allow_read(connection_handle);
+  }
 }
 
 /**
@@ -864,13 +866,12 @@ void Attribute_Modified_CB(uint16_t attr_handle, uint8_t * att_data, uint8_t dat
       W2ST_OFF_CONNECTION(W2ST_CONNECT_LED);
     }
 #ifdef MOTENV_DEBUG_CONNECTION
-    if(W2ST_CHECK_CONNECTION(W2ST_CONNECT_STD_TERM)) 
-    {
+    if(W2ST_CHECK_CONNECTION(W2ST_CONNECT_STD_TERM)) {
       BytesToWrite =sprintf((char *)BufferToWrite,"--->Led=%s\r\n", W2ST_CHECK_CONNECTION(W2ST_CONNECT_LED) ? "ON" : "OFF");
      Term_Update(BufferToWrite,BytesToWrite);
-    } 
-    else
+    } else {
       PRINTF("--->Led=%s\r\n", W2ST_CHECK_CONNECTION(W2ST_CONNECT_LED) ? "ON" : "OFF");
+    }
 #endif /* MOTENV_DEBUG_CONNECTION */
   } 
   else if (attr_handle == ConfigCharHandle + 1) 

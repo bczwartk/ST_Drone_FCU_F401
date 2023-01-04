@@ -189,10 +189,12 @@ void HAL_SYSTICK_Callback(void)
   // Process user timer
   User_Timer_Callback();
   // Count rc_timeout up to 1s
-  if (rc_timeout < 1000)
+  if (rc_timeout < 1000) {
     rc_timeout++;
-  if (rc_timeout > RC_TIMEOUT_VALUE)
+  }
+  if (rc_timeout > RC_TIMEOUT_VALUE) {
     init_rc_variables();
+  }
   #ifdef REMOCON_PWM
     rc_connection_flag = (rc_timeout <= RC_TIMEOUT_VALUE);
   #endif
@@ -206,8 +208,7 @@ void HAL_SYSTICK_Callback(void)
 void update_rc_data(int32_t idx)
 {
   #ifdef REMOCON_PWM
-    switch (idx)
-    {
+    switch (idx) {
       case 0: gAIL = rc_t[0] - ail_center; break;
       case 1: gELE = rc_t[1] - ele_center; break;
       case 2: gTHR = (rc_t[2] > THR_BOTTOM) ? (rc_t[2] - THR_BOTTOM) : 0; break;
@@ -217,21 +218,16 @@ void update_rc_data(int32_t idx)
   #endif
   
   // Activate Calibration Procedure  
-  if ( (gTHR == 0) && (gELE < - RC_CAL_THRESHOLD) && (gAIL > RC_CAL_THRESHOLD) && (gRUD < - RC_CAL_THRESHOLD))
-  {
+  if ( (gTHR == 0) && (gELE < - RC_CAL_THRESHOLD) && (gAIL > RC_CAL_THRESHOLD) && (gRUD < - RC_CAL_THRESHOLD)) {
     rc_cal_flag = 1;
   }
 
   // Activate Arming/Disarming 
-  if ( (gTHR == 0) && (gELE < - RC_CAL_THRESHOLD) && (gAIL < - RC_CAL_THRESHOLD) && (gRUD > RC_CAL_THRESHOLD))
-  {
-    if (rc_enable_motor==0) // if not armed -> arm
-    {
+  if ( (gTHR == 0) && (gELE < - RC_CAL_THRESHOLD) && (gAIL < - RC_CAL_THRESHOLD) && (gRUD > RC_CAL_THRESHOLD)) {
+    if (rc_enable_motor == 0) {// if not armed -> arm
       rc_enable_motor = 1;
       fly_ready = 1;
-    }
-    else // if armed -> disarm
-    {
+    } else { // if armed -> disarm
       rc_enable_motor = 0;
       fly_ready = 0;
     }
@@ -244,40 +240,36 @@ void update_rc_data(int32_t idx)
 void GetTargetEulerAngle(EulerAngleTypeDef *euler_rc, EulerAngleTypeDef *euler_ahrs)
 {
     t1 = gELE;
-    if (t1 > RC_FULLSCALE)
+    if (t1 > RC_FULLSCALE) {
         t1 = RC_FULLSCALE;
-    else if (t1 < -RC_FULLSCALE)
+    } else if (t1 < -RC_FULLSCALE) {
         t1 = - RC_FULLSCALE;
+    }
     euler_rc->thx = -t1 * max_pitch_rad / RC_FULLSCALE;
 
     t1 = gAIL;
-    if (t1 > RC_FULLSCALE)
+    if (t1 > RC_FULLSCALE) {
         t1 = RC_FULLSCALE;
-    else if (t1 < -RC_FULLSCALE)
+    } else if (t1 < -RC_FULLSCALE) {
         t1 = - RC_FULLSCALE;
+    }
     euler_rc->thy = -t1 * max_roll_rad / RC_FULLSCALE;
 
     t1 = gRUD;
-    if (t1 > RC_FULLSCALE)
+    if (t1 > RC_FULLSCALE) {
         t1 = RC_FULLSCALE;
-    else if (t1 < -RC_FULLSCALE)
+    } else if (t1 < -RC_FULLSCALE) {
         t1 = - RC_FULLSCALE;
+    }
 
-    if(rc_z_control_flag == 1)
-    {
-      if(t1 > EULER_Z_TH)
-      {
+    if (rc_z_control_flag == 1) {
+      if (t1 > EULER_Z_TH) {
         euler_rc->thz = euler_rc->thz + max_yaw_rad;
-      }
-      else if(t1 < -EULER_Z_TH)
-      {
+      } else if (t1 < -EULER_Z_TH) {
         euler_rc->thz = euler_rc->thz - max_yaw_rad;
       }
-    }
-    else
-    {
-      if(t1 > -EULER_Z_TH&&t1 < EULER_Z_TH)
-      {
+    } else {
+      if (t1 > -EULER_Z_TH&&t1 < EULER_Z_TH) {
            rc_z_control_flag = 1;
       }
     }
@@ -293,8 +285,7 @@ void init_queue(Queue_TypeDef *q)
   q->length = QUEUE_LENGTH;
   q->full = 0;
   q->empty = 1;
-  for (i=0;i<QUEUE_LENGTH;i++)
-  {
+  for (i=0; i < QUEUE_LENGTH; i++) {
     q->buffer[i][0] = 0;
     q->buffer[i][1] = 0;
   }
@@ -304,27 +295,27 @@ void add_queue(Queue_TypeDef *q, int16_t idx, int16_t value)
 {
   int h;
   cnt++;
-  if (q->full==1)
-  {
-    if (q->header == 0)
+  if (q->full == 1) {
+    if (q->header == 0) {
       h = q->length - 1;
-    else
+    } else {
       h = q->header - 1;
+    }
     q->buffer[h][0] = idx;
     q->buffer[h][1] = -1;   // set error flag
-  }
-  else
-  {
+  } else {
     // insert the node
     q->buffer[q->header][0] = idx;
     q->buffer[q->header][1] = value;
     // increase the header pointer
     q->header++;
-    if (q->header >= q->length)
+    if (q->header >= q->length) {
       q->header = 0;
+    }
     // check if queue is full
-    if (q->header == q->tail)
+    if (q->header == q->tail) {
       q->full = 1;
+    }
     // it will not empty any more
     q->empty = 0;
   }
@@ -333,24 +324,25 @@ void add_queue(Queue_TypeDef *q, int16_t idx, int16_t value)
 int32_t get_queue(Queue_TypeDef *q, int16_t *idx, int16_t *value)
 {
   // get data only if the queue is not empty
-  if (q->empty != 1)
-  {
+  if (q->empty != 1) {
     // get the node data
     *idx = q->buffer[q->tail][0];
     *value = q->buffer[q->tail][1];
     // moving tail pointer
     q->tail++;
-    if (q->tail >= q->length)
+    if (q->tail >= q->length) {
       q->tail = 0;
+    }
     // check if queue is empty
-    if (q->header == q->tail)
+    if (q->header == q->tail) {
       q->empty = 1;
+    }
     // It will not full any more
     q->full = 0;
     return 0;
-  }
-  else
+  } else {
     return -1;      // queue is empty
+  }
 }
 
 

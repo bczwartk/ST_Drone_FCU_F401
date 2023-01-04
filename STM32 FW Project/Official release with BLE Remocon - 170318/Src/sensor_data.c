@@ -83,27 +83,24 @@ void ReadSensorRawData(void *ACC_handle, void *GYR_handle, void *MAG_handle, voi
     gyro_temp.AXIS_Y = (int32_t) gyro_temp_int16.AXIS_Y;
     gyro_temp.AXIS_Z = (int32_t) gyro_temp_int16.AXIS_Z;
     // Read data is in mg unit
-    if (USE_MAG_SENSOR){
+    if (USE_MAG_SENSOR) {
         BSP_MAGNETO_Get_Axes(MAG_handle, &mag_temp_int16);
         mag->AXIS_X = (int32_t) mag_temp_int16.AXIS_X;
         mag->AXIS_Y = (int32_t) mag_temp_int16.AXIS_Y;
         mag->AXIS_Z = (int32_t) mag_temp_int16.AXIS_Z;
-    }
-    else
-    {
+    } else {
         mag->AXIS_X = 0;
         mag->AXIS_Y = 0;
         mag->AXIS_Z = 0;
     }
     
-    if (USE_PRESSURE_SENSOR)
+    if (USE_PRESSURE_SENSOR) {
         BSP_PRESSURE_Get_Press(PRE_handle, pre);
-    else
+    } else {
         pre = 0;
+    }
     
-    
-    if (COORDINATE_SYSTEM == 1)
-    {
+    if (COORDINATE_SYSTEM == 1) {
         // convert acc
         t1 = acc->AXIS_X;
         acc->AXIS_X = acc->AXIS_Y;
@@ -116,18 +113,14 @@ void ReadSensorRawData(void *ACC_handle, void *GYR_handle, void *MAG_handle, voi
         t1 = mag->AXIS_X;
         mag->AXIS_X = mag->AXIS_Y;
         mag->AXIS_Y = -t1;
-    }
-    else if (COORDINATE_SYSTEM == 2)
-    {
+    } else if (COORDINATE_SYSTEM == 2) {
         // No need to convert in this case
-    }
-    else if (COORDINATE_SYSTEM == 3)
-    {
+    } else if (COORDINATE_SYSTEM == 3) {
      
       acc->AXIS_X = -acc_temp.AXIS_Y;
       acc->AXIS_Y = acc_temp.AXIS_X;
       acc->AXIS_Z = acc_temp.AXIS_Z;
-      
+
       gyro->AXIS_X = -gyro_temp.AXIS_Y;
       gyro->AXIS_Y = gyro_temp.AXIS_X;
       gyro->AXIS_Z = gyro_temp.AXIS_Z;
@@ -136,9 +129,7 @@ void ReadSensorRawData(void *ACC_handle, void *GYR_handle, void *MAG_handle, voi
       t1 = mag->AXIS_X;
       mag->AXIS_X = - mag->AXIS_Y;
       mag->AXIS_Y = t1;
-    }
-    else if (COORDINATE_SYSTEM == 4)
-    {
+    } else if (COORDINATE_SYSTEM == 4) {
         // convert acc
         acc->AXIS_X = - acc->AXIS_X;
         acc->AXIS_Y = - acc->AXIS_Y;
