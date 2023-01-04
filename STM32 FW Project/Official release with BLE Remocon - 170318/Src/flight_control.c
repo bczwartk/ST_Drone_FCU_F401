@@ -2,17 +2,17 @@
 #include "rc.h"
 #include <math.h>
 
-float pid_x_integ1 = 0;
-float pid_y_integ1 = 0;
-float pid_z_integ1 = 0;
-float pid_x_integ2 = 0;
-float pid_y_integ2 = 0;
-float pid_z_integ2 = 0;
-float pid_x_pre_error2 = 0;
-float pid_y_pre_error2 = 0;
-float pid_z_pre_error2 = 0;
-float pid_x_pre_deriv = 0;
-float pid_y_pre_deriv = 0;
+float pid_x_integ1 = 0.0f;
+float pid_y_integ1 = 0.0f;
+float pid_z_integ1 = 0.0f;
+float pid_x_integ2 = 0.0f;
+float pid_y_integ2 = 0.0f;
+float pid_z_integ2 = 0.0f;
+float pid_x_pre_error2 = 0.0f;
+float pid_y_pre_error2 = 0.0f;
+float pid_z_pre_error2 = 0.0f;
+float pid_x_pre_deriv = 0.0f;
+float pid_y_pre_deriv = 0.0f;
 
 extern int16_t gTHR;
 int16_t motor_thr;
@@ -59,12 +59,12 @@ void FlightControlPID(EulerAngleTypeDef *euler_rc, EulerAngleTypeDef *euler_ahrs
 
   if(gTHR<MIN_THR)
   {
-    pid_x_integ1 = 0;
-    pid_y_integ1 = 0;
-    pid_z_integ1 = 0;
-    pid_x_integ2 = 0;
-    pid_y_integ2 = 0;
-    pid_z_integ2 = 0;
+    pid_x_integ1 = 0.0f;
+    pid_y_integ1 = 0.0f;
+    pid_z_integ1 = 0.0f;
+    pid_x_integ2 = 0.0f;
+    pid_y_integ2 = 0.0f;
+    pid_z_integ2 = 0.0f;
   }
 
   
@@ -156,9 +156,9 @@ void FlightControlPID_OuterLoop(EulerAngleTypeDef *euler_rc, EulerAngleTypeDef *
 
   if(gTHR<MIN_THR)
   {
-    pid_x_integ1 = 0;
-    pid_y_integ1 = 0;
-    pid_z_integ1 = 0;
+    pid_x_integ1 = 0.0f;
+    pid_y_integ1 = 0.0f;
+    pid_z_integ1 = 0.0f;
   }
 
   //x-axis pid
@@ -195,9 +195,9 @@ void FlightControlPID_innerLoop(EulerAngleTypeDef *euler_rc, Gyro_Rad *gyro_rad,
 
   if(gTHR<MIN_THR)
   {
-    pid_x_integ2 = 0;
-    pid_y_integ2 = 0;
-    pid_z_integ2 = 0;
+    pid_x_integ2 = 0.0f;
+    pid_y_integ2 = 0.0f;
+    pid_z_integ2 = 0.0f;
   }
   
   dt_recip = 1/pid->ts;

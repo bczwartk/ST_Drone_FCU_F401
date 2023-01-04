@@ -9,12 +9,12 @@
 float offset[3];
 float cor[3][3];
 
-float q0 = 1, q1 = 0, q2 = 0, q3 = 0;
+float q0 = 1.0f, q1 = 0.0f, q2 = 0.0f, q3 = 0.0f;
 float gx_off, gy_off, gz_off;
 float mx_mag, my_mag, mz_mag;
-float wbx = 0, wby = 0, wbz = 0;
-float by = 1, bz = 0;
-float exInt = 0, eyInt = 0, ezInt = 0;
+float wbx = 0.0f, wby = 0.0f, wbz = 0.0f;
+float by = 1.0f, bz = 0.0f;
+float exInt = 0.0f, eyInt = 0.0f, ezInt = 0.0f;
 
 int count;
 int ahrs_init_flag = 0;

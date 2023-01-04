@@ -48,9 +48,9 @@ void set_motor_pwm(MotorControlTypeDef *motor_pwm)
 
 void set_motor_pwm_zero(MotorControlTypeDef *motor_pwm)
 {
-  motor_pwm->motor1_pwm = 0;
-  motor_pwm->motor2_pwm = 0;
-  motor_pwm->motor3_pwm = 0;
-  motor_pwm->motor4_pwm = 0;
+  motor_pwm->motor1_pwm = 0.0f;
+  motor_pwm->motor2_pwm = 0.0f;
+  motor_pwm->motor3_pwm = 0.0f;
+  motor_pwm->motor4_pwm = 0.0f;
 }
 

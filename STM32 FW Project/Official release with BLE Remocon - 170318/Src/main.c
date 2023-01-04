@@ -100,7 +100,7 @@ int32_t fly_ready = 0;
 unsigned char ch, ch_flag;
 
 uint32_t tim9_event_flag = 0, tim9_cnt = 0, tim9_cnt2 = 0;
-float tmp_euler_z = 0;
+float tmp_euler_z = 0.0f;
 
 
 /* BLE module */
@@ -191,7 +191,7 @@ float press, press_zero_level;
 float temperature;
 
 uint32_t VBAT_Sense;
-float VBAT = 0;
+float VBAT = 0.0f;
 
 uint8_t tmp_lis2mdl;
 SensorAxes_t tmp_mag;
@@ -212,18 +212,18 @@ int32_t BytesToWrite;
   int16_t pid_interval, i;
   
   int mytimcnt = 0;
-  acc_fil.AXIS_X = 0;
-  acc_fil.AXIS_Y = 0;
-  acc_fil.AXIS_Z = 0;
-  mag_fil.AXIS_X = 0;
-  mag_fil.AXIS_Y = 0;
-  mag_fil.AXIS_Z = 0;
-  gyro_fil.AXIS_X = 0;
-  gyro_fil.AXIS_Y = 0;
-  gyro_fil.AXIS_Z = 0;
-  euler_rc_fil.thx = 0;
-  euler_rc_fil.thy = 0;
-  euler_rc_fil.thz = 0;
+  acc_fil.AXIS_X = 0.0f;
+  acc_fil.AXIS_Y = 0.0f;
+  acc_fil.AXIS_Z = 0.0f;
+  mag_fil.AXIS_X = 0.0f;
+  mag_fil.AXIS_Y = 0.0f;
+  mag_fil.AXIS_Z = 0.0f;
+  gyro_fil.AXIS_X = 0.0f;
+  gyro_fil.AXIS_Y = 0.0f;
+  gyro_fil.AXIS_Z = 0.0f;
+  euler_rc_fil.thx = 0.0f;
+  euler_rc_fil.thy = 0.0f;
+  euler_rc_fil.thz = 0.0f;
   acc_off_calc.AXIS_X = 0;
   acc_off_calc.AXIS_Y = 0;
   acc_off_calc.AXIS_Z = 0;
@@ -237,29 +237,29 @@ int32_t BytesToWrite;
   gyro_offset.AXIS_Y = 0;
   gyro_offset.AXIS_Z = 0;
   euler_rc.thz = euler_ahrs.thz;
-  euler_ahrs_offset.thx = 0;
-  euler_ahrs_offset.thy = 0;
+  euler_ahrs_offset.thx = 0.0f;
+  euler_ahrs_offset.thy = 0.0f;
 
   for(i=0;i<4;i++)
   {
-    acc_y_pre[i].AXIS_X = 0;
-    acc_y_pre[i].AXIS_Y = 0;
-    acc_y_pre[i].AXIS_Z = 0;
-    acc_x_pre[i].AXIS_X = 0;
-    acc_x_pre[i].AXIS_Y = 0;
-    acc_x_pre[i].AXIS_Z = 0;
-    gyro_y_pre[i].AXIS_X = 0;
-    gyro_y_pre[i].AXIS_Y = 0;
-    gyro_y_pre[i].AXIS_Z = 0;
-    gyro_x_pre[i].AXIS_X = 0;
-    gyro_x_pre[i].AXIS_Y = 0;
-    gyro_x_pre[i].AXIS_Z = 0;
-    euler_rc_y_pre[i].thx = 0;
-    euler_rc_y_pre[i].thy = 0;
-    euler_rc_y_pre[i].thz = 0;
-    euler_rc_x_pre[i].thx = 0;
-    euler_rc_x_pre[i].thy = 0;
-    euler_rc_x_pre[i].thz = 0;
+    acc_y_pre[i].AXIS_X = 0.0f;
+    acc_y_pre[i].AXIS_Y = 0.0f;
+    acc_y_pre[i].AXIS_Z = 0.0f;
+    acc_x_pre[i].AXIS_X = 0.0f;
+    acc_x_pre[i].AXIS_Y = 0.0f;
+    acc_x_pre[i].AXIS_Z = 0.0f;
+    gyro_y_pre[i].AXIS_X = 0.0f;
+    gyro_y_pre[i].AXIS_Y = 0.0f;
+    gyro_y_pre[i].AXIS_Z = 0.0f;
+    gyro_x_pre[i].AXIS_X = 0.0f;
+    gyro_x_pre[i].AXIS_Y = 0.0f;
+    gyro_x_pre[i].AXIS_Z = 0.0f;
+    euler_rc_y_pre[i].thx = 0.0f;
+    euler_rc_y_pre[i].thy = 0.0f;
+    euler_rc_y_pre[i].thz = 0.0f;
+    euler_rc_x_pre[i].thx = 0.0f;
+    euler_rc_x_pre[i].thy = 0.0f;
+    euler_rc_x_pre[i].thz = 0.0f;
   }
 
   /* USER CODE END 1 */
@@ -404,12 +404,12 @@ int32_t BytesToWrite;
           
       count1++;
            
-      acc_ahrs.AXIS_X = 0;
-      acc_ahrs.AXIS_Y = 0;
-      acc_ahrs.AXIS_Z = 0;
-      gyro_ahrs.AXIS_X = 0;
-      gyro_ahrs.AXIS_Y = 0;
-      gyro_ahrs.AXIS_Z = 0;
+      acc_ahrs.AXIS_X = 0.0f;
+      acc_ahrs.AXIS_Y = 0.0f;
+      acc_ahrs.AXIS_Z = 0.0f;
+      gyro_ahrs.AXIS_X = 0.0f;
+      gyro_ahrs.AXIS_Y = 0.0f;
+      gyro_ahrs.AXIS_Z = 0.0f;
 
       for(i=0;i<FIFO_Order;i++)
       {
@@ -523,8 +523,8 @@ int32_t BytesToWrite;
           
       if(gTHR<MIN_THR)
       {
-        euler_ahrs_offset.thx = 0;
-        euler_ahrs_offset.thy = 0;
+        euler_ahrs_offset.thx = 0.0f;
+        euler_ahrs_offset.thy = 0.0f;
       }
 
       Fly_origin.X_Degree = (int16_t)(euler_ahrs.thx * 5730);
@@ -534,8 +534,8 @@ int32_t BytesToWrite;
 
       if(gTHR<MIN_THR)
       {
-        euler_rc.thz = 0;
-        euler_ahrs.thz = 0;
+        euler_rc.thz = 0.0f;
+        euler_ahrs.thz = 0.0f;
       }
 
       euler_rc_fil.thx = euler_rc.thx;
@@ -1016,8 +1016,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
       if(gTHR<MIN_THR)
       {
-        euler_rc.thz = 0;
-        euler_ahrs.thz = 0;
+        euler_rc.thz = 0.0f;
+        euler_ahrs.thz = 0.0f;
       }
 
       if (rc_connection_flag && rc_enable_motor)

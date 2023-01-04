@@ -58,7 +58,7 @@ void QuaternionRotation(QuaternionTypeDef *qr, QuaternionTypeDef *qv, Quaternion
     dq0q1 = dq0 * qr->q1;
     dq2q3 = dq2 * qr->q3;
 
-    qo->q0 = 0;
+    qo->q0 = 0.0f;
     qo->q1 = (q0q0+q1q1-q2q2-q3q3)*qv->q1 + (dq1q2+dq0q3)*qv->q2 + (dq1q3-dq0q2)*qv->q3;
     qo->q2 = (dq1q2-dq0q3)*qv->q1 + (q0q0+q2q2-q1q1-q3q3)*qv->q2 + (dq0q1+dq2q3)*qv->q3;
     qo->q3 = (dq0q2+dq1q3)*qv->q1 + (dq2q3-dq0q1)*qv->q2 + (q0q0+q3q3-q1q1-q2q2)*qv->q3;
