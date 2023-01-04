@@ -591,6 +591,8 @@ int32_t BytesToWrite;
     
 
   }
+
+  return 0; /* not reachable - just to make MISRAC2012-RULE_17_4-a happy */
   /* USER CODE END 3 */
 
 }
