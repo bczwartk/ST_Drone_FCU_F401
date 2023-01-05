@@ -1057,16 +1057,19 @@ static uint32_t DebugConsoleCommandParsing(uint8_t * att_data, uint8_t data_leng
         switch(att_data[2]) {
           case 'L':
             loc_att_data[5] = 50; /* @5S */
-          break;
+            break;
           case 'M':
             loc_att_data[5] = 10; /* @1S */
-          break;
+            break;
           case 'H':
             loc_att_data[5] = 1; /* @100mS */
-          break;
+            break;
           case 'D':
             loc_att_data[5] = 0; /* Default */
-          break;
+            break;
+          default:
+        	/* no action needed here */
+        	break;
         }
         SendBackData = ConfigCommandParsing(loc_att_data,loc_data_length);
       } else if(att_data[1]=='A') {
@@ -1092,6 +1095,9 @@ static uint32_t DebugConsoleCommandParsing(uint8_t * att_data, uint8_t data_leng
           case 'D':
             loc_att_data[5] = 0; /* Default */
           break;
+          default:
+        	/* no action needed here */
+        	break;
         }
         SendBackData = ConfigCommandParsing(loc_att_data,loc_data_length);
       }
@@ -1139,14 +1145,9 @@ void HCI_Event_CB(void *pckt)
   case EVT_LE_META_EVENT:
     {
       evt_le_meta_event *evt = (void *)event_pckt->data;
-      
-      switch(evt->subevent){
-      case EVT_LE_CONN_COMPLETE:
-        {
+      if (EVT_LE_CONN_COMPLETE == evt->subevent) {
           evt_le_connection_complete *cc = (void *)evt->data;
           GAP_ConnectionComplete_CB(cc->peer_bdaddr, cc->handle);
-        }
-        break;
       }
     }
     break;
@@ -1172,6 +1173,9 @@ void HCI_Event_CB(void *pckt)
       }
     }
     break;
+    default:
+	/* no action needed here */
+	break;
   }
 }
 

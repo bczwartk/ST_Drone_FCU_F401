@@ -208,6 +208,7 @@ static int8_t CDC_Control_FS  (uint8_t cmd, uint8_t* pbuf, uint16_t length)
     break;    
     
   default:
+	/* nothing really to do here */
     break;
   }
 
