@@ -14,8 +14,8 @@ float Sqrt(float x)
   // Two Babylonian Steps (simplified from:)
   // u.x = 0.5f * (u.x + x/u.x);
   // u.x = 0.5f * (u.x + x/u.x);
-  u.x =       u.x + x/u.x;
-  u.x = 0.25f*u.x + x/u.x;
+  u.x =          u.x  + (x / u.x);
+  u.x = (0.25f * u.x) + (x / u.x);
 
   return u.x;
 }

@@ -64,37 +64,37 @@ void ahrs_fusion_ag(AxesRaw_TypeDef_Float *acc, AxesRaw_TypeDef_Float *gyro, AHR
   q3q3 = q3*q3;
 
   // normalise the accelerometer measurement
-  norm = invSqrt(axf*axf+ayf*ayf+azf*azf);
+  norm = invSqrt((axf * axf) + (ayf * ayf) + (azf * azf));
 
   axf = axf * norm;
   ayf = ayf * norm;
   azf = azf * norm;
 
   // estimated direction of gravity and flux (v and w)
-  vx = 2*(q1q3 - q0q2);
-  vy = 2*(q0q1 + q2q3);
+  vx = 2.0f * (q1q3 - q0q2);
+  vy = 2.0f * (q0q1 + q2q3);
   vz = q0q0 - q1q1 - q2q2 + q3q3;
 
-  ex = (ayf*vz - azf*vy);
-  ey = (azf*vx - axf*vz);
-  ez = (axf*vy - ayf*vx);
+  ex = (ayf * vz) - (azf * vy);
+  ey = (azf * vx) - (axf * vz);
+  ez = (axf * vy) - (ayf * vx);
 
   // integral error scaled integral gain
-  exInt = exInt + ex*AHRS_KI*SENSOR_SAMPLING_TIME;
-  eyInt = eyInt + ey*AHRS_KI*SENSOR_SAMPLING_TIME;
-  ezInt = ezInt + ez*AHRS_KI*SENSOR_SAMPLING_TIME;
+  exInt = exInt + (ex * AHRS_KI * SENSOR_SAMPLING_TIME);
+  eyInt = eyInt + (ey * AHRS_KI * SENSOR_SAMPLING_TIME);
+  ezInt = ezInt + (ez * AHRS_KI * SENSOR_SAMPLING_TIME);
 
   // adjusted gyroscope measurements
-  gxf = gxf + ahrs_kp*ex + exInt;
-  gyf = gyf + ahrs_kp*ey + eyInt;
-  gzf = gzf + ahrs_kp*ez + ezInt;
+  gxf = gxf + (ahrs_kp * ex) + exInt;
+  gyf = gyf + (ahrs_kp * ey) + eyInt;
+  gzf = gzf + (ahrs_kp * ez) + ezInt;
 
   // integrate quaternion rate and normalise
-  halfT = 0.5f*SENSOR_SAMPLING_TIME;
-  q0 = q0 + (-q1*gxf - q2*gyf - q3*gzf)*halfT;
-  q1 = q1 + (q0*gxf + q2*gzf - q3*gyf)*halfT;
-  q2 = q2 + (q0*gyf - q1*gzf + q3*gxf)*halfT;
-  q3 = q3 + (q0*gzf + q1*gyf - q2*gxf)*halfT;
+  halfT = 0.5f * SENSOR_SAMPLING_TIME;
+  q0 = q0 + (-q1 * gxf) - (q2 * gyf) - (q3 * gzf) * halfT;
+  q1 = q1 + (q0 * gxf) + (q2 * gzf) - (q3 * gyf) * halfT;
+  q2 = q2 + (q0 * gyf) - (q1 * gzf) + (q3 * gxf) * halfT;
+  q3 = q3 + (q0 * gzf) + (q1 * gyf) - (q2 * gxf) * halfT;
 
   // normalise quaternion
   norm = invSqrt(q0q0 + q1q1 + q2q2 + q3q3); 

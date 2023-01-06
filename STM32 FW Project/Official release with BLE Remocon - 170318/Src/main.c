@@ -578,13 +578,13 @@ int32_t BytesToWrite;
         mytimcnt++;
         if (rc_connection_flag && rc_enable_motor)
         {
-          if (mytimcnt%50 == 0) {
+          if ((mytimcnt % 50) == 0) {
             BSP_LED_On(LED2);
           }
         }
         else
         {
-          if (mytimcnt%50 == 0) {
+          if ((mytimcnt % 50) == 0) {
             BSP_LED_Toggle(LED2);
           }
         }

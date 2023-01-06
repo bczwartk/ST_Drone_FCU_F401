@@ -269,7 +269,7 @@ void GetTargetEulerAngle(EulerAngleTypeDef *euler_rc, EulerAngleTypeDef *euler_a
         euler_rc->thz = euler_rc->thz - max_yaw_rad;
       }
     } else {
-      if (t1 > -EULER_Z_TH&&t1 < EULER_Z_TH) {
+      if ((t1 > -EULER_Z_TH) && (t1 < EULER_Z_TH)) {
            rc_z_control_flag = 1;
       }
     }
