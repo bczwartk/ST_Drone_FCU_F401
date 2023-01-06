@@ -1,5 +1,5 @@
-#Thu Jan 05 15:11:54 CET 2023
-.datasources/ds-module.CPP\://8649922825904558510/datasources=ds_208741081_1672825118635_900214788\nds_208741081_1672826837571_48225272\nds_208741081_1672927877131_1169539669
+#Thu Jan 05 21:54:08 CET 2023
+.datasources/ds-module.CPP\://8649922825904558510/datasources=ds_208741081_1672951902352_1902598546\nds_208741081_1672825118635_900214788\nds_208741081_1672826837571_48225272\nds_208741081_1672927877131_1169539669\nds_208741081_1672951862535_980200124
 .datasources/ds-module.CPP\://8649922825904558510/ds_208741081_1672825118635_900214788.closeconn=true
 .datasources/ds-module.CPP\://8649922825904558510/ds_208741081_1672825118635_900214788.contain_header=true
 .datasources/ds-module.CPP\://8649922825904558510/ds_208741081_1672825118635_900214788.csv_file=${project_loc\:ST_Drone_FCU_F401_Official_BLE_Remocon_170318}/tests/user/TS_quaternion_norm.csv
@@ -22,7 +22,7 @@
 .datasources/ds-module.CPP\://8649922825904558510/ds_208741081_1672826837571_48225272.use_all_rows=true
 .datasources/ds-module.CPP\://8649922825904558510/ds_208741081_1672927877131_1169539669.closeconn=true
 .datasources/ds-module.CPP\://8649922825904558510/ds_208741081_1672927877131_1169539669.contain_header=true
-.datasources/ds-module.CPP\://8649922825904558510/ds_208741081_1672927877131_1169539669.csv_file=${project_loc\:ST_Drone_FCU_F401_Official_BLE_Remocon_170318}/tests/user/TS_quaternion__rotation.csv
+.datasources/ds-module.CPP\://8649922825904558510/ds_208741081_1672927877131_1169539669.csv_file=${project_loc\:ST_Drone_FCU_F401_Official_BLE_Remocon_170318}/tests/user/TS_quaternion_rotation.csv
 .datasources/ds-module.CPP\://8649922825904558510/ds_208741081_1672927877131_1169539669.first_row.internal=1
 .datasources/ds-module.CPP\://8649922825904558510/ds_208741081_1672927877131_1169539669.last_row.internal=1
 .datasources/ds-module.CPP\://8649922825904558510/ds_208741081_1672927877131_1169539669.name=TS_Quaternion_Rotation
@@ -30,6 +30,26 @@
 .datasources/ds-module.CPP\://8649922825904558510/ds_208741081_1672927877131_1169539669.separator=,
 .datasources/ds-module.CPP\://8649922825904558510/ds_208741081_1672927877131_1169539669.type=CSV
 .datasources/ds-module.CPP\://8649922825904558510/ds_208741081_1672927877131_1169539669.use_all_rows=true
+.datasources/ds-module.CPP\://8649922825904558510/ds_208741081_1672951862535_980200124.closeconn=true
+.datasources/ds-module.CPP\://8649922825904558510/ds_208741081_1672951862535_980200124.contain_header=true
+.datasources/ds-module.CPP\://8649922825904558510/ds_208741081_1672951862535_980200124.csv_file=${project_loc\:ST_Drone_FCU_F401_Official_BLE_Remocon_170318}/tests/user/TS_quaternion_conj.csv
+.datasources/ds-module.CPP\://8649922825904558510/ds_208741081_1672951862535_980200124.first_row.internal=1
+.datasources/ds-module.CPP\://8649922825904558510/ds_208741081_1672951862535_980200124.last_row.internal=1
+.datasources/ds-module.CPP\://8649922825904558510/ds_208741081_1672951862535_980200124.name=TS_Quaternion_Conj
+.datasources/ds-module.CPP\://8649922825904558510/ds_208741081_1672951862535_980200124.quote="
+.datasources/ds-module.CPP\://8649922825904558510/ds_208741081_1672951862535_980200124.separator=,
+.datasources/ds-module.CPP\://8649922825904558510/ds_208741081_1672951862535_980200124.type=CSV
+.datasources/ds-module.CPP\://8649922825904558510/ds_208741081_1672951862535_980200124.use_all_rows=true
+.datasources/ds-module.CPP\://8649922825904558510/ds_208741081_1672951902352_1902598546.closeconn=true
+.datasources/ds-module.CPP\://8649922825904558510/ds_208741081_1672951902352_1902598546.contain_header=true
+.datasources/ds-module.CPP\://8649922825904558510/ds_208741081_1672951902352_1902598546.csv_file=${project_loc\:ST_Drone_FCU_F401_Official_BLE_Remocon_170318}/tests/user/TS_quaternion_to_Euler.csv
+.datasources/ds-module.CPP\://8649922825904558510/ds_208741081_1672951902352_1902598546.first_row.internal=1
+.datasources/ds-module.CPP\://8649922825904558510/ds_208741081_1672951902352_1902598546.last_row.internal=1
+.datasources/ds-module.CPP\://8649922825904558510/ds_208741081_1672951902352_1902598546.name=TS_Quaternion_to_Euler
+.datasources/ds-module.CPP\://8649922825904558510/ds_208741081_1672951902352_1902598546.quote="
+.datasources/ds-module.CPP\://8649922825904558510/ds_208741081_1672951902352_1902598546.separator=,
+.datasources/ds-module.CPP\://8649922825904558510/ds_208741081_1672951902352_1902598546.type=CSV
+.datasources/ds-module.CPP\://8649922825904558510/ds_208741081_1672951902352_1902598546.use_all_rows=true
 /ST_Drone_FCU_F401_Official_BLE_Remocon_170318//com.parasoft.eclipse.excludedfiles=**%2FDrivers%2F**;**%2FMiddlewares%2F**;Src%2Fstm32f4xx_hal_msp.c;Src%2Fstm32f4xx_it.c;Src%2Fstm32f4xx_nucleo.c
 /ST_Drone_FCU_F401_Official_BLE_Remocon_170318//com.parasoft.xtest.checkers.api.cpp.options.advanced.options=xharness.routineManager+%22symbol_file%3D*core_cm4.h%22+command%3DsetProperty+property%3DcanAddCoverageIn+value%3Doff;xharness.routineManager+%22symbol_file%3D*stm32f4xx_hal_cortex.h%22+command%3DsetProperty+property%3DcanAddCoverageIn+value%3Doff
 /ST_Drone_FCU_F401_Official_BLE_Remocon_170318//com.parasoft.xtest.checkers.api.cpp.options.compiler.command.c.win32.x86=iccarm

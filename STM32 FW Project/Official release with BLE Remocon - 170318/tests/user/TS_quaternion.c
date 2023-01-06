@@ -12,17 +12,19 @@ EXTERN_C_LINKAGE int TS_quaternion_callTest(const char*);
 CPPTEST_TEST_SUITE(TS_quaternion);
         CPPTEST_TEST_SUITE_SETUP(TS_quaternion_testSuiteSetUp);
         CPPTEST_TEST_SUITE_TEARDOWN(TS_quaternion_testSuiteTearDown);
-CPPTEST_TEST(TS_quaternion_test_QuaternionConj);
+CPPTEST_TEST_DS(TS_quaternion_test_QuaternionConj_ds, CPPTEST_DS("TS_Quaternion_Conj"));
 CPPTEST_TEST_DS(TS_quaternion_test_QuaternionNorm_ds, CPPTEST_DS("TS_Quaternion_Norm"));
 CPPTEST_TEST_DS(TS_quaternion_test_QuaternionMult_ds, CPPTEST_DS("TS_Quaternion_Mult"));
 CPPTEST_TEST_DS(TS_quaternion_test_QuaternionRotation_ds, CPPTEST_DS("TS_Quaternion_Rotation"));
+CPPTEST_TEST_DS(TS_quaternion_test_QuaternionToEuler_ds, CPPTEST_DS("TS_Quaternion_to_Euler"));
 CPPTEST_TEST_SUITE_END();
         
 
-void TS_quaternion_test_QuaternionConj(void);
+void TS_quaternion_test_QuaternionConj_ds(void);
 void TS_quaternion_test_QuaternionNorm_ds(void);
 void TS_quaternion_test_QuaternionMult_ds(void);
 void TS_quaternion_test_QuaternionRotation_ds(void);
+void TS_quaternion_test_QuaternionToEuler_ds(void);
 CPPTEST_TEST_SUITE_REGISTRATION(TS_quaternion);
 
 void TS_quaternion_testSuiteSetUp(void);
@@ -54,17 +56,17 @@ void TS_quaternion_tearDown(void)
 }
 
 
-/* CPPTEST_TEST_CASE_BEGIN test_QuaternionConj */
+/* CPPTEST_TEST_CASE_BEGIN test_QuaternionConj_ds */
 /* CPPTEST_TEST_CASE_CONTEXT void QuaternionConj(QuaternionTypeDef *, QuaternionTypeDef *) */
-void TS_quaternion_test_QuaternionConj()
+void TS_quaternion_test_QuaternionConj_ds()
 {
     /* Pre-condition initialization */
     /* Initializing argument 1 (qa) */ 
     QuaternionTypeDef _qa_14 ;
-     _qa_14.q0  = 1.0f;
-     _qa_14.q1  = 2.0;
-     _qa_14.q2  = 3.0;
-     _qa_14.q3  = 4.0;
+     _qa_14.q0  = CPPTEST_DS_GET_FLOAT("qa_q0");
+     _qa_14.q1  = CPPTEST_DS_GET_FLOAT("qa_q1");
+     _qa_14.q2  = CPPTEST_DS_GET_FLOAT("qa_q2");
+     _qa_14.q3  = CPPTEST_DS_GET_FLOAT("qa_q3");
     QuaternionTypeDef * _qa  = & _qa_14;
     /* Initializing argument 2 (qo) */ 
     QuaternionTypeDef _qo_16 ;
@@ -77,13 +79,13 @@ void TS_quaternion_test_QuaternionConj()
         /* Tested function call */
         QuaternionConj(_qa, _qo);
         /* Post-condition check */
-        CPPTEST_ASSERT_FLOAT_EQUAL(1.0f, _qo_16.q0, 0.001);
-        CPPTEST_ASSERT_FLOAT_EQUAL(-2.0f, _qo_16.q1, 0.001);
-        CPPTEST_ASSERT_FLOAT_EQUAL(-3.0f, _qo_16.q2, 0.001);
-        CPPTEST_ASSERT_FLOAT_EQUAL(-4.0f, _qo_16.q3, 0.001);
+        CPPTEST_ASSERT_FLOAT_EQUAL(CPPTEST_DS_GET_FLOAT("qo_q0"), _qo_16.q0, 0.001);
+        CPPTEST_ASSERT_FLOAT_EQUAL(CPPTEST_DS_GET_FLOAT("qo_q1"), _qo_16.q1, 0.001);
+        CPPTEST_ASSERT_FLOAT_EQUAL(CPPTEST_DS_GET_FLOAT("qo_q2"), _qo_16.q2, 0.001);
+        CPPTEST_ASSERT_FLOAT_EQUAL(CPPTEST_DS_GET_FLOAT("qo_q3"), _qo_16.q3, 0.001);
     }
 }
-/* CPPTEST_TEST_CASE_END test_QuaternionConj */
+/* CPPTEST_TEST_CASE_END test_QuaternionConj_ds */
 
 /* CPPTEST_TEST_CASE_BEGIN test_QuaternionNorm_ds */
 /* CPPTEST_TEST_CASE_CONTEXT void QuaternionNorm(QuaternionTypeDef *) */
@@ -186,3 +188,34 @@ void TS_quaternion_test_QuaternionRotation_ds()
     }
 }
 /* CPPTEST_TEST_CASE_END test_QuaternionRotation_ds */
+
+/* CPPTEST_TEST_CASE_BEGIN test_QuaternionToEuler_ds */
+/* CPPTEST_TEST_CASE_CONTEXT void QuaternionToEuler(QuaternionTypeDef *, EulerAngleTypeDef *) */
+void TS_quaternion_test_QuaternionToEuler_ds()
+{
+	/* TODO: add more scenarios to the data source */
+    /* Pre-condition initialization */
+    /* Initializing argument 1 (qr) */ 
+    QuaternionTypeDef _qr_14 ;
+     _qr_14.q0  = CPPTEST_DS_GET_FLOAT("qr_q0");
+     _qr_14.q1  = CPPTEST_DS_GET_FLOAT("qr_q1");
+     _qr_14.q2  = CPPTEST_DS_GET_FLOAT("qr_q2");
+     _qr_14.q3  = CPPTEST_DS_GET_FLOAT("qr_q3");
+    QuaternionTypeDef * _qr  = & _qr_14;
+    /* Initializing argument 2 (ea) */ 
+    EulerAngleTypeDef _ea_16 ;
+     float _ea_16_thx_17 = _ea_16.thx  = 0.0f;
+     float _ea_16_thy_17 = _ea_16.thy  = 0.0f;
+     float _ea_16_thz_17 = _ea_16.thz  = 0.0f;
+    EulerAngleTypeDef * _ea  = & _ea_16;
+    {
+        /* Tested function call */
+        QuaternionToEuler(_qr, _ea);
+        /* Post-condition check */
+        CPPTEST_ASSERT_FLOAT_EQUAL(CPPTEST_DS_GET_FLOAT("ea_thx"), _ea->thx, 0.001);
+        CPPTEST_ASSERT_FLOAT_EQUAL(CPPTEST_DS_GET_FLOAT("ea_thy"), _ea->thy, 0.001);
+        /* currently thz is not calculated in this function */
+        CPPTEST_ASSERT_FLOAT_EQUAL(CPPTEST_DS_GET_FLOAT("ea_thz"), _ea->thz, 0.001);
+    }
+}
+/* CPPTEST_TEST_CASE_END test_QuaternionToEuler_ds */
