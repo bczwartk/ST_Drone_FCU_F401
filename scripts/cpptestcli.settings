@@ -6,7 +6,7 @@ cpptest.license.network.edition=automation_compliance_edition
 cpptest.license.use_network=true
 dtp.enabled=true
 dtp.password=tHBISrPrxc83P8Bp5reosw\=\=
-dtp.project=ST_Drone_FCU_F401_bczwartk
+dtp.project=ST_Drone_FCU_F401_cpptest
 dtp.url=https\://10.9.20.117\:8443
 dtp.user=admin
 license.network.auth.enabled=false

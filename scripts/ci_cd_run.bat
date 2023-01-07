@@ -17,16 +17,29 @@ echo PUBLISH:   %PUBLISH%
 
 rem goto END_CI_CD
 
+set SANDBOX=c:\tmp\st_drone_sandbox
+rmdir /q /s %SANDBOX%
+mkdir %SANDBOX%
+
+pushd %SANDBOX%
+
+git clone https://github.com/bczwartk/ST_Drone_FCU_F401.git
+pushd .\ST_Drone_FCU_F401
+
 git checkout %CHECKOUT%
 git branch -a
 
-set PROJECT_DIR=%~dp0\..\STM32 FW Project\Official release with BLE Remocon - 170318
 call %~dp0\setenv_iar_ewarm.bat
 
+set PROJECT_DIR=.\STM32 FW Project\Official release with BLE Remocon - 170318
 set WKSP=%cd%\wksp_cli
 set REPORTS=%cd%\reports
 
 rmdir /q /s "%WKSP%" "%REPORTS%"\sca "%REPORTS%"\ut
+
+date /t
+time /t
+call .\scripts\make_bdf.bat
 
 date /t
 time /t
@@ -61,6 +74,13 @@ dir "%REPORTS%"\ut
 
 date /t
 time /t
+
+rem back from .\ST_Drone_FCU_F401
+popd
+
+rem back from %SANDBOX%
+popd 
+
 
 :END_CI_CD
 

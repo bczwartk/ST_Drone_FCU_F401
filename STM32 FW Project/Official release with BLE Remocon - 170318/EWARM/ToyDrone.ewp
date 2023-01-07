@@ -2,7 +2,7 @@
 <project>
     <fileVersion>3</fileVersion>
     <configuration>
-        <name>ToyDrone Configuration</name>
+        <name>cpptest</name>
         <toolchain>
             <name>ARM</name>
         </toolchain>
@@ -16,19 +16,19 @@
                 <debug>1</debug>
                 <option>
                     <name>BrowseInfoPath</name>
-                    <state>ToyDrone Configuration\BrowseInfo</state>
+                    <state>cpptest\BrowseInfo</state>
                 </option>
                 <option>
                     <name>ExePath</name>
-                    <state>ToyDrone_Configuration\Exe</state>
+                    <state>cpptest\Exe</state>
                 </option>
                 <option>
                     <name>ObjPath</name>
-                    <state>ToyDrone_Configuration\Obj</state>
+                    <state>cpptest\Obj</state>
                 </option>
                 <option>
                     <name>ListPath</name>
-                    <state>ToyDrone_Configuration\List</state>
+                    <state>cpptest\List</state>
                 </option>
                 <option>
                     <name>GEndianMode</name>
@@ -53,16 +53,16 @@
                 <option>
                     <name>GRuntimeLibSelect</name>
                     <version>0</version>
-                    <state>1</state>
+                    <state>2</state>
                 </option>
                 <option>
                     <name>GRuntimeLibSelectSlave</name>
                     <version>0</version>
-                    <state>1</state>
+                    <state>2</state>
                 </option>
                 <option>
                     <name>RTDescription</name>
-                    <state>Use the normal configuration of the C/C++ runtime library. No locale interface, C locale, no file descriptor support, no multibytes in printf and scanf, and no hex floats in strtod.</state>
+                    <state>A complete configuration of the C/C++14 runtime library. Full locale interface, C locale, file descriptor support, multibytes in printf and scanf, and hex floats in strtod.</state>
                 </option>
                 <option>
                     <name>OGProductVersion</name>
@@ -94,7 +94,7 @@
                 </option>
                 <option>
                     <name>RTConfigPath2</name>
-                    <state>$TOOLKIT_DIR$\inc\c\DLib_Config_Normal.h</state>
+                    <state>$TOOLKIT_DIR$\inc\c\DLib_Config_Full.h</state>
                 </option>
                 <option>
                     <name>GBECoreSlave</name>
@@ -201,7 +201,7 @@
                 </option>
                 <option>
                     <name>BuildFilesPath</name>
-                    <state>ToyDrone Configuration</state>
+                    <state>cpptest\</state>
                 </option>
                 <option>
                     <name>PointerAuthentication</name>
@@ -1094,7 +1094,7 @@
         </settings>
     </configuration>
     <configuration>
-        <name>cpptest</name>
+        <name>ToyDrone Configuration</name>
         <toolchain>
             <name>ARM</name>
         </toolchain>
@@ -1108,19 +1108,19 @@
                 <debug>1</debug>
                 <option>
                     <name>BrowseInfoPath</name>
-                    <state>cpptest\BrowseInfo</state>
+                    <state>ToyDrone Configuration\BrowseInfo</state>
                 </option>
                 <option>
                     <name>ExePath</name>
-                    <state>cpptest\Exe</state>
+                    <state>ToyDrone_Configuration\Exe</state>
                 </option>
                 <option>
                     <name>ObjPath</name>
-                    <state>cpptest\Obj</state>
+                    <state>ToyDrone_Configuration\Obj</state>
                 </option>
                 <option>
                     <name>ListPath</name>
-                    <state>cpptest\List</state>
+                    <state>ToyDrone_Configuration\List</state>
                 </option>
                 <option>
                     <name>GEndianMode</name>
@@ -1145,16 +1145,16 @@
                 <option>
                     <name>GRuntimeLibSelect</name>
                     <version>0</version>
-                    <state>2</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>GRuntimeLibSelectSlave</name>
                     <version>0</version>
-                    <state>2</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>RTDescription</name>
-                    <state>A complete configuration of the C/C++14 runtime library. Full locale interface, C locale, file descriptor support, multibytes in printf and scanf, and hex floats in strtod.</state>
+                    <state>A compact configuration of the C/C++14 runtime library. No locale interface, C locale, no file descriptor support, no multibytes in printf and scanf, and no hex floats in strtod.</state>
                 </option>
                 <option>
                     <name>OGProductVersion</name>
@@ -1186,7 +1186,7 @@
                 </option>
                 <option>
                     <name>RTConfigPath2</name>
-                    <state>$TOOLKIT_DIR$\inc\c\DLib_Config_Full.h</state>
+                    <state>$TOOLKIT_DIR$\inc\c\DLib_Config_Normal.h</state>
                 </option>
                 <option>
                     <name>GBECoreSlave</name>
@@ -1293,7 +1293,7 @@
                 </option>
                 <option>
                     <name>BuildFilesPath</name>
-                    <state>cpptest\</state>
+                    <state>ToyDrone Configuration</state>
                 </option>
                 <option>
                     <name>PointerAuthentication</name>
