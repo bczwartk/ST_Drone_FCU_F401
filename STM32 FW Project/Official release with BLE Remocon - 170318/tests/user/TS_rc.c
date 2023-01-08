@@ -18,7 +18,9 @@ CPPTEST_TEST(TS_rc_test_update_rc_data_calibration_activated);
 CPPTEST_TEST(TS_rc_test_update_rc_data_calibration_not_activated_1);
 CPPTEST_TEST(TS_rc_test_update_rc_data_calibration_not_activated_2);
 CPPTEST_TEST(TS_rc_test_update_rc_data_calibration_not_activated_3);
-CPPTEST_TEST(TS_rc_test_update_rc_data_calibration_no_activated_4);
+CPPTEST_TEST(TS_rc_test_update_rc_data_calibration_not_activated_4);
+CPPTEST_TEST_DS(TS_rc_test_update_rc_data_arm_disarm_neg_ds, CPPTEST_DS("TS_RC_data_arm_disarm_neg"));
+CPPTEST_TEST_DS(TS_rc_test_update_rc_data_arm_disarm_pos_ds, CPPTEST_DS("TS_RS_data_arm_disarm_pos"));
 CPPTEST_TEST_SUITE_END();
         
 
@@ -28,7 +30,9 @@ void TS_rc_test_update_rc_data_calibration_activated(void);
 void TS_rc_test_update_rc_data_calibration_not_activated_1(void);
 void TS_rc_test_update_rc_data_calibration_not_activated_2(void);
 void TS_rc_test_update_rc_data_calibration_not_activated_3(void);
-void TS_rc_test_update_rc_data_calibration_no_activated_4(void);
+void TS_rc_test_update_rc_data_calibration_not_activated_4(void);
+void TS_rc_test_update_rc_data_arm_disarm_neg_ds(void);
+void TS_rc_test_update_rc_data_arm_disarm_pos_ds(void);
 CPPTEST_TEST_SUITE_REGISTRATION(TS_rc);
 
 void TS_rc_testSuiteSetUp(void);
@@ -338,9 +342,9 @@ void TS_rc_test_update_rc_data_calibration_not_activated_3()
 }
 /* CPPTEST_TEST_CASE_END test_update_rc_data_calibration_not_activated_3 */
 
-/* CPPTEST_TEST_CASE_BEGIN test_update_rc_data_calibration_no_activated_4 */
+/* CPPTEST_TEST_CASE_BEGIN test_update_rc_data_calibration_not_activated_4 */
 /* CPPTEST_TEST_CASE_CONTEXT void update_rc_data(int32_t) */
-void TS_rc_test_update_rc_data_calibration_no_activated_4()
+void TS_rc_test_update_rc_data_calibration_not_activated_4()
 {
     /* Pre-condition initialization */
     /* Initializing argument 1 (idx) */ 
@@ -381,4 +385,96 @@ void TS_rc_test_update_rc_data_calibration_no_activated_4()
 
     }
 }
-/* CPPTEST_TEST_CASE_END test_update_rc_data_calibration_no_activated_4 */
+/* CPPTEST_TEST_CASE_END test_update_rc_data_calibration_not_activated_4 */
+
+/* CPPTEST_TEST_CASE_BEGIN test_update_rc_data_arm_disarm_neg_ds */
+/* CPPTEST_TEST_CASE_CONTEXT void update_rc_data(int32_t) */
+void TS_rc_test_update_rc_data_arm_disarm_neg_ds()
+{
+    /* Pre-condition initialization */
+    /* Initializing argument 1 (idx) */ 
+    int32_t _idx  = 0;
+    /* Initializing global variable gELE */ 
+    {
+         gELE  = CPPTEST_DS_GET_INTEGER("in_gELE");
+    }
+    /* Initializing global variable gTHR */ 
+    {
+         gTHR  = CPPTEST_DS_GET_INTEGER("in_gTHR");
+    }
+    /* Initializing global variable gAIL */ 
+    {
+         gAIL  = CPPTEST_DS_GET_INTEGER("in_gAIL");
+    }
+    /* Initializing global variable gRUD */ 
+    {
+         gRUD  = CPPTEST_DS_GET_INTEGER("in_gRUD");
+    }
+    /* Initializing global variable rc_enable_motor */ 
+    {
+         rc_enable_motor  = CPPTEST_DS_GET_INTEGER("in_rc_enable_motor");
+    }
+    /* Initializing global variable rc_cal_flag */ 
+    {
+         rc_cal_flag  = 0;
+    }
+    /* Initializing global variable fly_ready */ 
+    {
+         fly_ready  = CPPTEST_DS_GET_INTEGER("in_fly_ready");
+    }
+    {
+        /* Tested function call */
+        update_rc_data(_idx);
+
+        /* Post-condition check */
+        CPPTEST_ASSERT_INTEGER_EQUAL(CPPTEST_DS_GET_INTEGER("out_rc_enable_motor"), rc_enable_motor);
+        CPPTEST_ASSERT_INTEGER_EQUAL(CPPTEST_DS_GET_INTEGER("out_fly_ready"), fly_ready);
+    }
+}
+/* CPPTEST_TEST_CASE_END test_update_rc_data_arm_disarm_neg_ds */
+
+/* CPPTEST_TEST_CASE_BEGIN test_update_rc_data_arm_disarm_pos_ds */
+/* CPPTEST_TEST_CASE_CONTEXT void update_rc_data(int32_t) */
+void TS_rc_test_update_rc_data_arm_disarm_pos_ds()
+{
+    /* Pre-condition initialization */
+    /* Initializing argument 1 (idx) */ 
+    int32_t _idx  = 0;
+    /* Initializing global variable gELE */ 
+    {
+         gELE  = CPPTEST_DS_GET_INTEGER("in_gELE");
+    }
+    /* Initializing global variable gTHR */ 
+    {
+         gTHR  = CPPTEST_DS_GET_INTEGER("in_gTHR");
+    }
+    /* Initializing global variable gAIL */ 
+    {
+         gAIL  = CPPTEST_DS_GET_INTEGER("in_gAIL");
+    }
+    /* Initializing global variable gRUD */ 
+    {
+         gRUD  = CPPTEST_DS_GET_INTEGER("in_gRUD");
+    }
+    /* Initializing global variable rc_enable_motor */ 
+    {
+         rc_enable_motor  = CPPTEST_DS_GET_INTEGER("in_rc_enable_motor");
+    }
+    /* Initializing global variable rc_cal_flag */ 
+    {
+         rc_cal_flag  = 0;
+    }
+    /* Initializing global variable fly_ready */ 
+    {
+         fly_ready  = CPPTEST_DS_GET_INTEGER("in_fly_ready");
+    }
+    {
+        /* Tested function call */
+        update_rc_data(_idx);
+
+        /* Post-condition check */
+        CPPTEST_ASSERT_INTEGER_EQUAL(CPPTEST_DS_GET_INTEGER("out_rc_enable_motor"), rc_enable_motor);
+        CPPTEST_ASSERT_INTEGER_EQUAL(CPPTEST_DS_GET_INTEGER("out_fly_ready"), fly_ready);
+    }
+}
+/* CPPTEST_TEST_CASE_END test_update_rc_data_arm_disarm_pos_ds */
