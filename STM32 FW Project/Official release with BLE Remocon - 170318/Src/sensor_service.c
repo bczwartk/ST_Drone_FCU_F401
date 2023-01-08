@@ -332,17 +332,17 @@ static tBleStatus Term_Update_AfterRead(void)
  * @param  uint8_t data result to send back
  * @retval tBleStatus Status
  */
-tBleStatus Config_Notify(uint32_t Feature,uint8_t Command,uint8_t data)
+tBleStatus Config_Notify(uint32_t feature, uint8_t command, uint8_t data)
 {
   tBleStatus ret;
   uint8_t buff[2+4+1+1];
 
-  STORE_LE_16(buff  ,(HAL_GetTick()>>3));
-  STORE_BE_32(buff+2,Feature);
-  buff[6] = Command;
+  STORE_LE_16(buff, (HAL_GetTick() >> 3));
+  STORE_BE_32(buff + 2, feature);
+  buff[6] = command;
   buff[7] = data;
 
-  ret = aci_gatt_update_char_value (ConfigServW2STHandle, ConfigCharHandle, 0, 8,buff);
+  ret = aci_gatt_update_char_value (ConfigServW2STHandle, ConfigCharHandle, 0, 8, buff);
   if (ret != BLE_STATUS_SUCCESS){
     if(W2ST_CHECK_CONNECTION(W2ST_CONNECT_STD_ERR)){
       BytesToWrite =sprintf((char *)BufferToWrite, "Error Updating Configuration Char\r\n");
@@ -819,7 +819,7 @@ void Attribute_Modified_CB(uint16_t attr_handle, uint8_t * att_data, uint8_t dat
   } 
   else if(attr_handle == StdErrCharHandle + 2)
   {
-    if (att_data[0] == 01) 
+    if (att_data[0] == 1)
     {
       W2ST_ON_CONNECTION(W2ST_CONNECT_STD_ERR);
     } else if (att_data[0] == 0)
@@ -829,7 +829,7 @@ void Attribute_Modified_CB(uint16_t attr_handle, uint8_t * att_data, uint8_t dat
   } 
   else if(attr_handle == TermCharHandle + 2)
   {
-    if (att_data[0] == 01) 
+    if (att_data[0] == 1)
     {
       W2ST_ON_CONNECTION(W2ST_CONNECT_STD_TERM);
     } 
@@ -855,7 +855,7 @@ void Attribute_Modified_CB(uint16_t attr_handle, uint8_t * att_data, uint8_t dat
   }
   else if(attr_handle == ArmingCharHandle + 2)
   {
-    if (att_data[0] == 01) 
+    if (att_data[0] == 1)
     {
       W2ST_ON_CONNECTION(W2ST_CONNECT_LED);
       /* Update the LED feature */
@@ -1029,7 +1029,7 @@ static uint32_t DebugConsoleCommandParsing(uint8_t * att_data, uint8_t data_leng
   else if((att_data[0]=='u') & (att_data[1]=='i') & (att_data[2]=='d')) {
     /* Write back the STM32 UID */
     uint8_t *uid = (uint8_t *)STM32_UUID;
-    uint32_t MCU_ID = STM32_MCU_ID[0]&0xFFF;
+    uint32_t MCU_ID = STM32_MCU_ID[0]&0xFFFU;
     BytesToWrite =sprintf((char *)BufferToWrite,"%.2X%.2X%.2X%.2X%.2X%.2X%.2X%.2X%.2X%.2X%.2X%.2X_%.3lX\r\n",
                           uid[ 3],uid[ 2],uid[ 1],uid[ 0],
                           uid[ 7],uid[ 6],uid[ 5],uid[ 4],
@@ -1170,6 +1170,9 @@ void HCI_Event_CB(void *pckt)
               Attribute_Modified_CB(evt->attr_handle, evt->att_data,evt->data_length);
             }
         break;
+      default:
+    	  /* no action needed here */
+    	break;      
       }
     }
     break;

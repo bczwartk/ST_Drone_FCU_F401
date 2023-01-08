@@ -4,7 +4,7 @@
 #include "stm32f4xx.h"
 #include "stm32f4xx_hal.h"
 
-typedef volatile struct _tUserTimer
+typedef volatile struct tUserTimerStruct
 {
     uint32_t    target_tick;
     uint32_t    interval;

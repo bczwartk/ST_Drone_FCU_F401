@@ -387,12 +387,12 @@ int32_t BytesToWrite;
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */    
-    if(HCI_ProcessEvent) {
+    if (0 != HCI_ProcessEvent) {
           HCI_ProcessEvent=0;
           HCI_Process();
     }
     
-    if(set_connectable){
+    if (TRUE == set_connectable) {
           /* Now update the BLE advertize data and make the Board connectable */
           setConnectable();
           set_connectable = FALSE;
@@ -454,10 +454,10 @@ int32_t BytesToWrite;
 //          gTHR = joydata[4]*13;
 //          gAIL = (joydata[5]-128)*(-13);
 //          gELE = (joydata[6]-128)*13;
-          gRUD = (joydata[2]-128)*(-13);
-          gTHR = joydata[3]*13;
-          gAIL = (joydata[4]-128)*(-13);
-          gELE = (joydata[5]-128)*13;
+          gRUD = (joydata[2] - 128) * (-13);
+          gTHR = joydata[3] * 13;
+          gAIL = (joydata[4] - 128) * (-13);
+          gELE = (joydata[5] - 128) * 13;
           
           /* joydata[6]: seek bar data*/
           /* joydata[7]: additional button data
@@ -465,33 +465,31 @@ int32_t BytesToWrite;
                         second bit: Calibration When it changes status is active
                         third bit: Arming (0 = Disarmed,  1 = Armed) */
           gJoystick_status = joydata[7];
-          if ((gJoystick_status&0x04)==0x04){
+          if ((gJoystick_status & 0x04) == 0x04) {
             rc_enable_motor = 1;
             fly_ready = 1;
             BSP_LED_On(LED2);
-          }
-          else {
+          } else {
             rc_enable_motor = 0;
             fly_ready = 0;
           }
           
 
-          if (connected){
+          if (TRUE == connected) {
             rc_connection_flag = 1;                       /* BLE Remocon connected flag for enabling motor output */
             SendMotionData();
             SendBattEnvData();
             SendArmingData();            
-          }
-          else{
+          } else {
             rc_connection_flag = 0;
-            gTHR=0;
+            gTHR = 0;
             rc_enable_motor = 0;
             fly_ready = 0;
             BSP_LED_Off(LED1);
             BSP_LED_Off(LED2);
           }
           
-          if (joydata[7]&0x02){
+          if (0 != (joydata[7] & 0x02)) {
             rc_cal_flag = 1;
             BSP_LED_On(LED1);
           }
@@ -568,30 +566,22 @@ int32_t BytesToWrite;
     ch_flag = 1;
   }
 
-  if (isTimerEventExist(&tim))    // Check if a timer event is present
-  {
-
+  if (0 != isTimerEventExist(&tim)) {    // Check if a timer event is present
         ClearTimer(&tim);           // Clear current event;
 
         count2++;
 
         mytimcnt++;
-        if (rc_connection_flag && rc_enable_motor)
-        {
+        if (rc_connection_flag && rc_enable_motor) {
           if ((mytimcnt % 50) == 0) {
             BSP_LED_On(LED2);
           }
-        }
-        else
-        {
+        } else {
           if ((mytimcnt % 50) == 0) {
             BSP_LED_Toggle(LED2);
           }
         }
     }
-  
-    
-
   }
 
   return 0; /* not reachable - just to make MISRAC2012-RULE_17_4-a happy */
@@ -1053,28 +1043,28 @@ static void initializeAllSensors( void )
 {
   if (BSP_ACCELERO_Init( LSM6DSL_X_0, &LSM6DSL_X_0_handle ) != COMPONENT_OK)
   {
-    while(1);
+    while (1) {}
   }
   
   if (BSP_GYRO_Init( LSM6DSL_G_0, &LSM6DSL_G_0_handle ) != COMPONENT_OK)
   {
-    while(1);
+    while (1) {}
   }
   
   if (BSP_MAGNETO_Init( LIS2MDL_M_0, &LIS2MDL_M_0_handle ) != COMPONENT_OK)
   {
-    while(1);
+    while (1) {}
   }
   
   
   if (BSP_PRESSURE_Init( LPS22HB_P_0, &LPS22HB_P_0_handle ) != COMPONENT_OK)
   {
-    while(1);
+    while (1) {}
   }
 
   if (BSP_TEMPERATURE_Init( LPS22HB_T_0, &LPS22HB_T_0_handle ) != COMPONENT_OK)
   {
-    while(1);
+    while (1) {}
   }
  
   
@@ -1113,8 +1103,9 @@ void BlueNRG_Init(void)
 
   uint8_t tmp_bdaddr[6]= {MAC_BLUEMS};
   int32_t i;
-  for(i=0;i<6;i++)
+  for(i = 0; i < 6; i++) {
     bdaddr[i] = tmp_bdaddr[i];
+  }
   
   /* Initialize the BlueNRG HCI */
   HCI_Init();
@@ -1136,7 +1127,7 @@ void BlueNRG_Init(void)
     ret = aci_hal_write_config_data(CONFIG_DATA_PUBADDR_OFFSET,
                                     CONFIG_DATA_PUBADDR_LEN,
                                     bdaddr);
-    if(ret){
+    if (0 != ret) {
       testStatus = COMPONENT_ERROR;
       PRINTF("\r\nSetting Pubblic BD_ADDR failed *****\r\n");
       goto fail;
@@ -1144,7 +1135,7 @@ void BlueNRG_Init(void)
     
     PRINTF("GATT Initializzation...\r\n");
     ret = aci_gatt_init();    
-    if(ret){
+    if (0 !=  ret) {
       testStatus = COMPONENT_ERROR;
       PRINTF("\r\nGATT_Init failed ****\r\n");
       goto fail;
@@ -1161,7 +1152,7 @@ void BlueNRG_Init(void)
     /* Set the GAP INIT like X-NUCLEO-IDB05A1 eval board  since using same SPBTLE_RF module*/
     ret = aci_gap_init_IDB05A1(GAP_PERIPHERAL_ROLE_IDB05A1, 0, 0x07, &service_handle, &dev_name_char_handle, &appearance_char_handle);
   
-    if(ret != BLE_STATUS_SUCCESS){
+    if (ret != BLE_STATUS_SUCCESS) {
       PRINTF("\r\nGAP_Init failed\r\n");
       goto fail;
     }

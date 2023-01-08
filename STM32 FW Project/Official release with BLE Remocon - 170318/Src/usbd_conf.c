@@ -196,8 +196,7 @@ void HAL_PCD_SuspendCallback(PCD_HandleTypeDef *hpcd)
   __HAL_PCD_GATE_PHYCLOCK(hpcd);
   /*Enter in STOP mode */
   /* USER CODE BEGIN 2 */
-  if (hpcd->Init.low_power_enable)
-  {
+  if (0 != hpcd->Init.low_power_enable) {
     /* Set SLEEPDEEP bit and SleepOnExit of Cortex System Control Register */
     SCB->SCR |= (uint32_t)((uint32_t)(SCB_SCR_SLEEPDEEP_Msk | SCB_SCR_SLEEPONEXIT_Msk));
   }
@@ -411,15 +410,17 @@ USBD_StatusTypeDef  USBD_LL_ClearStallEP (USBD_HandleTypeDef *pdev, uint8_t ep_a
 uint8_t USBD_LL_IsStallEP (USBD_HandleTypeDef *pdev, uint8_t ep_addr)   
 {
   PCD_HandleTypeDef *hpcd = pdev->pData; 
+  uint8_t ret;
   
   if((ep_addr & 0x80) == 0x80)
   {
-    return hpcd->IN_ep[ep_addr & 0x7F].is_stall; 
+    ret = hpcd->IN_ep[ep_addr & 0x7F].is_stall;
   }
   else
   {
-    return hpcd->OUT_ep[ep_addr & 0x7F].is_stall; 
+    ret = hpcd->OUT_ep[ep_addr & 0x7F].is_stall;
   }
+  return ret;
 }
 /**
   * @brief  Assigns a USB address to the device.

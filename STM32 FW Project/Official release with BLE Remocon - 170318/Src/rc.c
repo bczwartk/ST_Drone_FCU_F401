@@ -323,6 +323,7 @@ void add_queue(Queue_TypeDef *q, int16_t idx, int16_t value)
 
 int32_t get_queue(Queue_TypeDef *q, int16_t *idx, int16_t *value)
 {
+  int ret;
   // get data only if the queue is not empty
   if (q->empty != 1) {
     // get the node data
@@ -339,10 +340,11 @@ int32_t get_queue(Queue_TypeDef *q, int16_t *idx, int16_t *value)
     }
     // It will not full any more
     q->full = 0;
-    return 0;
+    ret = 0;
   } else {
-    return -1;      // queue is empty
+    ret = -1;      // queue is empty
   }
+  return ret;
 }
 
 
