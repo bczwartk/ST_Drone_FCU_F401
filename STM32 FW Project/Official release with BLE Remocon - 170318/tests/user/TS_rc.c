@@ -21,6 +21,9 @@ CPPTEST_TEST(TS_rc_test_update_rc_data_calibration_not_activated_3);
 CPPTEST_TEST(TS_rc_test_update_rc_data_calibration_not_activated_4);
 CPPTEST_TEST_DS(TS_rc_test_update_rc_data_arm_disarm_neg_ds, CPPTEST_DS("TS_RC_data_arm_disarm_neg"));
 CPPTEST_TEST_DS(TS_rc_test_update_rc_data_arm_disarm_pos_ds, CPPTEST_DS("TS_RS_data_arm_disarm_pos"));
+CPPTEST_TEST(TS_rc_test_HAL_TIM_IC_CaptureCallback);
+CPPTEST_TEST(TS_rc_test_HAL_SYSTICK_Callback_no_timeout);
+CPPTEST_TEST(TS_rc_test_HAL_SYSTICK_Callback_with_timeout);
 CPPTEST_TEST_SUITE_END();
         
 
@@ -33,6 +36,9 @@ void TS_rc_test_update_rc_data_calibration_not_activated_3(void);
 void TS_rc_test_update_rc_data_calibration_not_activated_4(void);
 void TS_rc_test_update_rc_data_arm_disarm_neg_ds(void);
 void TS_rc_test_update_rc_data_arm_disarm_pos_ds(void);
+void TS_rc_test_HAL_TIM_IC_CaptureCallback(void);
+void TS_rc_test_HAL_SYSTICK_Callback_no_timeout(void);
+void TS_rc_test_HAL_SYSTICK_Callback_with_timeout(void);
 CPPTEST_TEST_SUITE_REGISTRATION(TS_rc);
 
 void TS_rc_testSuiteSetUp(void);
@@ -478,3 +484,61 @@ void TS_rc_test_update_rc_data_arm_disarm_pos_ds()
     }
 }
 /* CPPTEST_TEST_CASE_END test_update_rc_data_arm_disarm_pos_ds */
+
+void CppTest_StubCallback_update_rc_data(CppTest_StubCallInfo* stubCallInfo, int32_t idx)
+{
+	update_rc_data(idx);
+	// CPPTEST_MESSAGE("##  update_rc_data() stub callback called");
+}
+
+/* CPPTEST_TEST_CASE_BEGIN test_HAL_TIM_IC_CaptureCallback */
+/* CPPTEST_TEST_CASE_CONTEXT void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *) */
+void TS_rc_test_HAL_TIM_IC_CaptureCallback()
+{
+	CPPTEST_REGISTER_STUB_CALLBACK("update_rc_data", & CppTest_StubCallback_update_rc_data);
+	CPPTEST_EXPECT_NCALLS("update_rc_data", 1);
+
+	TIM_HandleTypeDef _htim_0;
+	TIM_HandleTypeDef * _htim = & _htim_0;
+
+	// CPPTEST_MESSAGE("##  before call HAL_TIM_IC_CaptureCallback()");
+	HAL_TIM_IC_CaptureCallback(_htim);
+	// CPPTEST_MESSAGE("##  after call HAL_TIM_IC_CaptureCallback()");
+
+
+}
+/* CPPTEST_TEST_CASE_END test_HAL_TIM_IC_CaptureCallback */
+
+/* CPPTEST_TEST_CASE_BEGIN test_HAL_SYSTICK_Callback_no_timeout */
+void TS_rc_test_HAL_SYSTICK_Callback_no_timeout()
+{
+	CPPTEST_EXPECT_NCALLS("User_Timer_Callback", 1);
+	CPPTEST_EXPECT_NCALLS("init_rc_variables", 0);
+
+	int TIMEOUT_VALUE = RC_TIMEOUT_VALUE - 1;
+    rc_timeout = TIMEOUT_VALUE;
+    rc_connection_flag = 0;
+
+    HAL_SYSTICK_Callback();
+
+    CPPTEST_ASSERT_INTEGER_EQUAL(1, rc_connection_flag);
+
+}
+/* CPPTEST_TEST_CASE_END test_HAL_SYSTICK_Callback_no_timeout */
+
+/* CPPTEST_TEST_CASE_BEGIN test_HAL_SYSTICK_Callback_with_timeout */
+void TS_rc_test_HAL_SYSTICK_Callback_with_timeout()
+{
+	CPPTEST_EXPECT_NCALLS("User_Timer_Callback", 1);
+	CPPTEST_EXPECT_NCALLS("init_rc_variables", 1);
+
+	int TIMEOUT_VALUE = RC_TIMEOUT_VALUE + 1;
+    rc_timeout = TIMEOUT_VALUE;
+    rc_connection_flag = 0;
+
+    HAL_SYSTICK_Callback();
+
+    CPPTEST_ASSERT_INTEGER_EQUAL(1, rc_connection_flag);
+
+}
+/* CPPTEST_TEST_CASE_END test_HAL_SYSTICK_Callback_with_timeout */
