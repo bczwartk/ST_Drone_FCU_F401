@@ -24,6 +24,8 @@ CPPTEST_TEST_DS(TS_rc_test_update_rc_data_arm_disarm_pos_ds, CPPTEST_DS("TS_RS_d
 CPPTEST_TEST(TS_rc_test_HAL_TIM_IC_CaptureCallback);
 CPPTEST_TEST(TS_rc_test_HAL_SYSTICK_Callback_no_timeout);
 CPPTEST_TEST(TS_rc_test_HAL_SYSTICK_Callback_with_timeout);
+CPPTEST_TEST_DS(TS_rc_test_limit_value_ds, CPPTEST_DS("TS_RC_limit_value"));
+CPPTEST_TEST_DS(TS_rc_test_GetTargetEulerAngle_ds, CPPTEST_DS("TS_RC_GetTargetEulerAngle"));
 CPPTEST_TEST_SUITE_END();
         
 
@@ -39,6 +41,8 @@ void TS_rc_test_update_rc_data_arm_disarm_pos_ds(void);
 void TS_rc_test_HAL_TIM_IC_CaptureCallback(void);
 void TS_rc_test_HAL_SYSTICK_Callback_no_timeout(void);
 void TS_rc_test_HAL_SYSTICK_Callback_with_timeout(void);
+void TS_rc_test_limit_value_ds(void);
+void TS_rc_test_GetTargetEulerAngle_ds(void);
 CPPTEST_TEST_SUITE_REGISTRATION(TS_rc);
 
 void TS_rc_testSuiteSetUp(void);
@@ -542,3 +546,63 @@ void TS_rc_test_HAL_SYSTICK_Callback_with_timeout()
 
 }
 /* CPPTEST_TEST_CASE_END test_HAL_SYSTICK_Callback_with_timeout */
+
+/* CPPTEST_TEST_CASE_BEGIN test_limit_value_ds */
+/* CPPTEST_TEST_CASE_CONTEXT int32_t limit_value(int32_t) */
+void TS_rc_test_limit_value_ds()
+{
+    /* Pre-condition initialization */
+    /* Initializing argument 1 (val) */ 
+    int32_t _val  = CPPTEST_DS_GET_INTEGER("val_in");
+    {
+        /* Tested function call */
+        int32_t _return  = limit_value(_val);
+        /* Post-condition check */
+        CPPTEST_ASSERT_INTEGER_EQUAL(CPPTEST_DS_GET_INTEGER("val_out"), ( _return ) );
+    }
+}
+/* CPPTEST_TEST_CASE_END test_limit_value_ds */
+
+/* CPPTEST_TEST_CASE_BEGIN test_GetTargetEulerAngle_ds */
+/* CPPTEST_TEST_CASE_CONTEXT void GetTargetEulerAngle(EulerAngleTypeDef *, EulerAngleTypeDef *) */
+void TS_rc_test_GetTargetEulerAngle_ds()
+{
+    /* Pre-condition initialization */
+    /* Initializing argument 1 (euler_rc) */ 
+    EulerAngleTypeDef _euler_rc_0 ;
+     _euler_rc_0.thx  = CPPTEST_DS_GET_FLOAT("in_erc_thx");
+     _euler_rc_0.thy  = CPPTEST_DS_GET_FLOAT("in_erc_thy");
+     _euler_rc_0.thz  = CPPTEST_DS_GET_FLOAT("in_erc_thz");
+    EulerAngleTypeDef * _euler_rc  = & _euler_rc_0;
+    /* Initializing argument 2 (euler_ahrs) */ 
+    EulerAngleTypeDef * _euler_ahrs  = 0 ;
+    /* Initializing global variable gRUD */ 
+    {
+         gRUD  = CPPTEST_DS_GET_INTEGER("in_gRUD");
+    }
+    /* Initializing global variable gAIL */ 
+    {
+         gAIL  = CPPTEST_DS_GET_INTEGER("in_gAIL");
+    }
+    /* Initializing global variable gELE */ 
+    {
+         gELE  = CPPTEST_DS_GET_INTEGER("in_gELE");
+    }
+    /* Initializing global variable rc_z_control_flag */ 
+    {
+         rc_z_control_flag  = CPPTEST_DS_GET_INTEGER("in_rc_z_control_flag");
+    }
+    {
+        /* Tested function call */
+        GetTargetEulerAngle(_euler_rc, _euler_ahrs);
+        /* Post-condition check */
+        CPPTEST_ASSERT_INTEGER_EQUAL(CPPTEST_DS_GET_INTEGER("in_gRUD"), ( gRUD ) );
+        CPPTEST_ASSERT_INTEGER_EQUAL(CPPTEST_DS_GET_INTEGER("in_gAIL"), ( gAIL ) );
+        CPPTEST_ASSERT_INTEGER_EQUAL(CPPTEST_DS_GET_INTEGER("in_gELE"), ( gELE ) );
+        CPPTEST_ASSERT_INTEGER_EQUAL(CPPTEST_DS_GET_INTEGER("out_rc_z_control_flag"), ( rc_z_control_flag ) );
+        CPPTEST_ASSERT_DOUBLES_EQUAL(CPPTEST_DS_GET_FLOAT("out_erc_thx"), _euler_rc_0.thx, 0.00001);
+        CPPTEST_ASSERT_DOUBLES_EQUAL(CPPTEST_DS_GET_FLOAT("out_erc_thy"), _euler_rc_0.thy, 0.00001);
+        CPPTEST_ASSERT_DOUBLES_EQUAL(CPPTEST_DS_GET_FLOAT("out_erc_thz"), _euler_rc_0.thz, 0.00001);
+    }
+}
+/* CPPTEST_TEST_CASE_END test_GetTargetEulerAngle_ds */

@@ -32,8 +32,6 @@
 const float max_pitch_rad = PI*PITCH_MAX_DEG/180.0f;
 const float max_roll_rad = PI*ROLL_MAX_DEG/180.0f;
 const float max_yaw_rad = PI*YAW_MAX_DEG/180.0f;
-int32_t t1;
-
 
 int32_t ail_center = AIL_MIDDLE;
 int32_t ele_center = ELE_MIDDLE;
@@ -114,8 +112,6 @@ void init_rc_variables(void)
 
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 {
-  
-
   #ifdef REMOCON_PWM
     int32_t timcnt, idx;
     // save the counter data
@@ -235,10 +231,25 @@ void update_rc_data(int32_t idx)
 }
 
 /*
+ * Bring the input value to be within limits of [-RC_FULLSCALE; RC_FULLSCALE]
+ */
+static int32_t limit_value(int32_t val)
+{
+    if (val > RC_FULLSCALE) {
+        val = RC_FULLSCALE;
+    } else if (val < -RC_FULLSCALE) {
+        val = - RC_FULLSCALE;
+    }
+    return val;
+}
+
+/*
  * Convert RC received gAIL, gELE, gRUD
  */
 void GetTargetEulerAngle(EulerAngleTypeDef *euler_rc, EulerAngleTypeDef *euler_ahrs)
 {
+	int32_t t1;
+
     t1 = gELE;
     if (t1 > RC_FULLSCALE) {
         t1 = RC_FULLSCALE;
