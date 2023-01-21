@@ -235,12 +235,15 @@ void update_rc_data(int32_t idx)
  */
 static int32_t limit_value(int32_t val)
 {
+	int32_t t;
     if (val > RC_FULLSCALE) {
-        val = RC_FULLSCALE;
+        t = RC_FULLSCALE;
     } else if (val < -RC_FULLSCALE) {
-        val = - RC_FULLSCALE;
+        t = - RC_FULLSCALE;
+    } else {
+    	t = val;
     }
-    return val;
+    return t;
 }
 
 /*
@@ -256,7 +259,7 @@ void GetTargetEulerAngle(EulerAngleTypeDef *euler_rc, EulerAngleTypeDef *euler_a
     } else if (t1 < -RC_FULLSCALE) {
         t1 = - RC_FULLSCALE;
     }
-    euler_rc->thx = -t1 * max_pitch_rad / RC_FULLSCALE;
+    euler_rc->thx = (-t1 * max_pitch_rad) / RC_FULLSCALE;
 
     t1 = gAIL;
     if (t1 > RC_FULLSCALE) {
@@ -264,7 +267,7 @@ void GetTargetEulerAngle(EulerAngleTypeDef *euler_rc, EulerAngleTypeDef *euler_a
     } else if (t1 < -RC_FULLSCALE) {
         t1 = - RC_FULLSCALE;
     }
-    euler_rc->thy = -t1 * max_roll_rad / RC_FULLSCALE;
+    euler_rc->thy = (-t1 * max_roll_rad) / RC_FULLSCALE;
 
     t1 = gRUD;
     if (t1 > RC_FULLSCALE) {
