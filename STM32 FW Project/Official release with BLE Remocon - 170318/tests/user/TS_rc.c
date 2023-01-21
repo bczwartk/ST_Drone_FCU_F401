@@ -26,6 +26,11 @@ CPPTEST_TEST(TS_rc_test_HAL_SYSTICK_Callback_no_timeout);
 CPPTEST_TEST(TS_rc_test_HAL_SYSTICK_Callback_with_timeout);
 CPPTEST_TEST_DS(TS_rc_test_limit_value_ds, CPPTEST_DS("TS_RC_limit_value"));
 CPPTEST_TEST_DS(TS_rc_test_GetTargetEulerAngle_ds, CPPTEST_DS("TS_RC_GetTargetEulerAngle"));
+CPPTEST_TEST(TS_rc_test_add_queue_full_header_0);
+CPPTEST_TEST(TS_rc_test_add_queue_full_header_non_zero);
+CPPTEST_TEST(TS_rc_test_add_queue_not_full_beg);
+CPPTEST_TEST(TS_rc_test_add_queue_not_full_mid);
+CPPTEST_TEST(TS_rc_test_add_queue_not_full_end);
 CPPTEST_TEST_SUITE_END();
         
 
@@ -43,6 +48,11 @@ void TS_rc_test_HAL_SYSTICK_Callback_no_timeout(void);
 void TS_rc_test_HAL_SYSTICK_Callback_with_timeout(void);
 void TS_rc_test_limit_value_ds(void);
 void TS_rc_test_GetTargetEulerAngle_ds(void);
+void TS_rc_test_add_queue_full_header_0(void);
+void TS_rc_test_add_queue_full_header_non_zero(void);
+void TS_rc_test_add_queue_not_full_beg(void);
+void TS_rc_test_add_queue_not_full_mid(void);
+void TS_rc_test_add_queue_not_full_end(void);
 CPPTEST_TEST_SUITE_REGISTRATION(TS_rc);
 
 void TS_rc_testSuiteSetUp(void);
@@ -81,11 +91,11 @@ void TS_rc_test_init_queue()
     /* Pre-condition initialization */
     /* Initializing argument 1 (q) */ 
     Queue_TypeDef _q_0 ;
-     int16_t _q_0_header_1 = _q_0.header  = 123;
-     int16_t _q_0_tail_1 = _q_0.tail  = 123;
-     int16_t _q_0_length_1 = _q_0.length  = 123;
-     int16_t _q_0_full_1 = _q_0.full  = 123;
-     int16_t _q_0_empty_1 = _q_0.empty  = 123;
+    _q_0.header  = 123;
+    _q_0.tail  = 123;
+    _q_0.length  = 123;
+    _q_0.full  = 123;
+    _q_0.empty  = 123;
     Queue_TypeDef * _q  = & _q_0;
     {
         /* Tested function call */
@@ -606,3 +616,92 @@ void TS_rc_test_GetTargetEulerAngle_ds()
     }
 }
 /* CPPTEST_TEST_CASE_END test_GetTargetEulerAngle_ds */
+
+/* CPPTEST_TEST_CASE_BEGIN test_add_queue_full_header_0 */
+void TS_rc_test_add_queue_full_header_0()
+{
+    int16_t idx = QUEUE_LENGTH / 2;
+    int16_t val = 7;
+    Queue_TypeDef q;
+    init_queue(&q);
+    q.full = 1;
+
+    add_queue(&q, idx, val);
+
+    CPPTEST_ASSERT_INTEGER_EQUAL(idx, q.buffer[QUEUE_LENGTH - 1][0]);
+    CPPTEST_ASSERT_INTEGER_EQUAL(-1, q.buffer[QUEUE_LENGTH - 1][1]);
+}
+/* CPPTEST_TEST_CASE_END test_add_queue_full_header_0 */
+
+/* CPPTEST_TEST_CASE_BEGIN test_add_queue_full_header_non_zero */
+void TS_rc_test_add_queue_full_header_non_zero()
+{
+    int16_t idx = QUEUE_LENGTH / 2;
+    int16_t val = 7;
+    Queue_TypeDef q;
+    init_queue(&q);
+    q.full = 1;
+    q.header = QUEUE_LENGTH / 2;
+
+    add_queue(&q, idx, val);
+
+    CPPTEST_ASSERT_INTEGER_EQUAL(idx, q.buffer[(QUEUE_LENGTH / 2) - 1][0]);
+    CPPTEST_ASSERT_INTEGER_EQUAL(-1, q.buffer[(QUEUE_LENGTH / 2) - 1][1]);
+}
+/* CPPTEST_TEST_CASE_END test_add_queue_full_header_non_zero */
+
+/* CPPTEST_TEST_CASE_BEGIN test_add_queue_not_full_beg */
+void TS_rc_test_add_queue_not_full_beg()
+{
+    int16_t idx = QUEUE_LENGTH / 2;
+    int16_t val = 7;
+    Queue_TypeDef q;
+    init_queue(&q);
+
+    add_queue(&q, idx, val);
+
+    CPPTEST_ASSERT_INTEGER_EQUAL(idx, q.buffer[q.header - 1][0]);
+    CPPTEST_ASSERT_INTEGER_EQUAL(val, q.buffer[q.header - 1][1]);
+    CPPTEST_ASSERT_INTEGER_EQUAL(1, q.header);
+    CPPTEST_ASSERT_INTEGER_EQUAL(0, q.full);
+    CPPTEST_ASSERT_INTEGER_EQUAL(0, q.empty);
+}
+/* CPPTEST_TEST_CASE_END test_add_queue_not_full_beg */
+
+/* CPPTEST_TEST_CASE_BEGIN test_add_queue_not_full_mid */
+void TS_rc_test_add_queue_not_full_mid()
+{
+    int16_t idx = QUEUE_LENGTH / 2;
+    int16_t val = 7;
+    Queue_TypeDef q;
+    init_queue(&q);
+    q.header = QUEUE_LENGTH / 2;
+
+    add_queue(&q, idx, val);
+
+    CPPTEST_ASSERT_INTEGER_EQUAL(idx, q.buffer[q.header - 1][0]);
+    CPPTEST_ASSERT_INTEGER_EQUAL(val, q.buffer[q.header - 1][1]);
+    CPPTEST_ASSERT_INTEGER_EQUAL((QUEUE_LENGTH / 2) + 1, q.header);
+    CPPTEST_ASSERT_INTEGER_EQUAL(0, q.full);
+    CPPTEST_ASSERT_INTEGER_EQUAL(0, q.empty);
+}
+/* CPPTEST_TEST_CASE_END test_add_queue_not_full_mid */
+
+/* CPPTEST_TEST_CASE_BEGIN test_add_queue_not_full_end */
+void TS_rc_test_add_queue_not_full_end()
+{
+    int16_t idx = QUEUE_LENGTH / 2;
+    int16_t val = 7;
+    Queue_TypeDef q;
+    init_queue(&q);
+    q.header = QUEUE_LENGTH - 1;
+
+    add_queue(&q, idx, val);
+
+    CPPTEST_ASSERT_INTEGER_EQUAL(idx, q.buffer[QUEUE_LENGTH - 1][0]);
+    CPPTEST_ASSERT_INTEGER_EQUAL(val, q.buffer[QUEUE_LENGTH - 1][1]);
+    CPPTEST_ASSERT_INTEGER_EQUAL(0, q.header);
+    CPPTEST_ASSERT_INTEGER_EQUAL(1, q.full);
+    CPPTEST_ASSERT_INTEGER_EQUAL(0, q.empty);
+}
+/* CPPTEST_TEST_CASE_END test_add_queue_not_full_end */
