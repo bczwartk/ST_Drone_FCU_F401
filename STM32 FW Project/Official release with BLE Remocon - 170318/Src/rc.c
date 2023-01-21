@@ -253,28 +253,13 @@ void GetTargetEulerAngle(EulerAngleTypeDef *euler_rc, EulerAngleTypeDef *euler_a
 {
 	int32_t t1;
 
-    t1 = gELE;
-    if (t1 > RC_FULLSCALE) {
-        t1 = RC_FULLSCALE;
-    } else if (t1 < -RC_FULLSCALE) {
-        t1 = - RC_FULLSCALE;
-    }
+    t1 = limit_value(gELE);
     euler_rc->thx = (-t1 * max_pitch_rad) / RC_FULLSCALE;
 
-    t1 = gAIL;
-    if (t1 > RC_FULLSCALE) {
-        t1 = RC_FULLSCALE;
-    } else if (t1 < -RC_FULLSCALE) {
-        t1 = - RC_FULLSCALE;
-    }
+    t1 = limit_value(gAIL);
     euler_rc->thy = (-t1 * max_roll_rad) / RC_FULLSCALE;
 
-    t1 = gRUD;
-    if (t1 > RC_FULLSCALE) {
-        t1 = RC_FULLSCALE;
-    } else if (t1 < -RC_FULLSCALE) {
-        t1 = - RC_FULLSCALE;
-    }
+    t1 = limit_value(gRUD);
 
     if (rc_z_control_flag == 1) {
       if (t1 > EULER_Z_TH) {

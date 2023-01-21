@@ -2859,7 +2859,7 @@
             <outputs>
                 <tool>
                     <name>ILINK</name>
-                    <file> 120 67</file>
+                    <file> 67 120</file>
                 </tool>
             </outputs>
         </file>
