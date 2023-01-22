@@ -51,7 +51,7 @@
 #include "steval_fcu001_v1_pressure.h"
 
 /* Exported variables ---------------------------------------------------------*/
-int connected = FALSE;
+int32_t connected = FALSE;
 uint8_t set_connectable = TRUE;
 
 /* Imported Variables -------------------------------------------------------------*/
@@ -570,7 +570,7 @@ tBleStatus AccGyroMag_Update(SensorAxes_t *Acc,SensorAxes_t *Gyro,SensorAxes_t *
 
 /**
  * @brief  Update Battery, Environmental and RSSI characteristic value
- * @param  float Press Pressure in mbar
+ * @param  float32_t Press Pressure in mbar
  * @param  uint16_t Batt Battery level as percetange of full battery
  * @param  int16_t Temp Temperature in tenths of degree second sensor
  * @param  int16_t RSSI level in dB
@@ -765,14 +765,14 @@ void Read_Request_CB(uint16_t handle)
   uint8_t Status;  
   if(handle == EnvironmentalCharHandle + 1){
     /* Read Request for Pressure,Battery, and Temperatures*/
-    float SensorValue;
+    float32_t SensorValue;
     int32_t PressToSend=0;
     uint16_t BattToSend=0;
     int16_t TempToSend=0,RSSIToSend=0;
     int32_t decPart, intPart;
     if(TargetBoardFeatures.HandlePressSensor) {
       if((TargetBoardFeatures.SnsAltFunc ? BSP_PRESSURE_IsInitialized : BSP_PRESSURE_IsInitialized)(TargetBoardFeatures.HandlePressSensor,&Status)==COMPONENT_OK) {
-        (TargetBoardFeatures.SnsAltFunc ? BSP_PRESSURE_Get_Press : BSP_PRESSURE_Get_Press)(TargetBoardFeatures.HandlePressSensor,(float *)&SensorValue);
+        (TargetBoardFeatures.SnsAltFunc ? BSP_PRESSURE_Get_Press : BSP_PRESSURE_Get_Press)(TargetBoardFeatures.HandlePressSensor,(float32_t *)&SensorValue);
         MCR_BLUEMS_F2I_2D(SensorValue, intPart, decPart);
         PressToSend=intPart*100+decPart;
       }

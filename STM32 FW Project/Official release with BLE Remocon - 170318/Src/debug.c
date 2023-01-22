@@ -7,12 +7,12 @@
 extern UART_HandleTypeDef huart1;
 
 #ifdef DEBUG
-int myprintf(const char *format, ...)
+int32_t myprintf(const char *format, ...)
 {
     va_list arg;
     va_start(arg, format);
     char temp[255];
-    int len;
+    int32_t len;
     // Limit the length of string to 254
     len = vsnprintf(temp, 254, format, arg);
     usart_puts(temp, len);

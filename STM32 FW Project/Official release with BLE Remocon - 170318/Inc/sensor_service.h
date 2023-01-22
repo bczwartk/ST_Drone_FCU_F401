@@ -71,6 +71,7 @@
 #include "main.h"
    
 #include "sensor.h"
+#include "def32.h"
 
 /* Exported functions ------------------------------------------------------- */
 extern tBleStatus Add_HWServW2ST_Service(void);

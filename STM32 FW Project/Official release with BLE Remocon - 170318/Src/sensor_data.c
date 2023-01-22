@@ -66,7 +66,7 @@
  *      Gyro - mdps
  *      Mag - mguass
  */
-void ReadSensorRawData(void *ACC_handle, void *GYR_handle, void *MAG_handle, void *PRE_handle, AxesRaw_TypeDef *acc, AxesRaw_TypeDef *gyro, AxesRaw_TypeDef *mag, float *pre)
+void ReadSensorRawData(void *ACC_handle, void *GYR_handle, void *MAG_handle, void *PRE_handle, AxesRaw_TypeDef *acc, AxesRaw_TypeDef *gyro, AxesRaw_TypeDef *mag, float32_t *pre)
 {
     int32_t t1;
     SensorAxes_t acc_temp_int16, gyro_temp_int16, mag_temp_int16;            /* Data Type int16_t */

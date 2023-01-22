@@ -52,9 +52,9 @@
  * @param message A message to be prompted on the console when asking value
  * @retval The integer acquired from console
  */
-int cuiGetInteger(const char* message)
+int32_t cuiGetInteger(const char* message)
 {
-  int ret, value;
+	int32_t ret, value;
   char buf[32];
   do{
     printf(message);
@@ -75,7 +75,7 @@ int cuiGetInteger(const char* message)
  * @param ch Character to send
  * @retval Character sent
  */
-int uartSendChar(int ch)
+int32_t uartSendChar(int32_t ch)
 {
   HAL_UART_Transmit(&UartHandle, (uint8_t *)&ch, 1, HAL_MAX_DELAY);
   return ch;
@@ -85,7 +85,7 @@ int uartSendChar(int ch)
  * @param None
  * @retval Character received
  */
-int uartReceiveChar(void)
+int32_t uartReceiveChar(void)
 {
   uint8_t ch;
   HAL_UART_Receive(&UartHandle, &ch, 1, HAL_MAX_DELAY);
@@ -105,8 +105,8 @@ int uartReceiveChar(void)
 
 #if defined (__IAR_SYSTEMS_ICC__)
 
-size_t __write(int Handle, const unsigned char * Buf, size_t Bufsize);
-size_t __read(int Handle, unsigned char *Buf, size_t Bufsize);
+size_t __write(int32_t Handle, const unsigned char * Buf, size_t Bufsize);
+size_t __read(int32_t Handle, unsigned char *Buf, size_t Bufsize);
 
 /** @brief IAR specific low level standard input
  * @param Handle IAR internal handle
@@ -114,9 +114,9 @@ size_t __read(int Handle, unsigned char *Buf, size_t Bufsize);
  * @param Bufsize Number of characters to read
  * @retval Number of characters read
  */
-size_t __read(int Handle, unsigned char *Buf, size_t Bufsize)
+size_t __read(int32_t Handle, unsigned char *Buf, size_t Bufsize)
 {
-  int i;
+  int32_t i;
 
   if (Handle != 0){
     return -1;
@@ -134,9 +134,9 @@ size_t __read(int Handle, unsigned char *Buf, size_t Bufsize)
  * @param Bufsize Number of characters to write
  * @retval Number of characters read
  */
-size_t __write(int Handle, const unsigned char * Buf, size_t Bufsize)
+size_t __write(int32_t Handle, const unsigned char * Buf, size_t Bufsize)
 {
-  int i;
+	int32_t i;
 
   if (Handle != 1 && Handle != 2){
     return -1;
@@ -156,7 +156,7 @@ size_t __write(int Handle, const unsigned char * Buf, size_t Bufsize)
  * @param f File pointer
  * @retval Character printed
  */
-int fputc(int ch, FILE *f)
+int32_t fputc(int32_t ch, FILE *f)
 {
   return uartSendChar(ch);
 }
@@ -165,7 +165,7 @@ int fputc(int ch, FILE *f)
  * @param f File pointer
  * @retval Character acquired from standard input
  */
-int fgetc(FILE *f)
+int32_t fgetc(FILE *f)
 {
   return uartReceiveChar();
 }
@@ -176,7 +176,7 @@ int fgetc(FILE *f)
  * @param ch Character to print
  * @retval Character printed
  */
-int __io_putchar(int ch)
+int32_t __io_putchar(int32_t ch)
 {
   return uartSendChar(ch);
 }
@@ -185,7 +185,7 @@ int __io_putchar(int ch)
  * @param None
  * @retval Character acquired from standard input
  */
-int __io_getchar(void)
+int32_t __io_getchar(void)
 {
   return uartReceiveChar();
 }

@@ -5,7 +5,7 @@ EulerAngleTypeDef ea_pre;
 
 void QuaternionNorm(QuaternionTypeDef *q)
 {
-    float norm;
+    float32_t norm;
 
     norm = invSqrt(q->q0*q->q0 + q->q1*q->q1 + q->q2*q->q2 + q->q3*q->q3);
     q->q0 *= norm;
@@ -20,7 +20,7 @@ void QuaternionNorm(QuaternionTypeDef *q)
  */
 void QuaternionMult(QuaternionTypeDef *qa, QuaternionTypeDef *qb, QuaternionTypeDef *qo)
 {
-    float q0, q1, q2, q3;
+    float32_t q0, q1, q2, q3;
 
     q0 = qa->q0*qb->q0 - qa->q1*qb->q1 - qa->q2*qb->q2 - qa->q3*qb->q3;
     q1 = qa->q0*qb->q1 + qa->q1*qb->q0 + qa->q2*qb->q3 - qa->q3*qb->q2;
@@ -39,10 +39,10 @@ void QuaternionMult(QuaternionTypeDef *qa, QuaternionTypeDef *qb, QuaternionType
  */
 void QuaternionRotation(QuaternionTypeDef *qr, QuaternionTypeDef *qv, QuaternionTypeDef *qo)
 {
-    float q0q0, q1q1, q2q2, q3q3;
-    float dq0, dq1, dq2;
-    float dq1q2, dq1q3, dq0q2, dq0q3;
-    float dq0q1, dq2q3;
+    float32_t q0q0, q1q1, q2q2, q3q3;
+    float32_t dq0, dq1, dq2;
+    float32_t dq1q2, dq1q3, dq0q2, dq0q3;
+    float32_t dq0q1, dq2q3;
 
     q0q0 = qr->q0*qr->q0;
     q1q1 = qr->q1*qr->q1;
@@ -77,10 +77,10 @@ void QuaternionConj(QuaternionTypeDef *qa, QuaternionTypeDef *qo)
  */
 void QuaternionToEuler(QuaternionTypeDef *qr, EulerAngleTypeDef *ea)
 {
-    float q0q0, q1q1, q2q2, q3q3;
-    float dq0, dq1, dq2;
-    float dq1q3, dq0q2/*, dq1q2*/;
-    float dq0q1, dq2q3/*, dq0q3*/;
+    float32_t q0q0, q1q1, q2q2, q3q3;
+    float32_t dq0, dq1, dq2;
+    float32_t dq1q3, dq0q2/*, dq1q2*/;
+    float32_t dq0q1, dq2q3/*, dq0q3*/;
 
     q0q0 = qr->q0*qr->q0;
     q1q1 = qr->q1*qr->q1;

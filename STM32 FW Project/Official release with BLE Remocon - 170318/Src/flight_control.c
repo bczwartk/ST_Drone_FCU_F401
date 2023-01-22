@@ -2,21 +2,21 @@
 #include "rc.h"
 #include <math.h>
 
-float pid_x_integ1 = 0.0f;
-float pid_y_integ1 = 0.0f;
-float pid_z_integ1 = 0.0f;
-float pid_x_integ2 = 0.0f;
-float pid_y_integ2 = 0.0f;
-float pid_z_integ2 = 0.0f;
-float pid_x_pre_error2 = 0.0f;
-float pid_y_pre_error2 = 0.0f;
-float pid_z_pre_error2 = 0.0f;
-float pid_x_pre_deriv = 0.0f;
-float pid_y_pre_deriv = 0.0f;
+float32_t pid_x_integ1 = 0.0f;
+float32_t pid_y_integ1 = 0.0f;
+float32_t pid_z_integ1 = 0.0f;
+float32_t pid_x_integ2 = 0.0f;
+float32_t pid_y_integ2 = 0.0f;
+float32_t pid_z_integ2 = 0.0f;
+float32_t pid_x_pre_error2 = 0.0f;
+float32_t pid_y_pre_error2 = 0.0f;
+float32_t pid_z_pre_error2 = 0.0f;
+float32_t pid_x_pre_deriv = 0.0f;
+float32_t pid_y_pre_deriv = 0.0f;
 
 extern int16_t gTHR;
 int16_t motor_thr;
-float dt_recip;
+float32_t dt_recip;
 
 void PIDControlInit(P_PI_PIDControlTypeDef *pid)
 {
@@ -55,7 +55,7 @@ void PIDControlInit(P_PI_PIDControlTypeDef *pid)
 
 void FlightControlPID(EulerAngleTypeDef *euler_rc, EulerAngleTypeDef *euler_ahrs, Gyro_Rad *gyro_rad, AHRS_State_TypeDef *ahrs, P_PI_PIDControlTypeDef *pid, MotorControlTypeDef *motor_pwm)
 {
-  float error, deriv;
+  float32_t error, deriv;
 
   if (gTHR < MIN_THR)
   {
@@ -147,14 +147,14 @@ void FlightControlPID(EulerAngleTypeDef *euler_rc, EulerAngleTypeDef *euler_ahrs
 
   #ifdef MOTOR_DC
 
-    motor_thr = ((int16_t) ((0.33333f * (float)gTHR) + 633.333f));           //Devo7E >> 630 to 1700
+    motor_thr = ((int16_t) ((0.33333f * (float32_t)gTHR) + 633.333f));           //Devo7E >> 630 to 1700
   
   #endif
   
   #ifdef MOTOR_ESC
   
     //motor_thr = (0.28f * gTHR) + 750.0f;                              //TGY-i6 remocon and external ESC STEVAL-ESC001V1
-    motor_thr = ((int16_t) ((0.28f * (float)gTHR) + 850.0f));       //TGY-i6 remocon and external ESC Afro12A
+    motor_thr = ((int16_t) ((0.28f * (float32_t)gTHR) + 850.0f));       //TGY-i6 remocon and external ESC Afro12A
 
   #endif
   
@@ -167,7 +167,7 @@ void FlightControlPID(EulerAngleTypeDef *euler_rc, EulerAngleTypeDef *euler_ahrs
 
 void FlightControlPID_OuterLoop(EulerAngleTypeDef *euler_rc, EulerAngleTypeDef *euler_ahrs, AHRS_State_TypeDef *ahrs, P_PI_PIDControlTypeDef *pid)
 {
-  float error;
+  float32_t error;
 
   if (gTHR < MIN_THR)
   {
@@ -209,7 +209,7 @@ void FlightControlPID_OuterLoop(EulerAngleTypeDef *euler_rc, EulerAngleTypeDef *
 
 void FlightControlPID_innerLoop(EulerAngleTypeDef *euler_rc, Gyro_Rad *gyro_rad, AHRS_State_TypeDef *ahrs, P_PI_PIDControlTypeDef *pid, MotorControlTypeDef *motor_pwm)
 {
-  float error, deriv;
+  float32_t error, deriv;
 
   if (gTHR < MIN_THR) {
     pid_x_integ2 = 0.0f;
@@ -283,15 +283,15 @@ void FlightControlPID_innerLoop(EulerAngleTypeDef *euler_rc, Gyro_Rad *gyro_rad,
   
 #ifdef MOTOR_DC
 
-  motor_thr = ((int16_t) ((0.05f * (float)gTHR) + 633.333f));           //Official MiniDrone Kit >> 630 to 1700
-  //motor_thr =((int16_t) ((0.333f * (float)gTHR) + 633.33f));           //Remocon Devo7E >> 630 to 1700
+  motor_thr = ((int16_t) ((0.05f * (float32_t)gTHR) + 633.333f));           //Official MiniDrone Kit >> 630 to 1700
+  //motor_thr =((int16_t) ((0.333f * (float32_t)gTHR) + 633.33f));           //Remocon Devo7E >> 630 to 1700
   
 #endif
   
 #ifdef MOTOR_ESC
   
   //motor_thr = 0.28f*gTHR + 750.0f;                 //TGY-i6 remocon and external ESC STEVAL-ESC001V1
-    motor_thr = ((int16_t) (0.28f*(float)gTHR + 850.0f));                 //TGY-i6 remocon and external ESC Afro12A
+    motor_thr = ((int16_t) (0.28f*(float32_t)gTHR + 850.0f));                 //TGY-i6 remocon and external ESC Afro12A
 
 #endif
 
@@ -303,7 +303,7 @@ void FlightControlPID_innerLoop(EulerAngleTypeDef *euler_rc, Gyro_Rad *gyro_rad,
 
 void PIDOuterLoopFrameTrans(P_PI_PIDControlTypeDef *pid, EulerAngleTypeDef *euler_ahrs)
 {
-  float cosx;
+  float32_t cosx;
   
   cosx = cos(euler_ahrs->thx);
   pid->y_s1 = cosx * pid->y_s1;

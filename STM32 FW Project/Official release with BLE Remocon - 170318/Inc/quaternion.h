@@ -2,18 +2,19 @@
 #define _QUATERNION_H_
 
 #include "stm32f4xx_hal.h"
+#include "def32.h"
 #include "basic_math.h"
 
 // Type define for quaternion
 typedef struct
 {
-    float q0, q1, q2, q3;
+    float32_t q0, q1, q2, q3;
 }QuaternionTypeDef;
 
 // Type define for Euler angle
 typedef struct
 {
-    float thx, thy, thz;
+    float32_t thx, thy, thz;
 }EulerAngleTypeDef;
 
 

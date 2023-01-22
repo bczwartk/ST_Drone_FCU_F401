@@ -48,9 +48,9 @@
  extern "C" {
 #endif 
  /* Exported functions ------------------------------------------------------- */
-extern int uartSendChar(int ch);
-extern int uartReceiveChar(void);
-extern int cuiGetInteger(const char* message);
+extern int32_t uartSendChar(int32_t ch);
+extern int32_t uartReceiveChar(void);
+extern int32_t cuiGetInteger(const char* message);
 
 #ifdef __cplusplus
 }

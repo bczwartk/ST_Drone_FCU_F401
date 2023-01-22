@@ -2,6 +2,7 @@
 #define _FLIGHT_CONTROL_H_
 
 #include "stm32f4xx_hal.h"
+#include "def32.h"
 #include "quaternion.h"
 #include "ahrs.h"
 #include "motor.h"
@@ -99,15 +100,15 @@
 //first stage is angle stage, second stage is angle rate stage.
 typedef struct
 {
-    float ts;                                  // sampling time
-    float x_kp1, x_ki1, x_kp2, x_ki2, x_kd2;          // stage pid parameter
-    float y_kp1, y_ki1, y_kp2, y_ki2, y_kd2;
-    float z_kp1, z_ki1, z_kp2, z_ki2, z_kd2;
-    float x_i1_limit, y_i1_limit, z_i1_limit;
-    float x_i2_limit, y_i2_limit, z_i2_limit;
-    float x_s1, x_s2;                   // stage output
-    float y_s1, y_s2;
-    float z_s1, z_s2;
+    float32_t ts;                                  // sampling time
+    float32_t x_kp1, x_ki1, x_kp2, x_ki2, x_kd2;          // stage pid parameter
+    float32_t y_kp1, y_ki1, y_kp2, y_ki2, y_kd2;
+    float32_t z_kp1, z_ki1, z_kp2, z_ki2, z_kd2;
+    float32_t x_i1_limit, y_i1_limit, z_i1_limit;
+    float32_t x_i2_limit, y_i2_limit, z_i2_limit;
+    float32_t x_s1, x_s2;                   // stage output
+    float32_t y_s1, y_s2;
+    float32_t z_s1, z_s2;
 }P_PI_PIDControlTypeDef;
 
 void FlightControlPID(EulerAngleTypeDef *euler_rc, EulerAngleTypeDef *euler_ahrs, Gyro_Rad *gyro_rad, AHRS_State_TypeDef *ahrs, P_PI_PIDControlTypeDef *pid, MotorControlTypeDef *motor_pwm);

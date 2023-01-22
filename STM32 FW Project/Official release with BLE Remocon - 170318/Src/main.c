@@ -37,6 +37,7 @@
 
 /* USER CODE BEGIN Includes */
 #include "main.h"
+#include "def32.h"
 #include "debug.h"
 #include "config_drone.h"
 #include "timer.h"
@@ -100,7 +101,7 @@ int32_t fly_ready = 0;
 unsigned char ch, ch_flag;
 
 uint32_t tim9_event_flag = 0, tim9_cnt = 0, tim9_cnt2 = 0;
-float tmp_euler_z = 0.0f;
+float32_t tmp_euler_z = 0.0f;
 
 
 /* BLE module */
@@ -163,7 +164,7 @@ typedef struct
 
 typedef struct
 {
-  float a1, a2, b0, b1, b2;
+  float32_t a1, a2, b0, b1, b2;
 }IIR_Coeff;
 
 //sensor filter
@@ -187,11 +188,11 @@ Gyro_Rad gyro_rad, gyro_degree, gyro_cali_degree;
 MotorControlTypeDef motor_pwm;
 int count1 = 0, count2 = 0;
 AHRS_State_TypeDef ahrs;
-float press, press_zero_level;
-float temperature;
+float32_t press, press_zero_level;
+float32_t temperature;
 
 uint32_t VBAT_Sense;
-float VBAT = 0.0f;
+float32_t VBAT = 0.0f;
 
 uint8_t tmp_lis2mdl;
 SensorAxes_t tmp_mag;
@@ -1002,9 +1003,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     }
 
       
-      gyro_rad.gx = ((float)gyro_fil.AXIS_X)*((float)COE_MDPS_TO_RADPS);  
-      gyro_rad.gy = ((float)gyro_fil.AXIS_Y)*((float)COE_MDPS_TO_RADPS);  
-      gyro_rad.gz = ((float)gyro_fil.AXIS_Z)*((float)COE_MDPS_TO_RADPS);  
+      gyro_rad.gx = ((float32_t)gyro_fil.AXIS_X)*((float32_t)COE_MDPS_TO_RADPS);
+      gyro_rad.gy = ((float32_t)gyro_fil.AXIS_Y)*((float32_t)COE_MDPS_TO_RADPS);
+      gyro_rad.gz = ((float32_t)gyro_fil.AXIS_Z)*((float32_t)COE_MDPS_TO_RADPS);
 
       euler_ahrs.thz += gyro_rad.gz*PID_SAMPLING_TIME;
 
@@ -1294,7 +1295,7 @@ static void SendBattEnvData(void)
     
     MCR_BLUEMS_F2I_2D(press, intPart, decPart);
     PressToSend=intPart*100+decPart;
-    MCR_BLUEMS_F2I_1D(((int32_t)((float)VBAT*100.0f)/4.2f), intPart, decPart);
+    MCR_BLUEMS_F2I_1D(((int32_t)((float32_t)VBAT*100.0f)/4.2f), intPart, decPart);
     BattToSend = intPart*10+decPart;
     if (BattToSend > 1000){
       BattToSend =1000;

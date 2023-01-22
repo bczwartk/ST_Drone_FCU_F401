@@ -29,9 +29,9 @@
 
 #define AUTO_CONNECTION_CENTER  0
 
-const float max_pitch_rad = PI*PITCH_MAX_DEG/180.0f;
-const float max_roll_rad = PI*ROLL_MAX_DEG/180.0f;
-const float max_yaw_rad = PI*YAW_MAX_DEG/180.0f;
+const float32_t max_pitch_rad = PI*PITCH_MAX_DEG/180.0f;
+const float32_t max_roll_rad = PI*ROLL_MAX_DEG/180.0f;
+const float32_t max_yaw_rad = PI*YAW_MAX_DEG/180.0f;
 
 int32_t ail_center = AIL_MIDDLE;
 int32_t ele_center = ELE_MIDDLE;
@@ -292,7 +292,7 @@ void init_queue(Queue_TypeDef *q)
 
 void add_queue(Queue_TypeDef *q, int16_t idx, int16_t value)
 {
-  int h;
+  int32_t h;
   cnt++;
   if (q->full == 1) {
     if (q->header == 0) {
@@ -322,7 +322,7 @@ void add_queue(Queue_TypeDef *q, int16_t idx, int16_t value)
 
 int32_t get_queue(Queue_TypeDef *q, int16_t *idx, int16_t *value)
 {
-  int ret;
+  int32_t ret;
   // get data only if the queue is not empty
   if (q->empty != 1) {
     // get the node data

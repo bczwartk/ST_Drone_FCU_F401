@@ -2,6 +2,7 @@
 #define _RC_H_
 
 #include "stm32f4xx_hal.h"
+#include "def32.h"
 #include "config_drone.h"
 #include "timer.h"
 #include "quaternion.h"

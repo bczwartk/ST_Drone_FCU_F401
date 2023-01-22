@@ -2,6 +2,7 @@
 #define _MOTOR_H_
 
 #include "stm32f4xx_hal.h"
+#include "def32.h"
 
 // Uncomment the first row to use 3.7V Motors directly connected to FCU board
 #define MOTOR_DC
@@ -20,7 +21,7 @@
 
 typedef struct
 {
-  float motor1_pwm, motor2_pwm, motor3_pwm, motor4_pwm;
+  float32_t motor1_pwm, motor2_pwm, motor3_pwm, motor4_pwm;
 }MotorControlTypeDef;
 
 void set_motor_pwm(MotorControlTypeDef *motor_pwm);

@@ -6,30 +6,30 @@
 #include "flight_control.h"
 
 
-float offset[3];
-float cor[3][3];
+float32_t offset[3];
+float32_t cor[3][3];
 
-float q0 = 1.0f, q1 = 0.0f, q2 = 0.0f, q3 = 0.0f;
-float gx_off, gy_off, gz_off;
-float mx_mag, my_mag, mz_mag;
-float wbx = 0.0f, wby = 0.0f, wbz = 0.0f;
-float by = 1.0f, bz = 0.0f;
-float exInt = 0.0f, eyInt = 0.0f, ezInt = 0.0f;
+float32_t q0 = 1.0f, q1 = 0.0f, q2 = 0.0f, q3 = 0.0f;
+float32_t gx_off, gy_off, gz_off;
+float32_t mx_mag, my_mag, mz_mag;
+float32_t wbx = 0.0f, wby = 0.0f, wbz = 0.0f;
+float32_t by = 1.0f, bz = 0.0f;
+float32_t exInt = 0.0f, eyInt = 0.0f, ezInt = 0.0f;
 
-int count;
-int ahrs_init_flag = 0;
-int acc_over = 0;
+int32_t count;
+int32_t ahrs_init_flag = 0;
+int32_t acc_over = 0;
 extern int16_t gTHR;
-float ahrs_kp;
+float32_t ahrs_kp;
 
 void ahrs_fusion_ag(AxesRaw_TypeDef_Float *acc_in, AxesRaw_TypeDef_Float *gyro_in, AHRS_State_TypeDef *ahrs_in)
 {
-  float axf,ayf,azf,gxf,gyf,gzf;
-  float norm;
-  float vx, vy, vz;
-  float ex, ey, ez;
-  float q0q0, q0q1, q0q2, /*q0q3,*/ q1q1, /*q1q2,*/ q1q3, q2q2, q2q3, q3q3;
-  float halfT;
+  float32_t axf,ayf,azf,gxf,gyf,gzf;
+  float32_t norm;
+  float32_t vx, vy, vz;
+  float32_t ex, ey, ez;
+  float32_t q0q0, q0q1, q0q2, /*q0q3,*/ q1q1, /*q1q2,*/ q1q3, q2q2, q2q3, q3q3;
+  float32_t halfT;
  
   if(gTHR<MIN_THR) {
     ahrs_kp = AHRS_KP_BIG;
@@ -42,9 +42,9 @@ void ahrs_fusion_ag(AxesRaw_TypeDef_Float *acc_in, AxesRaw_TypeDef_Float *gyro_i
   azf = acc_in->AXIS_Z;
 
   // mdps convert to rad/s
-  gxf = ((float)gyro_in->AXIS_X) * ((float)COE_MDPS_TO_RADPS);
-  gyf = ((float)gyro_in->AXIS_Y) * ((float)COE_MDPS_TO_RADPS);
-  gzf = ((float)gyro_in->AXIS_Z) * ((float)COE_MDPS_TO_RADPS);
+  gxf = ((float32_t)gyro_in->AXIS_X) * ((float32_t)COE_MDPS_TO_RADPS);
+  gyf = ((float32_t)gyro_in->AXIS_Y) * ((float32_t)COE_MDPS_TO_RADPS);
+  gzf = ((float32_t)gyro_in->AXIS_Z) * ((float32_t)COE_MDPS_TO_RADPS);
 
   // auxiliary variables to reduce number of repeated operations
   q0q0 = q0*q0;

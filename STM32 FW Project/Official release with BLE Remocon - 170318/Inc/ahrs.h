@@ -4,6 +4,7 @@
 #include "stm32f4xx_hal.h"
 //#include "board.h"
 #include "steval_fcu001_v1.h"
+#include "def32.h"
 #include "quaternion.h"
 
 #define AHRS_DEBUG          0
@@ -33,12 +34,12 @@
 typedef struct
 {
   QuaternionTypeDef q;    // Current altitude
-  float gx,gy,gz;       // Current angle rate @ body frame
+  float32_t gx,gy,gz;       // Current angle rate @ body frame
 }AHRS_State_TypeDef;
 
 typedef struct
 {
-  float gx, gy, gz;
+  float32_t gx, gy, gz;
 }Gyro_Rad;
 
 void ahrs_fusion_ag(AxesRaw_TypeDef_Float *acc_in, AxesRaw_TypeDef_Float *gyro_in, AHRS_State_TypeDef *ahrs_in);

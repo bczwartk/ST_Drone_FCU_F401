@@ -12,45 +12,8 @@ E-mail:tom.xiao@ST.com
 
 #include        <stdint.h>
 
-#ifndef         U8
-typedef        unsigned char     U8;
-#endif
-
-#ifndef         S8
-typedef        signed char       S8;
-#endif
-
-#ifndef         U16
-typedef        unsigned short    U16;
-#endif
-
-#ifndef         S16
-typedef        signed short      S16;
-#endif
-
-#ifndef         U32
-typedef        unsigned int      U32;
-#endif
-
-#ifndef         S32
-typedef        signed int        S32;
-#endif
-
-#ifndef         F32
-typedef        float             F32;
-#endif
-
-#ifndef         U64
-typedef        unsigned long long              U64;
-#endif
-
-#ifndef         S64
-typedef        signed long long                S64;
-#endif
-
-#ifndef         D64
-typedef        double                          D64;
-#endif
+/* MISRAC2012-DIR_4_6.b */
+typedef        float             float32_t;
 
 /*8 bits devided 8 1 bit;
 */

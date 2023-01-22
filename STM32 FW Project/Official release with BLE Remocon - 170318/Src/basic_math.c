@@ -1,12 +1,12 @@
 #include "basic_math.h"
 
 
-float Sqrt(float x)  
+float32_t Sqrt(float32_t x)
 {
   union
   {
-    int i;
-    float x;
+	int32_t i;
+    float32_t x;
   } u;
   u.x = x;
   u.i = (1<<29) + (u.i >> 1) - (1<<22); 
@@ -25,13 +25,13 @@ float Sqrt(float x)
 // Fast inverse square-root
 // See: http://en.wikipedia.org/wiki/Fast_inverse_square_root
 
-float invSqrt(float x) 
+float32_t invSqrt(float32_t x)
 {
-	float halfx = 0.5f * x;
-	float y = x;
+	float32_t halfx = 0.5f * x;
+	float32_t y = x;
 	long i = *(long*)&y;
 	i = 0x5f3759df - (i>>1);
-	y = *(float*)&i;
+	y = *(float32_t*)&i;
 	y = y * (1.5f - (halfx * y * y));
 	return y;
 }
