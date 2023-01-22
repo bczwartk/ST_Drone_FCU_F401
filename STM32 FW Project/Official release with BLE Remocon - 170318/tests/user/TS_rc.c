@@ -31,6 +31,12 @@ CPPTEST_TEST(TS_rc_test_add_queue_full_header_non_zero);
 CPPTEST_TEST(TS_rc_test_add_queue_not_full_beg);
 CPPTEST_TEST(TS_rc_test_add_queue_not_full_mid);
 CPPTEST_TEST(TS_rc_test_add_queue_not_full_end);
+CPPTEST_TEST(TS_rc_test_get_queue_empty);
+CPPTEST_TEST(TS_rc_test_get_queue_add_one_get_one);
+CPPTEST_TEST(TS_rc_test_get_queue_add_two_get_one);
+CPPTEST_TEST(TS_rc_test_get_queue_add_two_get_two);
+CPPTEST_TEST(TS_rc_test_get_queue_add_one_get_two);
+CPPTEST_TEST(TS_rc_test_get_queue_add_one_get_one_reset_tail);
 CPPTEST_TEST_SUITE_END();
         
 
@@ -53,6 +59,12 @@ void TS_rc_test_add_queue_full_header_non_zero(void);
 void TS_rc_test_add_queue_not_full_beg(void);
 void TS_rc_test_add_queue_not_full_mid(void);
 void TS_rc_test_add_queue_not_full_end(void);
+void TS_rc_test_get_queue_empty(void);
+void TS_rc_test_get_queue_add_one_get_one(void);
+void TS_rc_test_get_queue_add_two_get_one(void);
+void TS_rc_test_get_queue_add_two_get_two(void);
+void TS_rc_test_get_queue_add_one_get_two(void);
+void TS_rc_test_get_queue_add_one_get_one_reset_tail(void);
 CPPTEST_TEST_SUITE_REGISTRATION(TS_rc);
 
 void TS_rc_testSuiteSetUp(void);
@@ -705,3 +717,176 @@ void TS_rc_test_add_queue_not_full_end()
     CPPTEST_ASSERT_INTEGER_EQUAL(0, q.empty);
 }
 /* CPPTEST_TEST_CASE_END test_add_queue_not_full_end */
+
+/* CPPTEST_TEST_CASE_BEGIN test_get_queue_empty */
+void TS_rc_test_get_queue_empty()
+{
+	const int16_t BAD_VAL = -1;
+    int16_t idx = BAD_VAL;
+    int16_t val = BAD_VAL;
+    Queue_TypeDef q;
+    int32_t ret = 0;
+
+    /* initial state */
+    init_queue(&q);
+    /* q.empty is set to 1 after init */
+
+    ret = get_queue(&q, &idx, &val);
+
+    CPPTEST_ASSERT_INTEGER_EQUAL(BAD_VAL, ret);
+    CPPTEST_ASSERT_INTEGER_EQUAL(BAD_VAL, idx);
+    CPPTEST_ASSERT_INTEGER_EQUAL(BAD_VAL, val);
+    CPPTEST_ASSERT_INTEGER_EQUAL(0, q.header);
+    CPPTEST_ASSERT_INTEGER_EQUAL(0, q.tail);
+    CPPTEST_ASSERT_INTEGER_EQUAL(1, q.empty);
+    CPPTEST_ASSERT_INTEGER_EQUAL(0, q.full);
+}
+/* CPPTEST_TEST_CASE_END test_get_queue_empty */
+
+/* CPPTEST_TEST_CASE_BEGIN test_get_queue_add_one_get_one */
+void TS_rc_test_get_queue_add_one_get_one()
+{
+	const int16_t BAD_VAL = -1;
+    int16_t idx = BAD_VAL;
+    int16_t val = BAD_VAL;
+    Queue_TypeDef q;
+    int32_t ret = 0;
+
+    /* initial state */
+    init_queue(&q);
+    /* q.empty is set to 1 after init */
+    add_queue(&q, 12, 34);
+
+    ret = get_queue(&q, &idx, &val);
+
+    CPPTEST_ASSERT_INTEGER_EQUAL(0, ret);
+    CPPTEST_ASSERT_INTEGER_EQUAL(12, idx);
+    CPPTEST_ASSERT_INTEGER_EQUAL(34, val);
+    CPPTEST_ASSERT_INTEGER_EQUAL(1, q.header);
+    CPPTEST_ASSERT_INTEGER_EQUAL(1, q.tail);
+    CPPTEST_ASSERT_INTEGER_EQUAL(1, q.empty);
+    CPPTEST_ASSERT_INTEGER_EQUAL(0, q.full);
+}
+/* CPPTEST_TEST_CASE_END test_get_queue_add_one_get_one */
+
+/* CPPTEST_TEST_CASE_BEGIN test_get_queue_add_two_get_one */
+void TS_rc_test_get_queue_add_two_get_one()
+{
+	const int16_t BAD_VAL = -1;
+    int16_t idx = BAD_VAL;
+    int16_t val = BAD_VAL;
+    Queue_TypeDef q;
+    int32_t ret = 0;
+
+    /* initial state */
+    init_queue(&q);
+    /* q.empty is set to 1 after init */
+    add_queue(&q, 12, 34);
+    add_queue(&q, 56, 78);
+
+    ret = get_queue(&q, &idx, &val);
+
+    CPPTEST_ASSERT_INTEGER_EQUAL(0, ret);
+    CPPTEST_ASSERT_INTEGER_EQUAL(12, idx);
+    CPPTEST_ASSERT_INTEGER_EQUAL(34, val);
+    CPPTEST_ASSERT_INTEGER_EQUAL(2, q.header);
+    CPPTEST_ASSERT_INTEGER_EQUAL(1, q.tail);
+    CPPTEST_ASSERT_INTEGER_EQUAL(0, q.empty);
+    CPPTEST_ASSERT_INTEGER_EQUAL(0, q.full);
+}
+/* CPPTEST_TEST_CASE_END test_get_queue_add_two_get_one */
+
+/* CPPTEST_TEST_CASE_BEGIN test_get_queue_add_two_get_two */
+void TS_rc_test_get_queue_add_two_get_two()
+{
+	const int16_t BAD_VAL = -1;
+    int16_t idx0 = BAD_VAL;
+    int16_t val0 = BAD_VAL;
+    int32_t ret0 = 0;
+    int16_t idx1 = BAD_VAL;
+    int16_t val1 = BAD_VAL;
+    int32_t ret1 = 0;
+    Queue_TypeDef q;
+
+    /* initial state */
+    init_queue(&q);
+    /* q.empty is set to 1 after init */
+    add_queue(&q, 12, 34);
+
+    ret0 = get_queue(&q, &idx0, &val0);
+    ret1 = get_queue(&q, &idx1, &val1);
+
+    CPPTEST_ASSERT_INTEGER_EQUAL(0, ret0);
+    CPPTEST_ASSERT_INTEGER_EQUAL(12, idx0);
+    CPPTEST_ASSERT_INTEGER_EQUAL(34, val0);
+    CPPTEST_ASSERT_INTEGER_EQUAL(-1, ret1);
+    CPPTEST_ASSERT_INTEGER_EQUAL(BAD_VAL, idx1);
+    CPPTEST_ASSERT_INTEGER_EQUAL(BAD_VAL, val1);
+    CPPTEST_ASSERT_INTEGER_EQUAL(1, q.header);
+    CPPTEST_ASSERT_INTEGER_EQUAL(1, q.tail);
+    CPPTEST_ASSERT_INTEGER_EQUAL(1, q.empty);
+    CPPTEST_ASSERT_INTEGER_EQUAL(0, q.full);
+}
+/* CPPTEST_TEST_CASE_END test_get_queue_add_two_get_two */
+
+/* CPPTEST_TEST_CASE_BEGIN test_get_queue_add_one_get_two */
+void TS_rc_test_get_queue_add_one_get_two()
+{
+	const int16_t BAD_VAL = -1;
+    int16_t idx0 = BAD_VAL;
+    int16_t val0 = BAD_VAL;
+    int32_t ret0 = 0;
+    int16_t idx1 = BAD_VAL;
+    int16_t val1 = BAD_VAL;
+    int32_t ret1 = 0;
+    Queue_TypeDef q;
+
+    /* initial state */
+    init_queue(&q);
+    /* q.empty is set to 1 after init */
+    add_queue(&q, 12, 34);
+    add_queue(&q, 56, 78);
+
+    ret0 = get_queue(&q, &idx0, &val0);
+    ret1 = get_queue(&q, &idx1, &val1);
+
+    CPPTEST_ASSERT_INTEGER_EQUAL(0, ret0);
+    CPPTEST_ASSERT_INTEGER_EQUAL(12, idx0);
+    CPPTEST_ASSERT_INTEGER_EQUAL(34, val0);
+    CPPTEST_ASSERT_INTEGER_EQUAL(0, ret1);
+    CPPTEST_ASSERT_INTEGER_EQUAL(56, idx1);
+    CPPTEST_ASSERT_INTEGER_EQUAL(78, val1);
+    CPPTEST_ASSERT_INTEGER_EQUAL(2, q.header);
+    CPPTEST_ASSERT_INTEGER_EQUAL(2, q.tail);
+    CPPTEST_ASSERT_INTEGER_EQUAL(1, q.empty);
+    CPPTEST_ASSERT_INTEGER_EQUAL(0, q.full);
+}
+/* CPPTEST_TEST_CASE_END test_get_queue_add_one_get_two */
+
+/* CPPTEST_TEST_CASE_BEGIN test_get_queue_add_one_get_one_reset_tail */
+void TS_rc_test_get_queue_add_one_get_one_reset_tail()
+{
+	const int16_t BAD_VAL = -1;
+    int16_t idx = BAD_VAL;
+    int16_t val = BAD_VAL;
+    Queue_TypeDef q;
+    int32_t ret = 0;
+
+    /* initial state */
+    init_queue(&q);
+    /* q.empty is set to 1 after init */
+    q.header = QUEUE_LENGTH - 1;
+    q.tail = QUEUE_LENGTH - 1;
+    add_queue(&q, 12, 34);
+
+    ret = get_queue(&q, &idx, &val);
+
+    CPPTEST_ASSERT_INTEGER_EQUAL(0, ret);
+    CPPTEST_ASSERT_INTEGER_EQUAL(12, idx);
+    CPPTEST_ASSERT_INTEGER_EQUAL(34, val);
+    CPPTEST_ASSERT_INTEGER_EQUAL(0, q.header);
+    CPPTEST_ASSERT_INTEGER_EQUAL(0, q.tail);
+    CPPTEST_ASSERT_INTEGER_EQUAL(1, q.empty);
+    CPPTEST_ASSERT_INTEGER_EQUAL(0, q.full);
+}
+/* CPPTEST_TEST_CASE_END test_get_queue_add_one_get_one_reset_tail */
