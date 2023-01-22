@@ -58,7 +58,7 @@
 
 void init_remote_control(void);
 void update_rc_data(int32_t idx);
-void GetTargetEulerAngle(EulerAngleTypeDef *euler_rc, EulerAngleTypeDef *euler_ahrs);
+void GetTargetEulerAngle(EulerAngleTypeDef *euler_rc_in, EulerAngleTypeDef *euler_ahrs_in);
 
 // Below queue is for debug purpose
 #define QUEUE_LENGTH        16

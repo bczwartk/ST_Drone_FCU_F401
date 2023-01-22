@@ -186,7 +186,7 @@ void HAL_SYSTICK_Callback(void)
   User_Timer_Callback();
   // Count rc_timeout up to 1s
   if (rc_timeout < 1000) {
-    rc_timeout++;
+	rc_timeout += 1;
   }
   if (rc_timeout > RC_TIMEOUT_VALUE) {
     init_rc_variables();
@@ -249,23 +249,23 @@ static int32_t limit_value(int32_t val)
 /*
  * Convert RC received gAIL, gELE, gRUD
  */
-void GetTargetEulerAngle(EulerAngleTypeDef *euler_rc, EulerAngleTypeDef *euler_ahrs)
+void GetTargetEulerAngle(EulerAngleTypeDef *euler_rc_in, EulerAngleTypeDef *euler_ahrs_in)
 {
 	int32_t t1;
 
     t1 = limit_value(gELE);
-    euler_rc->thx = (-t1 * max_pitch_rad) / RC_FULLSCALE;
+    euler_rc_in->thx = (-t1 * max_pitch_rad) / RC_FULLSCALE;
 
     t1 = limit_value(gAIL);
-    euler_rc->thy = (-t1 * max_roll_rad) / RC_FULLSCALE;
+    euler_rc_in->thy = (-t1 * max_roll_rad) / RC_FULLSCALE;
 
     t1 = limit_value(gRUD);
 
     if (rc_z_control_flag == 1) {
       if (t1 > EULER_Z_TH) {
-        euler_rc->thz = euler_rc->thz + max_yaw_rad;
+        euler_rc_in->thz += max_yaw_rad;
       } else if (t1 < -EULER_Z_TH) {
-        euler_rc->thz = euler_rc->thz - max_yaw_rad;
+        euler_rc_in->thz -= max_yaw_rad;
       }
     } else {
       if ((t1 > -EULER_Z_TH) && (t1 < EULER_Z_TH)) {

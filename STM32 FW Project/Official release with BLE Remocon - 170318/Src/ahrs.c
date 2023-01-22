@@ -22,7 +22,7 @@ int acc_over = 0;
 extern int16_t gTHR;
 float ahrs_kp;
 
-void ahrs_fusion_ag(AxesRaw_TypeDef_Float *acc, AxesRaw_TypeDef_Float *gyro, AHRS_State_TypeDef *ahrs)
+void ahrs_fusion_ag(AxesRaw_TypeDef_Float *acc_in, AxesRaw_TypeDef_Float *gyro_in, AHRS_State_TypeDef *ahrs_in)
 {
   float axf,ayf,azf,gxf,gyf,gzf;
   float norm;
@@ -31,25 +31,20 @@ void ahrs_fusion_ag(AxesRaw_TypeDef_Float *acc, AxesRaw_TypeDef_Float *gyro, AHR
   float q0q0, q0q1, q0q2, /*q0q3,*/ q1q1, /*q1q2,*/ q1q3, q2q2, q2q3, q3q3;
   float halfT;
  
-  
-  if(gTHR<MIN_THR)
-  {
+  if(gTHR<MIN_THR) {
     ahrs_kp = AHRS_KP_BIG;
-  }
-  else
-  {
+  } else {
     ahrs_kp = AHRS_KP_NORM;
   }
 
-  axf = acc->AXIS_X;
-  ayf = acc->AXIS_Y;
-  azf = acc->AXIS_Z;
+  axf = acc_in->AXIS_X;
+  ayf = acc_in->AXIS_Y;
+  azf = acc_in->AXIS_Z;
 
   // mdps convert to rad/s
-  gxf = ((float)gyro->AXIS_X) * ((float)COE_MDPS_TO_RADPS);  
-  gyf = ((float)gyro->AXIS_Y) * ((float)COE_MDPS_TO_RADPS);  
-  gzf = ((float)gyro->AXIS_Z) * ((float)COE_MDPS_TO_RADPS); 
-
+  gxf = ((float)gyro_in->AXIS_X) * ((float)COE_MDPS_TO_RADPS);
+  gyf = ((float)gyro_in->AXIS_Y) * ((float)COE_MDPS_TO_RADPS);
+  gzf = ((float)gyro_in->AXIS_Z) * ((float)COE_MDPS_TO_RADPS);
 
   // auxiliary variables to reduce number of repeated operations
   q0q0 = q0*q0;
@@ -73,7 +68,7 @@ void ahrs_fusion_ag(AxesRaw_TypeDef_Float *acc, AxesRaw_TypeDef_Float *gyro, AHR
   // estimated direction of gravity and flux (v and w)
   vx = 2.0f * (q1q3 - q0q2);
   vy = 2.0f * (q0q1 + q2q3);
-  vz = q0q0 - q1q1 - q2q2 + q3q3;
+  vz = (q0q0 - q1q1 - q2q2) + q3q3;
 
   ex = (ayf * vz) - (azf * vy);
   ey = (azf * vx) - (axf * vz);
@@ -91,10 +86,10 @@ void ahrs_fusion_ag(AxesRaw_TypeDef_Float *acc, AxesRaw_TypeDef_Float *gyro, AHR
 
   // integrate quaternion rate and normalise
   halfT = 0.5f * SENSOR_SAMPLING_TIME;
-  q0 = q0 + (-q1 * gxf) - (q2 * gyf) - (q3 * gzf) * halfT;
-  q1 = q1 + (q0 * gxf) + (q2 * gzf) - (q3 * gyf) * halfT;
-  q2 = q2 + (q0 * gyf) - (q1 * gzf) + (q3 * gxf) * halfT;
-  q3 = q3 + (q0 * gzf) + (q1 * gyf) - (q2 * gxf) * halfT;
+  q0 = q0 + (-q1 * gxf) - (q2 * gyf) - (q3 * gzf * halfT);
+  q1 = q1 + (q0 * gxf) + (q2 * gzf) - (q3 * gyf * halfT);
+  q2 = q2 + (q0 * gyf) - (q1 * gzf) + (q3 * gxf * halfT);
+  q3 = q3 + (q0 * gzf) + (q1 * gyf) - (q2 * gxf * halfT);
 
   // normalise quaternion
   norm = invSqrt(q0q0 + q1q1 + q2q2 + q3q3); 
@@ -103,9 +98,8 @@ void ahrs_fusion_ag(AxesRaw_TypeDef_Float *acc, AxesRaw_TypeDef_Float *gyro, AHR
   q2 *= norm;
   q3 *= norm;
 
-  ahrs->q.q0 = q0;
-  ahrs->q.q1 = q1;
-  ahrs->q.q2 = q2;
-  ahrs->q.q3 = q3;
-
+  ahrs_in->q.q0 = q0;
+  ahrs_in->q.q1 = q1;
+  ahrs_in->q.q2 = q2;
+  ahrs_in->q.q3 = q3;
 }
