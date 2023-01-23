@@ -29,8 +29,8 @@ void PIDControlInit(P_PI_PIDControlTypeDef *pid)
   pid->x_ki2 = PITCH_PID_KI2;
   pid->x_kd2 = PITCH_PID_KD2;
   pid->x_i2_limit = PITCH_PID_I2_LIMIT;
-  pid->x_s1 = 0;
-  pid->x_s2 = 0;
+  pid->x_s1 = 0.0f;
+  pid->x_s2 = 0.0f;
 
   pid->y_kp1 = ROLL_PID_KP1;
   pid->y_ki1 = ROLL_PID_KI1;
@@ -39,8 +39,8 @@ void PIDControlInit(P_PI_PIDControlTypeDef *pid)
   pid->y_ki2 = ROLL_PID_KI2;
   pid->y_kd2 = ROLL_PID_KD2;
   pid->y_i2_limit = ROLL_PID_I2_LIMIT;
-  pid->y_s1 = 0;
-  pid->y_s2 = 0;
+  pid->y_s1 = 0.0f;
+  pid->y_s2 = 0.0f;
 
   pid->z_kp1 = YAW_PID_KP1;
   pid->z_ki1 = YAW_PID_KI1;
@@ -49,8 +49,8 @@ void PIDControlInit(P_PI_PIDControlTypeDef *pid)
   pid->z_ki2 = YAW_PID_KI2;
   pid->z_kd2 = YAW_PID_KD2;
   pid->z_i2_limit = YAW_PID_I2_LIMIT;
-  pid->z_s1 = 0;
-  pid->z_s2 = 0;
+  pid->z_s1 = 0.0f;
+  pid->z_s2 = 0.0f;
 }
 
 void FlightControlPID(EulerAngleTypeDef *euler_rc, EulerAngleTypeDef *euler_ahrs, Gyro_Rad *gyro_rad, AHRS_State_TypeDef *ahrs, P_PI_PIDControlTypeDef *pid, MotorControlTypeDef *motor_pwm)
