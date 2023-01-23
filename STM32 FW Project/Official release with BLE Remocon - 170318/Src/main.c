@@ -641,7 +641,7 @@ void SystemClock_Config(void)
 }
 
 /* ADC1 init function */
-void MX_ADC1_Init(void)
+static void MX_ADC1_Init(void)
 {
 
   ADC_ChannelConfTypeDef sConfig;
@@ -711,7 +711,7 @@ void MX_ADC1_Init(void)
 //}
 
 /* TIM2 init function */
-void MX_TIM2_Init(void)
+static void MX_TIM2_Init(void)
 {
 
   TIM_ClockConfigTypeDef sClockSourceConfig;
@@ -749,7 +749,7 @@ void MX_TIM2_Init(void)
 }
 
 /* TIM4 init function */
-void MX_TIM4_Init(void)
+static void MX_TIM4_Init(void)
 {
 
   TIM_ClockConfigTypeDef sClockSourceConfig;
@@ -795,7 +795,7 @@ void MX_TIM4_Init(void)
 }
 
 /* TIM9 init function */
-void MX_TIM9_Init(void)
+static void MX_TIM9_Init(void)
 {
 
   TIM_ClockConfigTypeDef sClockSourceConfig;
@@ -813,7 +813,7 @@ void MX_TIM9_Init(void)
 }
 
 /* USART1 init function */
-void MX_USART1_UART_Init(void)
+static void MX_USART1_UART_Init(void)
 {
 
   huart1.Instance = USART1;
@@ -837,7 +837,7 @@ void MX_USART1_UART_Init(void)
         * Free pins are configured automatically as Analog (this feature is enabled through
         * the Code Generation settings)
 */
-void MX_GPIO_Init(void)
+static void MX_GPIO_Init(void)
 {
 
   GPIO_InitTypeDef GPIO_InitStruct;

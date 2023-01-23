@@ -97,7 +97,7 @@ void ReadSensorRawData(void *ACC_handle, void *GYR_handle, void *MAG_handle, voi
     if (USE_PRESSURE_SENSOR) {
         BSP_PRESSURE_Get_Press(PRE_handle, pre);
     } else {
-        pre = 0;
+        pre = NULL;
     }
     
     if (COORDINATE_SYSTEM == 1) {
