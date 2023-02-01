@@ -23,9 +23,9 @@
 
 if ($debugfile -eq "")
 {
-& "C:\Program Files\IAR Systems\Embedded Workbench 9.1\common\bin\cspybat" -f "C:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official release with BLE Remocon - 170318\EWARM\settings\ToyDrone.cpptest.general.xcl" --backend -f "C:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official release with BLE Remocon - 170318\EWARM\settings\ToyDrone.cpptest.driver.xcl" 
+& "E:\apps\EWARM_9.1\common\bin\cspybat" -f "E:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official release with BLE Remocon - 170318\EWARM\settings\ToyDrone.cpptest.general.xcl" --backend -f "E:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official release with BLE Remocon - 170318\EWARM\settings\ToyDrone.cpptest.driver.xcl" 
 }
 else
 {
-& "C:\Program Files\IAR Systems\Embedded Workbench 9.1\common\bin\cspybat" -f "C:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official release with BLE Remocon - 170318\EWARM\settings\ToyDrone.cpptest.general.xcl" --debug_file=$debugfile --backend -f "C:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official release with BLE Remocon - 170318\EWARM\settings\ToyDrone.cpptest.driver.xcl" 
+& "E:\apps\EWARM_9.1\common\bin\cspybat" -f "E:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official release with BLE Remocon - 170318\EWARM\settings\ToyDrone.cpptest.general.xcl" --debug_file=$debugfile --backend -f "E:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official release with BLE Remocon - 170318\EWARM\settings\ToyDrone.cpptest.driver.xcl" 
 }
