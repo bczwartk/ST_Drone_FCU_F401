@@ -13,10 +13,14 @@ CPPTEST_TEST_SUITE(TS_flight_control);
         CPPTEST_TEST_SUITE_SETUP(TS_flight_control_testSuiteSetUp);
         CPPTEST_TEST(TS_flight_control_test_PIDControlInit);
         CPPTEST_TEST_SUITE_TEARDOWN(TS_flight_control_testSuiteTearDown);
+CPPTEST_TEST(TS_flight_control_test_PIDOuterLoopFrameTrans_zeros);
+CPPTEST_TEST_DS(TS_flight_control_test_PIDOuterLoopFrameTrans_ds, CPPTEST_DS("TS_flight_control_PIDOuterLoopFrameTrans"));
 CPPTEST_TEST_SUITE_END();
         
 void TS_flight_control_test_PIDControlInit(void);
 
+void TS_flight_control_test_PIDOuterLoopFrameTrans_zeros(void);
+void TS_flight_control_test_PIDOuterLoopFrameTrans_ds(void);
 CPPTEST_TEST_SUITE_REGISTRATION(TS_flight_control);
 
 void TS_flight_control_testSuiteSetUp(void);
@@ -89,3 +93,47 @@ void TS_flight_control_test_PIDControlInit()
 	CPPTEST_ASSERT_DOUBLES_EQUAL(0.0f, pid.z_s2, DELTA);
 }
 /* CPPTEST_TEST_CASE_END test_PIDControlInit */
+
+/* CPPTEST_TEST_CASE_BEGIN test_PIDOuterLoopFrameTrans_zeros */
+/* CPPTEST_TEST_CASE_CONTEXT void PIDOuterLoopFrameTrans(P_PI_PIDControlTypeDef *, EulerAngleTypeDef *) */
+void TS_flight_control_test_PIDOuterLoopFrameTrans_zeros()
+{
+    /* Pre-condition initialization */
+    /* Initializing argument 1 (pid) */ 
+    P_PI_PIDControlTypeDef _pid_0 ;
+    _pid_0.y_s1  = 0.0f;
+    P_PI_PIDControlTypeDef * _pid  = & _pid_0;
+    /* Initializing argument 2 (euler_ahrs) */ 
+    EulerAngleTypeDef _euler_ahrs_2 ;
+    _euler_ahrs_2.thx  = 0.0f;
+    EulerAngleTypeDef * _euler_ahrs  = & _euler_ahrs_2;
+
+    /* Tested function call */
+    PIDOuterLoopFrameTrans(_pid, _euler_ahrs);
+
+    /* Post-condition check */
+    CPPTEST_ASSERT_FLOAT_EQUAL(0.0f, _pid->y_s1, 0.001);
+}
+/* CPPTEST_TEST_CASE_END test_PIDOuterLoopFrameTrans_zeros */
+
+/* CPPTEST_TEST_CASE_BEGIN test_PIDOuterLoopFrameTrans_ds */
+/* CPPTEST_TEST_CASE_CONTEXT void PIDOuterLoopFrameTrans(P_PI_PIDControlTypeDef *, EulerAngleTypeDef *) */
+void TS_flight_control_test_PIDOuterLoopFrameTrans_ds()
+{
+    /* Pre-condition initialization */
+    /* Initializing argument 1 (pid) */ 
+    P_PI_PIDControlTypeDef _pid_0 ;
+    _pid_0.y_s1  = CPPTEST_DS_GET_FLOAT("in_pid_0.y_s1");
+    P_PI_PIDControlTypeDef * _pid  = & _pid_0;
+    /* Initializing argument 2 (euler_ahrs) */ 
+    EulerAngleTypeDef _euler_ahrs_6 ;
+    float32_t _euler_ahrs_6_thx_7 = _euler_ahrs_6.thx  = CPPTEST_DS_GET_FLOAT("in_euler_ahrs_2.thx");
+    EulerAngleTypeDef * _euler_ahrs  = & _euler_ahrs_6;
+
+    /* Tested function call */
+    PIDOuterLoopFrameTrans(_pid, _euler_ahrs);
+
+    /* Post-condition check */
+    CPPTEST_ASSERT_FLOAT_EQUAL(CPPTEST_DS_GET_FLOAT("out_pid_0.y_s1"), _pid_0.y_s1, 0.001);
+}
+/* CPPTEST_TEST_CASE_END test_PIDOuterLoopFrameTrans_ds */
