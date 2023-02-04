@@ -82,14 +82,14 @@ void TS_sensor_data_test_ReadSensorRawData_simple()
         /* Tested function call */
         ReadSensorRawData(_ACC_handle, _GYR_handle, _MAG_handle, _PRE_handle, _acc, _gyro, _mag, _pre);
         /* Post-condition check */
-        CPPTEST_POST_CONDITION_PTR("void * _ACC_handle ", ( _ACC_handle ));
-        CPPTEST_POST_CONDITION_PTR("void * _GYR_handle ", ( _GYR_handle ));
-        CPPTEST_POST_CONDITION_PTR("void * _MAG_handle ", ( _MAG_handle ));
-        CPPTEST_POST_CONDITION_PTR("void * _PRE_handle ", ( _PRE_handle ));
-        CPPTEST_POST_CONDITION_PTR("AxesRaw_TypeDef * _acc ", ( _acc ));
-        CPPTEST_POST_CONDITION_PTR("AxesRaw_TypeDef * _gyro ", ( _gyro ));
-        CPPTEST_POST_CONDITION_PTR("AxesRaw_TypeDef * _mag ", ( _mag ));
-        CPPTEST_POST_CONDITION_PTR("float32_t * _pre ", ( _pre ));
+        CPPTEST_ASSERT_EQUAL(NULL, ( _ACC_handle ));
+        CPPTEST_ASSERT_EQUAL(NULL, ( _GYR_handle ));
+        CPPTEST_ASSERT_EQUAL(NULL, ( _MAG_handle ));
+        CPPTEST_ASSERT_EQUAL(NULL, ( _PRE_handle ));
+        CPPTEST_ASSERT(0 != ( _acc ));
+        CPPTEST_ASSERT(0 != ( _gyro ));
+        CPPTEST_ASSERT(0 != ( _mag ));
+        CPPTEST_ASSERT(0 != ( _pre ));
     }
 }
 /* CPPTEST_TEST_CASE_END test_ReadSensorRawData_simple */
