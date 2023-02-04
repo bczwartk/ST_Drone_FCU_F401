@@ -31,14 +31,18 @@ void ClearTimer(tUserTimer *t)
 void TimerProcess(tUserTimer *t)
 {
     uint32_t k; 
-    if (t->flag && (HAL_GetTick() >= t->target_tick)) {
-        t->event_cnt++;
-        k = t->target_tick; // to prevent Warning volatile access in IAR EWARM  
-        t->target_tick = k + t->interval;  
+    uint32_t tick;
+    if (0 != t->flag) {
+        tick = HAL_GetTick();
+    	if (tick >= t->target_tick) {
+			t->event_cnt++;
+			k = t->target_tick; // to prevent Warning volatile access in IAR EWARM
+			t->target_tick = k + t->interval;
+    	}
     }
 }
 
-uint32_t isTimerEventExist(tUserTimer *t)
+uint32_t isTimerEventExist(const tUserTimer *t)
 {
     return t->event_cnt;
 }

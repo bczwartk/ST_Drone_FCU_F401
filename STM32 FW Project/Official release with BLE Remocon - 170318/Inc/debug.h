@@ -44,15 +44,16 @@
 #endif 
 
 /* Includes ------------------------------------------------------------------*/
+#include <stdint.h>
 #include <string.h>
+#include <stdio.h>
 
 /* Exported macro ------------------------------------------------------------*/
 //#define DEBUG
 #ifdef DEBUG
-#include <stdio.h>
-#define PRINTF(...) myprintf(__VA_ARGS__)
-int myprintf(const char *format, ...);
-int usart_puts(const char *str, int len) ;
+#define PRINTF(...) (void)myprintf(__VA_ARGS__)
+int32_t myprintf(const char *format, ...);
+static int32_t usart_puts(const char *str, int32_t len) ;
 #else
 #define PRINTF(...)
 #endif
@@ -60,7 +61,6 @@ int usart_puts(const char *str, int len) ;
 /* Print the data travelling over the SPI in the .csv format for the GUI*/
 //#define PRINT_CSV_FORMAT 
 #ifdef PRINT_CSV_FORMAT
-#include <stdio.h>
 #define PRINT_CSV(...) printf(__VA_ARGS__)
 #else
 #define PRINT_CSV(...)

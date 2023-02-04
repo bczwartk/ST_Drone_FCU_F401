@@ -22,7 +22,7 @@ int32_t acc_over = 0;
 extern int16_t gTHR;
 float32_t ahrs_kp;
 
-void ahrs_fusion_ag(AxesRaw_TypeDef_Float *acc_in, AxesRaw_TypeDef_Float *gyro_in, AHRS_State_TypeDef *ahrs_in)
+void ahrs_fusion_ag(const AxesRaw_TypeDef_Float *acc_in, const AxesRaw_TypeDef_Float *gyro_in, AHRS_State_TypeDef *ahrs_in)
 {
   float32_t axf,ayf,azf,gxf,gyf,gzf;
   float32_t norm;

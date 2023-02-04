@@ -62,11 +62,11 @@ uint16_t RC_Channel_Pins[4] =
       RC_CHANNEL4_PIN
     };
 
-volatile int rc_timeout;    // R/C timeout counter
+volatile int32_t rc_timeout;    // R/C timeout counter
 char rc_connection_flag;    // R/C connection status
 char rc_flag[4];            // flag for received input capture interrupt count
 /* timer data for rising and falling edge and pulse width */
-int rc_t_rise[4], rc_t_fall[4], rc_t[4];
+int32_t rc_t_rise[4], rc_t_fall[4], rc_t[4];
 /* Global R/C data */
 int16_t gAIL, gELE, gTHR, gRUD;
 
@@ -275,7 +275,7 @@ void GetTargetEulerAngle(EulerAngleTypeDef *euler_rc_in, EulerAngleTypeDef *eule
 }
 
 
-void init_queue(Queue_TypeDef *q)
+static void init_queue(Queue_TypeDef *q)
 {
   int32_t i;
 

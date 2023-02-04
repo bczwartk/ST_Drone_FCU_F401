@@ -152,8 +152,8 @@ AxesRaw_TypeDef_Float gyro_fil, gyro_y_pre[4], gyro_x_pre[4], gyro_ahrs_FIFO[FIF
 AxesRaw_TypeDef_Float mag_fil;
 AxesRaw_TypeDef acc_off_calc, gyro_off_calc, acc_offset, gyro_offset;
 EulerAngleTypeDef euler_ahrs_offset;
-int sensor_init_cali = 0, sensor_init_cali_count = 0;
-int gyro_cali_count = 0;
+int32_t sensor_init_cali = 0, sensor_init_cali_count = 0;
+int32_t gyro_cali_count = 0;
 
 typedef struct
 {
@@ -184,9 +184,9 @@ typedef struct
 IIR_Coeff gyro_fil_coeff = {0.94280904158206336,  -0.33333333333333343, 0.09763107293781749 , 0.19526214587563498 , 0.09763107293781749 };
 
 Attitude_Degree  Fly, Fly_offset, Fly_origin;
-Gyro_Rad gyro_rad, gyro_degree, gyro_cali_degree;
+Gyro_Rad gyro_in_rad, gyro_degree, gyro_cali_degree;
 MotorControlTypeDef motor_pwm;
-int count1 = 0, count2 = 0;
+int32_t count1 = 0, count2 = 0;
 AHRS_State_TypeDef ahrs;
 float32_t press, press_zero_level;
 float32_t temperature;
@@ -212,7 +212,7 @@ int32_t BytesToWrite;
   /* USER CODE BEGIN 1 */
   int16_t pid_interval, i;
   
-  int mytimcnt = 0;
+  int32_t mytimcnt = 0;
   acc_fil.AXIS_X = 0.0f;
   acc_fil.AXIS_Y = 0.0f;
   acc_fil.AXIS_Z = 0.0f;
@@ -268,7 +268,7 @@ int32_t BytesToWrite;
   /* MCU Configuration----------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+  (void)HAL_Init();
 
   /* Configure the system clock */
   SystemClock_Config();
@@ -284,7 +284,7 @@ int32_t BytesToWrite;
  
   /* USER CODE BEGIN 2 */
 
-  PRINTF("STEVAL-FCU001V1 FW rev.1.0 - Sep 2017\n\n");
+  (void)PRINTF("STEVAL-FCU001V1 FW rev.1.0 - Sep 2017\n\n");
   
 //  Initialize Onboard LED
   BSP_LED_Init(LED1);
@@ -293,7 +293,7 @@ int32_t BytesToWrite;
   BSP_LED_Off(LED2);
   
   /* Configure and disable all the Chip Select pins for sensors on SPI*/
-  Sensor_IO_SPI_CS_Init_All();
+  (void)Sensor_IO_SPI_CS_Init_All();
   
   /* Initialize and Enable the available sensors on SPI*/
   initializeAllSensors();
@@ -306,50 +306,50 @@ int32_t BytesToWrite;
   /* ODR/2 low pass filtered sent to composite filter */
   /* Low pass filter enabled @ ODR/400 */
   //BSP_ACCELERO_Set_ODR_Value(LSM6DSL_X_0_handle, 1660.0);       /* ODR 1.6kHz */
-  BSP_ACCELERO_Set_ODR_Value(LSM6DSL_X_0_handle, 6660.0);       /* ODR 6.6kHz */
-  BSP_ACCELERO_Set_FS(LSM6DSL_X_0_handle, FS_MID);                   /* FS 4g */
-  //LSM6DSL_ACC_GYRO_W_InComposit(LSM6DSL_X_0_handle, LSM6DSL_ACC_GYRO_IN_ODR_DIV_4);   /* ODR/4 low pass filtered sent to composite filter */
-  LSM6DSL_ACC_GYRO_W_InComposit(LSM6DSL_X_0_handle, LSM6DSL_ACC_GYRO_IN_ODR_DIV_2);   /* ODR/2 low pass filtered sent to composite filter */
-  LSM6DSL_ACC_GYRO_W_LowPassFiltSel_XL(LSM6DSL_X_0_handle, LSM6DSL_ACC_GYRO_LPF2_XL_ENABLE); /* Enable LPF2 filter in composite filter block */
-  //LSM6DSL_ACC_GYRO_W_HPCF_XL(LSM6DSL_X_0_handle, LSM6DSL_ACC_GYRO_HPCF_XL_DIV4); /* Low pass filter @ ODR/50 */
-  //LSM6DSL_ACC_GYRO_W_HPCF_XL(LSM6DSL_X_0_handle, LSM6DSL_ACC_GYRO_HPCF_XL_DIV100); /* Low pass filter @ ODR/100 */
-  LSM6DSL_ACC_GYRO_W_HPCF_XL(LSM6DSL_X_0_handle, LSM6DSL_ACC_GYRO_HPCF_XL_DIV400); /* Low pass filter @ ODR/400 */
+  (void)BSP_ACCELERO_Set_ODR_Value(LSM6DSL_X_0_handle, 6660.0);       /* ODR 6.6kHz */
+  (void)BSP_ACCELERO_Set_FS(LSM6DSL_X_0_handle, FS_MID);                   /* FS 4g */
+  //(void)LSM6DSL_ACC_GYRO_W_InComposit(LSM6DSL_X_0_handle, LSM6DSL_ACC_GYRO_IN_ODR_DIV_4);   /* ODR/4 low pass filtered sent to composite filter */
+  (void)LSM6DSL_ACC_GYRO_W_InComposit(LSM6DSL_X_0_handle, LSM6DSL_ACC_GYRO_IN_ODR_DIV_2);   /* ODR/2 low pass filtered sent to composite filter */
+  (void)LSM6DSL_ACC_GYRO_W_LowPassFiltSel_XL(LSM6DSL_X_0_handle, LSM6DSL_ACC_GYRO_LPF2_XL_ENABLE); /* Enable LPF2 filter in composite filter block */
+  //(void)LSM6DSL_ACC_GYRO_W_HPCF_XL(LSM6DSL_X_0_handle, LSM6DSL_ACC_GYRO_HPCF_XL_DIV4); /* Low pass filter @ ODR/50 */
+  //(void)LSM6DSL_ACC_GYRO_W_HPCF_XL(LSM6DSL_X_0_handle, LSM6DSL_ACC_GYRO_HPCF_XL_DIV100); /* Low pass filter @ ODR/100 */
+  (void)LSM6DSL_ACC_GYRO_W_HPCF_XL(LSM6DSL_X_0_handle, LSM6DSL_ACC_GYRO_HPCF_XL_DIV400); /* Low pass filter @ ODR/400 */
   uint8_t tmp_6axis_reg_value;
-  BSP_ACCELERO_Read_Reg(LSM6DSL_X_0_handle, 0x10, &tmp_6axis_reg_value);
+  (void)BSP_ACCELERO_Read_Reg(LSM6DSL_X_0_handle, 0x10, &tmp_6axis_reg_value);
   //tmp_6axis_reg_value = tmp_6axis_reg_value | 0x01;                             /* Set LSB to 1 >> Analog filter 400Hz*/
   tmp_6axis_reg_value = tmp_6axis_reg_value & 0xFE;                             /* Set LSB to 0 >> Analog filter 1500Hz*/
-  BSP_ACCELERO_Write_Reg(LSM6DSL_X_0_handle, 0x10, tmp_6axis_reg_value);
+  (void)BSP_ACCELERO_Write_Reg(LSM6DSL_X_0_handle, 0x10, tmp_6axis_reg_value);
   
   /* Initialize settings for 6-axis MEMS Gyroscope */
   /* FS 2000dps */
   /* ODR 416Hz */
   /* LPF1 FTYPE set to 10b */
-  LSM6DSL_ACC_GYRO_W_LP_BW_G(LSM6DSL_G_0_handle, LSM6DSL_ACC_GYRO_LP_G_NARROW); /* LPF1 FTYPE set to 10b */                                                      
-  BSP_GYRO_Write_Reg(LSM6DSL_G_0_handle, 0x11, 0x6C);                           /* Gyroscope settings: full scale 2000dps, ODR 416Hz */
+  (void)LSM6DSL_ACC_GYRO_W_LP_BW_G(LSM6DSL_G_0_handle, LSM6DSL_ACC_GYRO_LP_G_NARROW); /* LPF1 FTYPE set to 10b */
+  (void)BSP_GYRO_Write_Reg(LSM6DSL_G_0_handle, 0x11, 0x6C);                           /* Gyroscope settings: full scale 2000dps, ODR 416Hz */
   
   /* Initialize settings for Magnetometer settings (By default after reset is in in idle mode) */
   /* Register CFG_REG_A 0x60 = 0x8c */
   /* Register 0x61 = 0x02 */
-  BSP_MAGNETO_Write_Reg(LIS2MDL_M_0_handle, 0x60, 0x8c);
-  BSP_MAGNETO_Write_Reg(LIS2MDL_M_0_handle, 0x61, 0x02);
+  (void)BSP_MAGNETO_Write_Reg(LIS2MDL_M_0_handle, 0x60, 0x8c);
+  (void)BSP_MAGNETO_Write_Reg(LIS2MDL_M_0_handle, 0x61, 0x02);
   
   /* Initialize Remote control*/
   init_remote_control();
 
   /* Initialize TIM2 for External Remocon RF receiver PWM Input*/
-  HAL_TIM_IC_Start_IT(&htim2,TIM_CHANNEL_1);
-  HAL_TIM_IC_Start_IT(&htim2,TIM_CHANNEL_2);
-  HAL_TIM_IC_Start_IT(&htim2,TIM_CHANNEL_3);
-  HAL_TIM_IC_Start_IT(&htim2,TIM_CHANNEL_4);
+  (void)HAL_TIM_IC_Start_IT(&htim2,TIM_CHANNEL_1);
+  (void)HAL_TIM_IC_Start_IT(&htim2,TIM_CHANNEL_2);
+  (void)HAL_TIM_IC_Start_IT(&htim2,TIM_CHANNEL_3);
+  (void)HAL_TIM_IC_Start_IT(&htim2,TIM_CHANNEL_4);
 
   /* Initialize TIM4 for Motors PWM Output*/
-  HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_1);
-  HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_2);
-  HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_3);
-  HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_4);
+  (void)HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_1);
+  (void)HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_2);
+  (void)HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_3);
+  (void)HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_4);
 
   /* Initialize General purpose TIM9 50Hz*/
-  HAL_TIM_Base_Start_IT(&htim9);
+  (void)HAL_TIM_Base_Start_IT(&htim9);
 
   /* Initialize PID and set Motor PWM to zero */
   PIDControlInit(&pid);
@@ -366,15 +366,15 @@ int32_t BytesToWrite;
   
   
   /* BLE communication */
-  PRINTF("BLE communication initialization...\n\n");
+  (void)PRINTF("BLE communication initialization...\n\n");
   BlueNRG_Init();
   /* Initialize the BlueNRG Custom services */
   Init_BlueNRG_Custom_Services();
   
   
   /* Read initial value of Pressure and Temperature for Altitude estimation */ 
-  BSP_PRESSURE_Get_Press(LPS22HB_P_0_handle, &press_zero_level);      /* Read the Pressure level when arming (0m reference) for altitude calculation */
-  BSP_TEMPERATURE_Get_Temp(LPS22HB_T_0_handle, &temperature);         /* Read the Temperature when arming (0m reference) for altitude calculation */
+  (void)BSP_PRESSURE_Get_Press(LPS22HB_P_0_handle, &press_zero_level);      /* Read the Pressure level when arming (0m reference) for altitude calculation */
+  (void)BSP_TEMPERATURE_Get_Temp(LPS22HB_T_0_handle, &temperature);         /* Read the Temperature when arming (0m reference) for altitude calculation */
   
   
   /* USER CODE END 2 */
@@ -614,7 +614,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV4;
   RCC_OscInitStruct.PLL.PLLQ = 7;
 
-  HAL_RCC_OscConfig(&RCC_OscInitStruct);
+  (void)HAL_RCC_OscConfig(&RCC_OscInitStruct);
   
     /**Initializes the CPU, AHB and APB busses clocks 
     */
@@ -624,11 +624,11 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
-  HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2);
+  (void)HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2);
 
     /**Configure the Systick interrupt time 
     */
-  HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq()/1000);
+  (void)HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq()/1000);
 
     /**Configure the Systick 
     */
@@ -659,14 +659,14 @@ static void MX_ADC1_Init(void)
   hadc1.Init.NbrOfConversion = 1;
   hadc1.Init.DMAContinuousRequests = DISABLE;
   hadc1.Init.EOCSelection = EOC_SINGLE_CONV;
-  HAL_ADC_Init(&hadc1);
+  (void)HAL_ADC_Init(&hadc1);
 
     /**Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time.
     */
   sConfig.Channel = ADC_CHANNEL_9;
   sConfig.Rank = 1;
   sConfig.SamplingTime = ADC_SAMPLETIME_3CYCLES;
-  HAL_ADC_ConfigChannel(&hadc1, &sConfig);
+  (void)HAL_ADC_ConfigChannel(&hadc1, &sConfig);
 
 }
 
@@ -723,28 +723,28 @@ static void MX_TIM2_Init(void)
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim2.Init.Period = 32767;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  HAL_TIM_Base_Init(&htim2);
+  (void)HAL_TIM_Base_Init(&htim2);
 
   sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
-  HAL_TIM_ConfigClockSource(&htim2, &sClockSourceConfig);
+  (void)HAL_TIM_ConfigClockSource(&htim2, &sClockSourceConfig);
 
-  HAL_TIM_IC_Init(&htim2);
+  (void)HAL_TIM_IC_Init(&htim2);
 
   sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
   sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-  HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig);
+  (void)HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig);
 
   sConfigIC.ICPolarity = TIM_INPUTCHANNELPOLARITY_BOTHEDGE;
   sConfigIC.ICSelection = TIM_ICSELECTION_DIRECTTI;
   sConfigIC.ICPrescaler = TIM_ICPSC_DIV1;
   sConfigIC.ICFilter = 0;
-  HAL_TIM_IC_ConfigChannel(&htim2, &sConfigIC, TIM_CHANNEL_1);
+  (void)HAL_TIM_IC_ConfigChannel(&htim2, &sConfigIC, TIM_CHANNEL_1);
 
-  HAL_TIM_IC_ConfigChannel(&htim2, &sConfigIC, TIM_CHANNEL_2);
+  (void)HAL_TIM_IC_ConfigChannel(&htim2, &sConfigIC, TIM_CHANNEL_2);
 
-  HAL_TIM_IC_ConfigChannel(&htim2, &sConfigIC, TIM_CHANNEL_3);
+  (void)HAL_TIM_IC_ConfigChannel(&htim2, &sConfigIC, TIM_CHANNEL_3);
 
-  HAL_TIM_IC_ConfigChannel(&htim2, &sConfigIC, TIM_CHANNEL_4);
+  (void)HAL_TIM_IC_ConfigChannel(&htim2, &sConfigIC, TIM_CHANNEL_4);
 
 }
 
@@ -769,35 +769,34 @@ static void MX_TIM4_Init(void)
   #endif
                                        
   htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  HAL_TIM_Base_Init(&htim4);
+  (void)HAL_TIM_Base_Init(&htim4);
 
   sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
-  HAL_TIM_ConfigClockSource(&htim4, &sClockSourceConfig);
+  (void)HAL_TIM_ConfigClockSource(&htim4, &sClockSourceConfig);
 
-  HAL_TIM_PWM_Init(&htim4);
+  (void)HAL_TIM_PWM_Init(&htim4);
 
   sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
   sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-  HAL_TIMEx_MasterConfigSynchronization(&htim4, &sMasterConfig);
+  (void)HAL_TIMEx_MasterConfigSynchronization(&htim4, &sMasterConfig);
 
   sConfigOC.OCMode = TIM_OCMODE_PWM1;
   sConfigOC.Pulse = 0;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-  HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_1);
+  (void)HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_1);
 
-  HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_2);
+  (void)HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_2);
 
-  HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_3);
+  (void)HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_3);
 
-  HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_4);
+  (void)HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_4);
 
 }
 
 /* TIM9 init function */
 static void MX_TIM9_Init(void)
 {
-
   TIM_ClockConfigTypeDef sClockSourceConfig;
 
   htim9.Instance = TIM9;
@@ -805,17 +804,15 @@ static void MX_TIM9_Init(void)
   htim9.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim9.Init.Period = 1999;
   htim9.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  HAL_TIM_Base_Init(&htim9);
+  (void)HAL_TIM_Base_Init(&htim9);
 
   sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
-  HAL_TIM_ConfigClockSource(&htim9, &sClockSourceConfig);
-
+  (void)HAL_TIM_ConfigClockSource(&htim9, &sClockSourceConfig);
 }
 
 /* USART1 init function */
 static void MX_USART1_UART_Init(void)
 {
-
   huart1.Instance = USART1;
   huart1.Init.BaudRate = 115200;
   huart1.Init.WordLength = UART_WORDLENGTH_8B;
@@ -824,8 +821,7 @@ static void MX_USART1_UART_Init(void)
   huart1.Init.Mode = UART_MODE_TX_RX;
   huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
   huart1.Init.OverSampling = UART_OVERSAMPLING_16;
-  HAL_UART_Init(&huart1);
-
+  (void)HAL_UART_Init(&huart1);
 }
 
 /** Configure pins as
@@ -839,7 +835,6 @@ static void MX_USART1_UART_Init(void)
 */
 static void MX_GPIO_Init(void)
 {
-
   GPIO_InitTypeDef GPIO_InitStruct;
 
   /* GPIO Ports Clock Enable */
@@ -965,7 +960,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     gyro_fil.AXIS_Z = gyro_fil_coeff.b0*gyro.AXIS_Z + gyro_fil_coeff.b1*gyro_x_pre[0].AXIS_Z + gyro_fil_coeff.b2*gyro_x_pre[1].AXIS_Z
                                                     + gyro_fil_coeff.a1*gyro_y_pre[0].AXIS_Z + gyro_fil_coeff.a2*gyro_y_pre[1].AXIS_Z;
     // Shift IIR filter state
-    for(int i=1;i>0;i--)
+    for (int32_t i = 1; i > 0; i--)
     {
       gyro_x_pre[i].AXIS_X = gyro_x_pre[i-1].AXIS_X;
       gyro_x_pre[i].AXIS_Y = gyro_x_pre[i-1].AXIS_Y;
@@ -987,11 +982,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     gyro_FIFO[tim9_cnt2-1].AXIS_Z = gyro_fil.AXIS_Z;
     
 
-    if(tim9_cnt2 == FIFO_Order)
+    if (tim9_cnt2 == FIFO_Order)
     {
       tim9_cnt2 = 0;
       tim9_event_flag = 1;
-      for(int i=0;i<FIFO_Order;i++)
+      for (int32_t i = 0; i < FIFO_Order; i++)
       {
         acc_ahrs_FIFO[i].AXIS_X = acc_FIFO[i].AXIS_X;
         acc_ahrs_FIFO[i].AXIS_Y = acc_FIFO[i].AXIS_Y;
@@ -1003,11 +998,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     }
 
       
-      gyro_rad.gx = ((float32_t)gyro_fil.AXIS_X)*((float32_t)COE_MDPS_TO_RADPS);
-      gyro_rad.gy = ((float32_t)gyro_fil.AXIS_Y)*((float32_t)COE_MDPS_TO_RADPS);
-      gyro_rad.gz = ((float32_t)gyro_fil.AXIS_Z)*((float32_t)COE_MDPS_TO_RADPS);
+    gyro_in_rad.gx = ((float32_t)gyro_fil.AXIS_X)*((float32_t)COE_MDPS_TO_RADPS);
+    gyro_in_rad.gy = ((float32_t)gyro_fil.AXIS_Y)*((float32_t)COE_MDPS_TO_RADPS);
+    gyro_in_rad.gz = ((float32_t)gyro_fil.AXIS_Z)*((float32_t)COE_MDPS_TO_RADPS);
 
-      euler_ahrs.thz += gyro_rad.gz*PID_SAMPLING_TIME;
+      euler_ahrs.thz += gyro_in_rad.gz*PID_SAMPLING_TIME;
 
       if(gTHR<MIN_THR)
       {
@@ -1017,7 +1012,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
       if (rc_connection_flag && rc_enable_motor)
       {   // Do PID Control
-        FlightControlPID_innerLoop(&euler_rc_fil, &gyro_rad, &ahrs, &pid, &motor_pwm);
+        FlightControlPID_innerLoop(&euler_rc_fil, &gyro_in_rad, &ahrs, &pid, &motor_pwm);
       }
       else
       {
@@ -1078,16 +1073,16 @@ static void initializeAllSensors( void )
 */
 void enableAllSensors( void )
 {
-  BSP_ACCELERO_Sensor_Enable( LSM6DSL_X_0_handle );
-  PRINTF("LSM6DSL MEMS Accelerometer initialized and enabled\n");
-  BSP_GYRO_Sensor_Enable( LSM6DSL_G_0_handle );
-  PRINTF("LSM6DSL MEMS Gyroscope initialized and enabled\n");
-  BSP_MAGNETO_Sensor_Enable( LIS2MDL_M_0_handle );
-  PRINTF("LIS2MDL Magnetometer initialized and enabled\n");
-  BSP_PRESSURE_Sensor_Enable( LPS22HB_P_0_handle );
-  PRINTF("LPS22HB Pressure sensor initialized and enabled\n");
-  BSP_TEMPERATURE_Sensor_Enable( LPS22HB_T_0_handle );
-  PRINTF("LPS22HB Temperature sensor initialized and enabled\n");
+  (void)BSP_ACCELERO_Sensor_Enable( LSM6DSL_X_0_handle );
+  (void)PRINTF("LSM6DSL MEMS Accelerometer initialized and enabled\n");
+  (void)BSP_GYRO_Sensor_Enable( LSM6DSL_G_0_handle );
+  (void)PRINTF("LSM6DSL MEMS Gyroscope initialized and enabled\n");
+  (void)BSP_MAGNETO_Sensor_Enable( LIS2MDL_M_0_handle );
+  (void)PRINTF("LIS2MDL Magnetometer initialized and enabled\n");
+  (void)BSP_PRESSURE_Sensor_Enable( LPS22HB_P_0_handle );
+  (void)PRINTF("LPS22HB Pressure sensor initialized and enabled\n");
+  (void)BSP_TEMPERATURE_Sensor_Enable( LPS22HB_T_0_handle );
+  (void)PRINTF("LPS22HB Temperature sensor initialized and enabled\n");
 }
 
 
@@ -1095,7 +1090,7 @@ void enableAllSensors( void )
 void BlueNRG_Init(void)
 {
   
-  int ret = 1;
+  int32_t ret = 1;
   uint8_t  hwVersion=0;
   uint16_t fwVersion=0;
   
@@ -1180,7 +1175,7 @@ void BlueNRG_Init(void)
            bdaddr[5],bdaddr[4],bdaddr[3],bdaddr[2],bdaddr[1],bdaddr[0]);
 
     /* Set output power level */
-    aci_hal_set_tx_power_level(1,4);    /* -2.1dBm */
+    (void)aci_hal_set_tx_power_level(1,4);    /* -2.1dBm */
     
     ret = Add_ConsoleW2ST_Service();
     if (ret == BLE_STATUS_SUCCESS) {
@@ -1217,24 +1212,24 @@ fail:
  */
 static void Init_BlueNRG_Custom_Services(void)
 {
-  int ret;
+  int32_t ret;
   
   ret = Add_HWServW2ST_Service();
-  if(ret == BLE_STATUS_SUCCESS) {
+  if (ret == BLE_STATUS_SUCCESS) {
      PRINTF("HW      Service W2ST added successfully\r\n");
   } else {
      PRINTF("\r\nError while adding HW Service W2ST\r\n");
   }
 
   ret = Add_ConsoleW2ST_Service();
-  if(ret == BLE_STATUS_SUCCESS) {
+  if (ret == BLE_STATUS_SUCCESS) {
      PRINTF("Console Service W2ST added successfully\r\n");
   } else {
      PRINTF("\r\nError while adding Console Service W2ST\r\n");
   }
 
   ret = Add_ConfigW2ST_Service();
-  if(ret == BLE_STATUS_SUCCESS) {
+  if (ret == BLE_STATUS_SUCCESS) {
      PRINTF("Config  Service W2ST added successfully\r\n");
   } else {
      PRINTF("\r\nError while adding Config Service W2ST\r\n");
@@ -1251,8 +1246,6 @@ static void SendMotionData(void)
   SensorAxes_t ACC_Value;
   SensorAxes_t GYR_Value;
   SensorAxes_t MAG_Value;
-
-  
   
   ACC_Value.AXIS_X = acc.AXIS_X;
   ACC_Value.AXIS_Y = acc.AXIS_Y;
@@ -1271,7 +1264,7 @@ static void SendMotionData(void)
   //PRINTF("GYRO[X, Y, Z]: %d\t%d\t%d\t\n", GYR_Value.AXIS_X, GYR_Value.AXIS_Y, GYR_Value.AXIS_Z);
   //PRINTF("MAG[X, Y, Z]: %d\t%d\t%d\t\n", MAG_Value.AXIS_X, MAG_Value.AXIS_Y, MAG_Value.AXIS_Z);
   
-  AccGyroMag_Update(&ACC_Value,&GYR_Value,&MAG_Value);
+  (void)AccGyroMag_Update(&ACC_Value,&GYR_Value,&MAG_Value);
   
 }
 
@@ -1284,14 +1277,14 @@ static void SendBattEnvData(void)
    int8_t rssi;
    uint16_t conn_handle;
    
-   HAL_ADC_Start(&hadc1);
+   (void)HAL_ADC_Start(&hadc1);
         if (HAL_ADC_PollForConversion(&hadc1, 1000000) == HAL_OK)
         {
             VBAT_Sense = HAL_ADC_GetValue(&hadc1);
             VBAT = (((VBAT_Sense*3.3)/4095)*(BAT_RUP+BAT_RDW))/BAT_RDW;
             //PRINTF("Battery voltage = %fV\n\n", VBAT);
         }
-    HAL_ADC_Stop(&hadc1);
+    (void)HAL_ADC_Stop(&hadc1);
     
     MCR_BLUEMS_F2I_2D(press, intPart, decPart);
     PressToSend=intPart*100+decPart;
@@ -1303,17 +1296,16 @@ static void SendBattEnvData(void)
     MCR_BLUEMS_F2I_1D(temperature, intPart, decPart);
     TempToSend = intPart*10+decPart;
     
-    hci_read_rssi(&conn_handle, &rssi);
+    (void)hci_read_rssi(&conn_handle, &rssi);
     RSSIToSend = (int16_t)rssi*10;
     
-    Batt_Env_RSSI_Update(PressToSend,BattToSend,(int16_t) TempToSend,RSSIToSend ); 
-      
+    (void)Batt_Env_RSSI_Update(PressToSend,BattToSend,(int16_t) TempToSend,RSSIToSend );
 }
 
 
 static void SendArmingData(void)
 {
-   ARMING_Update(rc_enable_motor);
+	(void)ARMING_Update(rc_enable_motor);
 }
 
 

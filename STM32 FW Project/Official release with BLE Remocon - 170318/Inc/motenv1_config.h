@@ -120,7 +120,7 @@
 #endif /* USE_STM32L0XX_NUCLEO */
 
 /* STM32 MCU_ID */
-#define STM32_MCU_ID ((uint32_t *)0xE0042000)
+#define STM32_MCU_ID ((uint32_t *)0xE0042000U)
 
 #endif /* __MOTENV1_CONFIG_H */
 

@@ -18,7 +18,7 @@ void StartTimer(tUserTimer *t);
 void StopTimer(tUserTimer *t);
 void ClearTimer(tUserTimer *t);
 void TimerProcess(tUserTimer *t);
-uint32_t isTimerEventExist(tUserTimer *t);
+uint32_t isTimerEventExist(const tUserTimer *t);
 
 void User_Timer_Callback(void);
 

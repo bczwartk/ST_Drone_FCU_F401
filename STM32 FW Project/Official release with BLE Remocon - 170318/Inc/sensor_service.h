@@ -163,7 +163,7 @@ used in Console service */
 
 #define W2ST_CHECK_CONNECTION(BleChar) ((ConnectionBleStatus&(BleChar)) ? 1 : 0)
 #define W2ST_ON_CONNECTION(BleChar)    (ConnectionBleStatus|=(BleChar))
-#define W2ST_OFF_CONNECTION(BleChar)   (ConnectionBleStatus&=(~BleChar))
+#define W2ST_OFF_CONNECTION(BleChar)   (ConnectionBleStatus&=(~(BleChar)))
 
 #ifdef __cplusplus
 }

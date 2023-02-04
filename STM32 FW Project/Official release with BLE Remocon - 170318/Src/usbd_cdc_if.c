@@ -122,8 +122,8 @@ static int8_t CDC_Init_FS(void)
   hUsbDevice_0 = &hUsbDeviceFS;
   /* USER CODE BEGIN 3 */ 
   /* Set Application Buffers */
-  USBD_CDC_SetTxBuffer(hUsbDevice_0, UserTxBufferFS, 0);
-  USBD_CDC_SetRxBuffer(hUsbDevice_0, UserRxBufferFS);
+  (void)USBD_CDC_SetTxBuffer(hUsbDevice_0, UserTxBufferFS, 0);
+  (void)USBD_CDC_SetRxBuffer(hUsbDevice_0, UserRxBufferFS);
   return (USBD_OK);
   /* USER CODE END 3 */ 
 }
@@ -253,7 +253,7 @@ uint8_t CDC_Transmit_FS(uint8_t* Buf, uint16_t Len)
 {
   uint8_t result = USBD_OK;
   /* USER CODE BEGIN 7 */ 
-  USBD_CDC_SetTxBuffer(hUsbDevice_0, Buf, Len);   
+  (void)USBD_CDC_SetTxBuffer(hUsbDevice_0, Buf, Len);
   result = USBD_CDC_TransmitPacket(hUsbDevice_0);
   /* USER CODE END 7 */ 
   return result;

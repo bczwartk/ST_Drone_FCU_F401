@@ -15,15 +15,15 @@ int32_t myprintf(const char *format, ...)
     int32_t len;
     // Limit the length of string to 254
     len = vsnprintf(temp, 254, format, arg);
-    usart_puts(temp, len);
+    (void)usart_puts(temp, len);
     return len;
 }
     
-int usart_puts(const char *str, int len) 
+static int usart_puts(const char *str, int32_t len)
 {
     //putc(*str ++);
     //while (huart1.Lock == HAL_LOCKED);
-    HAL_UART_Transmit(&huart1, (uint8_t *)str, len, 1000);
+	(void)HAL_UART_Transmit(&huart1, (uint8_t *)str, len, 1000);
     return 0;
 }
 

@@ -73,18 +73,18 @@ void ReadSensorRawData(void *ACC_handle, void *GYR_handle, void *MAG_handle, voi
     AxesRaw_TypeDef acc_temp, gyro_temp; 
     /* Data Type int32_t */
     // Read data is in mg unit
-    BSP_ACCELERO_Get_Axes(ACC_handle, &acc_temp_int16);
+    (void)BSP_ACCELERO_Get_Axes(ACC_handle, &acc_temp_int16);
     acc_temp.AXIS_X = (int32_t) acc_temp_int16.AXIS_X;                /* Casting data to int32_t */
     acc_temp.AXIS_Y = (int32_t) acc_temp_int16.AXIS_Y;
     acc_temp.AXIS_Z = (int32_t) acc_temp_int16.AXIS_Z;
     // Read data is in mdps unit
-    BSP_GYRO_Get_Axes(GYR_handle, &gyro_temp_int16);
+    (void)BSP_GYRO_Get_Axes(GYR_handle, &gyro_temp_int16);
     gyro_temp.AXIS_X = (int32_t) gyro_temp_int16.AXIS_X;                /* Casting data to int32_t */
     gyro_temp.AXIS_Y = (int32_t) gyro_temp_int16.AXIS_Y;
     gyro_temp.AXIS_Z = (int32_t) gyro_temp_int16.AXIS_Z;
     // Read data is in mg unit
     if (USE_MAG_SENSOR) {
-        BSP_MAGNETO_Get_Axes(MAG_handle, &mag_temp_int16);
+    	(void)BSP_MAGNETO_Get_Axes(MAG_handle, &mag_temp_int16);
         mag->AXIS_X = (int32_t) mag_temp_int16.AXIS_X;
         mag->AXIS_Y = (int32_t) mag_temp_int16.AXIS_Y;
         mag->AXIS_Z = (int32_t) mag_temp_int16.AXIS_Z;
@@ -95,7 +95,7 @@ void ReadSensorRawData(void *ACC_handle, void *GYR_handle, void *MAG_handle, voi
     }
     
     if (USE_PRESSURE_SENSOR) {
-        BSP_PRESSURE_Get_Press(PRE_handle, pre);
+    	(void)BSP_PRESSURE_Get_Press(PRE_handle, pre);
     } else {
         pre = NULL;
     }

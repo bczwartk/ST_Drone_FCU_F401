@@ -14,7 +14,7 @@ extern TIM_HandleTypeDef htim4;
  * Setup the driving power for 4 motors. p1~p4 data range is 0~1999, which equals
  * to 0~100% duty cycle (for DC motor configuration)
  */
-void set_motor_pwm(MotorControlTypeDef *motor_pwm)
+void set_motor_pwm(const MotorControlTypeDef *motor_pwm)
 {
   if (motor_pwm->motor1_pwm >= MOTOR_MAX_PWM_VALUE) {
     htim4.Instance->CCR1 = MOTOR_MAX_PWM_VALUE;

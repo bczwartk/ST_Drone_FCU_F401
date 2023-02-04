@@ -53,7 +53,7 @@ void PIDControlInit(P_PI_PIDControlTypeDef *pid)
   pid->z_s2 = 0.0f;
 }
 
-void FlightControlPID(EulerAngleTypeDef *euler_rc, EulerAngleTypeDef *euler_ahrs, Gyro_Rad *gyro_rad, AHRS_State_TypeDef *ahrs, P_PI_PIDControlTypeDef *pid, MotorControlTypeDef *motor_pwm)
+void FlightControlPID(EulerAngleTypeDef *euler_rc, EulerAngleTypeDef *euler_ahrs, Gyro_Rad *gyro_in_rad, AHRS_State_TypeDef *ahrs, P_PI_PIDControlTypeDef *pid, MotorControlTypeDef *motor_pwm)
 {
   float32_t error, deriv;
 
@@ -78,7 +78,7 @@ void FlightControlPID(EulerAngleTypeDef *euler_rc, EulerAngleTypeDef *euler_ahrs
   }
   pid->x_s1 =  (pid->x_kp1 * error) + (pid->x_ki1 * pid_x_integ1);
 
-  error = euler_rc->thx - gyro_rad->gx;
+  error = euler_rc->thx - gyro_in_rad->gx;
   pid_x_integ2 += error * pid->ts;
   if (pid_x_integ2 > pid->x_i2_limit) {
     pid_x_integ2 = pid->x_i2_limit;
@@ -107,7 +107,7 @@ void FlightControlPID(EulerAngleTypeDef *euler_rc, EulerAngleTypeDef *euler_ahrs
   }
   pid->y_s1 =  (pid->y_kp1 * error) + (pid->y_ki1 * pid_y_integ1);
 
-  error = euler_rc->thy - gyro_rad->gy;
+  error = euler_rc->thy - gyro_in_rad->gy;
   pid_y_integ2 += error * pid->ts;
   if (pid_y_integ2 > pid->y_i2_limit) {
     pid_y_integ2 = pid->y_i2_limit;
@@ -127,7 +127,7 @@ void FlightControlPID(EulerAngleTypeDef *euler_rc, EulerAngleTypeDef *euler_ahrs
 
 
   //z-axis pid
-  error = euler_rc->thz - gyro_rad->gz;
+  error = euler_rc->thz - gyro_in_rad->gz;
   pid_z_integ2 += error * pid->ts;
   if (pid_z_integ2 > pid->z_i2_limit) {
     pid_z_integ2 = pid->z_i2_limit;
@@ -207,7 +207,7 @@ void FlightControlPID_OuterLoop(EulerAngleTypeDef *euler_rc, EulerAngleTypeDef *
   pid->z_s1 = (pid->z_kp1 * error) + (pid->z_ki1 * pid_z_integ1);
 }
 
-void FlightControlPID_innerLoop(EulerAngleTypeDef *euler_rc, Gyro_Rad *gyro_rad, AHRS_State_TypeDef *ahrs, P_PI_PIDControlTypeDef *pid, MotorControlTypeDef *motor_pwm)
+void FlightControlPID_innerLoop(EulerAngleTypeDef *euler_rc, Gyro_Rad *gyro_in_rad, AHRS_State_TypeDef *ahrs, P_PI_PIDControlTypeDef *pid, MotorControlTypeDef *motor_pwm)
 {
   float32_t error, deriv;
 
@@ -220,7 +220,7 @@ void FlightControlPID_innerLoop(EulerAngleTypeDef *euler_rc, Gyro_Rad *gyro_rad,
   dt_recip = 1/pid->ts;
 
   //X Axis
-  error = pid->x_s1 - gyro_rad->gx;
+  error = pid->x_s1 - gyro_in_rad->gx;
   pid_x_integ2 += error * pid->ts;
   if (pid_x_integ2 > pid->x_i2_limit) {
     pid_x_integ2 = pid->x_i2_limit;
@@ -241,7 +241,7 @@ void FlightControlPID_innerLoop(EulerAngleTypeDef *euler_rc, Gyro_Rad *gyro_rad,
   }
 
   //Y Axis
-  error = pid->y_s1 - gyro_rad->gy;
+  error = pid->y_s1 - gyro_in_rad->gy;
   pid_y_integ2 += error * pid->ts;
   if (pid_y_integ2 > pid->y_i2_limit) {
     pid_y_integ2 = pid->y_i2_limit;
@@ -262,7 +262,7 @@ void FlightControlPID_innerLoop(EulerAngleTypeDef *euler_rc, Gyro_Rad *gyro_rad,
   }
 
   //Z Axis
-  error = pid->z_s1 - gyro_rad->gz;
+  error = pid->z_s1 - gyro_in_rad->gz;
   pid_z_integ2 += error * pid->ts;
   if (pid_z_integ2 > pid->z_i2_limit) {
     pid_z_integ2 = pid->z_i2_limit;

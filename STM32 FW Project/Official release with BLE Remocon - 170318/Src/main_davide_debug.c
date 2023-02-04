@@ -158,7 +158,7 @@ typedef struct
 IIR_Coeff gyro_fil_coeff = {0.94280904158206336,  -0.33333333333333343, 0.09763107293781749 , 0.19526214587563498 , 0.09763107293781749 };
 
 Attitude_Degree  Fly, Fly_offset, Fly_origin;
-Gyro_Rad gyro_rad, gyro_degree, gyro_cali_degree;
+Gyro_Rad gyro_in_rad, gyro_degree, gyro_cali_degree;
 MotorControlTypeDef motor_pwm;
 int count1 = 0, count2 = 0;
 AHRS_State_TypeDef ahrs;
@@ -970,11 +970,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     }
 
       
-      gyro_rad.gx = gyro_fil.AXIS_X*COE_MDPS_TO_RADPS;
-      gyro_rad.gy = gyro_fil.AXIS_Y*COE_MDPS_TO_RADPS;
-      gyro_rad.gz = gyro_fil.AXIS_Z*COE_MDPS_TO_RADPS;
+    gyro_in_rad.gx = gyro_fil.AXIS_X*COE_MDPS_TO_RADPS;
+    gyro_in_rad.gy = gyro_fil.AXIS_Y*COE_MDPS_TO_RADPS;
+    gyro_in_rad.gz = gyro_fil.AXIS_Z*COE_MDPS_TO_RADPS;
 
-      euler_ahrs.thz += gyro_rad.gz*PID_SAMPLING_TIME;
+    euler_ahrs.thz += gyro_in_rad.gz*PID_SAMPLING_TIME;
 
       if(gTHR<MIN_THR)
       {
@@ -985,7 +985,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
       if (rc_connection_flag && rc_enable_motor)
       {   // Do PID Control
-        FlightControlPID_innerLoop(&euler_rc_fil, &gyro_rad, &ahrs, &pid, &motor_pwm);
+        FlightControlPID_innerLoop(&euler_rc_fil, &gyro_in_rad, &ahrs, &pid, &motor_pwm);
       }
       else
       {

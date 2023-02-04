@@ -42,6 +42,6 @@ typedef struct
   float32_t gx, gy, gz;
 }Gyro_Rad;
 
-void ahrs_fusion_ag(AxesRaw_TypeDef_Float *acc_in, AxesRaw_TypeDef_Float *gyro_in, AHRS_State_TypeDef *ahrs_in);
+void ahrs_fusion_ag(const AxesRaw_TypeDef_Float *acc_in, const AxesRaw_TypeDef_Float *gyro_in, AHRS_State_TypeDef *ahrs_in);
 #endif // AHRS_H
 

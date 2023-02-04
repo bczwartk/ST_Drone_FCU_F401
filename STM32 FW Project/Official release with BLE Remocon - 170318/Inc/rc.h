@@ -75,7 +75,7 @@ typedef struct
 }Queue_TypeDef;
 
 
-void init_queue(Queue_TypeDef *q);
+static void init_queue(Queue_TypeDef *q);
 void add_queue(Queue_TypeDef *q, int16_t idx, int16_t value);
 int32_t get_queue(Queue_TypeDef *q, int16_t *idx, int16_t *value);
 

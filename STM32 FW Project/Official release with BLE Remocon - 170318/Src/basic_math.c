@@ -3,7 +3,7 @@
 
 float32_t Sqrt(float32_t x)
 {
-  union
+  union /* parasoft-suppress MISRAC2012-RULE_19_2-a "by design - this is part of fast sqrt calc" */
   {
 	int32_t i;
     float32_t x;

@@ -202,9 +202,9 @@ void TS_timer_test_TimerProcess_flag_0()
     /* Pre-condition initialization */
     /* Initializing argument 1 (t) */ 
     tUserTimer _t_12 ;
-     _t_12.target_tick  = 0u;
-     _t_12.flag  = 0u;
-     _t_12.event_cnt  = 0u;
+    _t_12.target_tick  = 0u;
+    _t_12.flag  = 0u;
+    _t_12.event_cnt  = 0u;
     tUserTimer * _t  = & _t_12;
     {
         /* Tested function call */
