@@ -42,8 +42,8 @@
   */
   
 /* Define to prevent recursive inclusion -------------------------------------*/  
-#ifndef _UUID_BLE_SERVICE_H_
-#define _UUID_BLE_SERVICE_H_
+#ifndef UUID_BLE_SERVICE_H
+#define UUID_BLE_SERVICE_H
 
 #ifdef __cplusplus
  extern "C" {
@@ -58,18 +58,18 @@
 }
 
 /* Store Value into a buffer in Little Endian Format */
-#define STORE_LE_16(buf, val)    ( ((buf)[0] =  (uint8_t) (val)    ) , \
-                                   ((buf)[1] =  (uint8_t) ((val)>>8) ) )
+#define STORE_LE_16(buf, val)     ((buf)[0] =  (uint8_t) (val)      ); \
+                                   ((buf)[1] =  (uint8_t) ((val) >> 8))
 
-#define STORE_LE_32(buf, val)    ( ((buf)[0] =  (uint8_t) (val)     ) , \
-                                   ((buf)[1] =  (uint8_t) ((val)>>8)  ) , \
-                                   ((buf)[2] =  (uint8_t) ((val)>>16) ) , \
-                                   ((buf)[3] =  (uint8_t) ((val)>>24) ) )
+#define STORE_LE_32(buf, val)     ((buf)[0] =  (uint8_t) (val)       ); \
+                                   ((buf)[1] =  (uint8_t) ((val) >>  8)); \
+                                   ((buf)[2] =  (uint8_t) ((val) >> 16)); \
+                                   ((buf)[3] =  (uint8_t) ((val) >> 24))
 
-#define STORE_BE_32(buf, val)    ( ((buf)[3] =  (uint8_t) (val)     ) , \
-                                   ((buf)[2] =  (uint8_t) ((val)>>8)  ) , \
-                                   ((buf)[1] =  (uint8_t) ((val)>>16) ) , \
-                                   ((buf)[0] =  (uint8_t) ((val)>>24) ) )
+#define STORE_BE_32(buf, val)     ((buf)[3] =  (uint8_t) (val)     ) ; \
+                                   ((buf)[2] =  (uint8_t) ((val) >> 8)  ) ; \
+                                   ((buf)[1] =  (uint8_t) ((val) >> 16) ) ; \
+                                   ((buf)[0] =  (uint8_t) ((val) >> 24) )
 
 #define MCR_FAST_TERM_UPDATE_FOR_OTA(data) aci_gatt_update_char_value(ConsoleW2STHandle, TermCharHandle, 0, 1 , (data))
 
@@ -97,6 +97,6 @@
 }
 #endif
 
-#endif /* _UUID_BLE_SERVICE_H_ */
+#endif /* UUID_BLE_SERVICE_H */
 
 /******************* (C) COPYRIGHT 2016 STMicroelectronics *****END OF FILE****/

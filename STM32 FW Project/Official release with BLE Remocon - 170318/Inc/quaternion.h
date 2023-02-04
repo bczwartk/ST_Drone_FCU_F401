@@ -1,5 +1,5 @@
-#ifndef _QUATERNION_H_
-#define _QUATERNION_H_
+#ifndef QUATERNION_H
+#define QUATERNION_H
 
 #include "stm32f4xx_hal.h"
 #include "def32.h"
@@ -27,4 +27,4 @@ void QuaternionToEuler(QuaternionTypeDef *qr, EulerAngleTypeDef *ea);
 #define MAX_RAD    1.5
 
 
-#endif /* _QUATERNION_H_ */
+#endif /* QUATERNION_H */

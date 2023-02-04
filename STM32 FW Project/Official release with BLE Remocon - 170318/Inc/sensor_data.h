@@ -1,5 +1,5 @@
-#ifndef _SENSOR_DATA_H_
-#define _SENSOR_DATA_H_
+#ifndef SENSOR_DATA_H
+#define SENSOR_DATA_H
 
 #include "stm32f4xx_hal.h"
 #include "def32.h"
@@ -13,4 +13,4 @@
 void ReadSensorRawData(void *ACC_handle, void *GYR_handle, void *MAG_handle, void *PRE_handle, AxesRaw_TypeDef *acc, AxesRaw_TypeDef *gyro, AxesRaw_TypeDef *mag, float32_t *pre);
 
 
-#endif /* _SENSOR_DATA_H_ */
+#endif /* SENSOR_DATA_H */

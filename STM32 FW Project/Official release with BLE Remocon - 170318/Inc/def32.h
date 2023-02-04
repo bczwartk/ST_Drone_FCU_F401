@@ -7,8 +7,8 @@ E-mail:tom.xiao@ST.com
 */
 
 
-#ifndef         __def32
-#define         __def32
+#ifndef         DEF32_H
+#define         DEF32_H
 
 #include        <stdint.h>
 
@@ -122,7 +122,7 @@ typedef union
 }s32_s16u16;
 
 
-#endif /*__DEF_H__*/
+#endif /* DEF32_H */
 
 
 /********** End of file *********** Copy Right Reserved by STMicroelectronics ***********/

@@ -36,8 +36,8 @@
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __DEBUG_H
-#define __DEBUG_H
+#ifndef DEBUG_H
+#define DEBUG_H
 
 #ifdef __cplusplus
  extern "C" {
@@ -70,6 +70,6 @@ static int32_t usart_puts(const char *str, int32_t len) ;
 }
 #endif
 
-#endif /* __DEBUG_H */
+#endif /* DEBUG_H */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

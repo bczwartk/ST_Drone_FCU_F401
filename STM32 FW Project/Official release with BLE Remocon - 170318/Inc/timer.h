@@ -1,5 +1,5 @@
-#ifndef __TIMER_H__
-#define __TIMER_H__
+#ifndef TIMER_H
+#define TIMER_H
 
 #include "stm32f4xx.h"
 #include "stm32f4xx_hal.h"
@@ -22,4 +22,4 @@ uint32_t isTimerEventExist(const tUserTimer *t);
 
 void User_Timer_Callback(void);
 
-#endif /* __TIMER_H__ */
+#endif /* TIMER_H */

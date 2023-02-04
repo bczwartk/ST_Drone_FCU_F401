@@ -41,8 +41,8 @@
   ******************************************************************************
   */
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __MAIN_H
-#define __MAIN_H
+#ifndef MAIN_H
+#define MAIN_H
   /* Includes ------------------------------------------------------------------*/
 
 /* USER CODE BEGIN Includes */
@@ -258,5 +258,5 @@ extern volatile uint32_t HCI_ProcessEvent;
 extern uint8_t BufferToWrite[256];
 extern int32_t BytesToWrite;
 
-#endif /* __MAIN_H */
+#endif /* MAIN_H */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

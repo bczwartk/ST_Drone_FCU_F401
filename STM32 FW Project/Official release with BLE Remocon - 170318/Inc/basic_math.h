@@ -1,5 +1,5 @@
-#ifndef __BASIC_MATH_H_
-#define __BASIC_MATH_H_
+#ifndef BASIC_MATH_H
+#define BASIC_MATH_H
 
 #include "def32.h"
 
@@ -9,4 +9,4 @@ float32_t Sqrt(float32_t x);
 float32_t invSqrt(float32_t x) ;
 
 
-#endif /* __BASIC_MATH_H_ */
+#endif /*BASIC_MATH_H */

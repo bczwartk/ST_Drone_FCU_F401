@@ -31,8 +31,8 @@
   ******************************************************************************
 */
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __usb_device_H
-#define __usb_device_H
+#ifndef USB_DEVICE_H
+#define USB_DEVICE_H
 #ifdef __cplusplus
  extern "C" {
 #endif
@@ -50,7 +50,7 @@ void MX_USB_DEVICE_Init(void);
 #ifdef __cplusplus
 }
 #endif
-#endif /*__usb_device_H */
+#endif /* USB_DEVICE_H */
 
 /**
   * @}

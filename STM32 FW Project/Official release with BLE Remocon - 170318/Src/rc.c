@@ -249,7 +249,7 @@ static int32_t limit_value(int32_t val)
 /*
  * Convert RC received gAIL, gELE, gRUD
  */
-void GetTargetEulerAngle(EulerAngleTypeDef *euler_rc_in, EulerAngleTypeDef *euler_ahrs_in)
+void GetTargetEulerAngle(EulerAngleTypeDef *euler_rc_in, const EulerAngleTypeDef *euler_ahrs_in)
 {
 	int32_t t1;
 

@@ -1,5 +1,5 @@
-#ifndef _RC_H_
-#define _RC_H_
+#ifndef RC_H
+#define RC_H
 
 #include "stm32f4xx_hal.h"
 #include "def32.h"
@@ -59,7 +59,7 @@
 
 void init_remote_control(void);
 void update_rc_data(int32_t idx);
-void GetTargetEulerAngle(EulerAngleTypeDef *euler_rc_in, EulerAngleTypeDef *euler_ahrs_in);
+void GetTargetEulerAngle(EulerAngleTypeDef *euler_rc_in, const EulerAngleTypeDef *euler_ahrs_in);
 
 // Below queue is for debug purpose
 #define QUEUE_LENGTH        16
@@ -80,4 +80,4 @@ void add_queue(Queue_TypeDef *q, int16_t idx, int16_t value);
 int32_t get_queue(Queue_TypeDef *q, int16_t *idx, int16_t *value);
 
 
-#endif /* _RC_H_ */
+#endif /* RC_H */

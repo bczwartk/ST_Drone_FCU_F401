@@ -42,8 +42,8 @@
   */
   
 /* Define to prevent recursive inclusion -------------------------------------*/  
-#ifndef _TARGET_FEATURES_H_
-#define _TARGET_FEATURES_H_
+#ifndef TARGET_FEATURES_H
+#define TARGET_FEATURES_H
 
 #ifdef __cplusplus
  extern "C" {
@@ -217,7 +217,7 @@ extern void LedOffTargetPlatform(void);
 }
 #endif
 
-#endif /* _TARGET_FEATURES_H_ */
+#endif /* TARGET_FEATURES_H */
 
 /******************* (C) COPYRIGHT 2016 STMicroelectronics *****END OF FILE****/
 

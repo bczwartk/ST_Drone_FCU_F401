@@ -42,8 +42,8 @@
   */
   
 /* Define to prevent recursive inclusion -------------------------------------*/  
-#ifndef _SENSOR_SERVICE_H_
-#define _SENSOR_SERVICE_H_
+#ifndef SENSOR_SERVICE_H
+#define SENSOR_SERVICE_H
 
 #ifdef __cplusplus
  extern "C" {
@@ -169,6 +169,6 @@ used in Console service */
 }
 #endif
 
-#endif /* _SENSOR_SERVICE_H_ */
+#endif /*_SENSOR_SERVICE_H */
 
 /******************* (C) COPYRIGHT 2016 STMicroelectronics *****END OF FILE****/

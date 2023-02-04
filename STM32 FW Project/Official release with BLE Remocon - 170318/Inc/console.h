@@ -41,8 +41,8 @@
  ******************************************************************************
  */
  
- #ifndef __CONSOLE_H
-#define __CONSOLE_H
+ #ifndef CONSOLE_H
+#define CONSOLE_H
 
 #ifdef __cplusplus
  extern "C" {
@@ -56,6 +56,6 @@ extern int32_t cuiGetInteger(const char* message);
 }
 #endif
 
-#endif /* __CONSOLE_H */
+#endif /* CONSOLE_H */
 
 /******************* (C) COPYRIGHT 2016 STMicroelectronics *****END OF FILE****/

@@ -1,5 +1,5 @@
-#ifndef _MOTOR_H_
-#define _MOTOR_H_
+#ifndef MOTOR_H
+#define MOTOR_H
 
 #include "stm32f4xx_hal.h"
 #include "def32.h"
@@ -27,4 +27,4 @@ typedef struct
 void set_motor_pwm(const MotorControlTypeDef *motor_pwm);
 void set_motor_pwm_zero(MotorControlTypeDef *motor_pwm);
 
-#endif /* _MOTOR_H_ */
+#endif /* MOTOR_H */

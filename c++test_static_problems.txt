@@ -1,0 +1,190 @@
+[ERROR] Code Analysis for ST_Drone_FCU_F401_Official_BLE_Remocon_170318/Src/rc.c finished with code 1 (ipro)
+    1. IAR ANSI C/C++ Compiler V9.30.1.335/W64 for ARM
+   Copyright 1999-2022 IAR Systems AB.
+   Network license: ananke.parasoft.com.pl (STD)
+
+  #defineBASIC_MATH_H
+   ^
+"E:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official release with BLE Remocon - 170318\Inc\basic_math.h",2  Error[Pe011]: 
+          unrecognized preprocessing directive
+
+Errors: 1
+Warnings: none
+Error preprocessing file "E:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official release with BLE Remocon - 170318\Src\rc.c": 
+Process exited with status: 2
+Could not preprocess source file
+[ERROR] Collecting header files for ST_Drone_FCU_F401_Official_BLE_Remocon_170318/Src/ahrs.c finished with code 1 (ipro)
+    1. IAR ANSI C/C++ Compiler V9.30.1.335/W64 for ARM
+   Copyright 1999-2022 IAR Systems AB.
+   Network license: ananke.parasoft.com.pl (STD)
+
+  #defineBASIC_MATH_H
+   ^
+"E:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official release with BLE Remocon - 170318\Inc\basic_math.h",2  Error[Pe011]: 
+          unrecognized preprocessing directive
+
+  #defineBASIC_MATH_H
+   ^
+"E:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official release with BLE Remocon - 170318\Inc\basic_math.h",2  Error[Pe011]: 
+          unrecognized preprocessing directive
+
+Errors: 2
+Warnings: none
+Error preprocessing file "E:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official release with BLE Remocon - 170318\Src\ahrs.c": 
+Process exited with status: 2
+Could not preprocess source file
+[ERROR] Collecting header files for ST_Drone_FCU_F401_Official_BLE_Remocon_170318/Src/flight_control.c finished with code 1 (ipro)
+    1. IAR ANSI C/C++ Compiler V9.30.1.335/W64 for ARM
+   Copyright 1999-2022 IAR Systems AB.
+   Network license: ananke.parasoft.com.pl (STD)
+
+  #defineBASIC_MATH_H
+   ^
+"E:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official release with BLE Remocon - 170318\Inc\basic_math.h",2  Error[Pe011]: 
+          unrecognized preprocessing directive
+
+Errors: 1
+Warnings: none
+Error preprocessing file "E:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official release with BLE Remocon - 170318\Src\flight_control.c": 
+Process exited with status: 2
+Could not preprocess source file
+[ERROR] Code Analysis for ST_Drone_FCU_F401_Official_BLE_Remocon_170318/Src/ahrs.c finished with code 1 (ipro)
+    1. IAR ANSI C/C++ Compiler V9.30.1.335/W64 for ARM
+   Copyright 1999-2022 IAR Systems AB.
+   Network license: ananke.parasoft.com.pl (STD)
+
+  #defineBASIC_MATH_H
+   ^
+"E:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official release with BLE Remocon - 170318\Inc\basic_math.h",2  Error[Pe011]: 
+          unrecognized preprocessing directive
+
+  #defineBASIC_MATH_H
+   ^
+"E:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official release with BLE Remocon - 170318\Inc\basic_math.h",2  Error[Pe011]: 
+          unrecognized preprocessing directive
+
+Errors: 2
+Warnings: none
+Error preprocessing file "E:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official release with BLE Remocon - 170318\Src\ahrs.c": 
+Process exited with status: 2
+Could not preprocess source file
+[ERROR] Collecting header files for ST_Drone_FCU_F401_Official_BLE_Remocon_170318/Src/rc.c finished with code 1 (ipro)
+    1. IAR ANSI C/C++ Compiler V9.30.1.335/W64 for ARM
+   Copyright 1999-2022 IAR Systems AB.
+   Network license: ananke.parasoft.com.pl (STD)
+
+  #defineBASIC_MATH_H
+   ^
+"E:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official release with BLE Remocon - 170318\Inc\basic_math.h",2  Error[Pe011]: 
+          unrecognized preprocessing directive
+
+Errors: 1
+Warnings: none
+Error preprocessing file "E:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official release with BLE Remocon - 170318\Src\rc.c": 
+Process exited with status: 2
+Could not preprocess source file
+[ERROR] Collecting header files for ST_Drone_FCU_F401_Official_BLE_Remocon_170318/Src/main.c finished with code 1 (ipro)
+    1. IAR ANSI C/C++ Compiler V9.30.1.335/W64 for ARM
+   Copyright 1999-2022 IAR Systems AB.
+   Network license: ananke.parasoft.com.pl (STD)
+
+  #defineBASIC_MATH_H
+   ^
+"E:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official release with BLE Remocon - 170318\Inc\basic_math.h",2  Error[Pe011]: 
+          unrecognized preprocessing directive
+
+Errors: 1
+Warnings: none
+Error preprocessing file "E:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official release with BLE Remocon - 170318\Src\main.c": 
+Process exited with status: 2
+Could not preprocess source file
+[ERROR] Collecting header files for ST_Drone_FCU_F401_Official_BLE_Remocon_170318/Src/quaternion.c finished with code 1 (ipro)
+    1. IAR ANSI C/C++ Compiler V9.30.1.335/W64 for ARM
+   Copyright 1999-2022 IAR Systems AB.
+   Network license: ananke.parasoft.com.pl (STD)
+
+  #defineBASIC_MATH_H
+   ^
+"E:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official release with BLE Remocon - 170318\Inc\basic_math.h",2  Error[Pe011]: 
+          unrecognized preprocessing directive
+
+Errors: 1
+Warnings: none
+Error preprocessing file "E:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official release with BLE Remocon - 170318\Src\quaternion.c": 
+Process exited with status: 2
+Could not preprocess source file
+[ERROR] Code Analysis for ST_Drone_FCU_F401_Official_BLE_Remocon_170318/Src/flight_control.c finished with code 1 (ipro)
+    1. IAR ANSI C/C++ Compiler V9.30.1.335/W64 for ARM
+   Copyright 1999-2022 IAR Systems AB.
+   Network license: ananke.parasoft.com.pl (STD)
+
+  #defineBASIC_MATH_H
+   ^
+"E:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official release with BLE Remocon - 170318\Inc\basic_math.h",2  Error[Pe011]: 
+          unrecognized preprocessing directive
+
+Errors: 1
+Warnings: none
+Error preprocessing file "E:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official release with BLE Remocon - 170318\Src\flight_control.c": 
+Process exited with status: 2
+Could not preprocess source file
+[ERROR] Code Analysis for ST_Drone_FCU_F401_Official_BLE_Remocon_170318/Src/basic_math.c finished with code 1 (ipro)
+    1. IAR ANSI C/C++ Compiler V9.30.1.335/W64 for ARM
+   Copyright 1999-2022 IAR Systems AB.
+   Network license: ananke.parasoft.com.pl (STD)
+
+  #defineBASIC_MATH_H
+   ^
+"E:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official release with BLE Remocon - 170318\Inc\basic_math.h",2  Error[Pe011]: 
+          unrecognized preprocessing directive
+
+Errors: 1
+Warnings: none
+Error preprocessing file "E:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official release with BLE Remocon - 170318\Src\basic_math.c": 
+Process exited with status: 2
+Could not preprocess source file
+[ERROR] Code Analysis for ST_Drone_FCU_F401_Official_BLE_Remocon_170318/Src/quaternion.c finished with code 1 (ipro)
+    1. IAR ANSI C/C++ Compiler V9.30.1.335/W64 for ARM
+   Copyright 1999-2022 IAR Systems AB.
+   Network license: ananke.parasoft.com.pl (STD)
+
+  #defineBASIC_MATH_H
+   ^
+"E:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official release with BLE Remocon - 170318\Inc\basic_math.h",2  Error[Pe011]: 
+          unrecognized preprocessing directive
+
+Errors: 1
+Warnings: none
+Error preprocessing file "E:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official release with BLE Remocon - 170318\Src\quaternion.c": 
+Process exited with status: 2
+Could not preprocess source file
+[ERROR] Collecting header files for ST_Drone_FCU_F401_Official_BLE_Remocon_170318/Src/basic_math.c finished with code 1 (ipro)
+    1. IAR ANSI C/C++ Compiler V9.30.1.335/W64 for ARM
+   Copyright 1999-2022 IAR Systems AB.
+   Network license: ananke.parasoft.com.pl (STD)
+
+  #defineBASIC_MATH_H
+   ^
+"E:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official release with BLE Remocon - 170318\Inc\basic_math.h",2  Error[Pe011]: 
+          unrecognized preprocessing directive
+
+Errors: 1
+Warnings: none
+Error preprocessing file "E:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official release with BLE Remocon - 170318\Src\basic_math.c": 
+Process exited with status: 2
+Could not preprocess source file
+[ERROR] Code Analysis for ST_Drone_FCU_F401_Official_BLE_Remocon_170318/Src/main.c finished with code 1 (ipro)
+    1. IAR ANSI C/C++ Compiler V9.30.1.335/W64 for ARM
+   Copyright 1999-2022 IAR Systems AB.
+   Network license: ananke.parasoft.com.pl (STD)
+
+  #defineBASIC_MATH_H
+   ^
+"E:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official release with BLE Remocon - 170318\Inc\basic_math.h",2  Error[Pe011]: 
+          unrecognized preprocessing directive
+
+Errors: 1
+Warnings: none
+Error preprocessing file "E:\work\projects\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official release with BLE Remocon - 170318\Src\main.c": 
+Process exited with status: 2
+Could not preprocess source file

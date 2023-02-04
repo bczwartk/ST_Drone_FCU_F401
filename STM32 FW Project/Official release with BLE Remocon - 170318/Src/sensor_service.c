@@ -90,7 +90,7 @@ static uint16_t connection_handle = 0;
 static void GAP_ConnectionComplete_CB(uint8_t addr[6], uint16_t handle);
 static void GAP_DisconnectionComplete_CB(void);
 static uint32_t DebugConsoleCommandParsing(uint8_t * att_data, uint8_t data_length);
-static uint32_t ConfigCommandParsing(uint8_t * att_data, uint8_t data_length);
+static uint32_t ConfigCommandParsing(const uint8_t * att_data, uint8_t data_length);
 
 static void DisableHWFeatures(void);
 
@@ -1082,7 +1082,7 @@ static uint32_t DebugConsoleCommandParsing(uint8_t * att_data, uint8_t data_leng
  * @param uint8_t data_length length of the data
  * @retval uint32_t SendItBack true/false
  */
-static uint32_t ConfigCommandParsing(uint8_t * att_data, uint8_t data_length)
+static uint32_t ConfigCommandParsing(const uint8_t * att_data, uint8_t data_length)
 {
   uint32_t SendItBack = 1;
   return SendItBack;

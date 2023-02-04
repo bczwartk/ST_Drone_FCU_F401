@@ -42,8 +42,8 @@
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __MOTENV1_CONFIG_H
-#define __MOTENV1_CONFIG_H
+#ifndef MOTENV1_CONFIG_H
+#define MOTENV1_CONFIG_H
 
 /* Exported define ------------------------------------------------------------*/
 
@@ -122,6 +122,6 @@
 /* STM32 MCU_ID */
 #define STM32_MCU_ID ((uint32_t *)0xE0042000U)
 
-#endif /* __MOTENV1_CONFIG_H */
+#endif /* MOTENV1_CONFIG_H */
 
 /******************* (C) COPYRIGHT 2016 STMicroelectronics *****END OF FILE****/
