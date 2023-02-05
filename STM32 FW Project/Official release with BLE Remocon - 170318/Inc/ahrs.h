@@ -2,7 +2,6 @@
 #define AHRS_H
 
 #include "stm32f4xx_hal.h"
-//#include "board.h"
 #include "steval_fcu001_v1.h"
 #include "def32.h"
 #include "quaternion.h"
@@ -20,8 +19,6 @@
 
 // Sampling time of sensors
 #define SENSOR_SAMPLING_TIME    0.00625f
-//#define gyroMeasError 3.14159265358979 * (10.0f / 180.0f) // gyroscope measurement error in rad/s (shown as 10 deg/s)
-//#define beta sqrt(3.0f / 4.0f) * gyroMeasError // compute beta
 #define alpha        1.0f
 #define BETA_NORM    0.8f            //0.15
 #define BETA_ZERO    0

@@ -9,13 +9,13 @@
 typedef struct
 {
     float32_t q0, q1, q2, q3;
-}QuaternionTypeDef;
+} QuaternionTypeDef;
 
 // Type define for Euler angle
 typedef struct
 {
     float32_t thx, thy, thz;
-}EulerAngleTypeDef;
+} EulerAngleTypeDef;
 
 
 void QuaternionNorm(QuaternionTypeDef *q);

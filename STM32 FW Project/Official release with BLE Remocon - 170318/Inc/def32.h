@@ -18,58 +18,59 @@ typedef        float             float32_t;
 /*8 bits devided 8 1 bit;
 */
 typedef struct
-{ uint8_t   bit0:1;
-  uint8_t   bit1:1;
-  uint8_t   bit2:1;
-  uint8_t   bit3:1;
-  uint8_t   bit4:1;
-  uint8_t   bit5:1;
-  uint8_t   bit6:1;
-  uint8_t   bit7:1;
-}bits8;
+{
+  uint32_t   bit0:1;
+  uint32_t   bit1:1;
+  uint32_t   bit2:1;
+  uint32_t   bit3:1;
+  uint32_t   bit4:1;
+  uint32_t   bit5:1;
+  uint32_t   bit6:1;
+  uint32_t   bit7:1;
+} bits8;
 
 typedef union
 { uint8_t all;
   bits8   flag;
-}u8_bit;
+} u8_bit;
 
 /*16 bits devided 16 1 bit;
 */
 typedef struct
-{ uint8_t   bit0:1;
-  uint8_t   bit1:1;
-  uint8_t   bit2:1;
-  uint8_t   bit3:1;
-  uint8_t   bit4:1;
-  uint8_t   bit5:1;
-  uint8_t   bit6:1;
-  uint8_t   bit7:1;
-  uint8_t   bit8:1;
-  uint8_t   bit9:1;
-  uint8_t   bit10:1;
-  uint8_t   bit11:1;
-  uint8_t   bit12:1;
-  uint8_t   bit13:1;
-  uint8_t   bit14:1;
-  uint8_t   bit15:1;
-}bits16;
+{ uint32_t   bit0:1;
+  uint32_t   bit1:1;
+  uint32_t   bit2:1;
+  uint32_t   bit3:1;
+  uint32_t   bit4:1;
+  uint32_t   bit5:1;
+  uint32_t   bit6:1;
+  uint32_t   bit7:1;
+  uint32_t   bit8:1;
+  uint32_t   bit9:1;
+  uint32_t   bit10:1;
+  uint32_t   bit11:1;
+  uint32_t   bit12:1;
+  uint32_t   bit13:1;
+  uint32_t   bit14:1;
+  uint32_t   bit15:1;
+} bits16;
 
 typedef union
 { uint16_t all;
   bits16   flag;
-}u16_bit;
+} u16_bit;
 
 /* An uint16_t devided 2 uint8_t-bits parts.
 */
 typedef struct
 { uint8_t low;
   uint8_t high;
-}u8u8;
+} u8u8;
 
 typedef union
 { uint16_t  all;
   u8u8      high_low;
-}u16_u8u8;
+} u16_u8u8;
 
 /* A signed int16 is devided as a sigened int8_t(high part) and an uint8_t(low part).
 */
@@ -81,19 +82,19 @@ typedef struct
 typedef union
 { int16_t all;
   s8u8    high_low;
-}s16_s8u8;
+} s16_s8u8;
 
 /* A uint32_t is devided as 2 uint16_t parts.
 */
 typedef struct
 { uint16_t  low;
   uint16_t  high;
-}u16u16;
+} u16u16;
 
 typedef union
 { uint32_t  all;
   u16u16    high_low;
-}u32_u16u16;
+} u32_u16u16;
 
 /* A uint32_t is devided as 4 uint8_t parts.
 */
@@ -102,24 +103,24 @@ typedef struct
   uint8_t  byte1;
   uint8_t  byte2;
   uint8_t  byte3;
-}u8u8u8u8;
+} u8u8u8u8;
 
 typedef union
 { uint32_t  all;
   u8u8u8u8  bytes;
-}u32_u8u8u8u8;
+} u32_u8u8u8u8;
 
 /* A signed int32_t is devided as a sigened int16_t(high part) and an uint16_t(low part).
 */
 typedef struct
 { uint16_t  low;
   int16_t   shigh;
-}s16u16;
+} s16u16;
 
 typedef union
 { int32_t all;
   s16u16  high_low;
-}s32_s16u16;
+} s32_s16u16;
 
 
 #endif /* DEF32_H */

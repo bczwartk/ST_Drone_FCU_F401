@@ -1,7 +1,7 @@
 
 
-#ifndef _CONFIG_DRONE_H_
-#define _CONFIG_DRONE_H_
+#ifndef CONFIG_DRONE_H
+#define CONFIG_DRONE_H
 
 #include "stm32f4xx_hal.h"
 
@@ -29,4 +29,4 @@
 // Use presure sensor or not 1 = use
 #define USE_PRESSURE_SENSOR  1
 
-#endif /* __CONFIG_DRONE_H_ */
+#endif /* CONFIG_DRONE_H */

@@ -22,9 +22,9 @@
 typedef struct
 {
   float32_t motor1_pwm, motor2_pwm, motor3_pwm, motor4_pwm;
-}MotorControlTypeDef;
+} MotorControlTypeDef;
 
-void set_motor_pwm(const MotorControlTypeDef *motor_pwm);
-void set_motor_pwm_zero(MotorControlTypeDef *motor_pwm);
+void set_motor_pwm(const MotorControlTypeDef *motor_pwm_param);
+void set_motor_pwm_zero(MotorControlTypeDef *motor_pwm_param);
 
 #endif /* MOTOR_H */
