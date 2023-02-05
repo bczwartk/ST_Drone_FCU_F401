@@ -11,13 +11,14 @@ typedef volatile struct tUserTimerStruct
     uint32_t    flag;
     uint32_t    flag2;
     uint32_t    event_cnt;
-}tUserTimer;
+} tUserTimer;
+
+extern tUserTimer tim;
 
 void SetupTimer(tUserTimer *t, uint32_t interval);
 void StartTimer(tUserTimer *t);
 void StopTimer(tUserTimer *t);
 void ClearTimer(tUserTimer *t);
-void TimerProcess(tUserTimer *t);
 uint32_t isTimerEventExist(const tUserTimer *t);
 
 void User_Timer_Callback(void);

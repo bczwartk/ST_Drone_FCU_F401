@@ -6,7 +6,7 @@
 
 // Uncomment the first row to use 3.7V Motors directly connected to FCU board
 #define MOTOR_DC
-//#define MOTOR_ESC
+// define MOTOR_ESC
 
 
 #ifdef MOTOR_DC

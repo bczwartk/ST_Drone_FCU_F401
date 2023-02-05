@@ -50,6 +50,10 @@
 #include "uuid_ble_service.h"
 #include "steval_fcu001_v1_pressure.h"
 
+#define W2ST_CHECK_CONNECTION(BleChar) ((ConnectionBleStatus & (BleChar)) ? 1 : 0)
+#define W2ST_ON_CONNECTION(BleChar)    (ConnectionBleStatus |= (BleChar))
+#define W2ST_OFF_CONNECTION(BleChar)   (ConnectionBleStatus &= (~(BleChar)))
+
 /* Exported variables ---------------------------------------------------------*/
 int32_t connected = FALSE;
 uint8_t set_connectable = TRUE;
@@ -411,32 +415,26 @@ tBleStatus Add_HWServW2ST_Service(void)
 
   /* Fill the Environmental BLE Characteristc */
   COPY_ENVIRONMENTAL_W2ST_CHAR_UUID(uuid);
-//  /* Fill the Battery and Environmental BLE Characteristc */
-//  //COPY_BATT_ENV_W2ST_CHAR_UUID(uuid);
-//  if(TargetBoardFeatures.NumTempSensors==2) {
-//    uuid[14] |= 0x05; /* Two Temperature values*/
-//    EnvironmentalCharSize+=2*2;
-//  } else if(TargetBoardFeatures.NumTempSensors==1) {
-//    uuid[14] |= 0x04; /* One Temperature value*/
-//    EnvironmentalCharSize+=2;
-//  }
-
+#if 0
+    /* Fill the Battery and Environmental BLE Characteristc */
+    //COPY_BATT_ENV_W2ST_CHAR_UUID(uuid);
+    if (TargetBoardFeatures.NumTempSensors == 2) {
+      uuid[14] |= 0x05; /* Two Temperature values*/
+      EnvironmentalCharSize += 2 * 2;
+    } else if (TargetBoardFeatures.NumTempSensors == 1) {
+      uuid[14] |= 0x04; /* One Temperature value*/
+     EnvironmentalCharSize += 2;
+    }
+#endif
   
     uuid[14] |= 0x05; /* Two Temperature values*/
-    EnvironmentalCharSize+=2*2;
- 
-
+    EnvironmentalCharSize += 2 * 2;
   
    uuid[14] |= 0x08; /* Battery level (percentage of full battery) */
-   EnvironmentalCharSize+=2;
+   EnvironmentalCharSize += 2;
  
     uuid[14] |= 0x10; /* Pressure value*/
-    EnvironmentalCharSize+=4;
-  
-
-  
-  
-  
+    EnvironmentalCharSize += 4;
   
 //  ret =  aci_gatt_add_char(HWServW2STHandle, UUID_TYPE_128, uuid, EnvironmentalCharSize,
 //                           CHAR_PROP_NOTIFY|CHAR_PROP_READ,
@@ -444,7 +442,7 @@ tBleStatus Add_HWServW2ST_Service(void)
 //                           GATT_NOTIFY_READ_REQ_AND_WAIT_FOR_APPL_RESP,
 //                           16, 0, &EnvironmentalCharHandle);
 //  
-  ret =  aci_gatt_add_char(HWServW2STHandle, UUID_TYPE_128, uuid, 2+4+2+2+2,
+  ret =  aci_gatt_add_char(HWServW2STHandle, UUID_TYPE_128, uuid, 2 + 4 + 2 + 2 + 2,
                            CHAR_PROP_NOTIFY|CHAR_PROP_READ,
                            ATTR_PERMISSION_NONE,
                            GATT_NOTIFY_READ_REQ_AND_WAIT_FOR_APPL_RESP,
@@ -455,7 +453,7 @@ tBleStatus Add_HWServW2ST_Service(void)
   }
 
   COPY_ACC_GYRO_MAG_W2ST_CHAR_UUID(uuid);
-  ret =  aci_gatt_add_char(HWServW2STHandle, UUID_TYPE_128, uuid, 2+3*3*2,
+  ret =  aci_gatt_add_char(HWServW2STHandle, UUID_TYPE_128, uuid, 2 + 3 * 3 * 2,
                            CHAR_PROP_NOTIFY,
                            ATTR_PERMISSION_NONE,
                            GATT_NOTIFY_READ_REQ_AND_WAIT_FOR_APPL_RESP,
@@ -466,7 +464,7 @@ tBleStatus Add_HWServW2ST_Service(void)
   }
 
   COPY_ACC_EVENT_W2ST_CHAR_UUID(uuid);
-  ret =  aci_gatt_add_char(HWServW2STHandle, UUID_TYPE_128, uuid, 2+2,
+  ret =  aci_gatt_add_char(HWServW2STHandle, UUID_TYPE_128, uuid, 2 + 2,
                            CHAR_PROP_NOTIFY | CHAR_PROP_READ,
                            ATTR_PERMISSION_NONE,
                            GATT_NOTIFY_READ_REQ_AND_WAIT_FOR_APPL_RESP,
@@ -477,7 +475,7 @@ tBleStatus Add_HWServW2ST_Service(void)
   }
 
   COPY_ARMING_W2ST_CHAR_UUID(uuid);
-  ret =  aci_gatt_add_char(HWServW2STHandle, UUID_TYPE_128, uuid, 2+1,
+  ret =  aci_gatt_add_char(HWServW2STHandle, UUID_TYPE_128, uuid, 2 + 1,
                            CHAR_PROP_NOTIFY | CHAR_PROP_READ,
                            ATTR_PERMISSION_NONE,
                            GATT_NOTIFY_READ_REQ_AND_WAIT_FOR_APPL_RESP,
@@ -490,7 +488,7 @@ tBleStatus Add_HWServW2ST_Service(void)
 #ifdef STM32_SENSORTILE
   if(TargetBoardFeatures.HandleGGComponent){
     COPY_GG_W2ST_CHAR_UUID(uuid);
-    ret =  aci_gatt_add_char(HWServW2STHandle, UUID_TYPE_128, uuid, 2+2+2+2+1,
+    ret =  aci_gatt_add_char(HWServW2STHandle, UUID_TYPE_128, uuid, 2 + 2 + 2 + 2 + 1,
                              CHAR_PROP_NOTIFY | CHAR_PROP_READ,
                              ATTR_PERMISSION_NONE,
                              GATT_NOTIFY_READ_REQ_AND_WAIT_FOR_APPL_RESP,
@@ -581,24 +579,24 @@ tBleStatus Batt_Env_RSSI_Update(int32_t Press,uint16_t Batt,int16_t Temp,int16_t
   tBleStatus ret;
   uint8_t BuffPos;
   
-  uint8_t buff[2+4/*Press*/+2/*Batt*/+2/*Temp*/+2/*RSSI*/];
+  uint8_t buff[2 + 4 /*Press*/ + 2 /*Batt*/ + 2 /*Temp*/ + 2 /*RSSI*/ ];
 
-  STORE_LE_16(buff  ,(HAL_GetTick()>>3));
-  BuffPos=2;
+  STORE_LE_16(buff, (HAL_GetTick() >> 3));
+  BuffPos = 2;
   
-  STORE_LE_32(buff+BuffPos,Press);
-  BuffPos+=4;
+  STORE_LE_32(buff + BuffPos, Press);
+  BuffPos += 4;
   
-  STORE_LE_16(buff+BuffPos,Batt);
-  BuffPos+=2;
+  STORE_LE_16(buff + BuffPos, Batt);
+  BuffPos += 2;
  
-  STORE_LE_16(buff+BuffPos,Temp);
-  BuffPos+=2;
+  STORE_LE_16(buff + BuffPos, Temp);
+  BuffPos += 2;
 
   STORE_LE_16(buff + BuffPos, RSSI);
   BuffPos += 2;
   
-  ret = aci_gatt_update_char_value(HWServW2STHandle, EnvironmentalCharHandle, 0, 2 + 4 + 2 + 2 + 2,buff);
+  ret = aci_gatt_update_char_value(HWServW2STHandle, EnvironmentalCharHandle, 0, 2 + 4 + 2 + 2 + 2, buff);
   if (ret != BLE_STATUS_SUCCESS) {
     if (0 != W2ST_CHECK_CONNECTION(W2ST_CONNECT_STD_ERR)) {
       BytesToWrite = sprintf((char *)BufferToWrite, "Error Updating Environmental Char\r\n");
@@ -622,12 +620,12 @@ tBleStatus ARMING_Update(uint8_t ArmingStatus)
 {
   tBleStatus ret;
 
-  uint8_t buff[2+1];
+  uint8_t buff[2 + 1];
 
   STORE_LE_16(buff, (HAL_GetTick() >> 3));
   buff[2] = ArmingStatus;
 
-  ret = aci_gatt_update_char_value(HWServW2STHandle, ArmingCharHandle, 0, 2 + 1,buff);
+  ret = aci_gatt_update_char_value(HWServW2STHandle, ArmingCharHandle, 0, 2 + 1, buff);
 
   if (ret != BLE_STATUS_SUCCESS) {
     if (0 != W2ST_CHECK_CONNECTION(W2ST_CONNECT_STD_ERR)) {
@@ -649,11 +647,11 @@ tBleStatus ARMING_Update(uint8_t ArmingStatus)
  */
 void setConnectable(void)
 {  
-  char local_name[8] = {AD_TYPE_COMPLETE_LOCAL_NAME,NAME_DRN};
+  char local_name[8] = {AD_TYPE_COMPLETE_LOCAL_NAME, NAME_DRN};
   uint8_t manuf_data[26] = {
-    2,0x0A,0x00 /* 0 dBm */, // Trasmission Power
-    8,0x09,NAME_DRN, // Complete Name
-    13,0xFF,0x01/*SKD version */,
+    2, 0x0A, 0x00 /* 0 dBm */, // Trasmission Power
+    8, 0x09, NAME_DRN, // Complete Name
+    13, 0xFF, 0x01/*SKD version */,
     0x80,
     0x00, /* */
     0xE0, /* ACC+Gyro+Mag*/
@@ -684,7 +682,7 @@ void setConnectable(void)
   manuf_data[18] |=0x80;
 
   /* disable scan response */
-  (void)hci_le_set_scan_resp_data(0,NULL);
+  (void)hci_le_set_scan_resp_data(0, NULL);
   (void)aci_gap_set_discoverable(ADV_IND, 0, 0,
 #ifndef MAC_MOTENV
   #ifdef MAC_STM32UID_MOTENV
@@ -714,10 +712,10 @@ static void GAP_ConnectionComplete_CB(uint8_t addr[6], uint16_t handle)
   connection_handle = handle;
 
 #ifdef MOTENV_DEBUG_CONNECTION
-  PRINTF(">>>>>>CONNECTED %x:%x:%x:%x:%x:%x\r\n",addr[5],addr[4],addr[3],addr[2],addr[1],addr[0]);
+  PRINTF(">>>>>>CONNECTED %x:%x:%x:%x:%x:%x\r\n", addr[5], addr[4], addr[3], addr[2], addr[1], addr[0]);
 #endif /* MOTENV_DEBUG_CONNECTION */
 
-  ConnectionBleStatus=0;
+  ConnectionBleStatus = 0;
   
   if (0 != TargetBoardFeatures.HWAdvanceFeatures) {
     DisableHWFeatures();
@@ -746,12 +744,11 @@ static void GAP_DisconnectionComplete_CB(void)
   /* Make the device connectable again. */
   set_connectable = TRUE;
 
-  ConnectionBleStatus=0;
+  ConnectionBleStatus = 0;
   
-  if(TargetBoardFeatures.HWAdvanceFeatures) {
+  if (TargetBoardFeatures.HWAdvanceFeatures) {
     DisableHWFeatures();
   }
-  
 }
 
 /**
@@ -781,16 +778,16 @@ void Read_Request_CB(uint16_t handle)
   } else if (handle == ArmingCharHandle + 1) {
     /* Read Request for Arming Status */
 	  (void) ARMING_Update(TargetBoardFeatures.LedStatus);
-  } else if (handle == AccEventCharHandle +1) {
+  } else if (handle == AccEventCharHandle + 1) {
     
   } else if (handle == StdErrCharHandle + 1) {
     /* Send again the last packet for StdError */
 	  (void) Stderr_Update_AfterRead();
   } else if (handle == TermCharHandle + 1) {
     /* Send again the last packet for Terminal */
-	  (void)Term_Update_AfterRead();
+	  (void) Term_Update_AfterRead();
 #ifdef STM32_SENSORTILE
-  } else if (handle == GGCharHandle + 1){
+  } else if (handle == GGCharHandle + 1) {
     GG_Update();
 #endif /* STM32_SENSORTILE */
   }
@@ -827,8 +824,7 @@ void Attribute_Modified_CB(uint16_t attr_handle, uint8_t * att_data, uint8_t dat
       W2ST_OFF_CONNECTION(W2ST_CONNECT_STD_TERM);
     }
   } else if (attr_handle == TermCharHandle + 1) {
-    uint32_t SendBackData =1; /* By default Answer with the same message received */
-
+    uint32_t SendBackData = 1; /* By default Answer with the same message received */
     {
       /* Received one write from Client on Terminal characteristc */
       SendBackData = DebugConsoleCommandParsing(att_data,data_length);
@@ -869,7 +865,7 @@ void Attribute_Modified_CB(uint16_t attr_handle, uint8_t * att_data, uint8_t dat
   } else {
     if (0 != W2ST_CHECK_CONNECTION(W2ST_CONNECT_STD_ERR)) {
       BytesToWrite = sprintf((char *)BufferToWrite, "Notification UNKNOW handle\r\n");
-      (void) Stderr_Update(BufferToWrite,BytesToWrite);
+      (void) Stderr_Update(BufferToWrite, BytesToWrite);
     } else {
       PRINTF("Notification UNKNOW handle\r\n");
     }
@@ -904,7 +900,7 @@ static uint32_t DebugConsoleCommandParsing(uint8_t * att_data, uint8_t data_leng
     SendBackData = 0;
   }
 #ifndef USE_STM32L0XX_NUCLEO
-  else if (!strncmp("versionFw",(char *)(att_data), 9)) {
+  else if (!strncmp("versionFw", (char *)(att_data), 9)) {
     BytesToWrite = sprintf((char *)BufferToWrite, "%s_%s_%c.%c.%c\r\n",
 #ifdef STM32F401xC
                           "F401"
@@ -919,14 +915,14 @@ static uint32_t DebugConsoleCommandParsing(uint8_t * att_data, uint8_t data_leng
                           DRN_VERSION_MAJOR,
                           DRN_VERSION_MINOR,
                           DRN_VERSION_PATCH);
-    (void)Term_Update(BufferToWrite,BytesToWrite);
-    SendBackData=0;
+    (void)Term_Update(BufferToWrite, BytesToWrite);
+    SendBackData = 0;
   }
 #endif /* USE_STM32L0XX_NUCLEO */
-  else if(!strncmp("info",(char *)(att_data),4)) {
-    SendBackData=0;
+  else if(!strncmp("info", (char *)(att_data), 4)) {
+    SendBackData = 0;
     
-    BytesToWrite =sprintf((char *)BufferToWrite,"\r\nSTMicroelectronics %s:\r\n"
+    BytesToWrite = sprintf((char *)BufferToWrite, "\r\nSTMicroelectronics %s:\r\n"
        "\tVersion %c.%c.%c\r\n"
 #ifdef USE_STM32F4XX_NUCLEO
 #ifdef STM32_NUCLEO
@@ -943,10 +939,10 @@ static uint32_t DebugConsoleCommandParsing(uint8_t * att_data, uint8_t data_leng
 #endif /* USE_STM32F4XX_NUCLEO */
         "\r\n",
         DRN_PACKAGENAME,
-        DRN_VERSION_MAJOR,DRN_VERSION_MINOR,DRN_VERSION_PATCH);
-    (void)Term_Update(BufferToWrite,BytesToWrite);
+        DRN_VERSION_MAJOR, DRN_VERSION_MINOR, DRN_VERSION_PATCH);
+    (void) Term_Update(BufferToWrite, BytesToWrite);
 
-    BytesToWrite =sprintf((char *)BufferToWrite,"\t(HAL %ld.%ld.%ld_%ld)\r\n"
+    BytesToWrite = sprintf((char *)BufferToWrite, "\t(HAL %ld.%ld.%ld_%ld)\r\n"
       "\tCompiled %s %s"
 #if defined (__IAR_SYSTEMS_ICC__)
       " (IAR)\r\n",
@@ -955,38 +951,38 @@ static uint32_t DebugConsoleCommandParsing(uint8_t * att_data, uint8_t data_leng
 #elif defined (__GNUC__)
       " (openstm32)\r\n",
 #endif
-         HAL_GetHalVersion() >>24,
-        (HAL_GetHalVersion() >>16)&0xFF,
-        (HAL_GetHalVersion() >> 8)&0xFF,
-         HAL_GetHalVersion()      &0xFF,
-         __DATE__,__TIME__);
-    (void)Term_Update(BufferToWrite,BytesToWrite);
+         HAL_GetHalVersion() >> 24,
+        (HAL_GetHalVersion() >> 16) & 0xFF,
+        (HAL_GetHalVersion() >> 8)  & 0xFF,
+         HAL_GetHalVersion()        & 0xFF,
+         __DATE__, __TIME__);
+    (void) Term_Update(BufferToWrite, BytesToWrite);
 
 #ifdef STM32_NUCLEO
   #ifdef USE_STM32L0XX_NUCLEO
     #ifdef IKS01A1
-      BytesToWrite =sprintf((char *)BufferToWrite,"Code compiled for X-NUCLEO-IKS01A1\r\n");
+      BytesToWrite = sprintf((char *)BufferToWrite, "Code compiled for X-NUCLEO-IKS01A1\r\n");
     #elif IKS01A2
-      BytesToWrite =sprintf((char *)BufferToWrite,"Code compiled for X-NUCLEO-IKS01A2\r\n");
+      BytesToWrite = sprintf((char *)BufferToWrite, "Code compiled for X-NUCLEO-IKS01A2\r\n");
     #endif /* IKS01A1 */
   #else /* USE_STM32L0XX_NUCLEO */  
     if(TargetBoardFeatures.SnsAltFunc) {
-      BytesToWrite =sprintf((char *)BufferToWrite,"\tX-NUCLEO-IKS01A2 Board\r\n");
+      BytesToWrite = sprintf((char *)BufferToWrite, "\tX-NUCLEO-IKS01A2 Board\r\n");
     } else {
-      BytesToWrite =sprintf((char *)BufferToWrite,"\tX-NUCLEO-IKS01A1 Board\r\n");
+      BytesToWrite = sprintf((char *)BufferToWrite, "\tX-NUCLEO-IKS01A1 Board\r\n");
     }
   #endif /* USE_STM32L0XX_NUCLEO */
   (void) Term_Update(BufferToWrite, BytesToWrite);
 #endif /* STM32_NUCLEO */
   }
 #ifndef USE_STM32L0XX_NUCLEO
-  else if(!strncmp("upgradeFw", (char *)(att_data), 9)) {
+  else if (!strncmp("upgradeFw", (char *)(att_data), 9)) {
     /* DO nothing, OTA function not integrated */
-  } else if(!strncmp("versionBle", (char *)(att_data), 10)) {
+  } else if (!strncmp("versionBle", (char *)(att_data), 10)) {
     uint8_t  hwVersion;
     uint16_t fwVersion;
     /* get the BlueNRG HW and FW versions */
-    (void)getBlueNRGVersion(&hwVersion, &fwVersion);
+    (void) getBlueNRGVersion(&hwVersion, &fwVersion);
     BytesToWrite =sprintf((char *)BufferToWrite, "%s_%d.%d.%c\r\n",
                           (hwVersion > 0x30) ? "BleMS" : "Ble",
                           fwVersion >> 8,
@@ -1100,7 +1096,7 @@ void HCI_Event_CB(void *pckt)
   hci_uart_pckt *hci_pckt = pckt;
   hci_event_pckt *event_pckt = (hci_event_pckt*)hci_pckt->data;
   
-  if(hci_pckt->type != HCI_EVENT_PKT) {
+  if (hci_pckt->type != HCI_EVENT_PKT) {
     return;
   }
   
@@ -1123,7 +1119,7 @@ void HCI_Event_CB(void *pckt)
   case EVT_VENDOR:
     {
       evt_blue_aci *blue_evt = (void*)event_pckt->data;
-      switch(blue_evt->ecode){
+      switch (blue_evt->ecode){
       case EVT_BLUE_GATT_READ_PERMIT_REQ:
         {
           evt_gatt_read_permit_req *pr = (void*)blue_evt->data; 
@@ -1131,7 +1127,7 @@ void HCI_Event_CB(void *pckt)
         }
         break;
       case EVT_BLUE_GATT_ATTRIBUTE_MODIFIED:
-        if(TargetBoardFeatures.bnrg_expansion_board==IDB05A1) {
+        if (TargetBoardFeatures.bnrg_expansion_board == IDB05A1) {
               evt_gatt_attr_modified_IDB05A1 *evt = (evt_gatt_attr_modified_IDB05A1*)blue_evt->data;
               Attribute_Modified_CB(evt->attr_handle, evt->att_data,evt->data_length);
             } else {

@@ -29,6 +29,7 @@ typedef struct
   uint32_t   bit7:1;
 } bits8;
 
+// parasoft-begin-suppress MISRAC2012-RULE_19_2-a "unions are needed in this context"
 typedef union
 { uint8_t all;
   bits8   flag;
@@ -121,7 +122,7 @@ typedef union
 { int32_t all;
   s16u16  high_low;
 } s32_s16u16;
-
+// parasoft-end-suppress MISRAC2012-RULE_19_2-a "unions are needed in this context"
 
 #endif /* DEF32_H */
 

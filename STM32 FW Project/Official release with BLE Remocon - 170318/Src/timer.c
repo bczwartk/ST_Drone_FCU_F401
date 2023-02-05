@@ -1,7 +1,5 @@
 #include "timer.h"
 
-
-
 tUserTimer tim;
 
 void SetupTimer(tUserTimer *t, uint32_t interval)
@@ -28,11 +26,11 @@ void ClearTimer(tUserTimer *t)
     t->event_cnt = 0;
 }
 
-void TimerProcess(tUserTimer *t)
+static void TimerProcess(tUserTimer *t)
 {
     uint32_t k; 
     uint32_t tick;
-    if (0 != t->flag) {
+    if (0u != t->flag) {
         tick = HAL_GetTick();
     	if (tick >= t->target_tick) {
 			t->event_cnt++;

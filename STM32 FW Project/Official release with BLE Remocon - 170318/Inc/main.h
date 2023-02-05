@@ -55,76 +55,6 @@
 
 
 /* Private define ------------------------------------------------------------*/
-
-//#define LPS22HB_CS_Pin GPIO_PIN_13
-//#define LPS22HB_CS_GPIO_Port GPIOC
-//#define USB_Monitor_Pin GPIO_PIN_14
-//#define USB_Monitor_GPIO_Port GPIOC
-//#define OSC_16MHZ_IN_Pin GPIO_PIN_0
-//#define OSC_16MHZ_IN_GPIO_Port GPIOH
-//#define OSC_16MHZ_OUT_Pin GPIO_PIN_1
-//#define OSC_16MHZ_OUT_GPIO_Port GPIOH
-//#define BLE_IRQ_Pin GPIO_PIN_4
-//#define BLE_IRQ_GPIO_Port GPIOA
-//#define BLE_CS_Pin GPIO_PIN_0
-//#define BLE_CS_GPIO_Port GPIOB
-//#define VBAT_SENSE_Pin GPIO_PIN_1
-//#define VBAT_SENSE_GPIO_Port GPIOB
-//#define BLE_RSTN_Pin GPIO_PIN_2
-//#define BLE_RSTN_GPIO_Port GPIOB
-//#define LIS2MDL_CS_Pin GPIO_PIN_12
-//#define LIS2MDL_CS_GPIO_Port GPIOB
-//#define SPI2_CLK_Pin GPIO_PIN_13
-//#define SPI2_CLK_GPIO_Port GPIOB
-//#define SPI2_SDA_Pin GPIO_PIN_15
-//#define SPI2_SDA_GPIO_Port GPIOB
-//#define LSM6DSL_CS_Pin GPIO_PIN_8
-//#define LSM6DSL_CS_GPIO_Port GPIOA
-///* USER CODE BEGIN Private defines */
-//
-///** @defgroup LSM6DSL_G Selftest limits
-// * @{
-// */
-//#define LSM6DSL_G_ST_X_LO_LIMIT                          ((float)20000)  //((float)200000)    /*!< Selftest X axis low limit [mdps] */
-//#define LSM6DSL_G_ST_X_HI_LIMIT                          ((float)80000)  //((float)800000)    /*!< Selftest X axis high limit [mdps] */
-//#define LSM6DSL_G_ST_Y_LO_LIMIT                          ((float)20000)  //((float)200000)    /*!< Selftest Y axis low limit [mdps] */
-//#define LSM6DSL_G_ST_Y_HI_LIMIT                          ((float)80000)  //((float)800000)    /*!< Selftest Y axis high limit [mdps] */
-//#define LSM6DSL_G_ST_Z_LO_LIMIT                          ((float)20000)  //((float)200000)    /*!< Selftest Z axis low limit [mdps] */
-//#define LSM6DSL_G_ST_Z_HI_LIMIT                          ((float)80000)  //((float)800000)    /*!< Selftest Z axis high limit [mdps] */
-//
-///** @defgroup LSM6DSL_XL Selftest limits
-// * @{
-// */
-//#define LSM6DSL_XL_ST_X_LO_LIMIT                          ((float)90) //((float)70)       /*!< Selftest X axis low limit [mg] */
-//#define LSM6DSL_XL_ST_X_HI_LIMIT                          ((float)1700)//((float)1500)     /*!< Selftest X axis high limit [mg] */
-//#define LSM6DSL_XL_ST_Y_LO_LIMIT                          ((float)90) //((float)70)       /*!< Selftest Y axis low limit [mg] */
-//#define LSM6DSL_XL_ST_Y_HI_LIMIT                          ((float)1700)//((float)1500)     /*!< Selftest Y axis high limit [mg] */
-//#define LSM6DSL_XL_ST_Z_LO_LIMIT                          ((float)90) //((float)70)       /*!< Selftest Z axis low limit [mg] */
-//#define LSM6DSL_XL_ST_Z_HI_LIMIT                          ((float)1700)//((float)1500)     /*!< Selftest Z axis high limit [mg] */
-//
-///** @defgroup LPS22HB Selftest limits
-// * @{
-// */
-//#define LPS22HB_P_ST1_LO_LIMIT           ( ( float )260 )        /*!< Selftest 1 pressure low limit [hPa] */
-//#define LPS22HB_P_ST1_HI_LIMIT           ( ( float )1260 )       /*!< Selftest 1 pressure high limit [hPa] */
-//#define LPS22HB_T_ST1_LO_LIMIT           ( ( float )-25 )        /*!< Selftest 1 temperature low limit [degC] */
-//#define LPS22HB_T_ST1_HI_LIMIT           ( ( float )105 )        /*!< Selftest 1 temperature high limit [degC] */
-//   
-//#define LPS22HB_P_ST3_LO_LIMIT           ( ( float )0.000001 )    /*!< Selftest 3 pressure STDEV low limit [hPa] */
-//#define LPS22HB_T_ST3_LO_LIMIT           ( ( float )0.000001 )    /*!< Selftest 3 temperature STDEV low limit [degC] */  
-//   
-///** @defgroup LSM303AGR_M Self-test limits
-// * @{
-// */
-//#define SELFTEST_MAX_M    360 // 360LSB * 3.9sensitivity
-//#define SELFTEST_MIN_M    17 // 17LSB * 3.9sensitivity 
-//   
-//#define LIS2MDL_M_ST_X_LO_LIMIT                          ((float)SELFTEST_MIN_M)     /*!< Selftest X axis low limit [LSB] */
-//#define LIS2MDL_M_ST_X_HI_LIMIT                          ((float)SELFTEST_MAX_M)     /*!< Selftest X axis high limit [LSB] */
-//#define LIS2MDL_M_ST_Y_LO_LIMIT                          ((float)SELFTEST_MIN_M)     /*!< Selftest Y axis low limit [LSB] */
-//#define LIS2MDL_M_ST_Y_HI_LIMIT                          ((float)SELFTEST_MAX_M)     /*!< Selftest Y axis high limit [LSB] */
-//#define LIS2MDL_M_ST_Z_LO_LIMIT                          ((float)SELFTEST_MIN_M)     /*!< Selftest Z axis low limit [LSB] */
-//#define LIS2MDL_M_ST_Z_HI_LIMIT                          ((float)SELFTEST_MAX_M)     /*!< Selftest Z axis high limit [LSB] */
    
 /** @defgroup BLE default values
 * @{
@@ -182,7 +112,6 @@ for each packet used for Console Service */
 #define CONFIG_DATA_IR_LEN                  (16)
 #define CONFIG_DATA_LL_WITHOUT_HOST_LEN     (1)
 #define CONFIG_DATA_MODE_LEN                (1)
-#define CONFIG_DATA_WATCHDOG_DISABLE_LEN    (1)
    
 /**
  * Select the BlueNRG mode configurations.\n
@@ -242,7 +171,7 @@ for each packet used for Console Service */
 //static int HCI_ProcessEvent=0;
 //static volatile uint32_t HCI_ProcessEvent=0;
 extern volatile uint32_t HCI_ProcessEvent;  
-// #define MCR_BLUEMS_F2I_2D(in, out_int, out_dec) {out_int = (int32_t)in; out_dec= (int32_t)((in-out_int)*100);};
+// define MCR_BLUEMS_F2I_2D(in, out_int, out_dec) {out_int = (int32_t)in; out_dec= (int32_t)((in-out_int)*100);};
 
 
 /* USER CODE END Private defines */
