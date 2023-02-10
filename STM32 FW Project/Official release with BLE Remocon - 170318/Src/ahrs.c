@@ -1,7 +1,5 @@
 
-//#include "matrix.h"
 #include "ahrs.h"
-//#include "magnet_cal.h"
 #include "basic_math.h"
 #include "flight_control.h"
 
@@ -9,18 +7,18 @@
 float32_t offset[3];
 float32_t cor[3][3];
 
-float32_t q0 = 1.0f, q1 = 0.0f, q2 = 0.0f, q3 = 0.0f;
+static float32_t g_q0 = 1.0f, g_q1 = 0.0f, g_q2 = 0.0f, g_q3 = 0.0f;
 float32_t gx_off, gy_off, gz_off;
 float32_t mx_mag, my_mag, mz_mag;
 float32_t wbx = 0.0f, wby = 0.0f, wbz = 0.0f;
 float32_t by = 1.0f, bz = 0.0f;
-float32_t exInt = 0.0f, eyInt = 0.0f, ezInt = 0.0f;
+static float32_t exInt = 0.0f, eyInt = 0.0f, ezInt = 0.0f;
 
 int32_t count;
 int32_t ahrs_init_flag = 0;
 int32_t acc_over = 0;
 extern int16_t gTHR;
-float32_t ahrs_kp;
+static float32_t ahrs_kp;
 
 void ahrs_fusion_ag(const AxesRaw_TypeDef_Float *acc_in, const AxesRaw_TypeDef_Float *gyro_in, AHRS_State_TypeDef *ahrs_in)
 {
@@ -31,7 +29,7 @@ void ahrs_fusion_ag(const AxesRaw_TypeDef_Float *acc_in, const AxesRaw_TypeDef_F
   float32_t q0q0, q0q1, q0q2, /*q0q3,*/ q1q1, /*q1q2,*/ q1q3, q2q2, q2q3, q3q3;
   float32_t halfT;
  
-  if(gTHR<MIN_THR) {
+  if (gTHR < MIN_THR) {
     ahrs_kp = AHRS_KP_BIG;
   } else {
     ahrs_kp = AHRS_KP_NORM;
@@ -47,16 +45,16 @@ void ahrs_fusion_ag(const AxesRaw_TypeDef_Float *acc_in, const AxesRaw_TypeDef_F
   gzf = ((float32_t)gyro_in->AXIS_Z) * ((float32_t)COE_MDPS_TO_RADPS);
 
   // auxiliary variables to reduce number of repeated operations
-  q0q0 = q0*q0;
-  q0q1 = q0*q1;
-  q0q2 = q0*q2;
-  //q0q3 = q0*q3;
-  q1q1 = q1*q1;
-  //q1q2 = q1*q2;
-  q1q3 = q1*q3;
-  q2q2 = q2*q2;
-  q2q3 = q2*q3;
-  q3q3 = q3*q3;
+  q0q0 = g_q0 * g_q0;
+  q0q1 = g_q0 * g_q1;
+  q0q2 = g_q0 * g_q2;
+  //q0q3 = q0 * q3;
+  q1q1 = g_q1 * g_q1;
+  //q1q2 = q1 * q2;
+  q1q3 = g_q1 * g_q3;
+  q2q2 = g_q2 * g_q2;
+  q2q3 = g_q2 * g_q3;
+  q3q3 = g_q3 * g_q3;
 
   // normalise the accelerometer measurement
   norm = invSqrt((axf * axf) + (ayf * ayf) + (azf * azf));
@@ -86,20 +84,20 @@ void ahrs_fusion_ag(const AxesRaw_TypeDef_Float *acc_in, const AxesRaw_TypeDef_F
 
   // integrate quaternion rate and normalise
   halfT = 0.5f * SENSOR_SAMPLING_TIME;
-  q0 = q0 + (-q1 * gxf) - (q2 * gyf) - (q3 * gzf * halfT);
-  q1 = q1 + (q0 * gxf) + (q2 * gzf) - (q3 * gyf * halfT);
-  q2 = q2 + (q0 * gyf) - (q1 * gzf) + (q3 * gxf * halfT);
-  q3 = q3 + (q0 * gzf) + (q1 * gyf) - (q2 * gxf * halfT);
+  g_q0 = (g_q0 + (-g_q1 * gxf)) - (g_q2 * gyf) - (g_q3 * gzf * halfT);
+  g_q1 = (g_q1 + (g_q0 * gxf) + (g_q2 * gzf)) - (g_q3 * gyf * halfT);
+  g_q2 = (g_q2 + (g_q3 * gxf * halfT) + (g_q0 * gyf)) - (g_q1 * gzf);
+  g_q3 = (g_q3 + (g_q0 * gzf) + (g_q1 * gyf)) - (g_q2 * gxf * halfT);
 
   // normalise quaternion
   norm = invSqrt(q0q0 + q1q1 + q2q2 + q3q3); 
-  q0 *= norm;
-  q1 *= norm;
-  q2 *= norm;
-  q3 *= norm;
+  g_q0 *= norm;
+  g_q1 *= norm;
+  g_q2 *= norm;
+  g_q3 *= norm;
 
-  ahrs_in->q.q0 = q0;
-  ahrs_in->q.q1 = q1;
-  ahrs_in->q.q2 = q2;
-  ahrs_in->q.q3 = q3;
+  ahrs_in->q.q0 = g_q0;
+  ahrs_in->q.q1 = g_q1;
+  ahrs_in->q.q2 = g_q2;
+  ahrs_in->q.q3 = g_q3;
 }

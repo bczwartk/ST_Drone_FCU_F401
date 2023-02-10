@@ -2,21 +2,21 @@
 #include "rc.h"
 #include <math.h>
 
-float32_t pid_x_integ1 = 0.0f;
-float32_t pid_y_integ1 = 0.0f;
-float32_t pid_z_integ1 = 0.0f;
-float32_t pid_x_integ2 = 0.0f;
-float32_t pid_y_integ2 = 0.0f;
-float32_t pid_z_integ2 = 0.0f;
-float32_t pid_x_pre_error2 = 0.0f;
-float32_t pid_y_pre_error2 = 0.0f;
-float32_t pid_z_pre_error2 = 0.0f;
-float32_t pid_x_pre_deriv = 0.0f;
-float32_t pid_y_pre_deriv = 0.0f;
+static float32_t pid_x_integ1 = 0.0f;
+static float32_t pid_y_integ1 = 0.0f;
+static float32_t pid_z_integ1 = 0.0f;
+static float32_t pid_x_integ2 = 0.0f;
+static float32_t pid_y_integ2 = 0.0f;
+static float32_t pid_z_integ2 = 0.0f;
+static float32_t pid_x_pre_error2 = 0.0f;
+static float32_t pid_y_pre_error2 = 0.0f;
+static float32_t pid_z_pre_error2 = 0.0f;
+static float32_t pid_x_pre_deriv = 0.0f;
+static float32_t pid_y_pre_deriv = 0.0f;
 
 extern int16_t gTHR;
-int16_t motor_thr;
-float32_t dt_recip;
+static int16_t motor_thr;
+static float32_t dt_recip;
 
 void PIDControlInit(P_PI_PIDControlTypeDef *pid)
 {
