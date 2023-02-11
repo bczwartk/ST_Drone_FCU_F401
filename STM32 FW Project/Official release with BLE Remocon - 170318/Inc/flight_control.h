@@ -111,8 +111,8 @@ typedef struct
     float32_t z_s1, z_s2;
 }P_PI_PIDControlTypeDef;
 
-void FlightControlPID(const EulerAngleTypeDef *euler_rc, const EulerAngleTypeDef *euler_ahrs_in, const Gyro_Rad *gyro_in_rad, P_PI_PIDControlTypeDef *pid, MotorControlTypeDef *motor_pwm);
-void FlightControlPID_OuterLoop(const EulerAngleTypeDef *euler_rc, const EulerAngleTypeDef *euler_ahrs_in, P_PI_PIDControlTypeDef *pid);
+void FlightControlPID(const EulerAngleTypeDef *euler_rc_in, const EulerAngleTypeDef *euler_ahrs_in, const Gyro_Rad *gyro_in_rad, P_PI_PIDControlTypeDef *pid, MotorControlTypeDef *motor_pwm);
+void FlightControlPID_OuterLoop(const EulerAngleTypeDef *euler_rc_in, const EulerAngleTypeDef *euler_ahrs_in, P_PI_PIDControlTypeDef *pid);
 void FlightControlPID_innerLoop(const Gyro_Rad *gyro_in_rad, P_PI_PIDControlTypeDef *pid, MotorControlTypeDef *motor_pwm);
 void PIDControlInit(P_PI_PIDControlTypeDef *pid);
 void PIDOuterLoopFrameTrans(P_PI_PIDControlTypeDef *pid, const EulerAngleTypeDef *euler_ahrs_in);

@@ -594,7 +594,7 @@ tBleStatus Batt_Env_RSSI_Update(int32_t Press,uint16_t Batt,int16_t Temp,int16_t
   BuffPos += 2;
 
   STORE_LE_16(buff + BuffPos, RSSI);
-  BuffPos += 2;
+  // BuffPos += 2;
   
   ret = aci_gatt_update_char_value(HWServW2STHandle, EnvironmentalCharHandle, 0, 2 + 4 + 2 + 2 + 2, buff);
   if (ret != BLE_STATUS_SUCCESS) {
@@ -763,14 +763,14 @@ void Read_Request_CB(uint16_t handle)
     /* Read Request for Pressure,Battery, and Temperatures*/
     float32_t SensorValue;
     int32_t PressToSend = 0;
-    uint16_t BattToSend = 0;
+    uint16_t BattToSend = 0u;
     int16_t TempToSend = 0, RSSIToSend = 0;
     int32_t decPart, intPart;
-    if (0 != TargetBoardFeatures.HandlePressSensor) {
-      if (((0 != TargetBoardFeatures.SnsAltFunc) ? BSP_PRESSURE_IsInitialized : BSP_PRESSURE_IsInitialized)(TargetBoardFeatures.HandlePressSensor, &Status) == COMPONENT_OK) {
-        ((0 != TargetBoardFeatures.SnsAltFunc) ? BSP_PRESSURE_Get_Press : BSP_PRESSURE_Get_Press)(TargetBoardFeatures.HandlePressSensor, (float32_t *)&SensorValue);
+    if (NULL != TargetBoardFeatures.HandlePressSensor) {
+      if (((0u != TargetBoardFeatures.SnsAltFunc) ? BSP_PRESSURE_IsInitialized : BSP_PRESSURE_IsInitialized)(TargetBoardFeatures.HandlePressSensor, &Status) == COMPONENT_OK) {
+        ((0u != TargetBoardFeatures.SnsAltFunc) ? BSP_PRESSURE_Get_Press : BSP_PRESSURE_Get_Press)(TargetBoardFeatures.HandlePressSensor, (float32_t *)&SensorValue);
         MCR_BLUEMS_F2I_2D(SensorValue, intPart, decPart);
-        PressToSend = intPart * 100 + decPart;
+        PressToSend = (intPart * 100) + decPart;
       }
     }
 

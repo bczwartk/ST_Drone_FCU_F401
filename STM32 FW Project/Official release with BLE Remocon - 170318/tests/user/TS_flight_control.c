@@ -15,12 +15,18 @@ CPPTEST_TEST_SUITE(TS_flight_control);
         CPPTEST_TEST_SUITE_TEARDOWN(TS_flight_control_testSuiteTearDown);
 CPPTEST_TEST(TS_flight_control_test_PIDOuterLoopFrameTrans_zeros);
 CPPTEST_TEST_DS(TS_flight_control_test_PIDOuterLoopFrameTrans_ds, CPPTEST_DS("TS_flight_control_PIDOuterLoopFrameTrans"));
+CPPTEST_TEST(TS_flight_control_test_FlightControlPID_zero);
+CPPTEST_TEST(TS_flight_control_test_FlightControlPID_OuterLoop_zero);
+CPPTEST_TEST(TS_flight_control_test_FlightControlPID_innerLoop_zero);
 CPPTEST_TEST_SUITE_END();
         
 void TS_flight_control_test_PIDControlInit(void);
 
 void TS_flight_control_test_PIDOuterLoopFrameTrans_zeros(void);
 void TS_flight_control_test_PIDOuterLoopFrameTrans_ds(void);
+void TS_flight_control_test_FlightControlPID_zero(void);
+void TS_flight_control_test_FlightControlPID_OuterLoop_zero(void);
+void TS_flight_control_test_FlightControlPID_innerLoop_zero(void);
 CPPTEST_TEST_SUITE_REGISTRATION(TS_flight_control);
 
 void TS_flight_control_testSuiteSetUp(void);
@@ -137,3 +143,45 @@ void TS_flight_control_test_PIDOuterLoopFrameTrans_ds()
     CPPTEST_ASSERT_FLOAT_EQUAL(CPPTEST_DS_GET_FLOAT("out_pid_0.y_s1"), _pid_0.y_s1, 0.001);
 }
 /* CPPTEST_TEST_CASE_END test_PIDOuterLoopFrameTrans_ds */
+
+/* CPPTEST_TEST_CASE_BEGIN test_FlightControlPID_zero */
+void TS_flight_control_test_FlightControlPID_zero()
+{
+	EulerAngleTypeDef euler_rc_in = { 0.0f, 0.0f, 0.0f };
+	EulerAngleTypeDef euler_ahrs_in = { 0.0f, 0.0f, 0.0f };
+	Gyro_Rad gyro_in_rad = { 0.0f, 0.0f, 0.0f };
+	P_PI_PIDControlTypeDef pid;
+	MotorControlTypeDef motor_pwm = { 0.0f, 0.0f, 0.0f, 0.0f };
+
+	PIDControlInit(&pid);
+
+	FlightControlPID(&euler_rc_in, &euler_ahrs_in, &gyro_in_rad, &pid, &motor_pwm);
+
+}
+/* CPPTEST_TEST_CASE_END test_FlightControlPID_zero */
+
+/* CPPTEST_TEST_CASE_BEGIN test_FlightControlPID_OuterLoop_zero */
+void TS_flight_control_test_FlightControlPID_OuterLoop_zero()
+{
+	EulerAngleTypeDef euler_rc_in = { 0.0f, 0.0f, 0.0f };
+	EulerAngleTypeDef euler_ahrs_in = { 0.0f, 0.0f, 0.0f };
+	P_PI_PIDControlTypeDef pid;
+
+	PIDControlInit(&pid);
+
+	FlightControlPID_OuterLoop(&euler_rc_in, &euler_ahrs_in, &pid);
+}
+/* CPPTEST_TEST_CASE_END test_FlightControlPID_OuterLoop_zero */
+
+/* CPPTEST_TEST_CASE_BEGIN test_FlightControlPID_innerLoop_zero */
+void TS_flight_control_test_FlightControlPID_innerLoop_zero()
+{
+	Gyro_Rad gyro_in_rad = { 0.0f, 0.0f, 0.0f };
+	P_PI_PIDControlTypeDef pid;
+	MotorControlTypeDef motor_pwm = { 0.0f, 0.0f, 0.0f, 0.0f };
+
+	PIDControlInit(&pid);
+
+	FlightControlPID_innerLoop(&gyro_in_rad, &pid, &motor_pwm);
+}
+/* CPPTEST_TEST_CASE_END test_FlightControlPID_innerLoop_zero */

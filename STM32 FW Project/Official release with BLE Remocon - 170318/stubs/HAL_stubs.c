@@ -67,3 +67,39 @@ EXTERN_C_LINKAGE uint32_t CppTest_Stub_HAL_GetTick (void)
 
     return __return;
 }
+
+/** User stub definition for function: void HAL_Delay(volatile uint32_t) */
+EXTERN_C_LINKAGE void HAL_Delay (volatile uint32_t Delay) ;
+EXTERN_C_LINKAGE void CppTest_Stub_HAL_Delay (volatile uint32_t Delay) 
+{
+    CPPTEST_STUB_CALLED("HAL_Delay");
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo, volatile uint32_t Delay)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("HAL_Delay", &CppTest_StubCallback_SomeName);
+     *
+     * 3. Fill out the body of the stub callback function according to intent.
+     * The following line may be used to call original function inside stub callback:
+     *     HAL_Delay(Delay);
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS(volatile uint32_t Delay);
+        CPPTEST_STUB_INVOKE_CALLBACK(Delay);
+
+    } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
+    	// Note: this causes the test exe to get stuck - use callback to bypass
+        HAL_Delay(Delay);
+
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
+}
