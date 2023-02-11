@@ -79,14 +79,14 @@
 /* Create buffer for reception and transmission           */
 /* It's up to user to redefine and/or remove those define */
 /* Received Data over USB are stored in this buffer       */
-uint8_t UserRxBufferFS[APP_RX_DATA_SIZE];
+static uint8_t UserRxBufferFS[APP_RX_DATA_SIZE];
 
 /* Send Data over USB CDC are stored in this buffer       */
-uint8_t UserTxBufferFS[APP_TX_DATA_SIZE];
+static uint8_t UserTxBufferFS[APP_TX_DATA_SIZE];
 
 /* USB handler declaration */
 /* Handle for USB Full Speed IP */
-USBD_HandleTypeDef  *hUsbDevice_0;
+static USBD_HandleTypeDef  *hUsbDevice_0;
 
 extern USBD_HandleTypeDef hUsbDeviceFS;
 
@@ -124,7 +124,7 @@ static int8_t CDC_Init_FS(void)
   /* Set Application Buffers */
   (void)USBD_CDC_SetTxBuffer(hUsbDevice_0, UserTxBufferFS, 0);
   (void)USBD_CDC_SetRxBuffer(hUsbDevice_0, UserRxBufferFS);
-  return (USBD_OK);
+  return ((int8_t) USBD_OK);
   /* USER CODE END 3 */ 
 }
 
@@ -137,7 +137,7 @@ static int8_t CDC_Init_FS(void)
 static int8_t CDC_DeInit_FS(void)
 {
   /* USER CODE BEGIN 4 */ 
-  return (USBD_OK);
+  return ((int8_t) USBD_OK);
   /* USER CODE END 4 */ 
 }
 
@@ -212,7 +212,7 @@ static int8_t CDC_Control_FS  (uint8_t cmd, uint8_t* pbuf, uint16_t length)
     break;
   }
 
-  return (USBD_OK);
+  return ((int8_t) USBD_OK);
   /* USER CODE END 5 */
 }
 
@@ -234,7 +234,7 @@ static int8_t CDC_Control_FS  (uint8_t cmd, uint8_t* pbuf, uint16_t length)
 static int8_t CDC_Receive_FS (uint8_t* Buf, uint32_t *Len)
 {
   /* USER CODE BEGIN 6 */
-  return (USBD_OK);
+  return ((int8_t) USBD_OK);
   /* USER CODE END 6 */ 
 }
 
@@ -251,7 +251,7 @@ static int8_t CDC_Receive_FS (uint8_t* Buf, uint32_t *Len)
   */
 uint8_t CDC_Transmit_FS(uint8_t* Buf, uint16_t Len)
 {
-  uint8_t result = USBD_OK;
+  uint8_t result = (uint8_t) USBD_OK;
   /* USER CODE BEGIN 7 */ 
   (void)USBD_CDC_SetTxBuffer(hUsbDevice_0, Buf, Len);
   result = USBD_CDC_TransmitPacket(hUsbDevice_0);
