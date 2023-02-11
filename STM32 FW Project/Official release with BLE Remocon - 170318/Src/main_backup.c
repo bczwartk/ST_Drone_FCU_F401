@@ -465,7 +465,7 @@ int32_t BytesToWrite;
       euler_rc_fil.thy = euler_rc.thy;
       euler_rc_fil.thz = euler_rc.thz;
 
-      FlightControlPID_OuterLoop(&euler_rc_fil, &euler_ahrs, &ahrs, &pid);
+      FlightControlPID_OuterLoop(&euler_rc_fil, &euler_ahrs, &pid);
 
     }
 

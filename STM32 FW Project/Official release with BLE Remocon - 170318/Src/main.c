@@ -541,7 +541,7 @@ int32_t BytesToWrite;
       euler_rc_fil.thy = euler_rc.thy;
       euler_rc_fil.thz = euler_rc.thz;
       
-      FlightControlPID_OuterLoop(&euler_rc_fil, &euler_ahrs, &ahrs, &pid);
+      FlightControlPID_OuterLoop(&euler_rc_fil, &euler_ahrs, &pid);
       
     /* Added for debug on UART*/
     /* Remocon ELE, AIL, RUD, THR, AHRS Euler angle x and y axis, Remocon Euler angle x and y axis */
@@ -1012,7 +1012,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
       if (rc_connection_flag && rc_enable_motor)
       {   // Do PID Control
-        FlightControlPID_innerLoop(&euler_rc_fil, &gyro_in_rad, &ahrs, &pid, &motor_pwm);
+        FlightControlPID_innerLoop(&gyro_in_rad, &pid, &motor_pwm);
       }
       else
       {

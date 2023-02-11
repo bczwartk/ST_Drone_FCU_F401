@@ -18,6 +18,11 @@ CPPTEST_TEST(TS_motor_test_set_motor_pwm_min);
 CPPTEST_TEST(TS_motor_test_set_motor_pwm_below_min);
 CPPTEST_TEST(TS_motor_test_set_motor_pwm_max);
 CPPTEST_TEST(TS_motor_test_set_motor_pwm_above_max);
+CPPTEST_TEST(TS_motor_test_set_single_motor_pwm_above_max);
+CPPTEST_TEST(TS_motor_test_set_single_motor_pwm_below_min);
+CPPTEST_TEST(TS_motor_test_set_single_motor_pwm_max);
+CPPTEST_TEST(TS_motor_test_set_single_motor_pwm_min);
+CPPTEST_TEST(TS_motor_test_set_single_motor_pwm_within_range);
 CPPTEST_TEST_SUITE_END();
         
 
@@ -27,6 +32,11 @@ void TS_motor_test_set_motor_pwm_min(void);
 void TS_motor_test_set_motor_pwm_below_min(void);
 void TS_motor_test_set_motor_pwm_max(void);
 void TS_motor_test_set_motor_pwm_above_max(void);
+void TS_motor_test_set_single_motor_pwm_above_max(void);
+void TS_motor_test_set_single_motor_pwm_below_min(void);
+void TS_motor_test_set_single_motor_pwm_max(void);
+void TS_motor_test_set_single_motor_pwm_min(void);
+void TS_motor_test_set_single_motor_pwm_within_range(void);
 CPPTEST_TEST_SUITE_REGISTRATION(TS_motor);
 
 void TS_motor_testSuiteSetUp(void);
@@ -236,3 +246,99 @@ void TS_motor_test_set_motor_pwm_above_max()
     }
 }
 /* CPPTEST_TEST_CASE_END test_set_motor_pwm_above_max */
+
+/* CPPTEST_TEST_CASE_BEGIN test_set_single_motor_pwm_above_max */
+/* CPPTEST_TEST_CASE_CONTEXT void set_motor_pwm(MotorControlTypeDef *) */
+void TS_motor_test_set_single_motor_pwm_above_max()
+{
+    /* Pre-condition initialization */
+    /* Initializing argument 1 (motor_pwm) */ 
+	float val = MOTOR_MAX_PWM_VALUE + 100.0f;
+	uint32_t exp = MOTOR_MAX_PWM_VALUE;
+	uint32_t ccr = MOTOR_MIN_PWM_VALUE;
+
+    {
+        /* Tested function call */
+        set_single_motor_pwm(&ccr, val);
+        /* Post-condition check */
+        CPPTEST_ASSERT_UINTEGER_EQUAL(exp, ccr);
+    }
+}
+/* CPPTEST_TEST_CASE_END test_set_single_motor_pwm_above_max */
+
+/* CPPTEST_TEST_CASE_BEGIN test_set_single_motor_pwm_below_min */
+/* CPPTEST_TEST_CASE_CONTEXT void set_motor_pwm(MotorControlTypeDef *) */
+void TS_motor_test_set_single_motor_pwm_below_min()
+{
+    /* Pre-condition initialization */
+    /* Initializing argument 1 (motor_pwm) */ 
+	float val = MOTOR_MIN_PWM_VALUE - 100.0f;
+	uint32_t exp = MOTOR_MIN_PWM_VALUE;
+	uint32_t ccr = MOTOR_MAX_PWM_VALUE;
+
+    {
+        /* Tested function call */
+        set_single_motor_pwm(&ccr, val);
+        /* Post-condition check */
+        CPPTEST_ASSERT_UINTEGER_EQUAL(exp, ccr);
+    }
+}
+/* CPPTEST_TEST_CASE_END test_set_single_motor_pwm_below_min */
+
+/* CPPTEST_TEST_CASE_BEGIN test_set_single_motor_pwm_max */
+/* CPPTEST_TEST_CASE_CONTEXT void set_motor_pwm(MotorControlTypeDef *) */
+void TS_motor_test_set_single_motor_pwm_max()
+{
+    /* Pre-condition initialization */
+    /* Initializing argument 1 (motor_pwm) */ 
+	float val = MOTOR_MAX_PWM_VALUE;
+	uint32_t exp = MOTOR_MAX_PWM_VALUE;
+	uint32_t ccr = MOTOR_MIN_PWM_VALUE;
+
+    {
+        /* Tested function call */
+        set_single_motor_pwm(&ccr, val);
+        /* Post-condition check */
+        CPPTEST_ASSERT_UINTEGER_EQUAL(exp, ccr);
+   }
+}
+/* CPPTEST_TEST_CASE_END test_set_single_motor_pwm_max */
+
+/* CPPTEST_TEST_CASE_BEGIN test_set_single_motor_pwm_min */
+/* CPPTEST_TEST_CASE_CONTEXT void set_motor_pwm(MotorControlTypeDef *) */
+void TS_motor_test_set_single_motor_pwm_min()
+{
+    /* Pre-condition initialization */
+    /* Initializing argument 1 (motor_pwm) */ 
+	float val = MOTOR_MIN_PWM_VALUE;
+	uint32_t exp = MOTOR_MIN_PWM_VALUE;
+	uint32_t ccr = MOTOR_MAX_PWM_VALUE;
+
+    {
+        /* Tested function call */
+        set_single_motor_pwm(&ccr, val);
+        /* Post-condition check */
+        CPPTEST_ASSERT_UINTEGER_EQUAL(exp, ccr);
+    }
+}
+/* CPPTEST_TEST_CASE_END test_set_single_motor_pwm_min */
+
+/* CPPTEST_TEST_CASE_BEGIN test_set_single_motor_pwm_within_range */
+/* CPPTEST_TEST_CASE_CONTEXT void set_motor_pwm(MotorControlTypeDef *) */
+void TS_motor_test_set_single_motor_pwm_within_range()
+{
+    /* Pre-condition initialization */
+    /* Initializing argument 1 (motor_pwm) */ 
+	float val = MOTOR_MIN_PWM_VALUE + (MOTOR_MAX_PWM_VALUE - MOTOR_MIN_PWM_VALUE) / 2.0f;
+	uint32_t exp = val;
+	uint32_t ccr = MOTOR_MIN_PWM_VALUE;
+
+    {
+        /* Tested function call */
+        set_single_motor_pwm(&ccr, val);
+        /* Post-condition check */
+        CPPTEST_ASSERT_UINTEGER_EQUAL(exp, ccr);
+   }
+}
+/* CPPTEST_TEST_CASE_END test_set_single_motor_pwm_within_range */
+

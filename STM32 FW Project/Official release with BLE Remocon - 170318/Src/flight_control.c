@@ -53,7 +53,7 @@ void PIDControlInit(P_PI_PIDControlTypeDef *pid)
   pid->z_s2 = 0.0f;
 }
 
-void FlightControlPID(EulerAngleTypeDef *euler_rc, EulerAngleTypeDef *euler_ahrs, Gyro_Rad *gyro_in_rad, AHRS_State_TypeDef *ahrs, P_PI_PIDControlTypeDef *pid, MotorControlTypeDef *motor_pwm)
+void FlightControlPID(const EulerAngleTypeDef *euler_rc_in, const EulerAngleTypeDef *euler_ahrs_in, const Gyro_Rad *gyro_in_rad, P_PI_PIDControlTypeDef *pid, MotorControlTypeDef *motor_pwm)
 {
   float32_t error, deriv;
 
@@ -69,21 +69,25 @@ void FlightControlPID(EulerAngleTypeDef *euler_rc, EulerAngleTypeDef *euler_ahrs
 
   
   //x-axis pid
-  error = euler_rc->thx - euler_ahrs->thx;
+  error = euler_rc_in->thx - euler_ahrs_in->thx;
   pid_x_integ1 += error * pid->ts;
   if (pid_x_integ1 > pid->x_i1_limit) {
     pid_x_integ1 = pid->x_i1_limit;
   } else if (pid_x_integ1 < -pid->x_i1_limit) {
     pid_x_integ1 = -pid->x_i1_limit;
+  } else {
+	  // no action needed - MISRAC2012-RULE_15_7-a
   }
   pid->x_s1 =  (pid->x_kp1 * error) + (pid->x_ki1 * pid_x_integ1);
 
-  error = euler_rc->thx - gyro_in_rad->gx;
+  error = euler_rc_in->thx - gyro_in_rad->gx;
   pid_x_integ2 += error * pid->ts;
   if (pid_x_integ2 > pid->x_i2_limit) {
     pid_x_integ2 = pid->x_i2_limit;
   } else if (pid_x_integ2 < -pid->x_i2_limit) {
     pid_x_integ2 = -pid->x_i2_limit;
+  } else {
+	  // no action needed - MISRAC2012-RULE_15_7-a
   }
   deriv = error - pid_x_pre_error2;
   pid_x_pre_error2 = error;
@@ -98,21 +102,25 @@ void FlightControlPID(EulerAngleTypeDef *euler_rc, EulerAngleTypeDef *euler_ahrs
 
 
   //y-axis pid
-  error = euler_rc->thy - euler_ahrs->thy;
+  error = euler_rc_in->thy - euler_ahrs_in->thy;
   pid_y_integ1 += error * pid->ts;
   if (pid_y_integ1 > pid->y_i1_limit) {
     pid_y_integ1 = pid->y_i1_limit;
   } else if (pid_y_integ1 < -pid->y_i1_limit) {
     pid_y_integ1 = -pid->y_i1_limit;
+  } else {
+	  // no action needed - MISRAC2012-RULE_15_7-a
   }
   pid->y_s1 =  (pid->y_kp1 * error) + (pid->y_ki1 * pid_y_integ1);
 
-  error = euler_rc->thy - gyro_in_rad->gy;
+  error = euler_rc_in->thy - gyro_in_rad->gy;
   pid_y_integ2 += error * pid->ts;
   if (pid_y_integ2 > pid->y_i2_limit) {
     pid_y_integ2 = pid->y_i2_limit;
   } else if (pid_y_integ2 < -pid->y_i2_limit) {
     pid_y_integ2 = -pid->y_i2_limit;
+  } else {
+	  // no action needed - MISRAC2012-RULE_15_7-a
   }
   deriv = error - pid_y_pre_error2;
   pid_y_pre_error2 = error;
@@ -127,12 +135,14 @@ void FlightControlPID(EulerAngleTypeDef *euler_rc, EulerAngleTypeDef *euler_ahrs
 
 
   //z-axis pid
-  error = euler_rc->thz - gyro_in_rad->gz;
+  error = euler_rc_in->thz - gyro_in_rad->gz;
   pid_z_integ2 += error * pid->ts;
   if (pid_z_integ2 > pid->z_i2_limit) {
     pid_z_integ2 = pid->z_i2_limit;
   } else if (pid_z_integ2 < -pid->z_i2_limit) {
     pid_z_integ2 = -pid->z_i2_limit;
+  } else {
+	  // no action needed - MISRAC2012-RULE_15_7-a
   }
   deriv = error - pid_z_pre_error2;
   pid_z_pre_error2 = error;
@@ -165,7 +175,7 @@ void FlightControlPID(EulerAngleTypeDef *euler_rc, EulerAngleTypeDef *euler_ahrs
   motor_pwm->motor4_pwm = motor_thr - pid->x_s2 + pid->y_s2 - pid->z_s2 + MOTOR_OFF4;
 }
 
-void FlightControlPID_OuterLoop(EulerAngleTypeDef *euler_rc, EulerAngleTypeDef *euler_ahrs, AHRS_State_TypeDef *ahrs, P_PI_PIDControlTypeDef *pid)
+void FlightControlPID_OuterLoop(const EulerAngleTypeDef *euler_rc_in, const EulerAngleTypeDef *euler_ahrs_in, P_PI_PIDControlTypeDef *pid)
 {
   float32_t error;
 
@@ -177,37 +187,43 @@ void FlightControlPID_OuterLoop(EulerAngleTypeDef *euler_rc, EulerAngleTypeDef *
   }
 
   //x-axis pid
-  error = euler_rc->thx - euler_ahrs->thx;
+  error = euler_rc_in->thx - euler_ahrs_in->thx;
   pid_x_integ1 += error * pid->ts;
   if (pid_x_integ1 > pid->x_i1_limit) {
     pid_x_integ1 = pid->x_i1_limit;
   } else if (pid_x_integ1 < -pid->x_i1_limit) {
     pid_x_integ1 = -pid->x_i1_limit;
+  } else {
+	  // no action needed - MISRAC2012-RULE_15_7-a
   }
   pid->x_s1 =  (pid->x_kp1 * error) + (pid->x_ki1 * pid_x_integ1);
 
   //y-axis pid
-  error = euler_rc->thy - euler_ahrs->thy;
+  error = euler_rc_in->thy - euler_ahrs_in->thy;
   pid_y_integ1 += error * pid->ts;
   if (pid_y_integ1 > pid->y_i1_limit) {
     pid_y_integ1 = pid->y_i1_limit;
   } else if (pid_y_integ1 < -pid->y_i1_limit) {
     pid_y_integ1 = -pid->y_i1_limit;
+  } else {
+	  // no action needed - MISRAC2012-RULE_15_7-a
   }
   pid->y_s1 =  (pid->y_kp1 * error) + (pid->y_ki1 * pid_y_integ1);
 
   //z-axis pid
-  error = euler_rc->thz - euler_ahrs->thz;
+  error = euler_rc_in->thz - euler_ahrs_in->thz;
   pid_z_integ1 += error * pid->ts;
   if (pid_z_integ1 > pid->z_i1_limit) {
     pid_z_integ1 = pid->z_i1_limit;
   } else if (pid_z_integ1 < -pid->z_i1_limit) {
     pid_z_integ1 = -pid->z_i1_limit;
+  } else {
+	  // no action needed - MISRAC2012-RULE_15_7-a
   }
   pid->z_s1 = (pid->z_kp1 * error) + (pid->z_ki1 * pid_z_integ1);
 }
 
-void FlightControlPID_innerLoop(EulerAngleTypeDef *euler_rc, Gyro_Rad *gyro_in_rad, AHRS_State_TypeDef *ahrs, P_PI_PIDControlTypeDef *pid, MotorControlTypeDef *motor_pwm)
+void FlightControlPID_innerLoop(const Gyro_Rad *gyro_in_rad, P_PI_PIDControlTypeDef *pid, MotorControlTypeDef *motor_pwm)
 {
   float32_t error, deriv;
 
@@ -217,7 +233,7 @@ void FlightControlPID_innerLoop(EulerAngleTypeDef *euler_rc, Gyro_Rad *gyro_in_r
     pid_z_integ2 = 0.0f;
   }
   
-  dt_recip = 1/pid->ts;
+  dt_recip = 1.0f / pid->ts;
 
   //X Axis
   error = pid->x_s1 - gyro_in_rad->gx;
@@ -226,8 +242,10 @@ void FlightControlPID_innerLoop(EulerAngleTypeDef *euler_rc, Gyro_Rad *gyro_in_r
     pid_x_integ2 = pid->x_i2_limit;
   } else if (pid_x_integ2 < -pid->x_i2_limit) {
     pid_x_integ2 = -pid->x_i2_limit;
+  } else {
+	  // no action needed - MISRAC2012-RULE_15_7-a
   }
-  deriv = (error - pid_x_pre_error2)*dt_recip;
+  deriv = (error - pid_x_pre_error2) * dt_recip;
   pid_x_pre_error2 = error;
   deriv = pid_x_pre_deriv + ((deriv - pid_x_pre_deriv) * D_FILTER_COFF);
   pid_x_pre_deriv = deriv;
@@ -247,10 +265,12 @@ void FlightControlPID_innerLoop(EulerAngleTypeDef *euler_rc, Gyro_Rad *gyro_in_r
     pid_y_integ2 = pid->y_i2_limit;
   } else if (pid_y_integ2 < -pid->y_i2_limit) {
     pid_y_integ2 = -pid->y_i2_limit;
+  } else {
+	  // no action needed - MISRAC2012-RULE_15_7-a
   }
   deriv = (error - pid_y_pre_error2)*dt_recip;
   pid_y_pre_error2 = error;
-  deriv = pid_y_pre_deriv + (deriv - pid_y_pre_deriv)*D_FILTER_COFF;
+  deriv = pid_y_pre_deriv + ((deriv - pid_y_pre_deriv) * D_FILTER_COFF);
   pid_y_pre_deriv = deriv;
   pid->y_s2 = (pid->y_kp2 * error) + (pid->y_ki2 * pid_y_integ2) + (pid->y_kd2 * deriv);
 
@@ -268,6 +288,8 @@ void FlightControlPID_innerLoop(EulerAngleTypeDef *euler_rc, Gyro_Rad *gyro_in_r
     pid_z_integ2 = pid->z_i2_limit;
   } else if (pid_z_integ2 < -pid->z_i2_limit) {
     pid_z_integ2 = -pid->z_i2_limit;
+  } else {
+	  // no action needed - MISRAC2012-RULE_15_7-a
   }
   deriv = (error - pid_z_pre_error2)*dt_recip;
   pid_z_pre_error2 = error;
@@ -301,10 +323,10 @@ void FlightControlPID_innerLoop(EulerAngleTypeDef *euler_rc, Gyro_Rad *gyro_in_r
   motor_pwm->motor4_pwm = motor_thr - pid->x_s2 + pid->y_s2 - pid->z_s2 + MOTOR_OFF4;
 }
 
-void PIDOuterLoopFrameTrans(P_PI_PIDControlTypeDef *pid, EulerAngleTypeDef *euler_ahrs)
+void PIDOuterLoopFrameTrans(P_PI_PIDControlTypeDef *pid, const EulerAngleTypeDef *euler_ahrs_in)
 {
   float32_t cosx;
   
-  cosx = cos(euler_ahrs->thx);
+  cosx = cos(euler_ahrs_in->thx);
   pid->y_s1 = cosx * pid->y_s1;
 }

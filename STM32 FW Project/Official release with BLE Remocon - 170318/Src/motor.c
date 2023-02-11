@@ -10,43 +10,27 @@
 
 extern TIM_HandleTypeDef htim4;
 
+static void set_single_motor_pwm(__IO uint32_t * pCCR, float32_t motor_pwm_val)
+{
+	  if (motor_pwm_val >= MOTOR_MAX_PWM_VALUE) {
+	    *pCCR = (uint32_t) MOTOR_MAX_PWM_VALUE;
+	  } else if (motor_pwm_val <= MOTOR_MIN_PWM_VALUE) {
+	    *pCCR = (uint32_t) MOTOR_MIN_PWM_VALUE;
+	  } else {
+	    *pCCR = (uint32_t) motor_pwm_val;
+	  }
+}
+
 /*
  * Setup the driving power for 4 motors. p1~p4 data range is 0~1999, which equals
  * to 0~100% duty cycle (for DC motor configuration)
  */
 void set_motor_pwm(const MotorControlTypeDef *motor_pwm_param)
 {
-  if (motor_pwm_param->motor1_pwm >= MOTOR_MAX_PWM_VALUE) {
-    htim4.Instance->CCR1 = MOTOR_MAX_PWM_VALUE;
-  } else if (motor_pwm_param->motor1_pwm <= MOTOR_MIN_PWM_VALUE) {
-    htim4.Instance->CCR1 = MOTOR_MIN_PWM_VALUE;
-  } else {
-    htim4.Instance->CCR1 = (uint32_t) motor_pwm_param->motor1_pwm;
-  }
-  
-  if (motor_pwm_param->motor2_pwm >= MOTOR_MAX_PWM_VALUE) {
-    htim4.Instance->CCR2 = MOTOR_MAX_PWM_VALUE;
-  } else if (motor_pwm_param->motor2_pwm <= MOTOR_MIN_PWM_VALUE) {
-    htim4.Instance->CCR2 = MOTOR_MIN_PWM_VALUE;
-  } else {
-    htim4.Instance->CCR2 = (uint32_t) motor_pwm_param->motor2_pwm;
-  }
-  
-  if (motor_pwm_param->motor3_pwm >= MOTOR_MAX_PWM_VALUE) {
-    htim4.Instance->CCR3 = MOTOR_MAX_PWM_VALUE;
-  } else if (motor_pwm_param->motor3_pwm <= MOTOR_MIN_PWM_VALUE) {
-    htim4.Instance->CCR3 = MOTOR_MIN_PWM_VALUE;
-  } else {
-    htim4.Instance->CCR3 = (uint32_t) motor_pwm_param->motor3_pwm;
-  }
-  
-  if (motor_pwm_param->motor4_pwm >= MOTOR_MAX_PWM_VALUE) {
-    htim4.Instance->CCR4 = MOTOR_MAX_PWM_VALUE;
-  } else if (motor_pwm_param->motor4_pwm <= MOTOR_MIN_PWM_VALUE) {
-    htim4.Instance->CCR4 = MOTOR_MIN_PWM_VALUE;
-  } else {
-    htim4.Instance->CCR4 = (uint32_t) motor_pwm_param->motor4_pwm;
-  }
+  set_single_motor_pwm(&htim4.Instance->CCR1, motor_pwm_param->motor1_pwm);
+  set_single_motor_pwm(&htim4.Instance->CCR2, motor_pwm_param->motor2_pwm);
+  set_single_motor_pwm(&htim4.Instance->CCR3, motor_pwm_param->motor3_pwm);
+  set_single_motor_pwm(&htim4.Instance->CCR4, motor_pwm_param->motor4_pwm);
 }
 
 

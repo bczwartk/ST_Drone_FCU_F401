@@ -29,9 +29,9 @@
 
 #define AUTO_CONNECTION_CENTER  0
 
-const float32_t max_pitch_rad = PI*PITCH_MAX_DEG/180.0f;
-const float32_t max_roll_rad = PI*ROLL_MAX_DEG/180.0f;
-const float32_t max_yaw_rad = PI*YAW_MAX_DEG/180.0f;
+static const float32_t max_pitch_rad = PI * PITCH_MAX_DEG / 180.0f;
+static const float32_t max_roll_rad = PI * ROLL_MAX_DEG / 180.0f;
+static const float32_t max_yaw_rad = PI * YAW_MAX_DEG / 180.0f;
 
 int32_t ail_center = AIL_MIDDLE;
 int32_t ele_center = ELE_MIDDLE;
@@ -266,6 +266,8 @@ void GetTargetEulerAngle(EulerAngleTypeDef *euler_rc_in, const EulerAngleTypeDef
         euler_rc_in->thz += max_yaw_rad;
       } else if (t1 < -EULER_Z_TH) {
         euler_rc_in->thz -= max_yaw_rad;
+      } else {
+    	  // nothing to do - MISRAC2012-RULE_15_7-a
       }
     } else {
       if ((t1 > -EULER_Z_TH) && (t1 < EULER_Z_TH)) {
