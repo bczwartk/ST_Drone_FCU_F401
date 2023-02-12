@@ -29,10 +29,6 @@
 
 #define AUTO_CONNECTION_CENTER  0
 
-static const float32_t max_pitch_rad = PI * PITCH_MAX_DEG / 180.0f;
-static const float32_t max_roll_rad = PI * ROLL_MAX_DEG / 180.0f;
-static const float32_t max_yaw_rad = PI * YAW_MAX_DEG / 180.0f;
-
 int32_t ail_center = AIL_MIDDLE;
 int32_t ele_center = ELE_MIDDLE;
 int32_t rud_center = RUD_MIDDLE;
@@ -101,7 +97,7 @@ void init_rc_variables(void)
 {
   uint32_t i;
   rc_connection_flag = 0;
-  for (i=0;i<4;i++)
+  for (i = 0; i < 4u; i++)
   {
     rc_flag[i] = 0;
     rc_t_rise[i] = 0;
@@ -251,6 +247,9 @@ static int32_t limit_value(int32_t val)
  */
 void GetTargetEulerAngle(EulerAngleTypeDef *euler_rc_in, const EulerAngleTypeDef *euler_ahrs_in)
 {
+	const float32_t max_pitch_rad = PI * PITCH_MAX_DEG / 180.0f;
+	const float32_t max_roll_rad = PI * ROLL_MAX_DEG / 180.0f;
+	const float32_t max_yaw_rad = PI * YAW_MAX_DEG / 180.0f;
 	int32_t t1;
 
     t1 = limit_value(gELE);

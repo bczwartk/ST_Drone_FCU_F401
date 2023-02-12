@@ -50,7 +50,7 @@
 #include "uuid_ble_service.h"
 #include "steval_fcu001_v1_pressure.h"
 
-#define W2ST_CHECK_CONNECTION(BleChar) ((ConnectionBleStatus & (BleChar)) ? 1 : 0)
+#define W2ST_CHECK_CONNECTION(BleChar) ((ConnectionBleStatus & (BleChar)) != 0 ? 1 : 0)
 #define W2ST_ON_CONNECTION(BleChar)    (ConnectionBleStatus |= (BleChar))
 #define W2ST_OFF_CONNECTION(BleChar)   (ConnectionBleStatus &= (~(BleChar)))
 
@@ -85,9 +85,9 @@ static uint8_t LastStderrLen;
 static uint8_t LastTermBuffer[W2ST_CONSOLE_MAX_CHAR_LEN];
 static uint8_t LastTermLen;
 
-static uint8_t  EnvironmentalCharSize=2; /* Size for Environmental BLE characteristic */
+static uint8_t  EnvironmentalCharSize = 2u; /* Size for Environmental BLE characteristic */
 
-static uint16_t connection_handle = 0;
+static uint16_t connection_handle = 0u;
 
 
 /* Private functions ------------------------------------------------------------*/
@@ -130,7 +130,7 @@ tBleStatus safe_aci_gatt_update_char_value(uint16_t servHandle,
   } else {
     ret = aci_gatt_update_char_value(servHandle,charHandle,charValOffset,charValueLen,charValue);
     
-    if (ret != BLE_STATUS_SUCCESS){
+    if (ret != BLE_STATUS_SUCCESS) {
       breath = ACC_BLUENRG_CONGESTION_SKIP;
     }
   }
@@ -240,19 +240,19 @@ tBleStatus Stderr_Update(uint8_t *data,uint8_t length)
   uint8_t DataToSend;
 
   /* Split the code in packages*/
-  for(Offset =0; Offset<length; Offset +=W2ST_CONSOLE_MAX_CHAR_LEN){
-    DataToSend = (length-Offset);
-    DataToSend = (DataToSend>W2ST_CONSOLE_MAX_CHAR_LEN) ?  W2ST_CONSOLE_MAX_CHAR_LEN : DataToSend;
+  for (Offset = 0u; Offset < length; Offset += W2ST_CONSOLE_MAX_CHAR_LEN) {
+    DataToSend = (length - Offset);
+    DataToSend = (DataToSend > W2ST_CONSOLE_MAX_CHAR_LEN) ? W2ST_CONSOLE_MAX_CHAR_LEN : DataToSend;
 
     /* keep a copy */
-    (void)memcpy(LastStderrBuffer,data+Offset,DataToSend);
+    (void) memcpy(LastStderrBuffer, data + Offset, DataToSend);
     LastStderrLen = DataToSend;
 
-    ret = aci_gatt_update_char_value(ConsoleW2STHandle, StdErrCharHandle, 0, DataToSend , data+Offset);
+    ret = aci_gatt_update_char_value(ConsoleW2STHandle, StdErrCharHandle, 0, DataToSend , data + Offset);
     if (ret != BLE_STATUS_SUCCESS) {
       return BLE_STATUS_ERROR;
     }
-    HAL_Delay(10);
+    HAL_Delay(10u);
   }
 
   return BLE_STATUS_SUCCESS;
@@ -272,20 +272,20 @@ tBleStatus Term_Update(uint8_t *data,uint8_t length)
   uint8_t DataToSend;
 
   /* Split the code in packages */
-  for(Offset =0; Offset<length; Offset +=W2ST_CONSOLE_MAX_CHAR_LEN){
-    DataToSend = (length-Offset);
-    DataToSend = (DataToSend>W2ST_CONSOLE_MAX_CHAR_LEN) ?  W2ST_CONSOLE_MAX_CHAR_LEN : DataToSend;
+  for (Offset = 0u; Offset < length; Offset += W2ST_CONSOLE_MAX_CHAR_LEN) {
+    DataToSend = (length - Offset);
+    DataToSend = (DataToSend > W2ST_CONSOLE_MAX_CHAR_LEN) ? W2ST_CONSOLE_MAX_CHAR_LEN : DataToSend;
 
     /* keep a copy */
-    (void)memcpy(LastTermBuffer,data+Offset,DataToSend);
+    (void) memcpy(LastTermBuffer, data + Offset, DataToSend);
     LastTermLen = DataToSend;
 
-    ret = aci_gatt_update_char_value(ConsoleW2STHandle, TermCharHandle, 0, DataToSend , data+Offset);
+    ret = aci_gatt_update_char_value(ConsoleW2STHandle, TermCharHandle, 0, DataToSend, data + Offset);
     if (ret != BLE_STATUS_SUCCESS) {
         PRINTF("Error Updating Stdout Char\r\n");
       return BLE_STATUS_ERROR;
     }
-    HAL_Delay(20);
+    HAL_Delay(20u);
   }
 
   return BLE_STATUS_SUCCESS;
@@ -317,11 +317,11 @@ static tBleStatus Term_Update_AfterRead(void)
 {
   tBleStatus ret;
 
-  ret = aci_gatt_update_char_value(ConsoleW2STHandle, TermCharHandle, 0, LastTermLen , LastTermBuffer);
+  ret = aci_gatt_update_char_value(ConsoleW2STHandle, TermCharHandle, 0u, LastTermLen , LastTermBuffer);
   if (ret != BLE_STATUS_SUCCESS) {
     if (0 != W2ST_CHECK_CONNECTION(W2ST_CONNECT_STD_ERR)) {
       BytesToWrite = sprintf((char *)BufferToWrite, "Error Updating Stdout Char\r\n");
-      (void)Stderr_Update(BufferToWrite, BytesToWrite);
+      (void) Stderr_Update(BufferToWrite, BytesToWrite);
     } else {
       PRINTF("Error Updating Stdout Char\r\n");
     }
@@ -339,14 +339,14 @@ static tBleStatus Term_Update_AfterRead(void)
 tBleStatus Config_Notify(uint32_t feature, uint8_t command, uint8_t data)
 {
   tBleStatus ret;
-  uint8_t buff[2+4+1+1];
+  uint8_t buff[2 + 4 + 1 + 1];
 
   STORE_LE_16(buff, (HAL_GetTick() >> 3));
   STORE_BE_32(buff + 2, feature);
   buff[6] = command;
   buff[7] = data;
 
-  ret = aci_gatt_update_char_value (ConfigServW2STHandle, ConfigCharHandle, 0, 8, buff);
+  ret = aci_gatt_update_char_value (ConfigServW2STHandle, ConfigCharHandle, 0u, 8u, buff);
   if (ret != BLE_STATUS_SUCCESS) {
     if (0 != W2ST_CHECK_CONNECTION(W2ST_CONNECT_STD_ERR)) {
       BytesToWrite = sprintf((char *)BufferToWrite, "Error Updating Configuration Char\r\n");
@@ -367,9 +367,9 @@ tBleStatus Config_Notify(uint32_t feature, uint8_t command, uint8_t data)
 tBleStatus AccEvent_Notify(uint16_t Command)
 {
   tBleStatus ret;
-  uint8_t buff[2+2];
+  uint8_t buff[2 + 2];
 
-  STORE_LE_16(buff,(HAL_GetTick() >> 3));
+  STORE_LE_16(buff, (HAL_GetTick() >> 3));
   STORE_LE_16(buff + 2, Command);
 
   ret = aci_gatt_update_char_value(HWServW2STHandle, AccEventCharHandle, 0, 2 + 2, buff);
@@ -552,7 +552,7 @@ tBleStatus AccGyroMag_Update(SensorAxes_t *Acc,SensorAxes_t *Gyro,SensorAxes_t *
   STORE_LE_16(buff + 16, Mag->AXIS_Y);
   STORE_LE_16(buff + 18, Mag->AXIS_Z);
   
-  ret = ACI_GATT_UPDATE_CHAR_VALUE(HWServW2STHandle, AccGyroMagCharHandle, 0, 2+3*3*2, buff);
+  ret = ACI_GATT_UPDATE_CHAR_VALUE(HWServW2STHandle, AccGyroMagCharHandle, 0, 2 + 3 * 3 * 2, buff);
 	
   if (ret != BLE_STATUS_SUCCESS) {
     if (0 != W2ST_CHECK_CONNECTION(W2ST_CONNECT_STD_ERR)) {
@@ -746,7 +746,7 @@ static void GAP_DisconnectionComplete_CB(void)
 
   ConnectionBleStatus = 0;
   
-  if (TargetBoardFeatures.HWAdvanceFeatures) {
+  if (0 != TargetBoardFeatures.HWAdvanceFeatures) {
     DisableHWFeatures();
   }
 }
@@ -790,6 +790,8 @@ void Read_Request_CB(uint16_t handle)
   } else if (handle == GGCharHandle + 1) {
     GG_Update();
 #endif /* STM32_SENSORTILE */
+  } else {
+  	// nothing to do - MISRAC2012-RULE_15_7-a
   }
 
   //EXIT:
@@ -816,12 +818,16 @@ void Attribute_Modified_CB(uint16_t attr_handle, uint8_t * att_data, uint8_t dat
       W2ST_ON_CONNECTION(W2ST_CONNECT_STD_ERR);
     } else if (att_data[0] == 0) {
       W2ST_OFF_CONNECTION(W2ST_CONNECT_STD_ERR);
+    } else {
+    	// nothing to do - MISRAC2012-RULE_15_7-a
     }
   } else if(attr_handle == TermCharHandle + 2) {
     if (att_data[0] == 1) {
       W2ST_ON_CONNECTION(W2ST_CONNECT_STD_TERM);
     } else if (att_data[0] == 0) {
       W2ST_OFF_CONNECTION(W2ST_CONNECT_STD_TERM);
+    } else {
+    	// nothing to do - MISRAC2012-RULE_15_7-a
     }
   } else if (attr_handle == TermCharHandle + 1) {
     uint32_t SendBackData = 1; /* By default Answer with the same message received */
@@ -841,6 +847,8 @@ void Attribute_Modified_CB(uint16_t attr_handle, uint8_t * att_data, uint8_t dat
       (void) ARMING_Update(TargetBoardFeatures.LedStatus);
     } else if (att_data[0] == 0) {
       W2ST_OFF_CONNECTION(W2ST_CONNECT_LED);
+    } else {
+    	// nothing to do - MISRAC2012-RULE_15_7-a
     }
 #ifdef MOTENV_DEBUG_CONNECTION
     if (0 != W2ST_CHECK_CONNECTION(W2ST_CONNECT_STD_TERM)) {
@@ -1003,6 +1011,8 @@ static uint32_t DebugConsoleCommandParsing(uint8_t * att_data, uint8_t data_leng
                           MCU_ID);
     (void) Term_Update(BufferToWrite, BytesToWrite);
     SendBackData = 0;
+  } else {
+  	// nothing to do - MISRAC2012-RULE_15_7-a
   }
 
 #if 1
@@ -1065,6 +1075,8 @@ static uint32_t DebugConsoleCommandParsing(uint8_t * att_data, uint8_t data_leng
         	break;
         }
         SendBackData = ConfigCommandParsing(loc_att_data, loc_data_length);
+      } else {
+      	// nothing to do - MISRAC2012-RULE_15_7-a
       }
     }
   }

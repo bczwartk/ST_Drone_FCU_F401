@@ -953,12 +953,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     acc_FIFO[tim9_cnt2-1].AXIS_Z = acc.AXIS_Z;
 
     // IIR Filtering on gyro
-    gyro_fil.AXIS_X = gyro_fil_coeff.b0*gyro.AXIS_X + gyro_fil_coeff.b1*gyro_x_pre[0].AXIS_X + gyro_fil_coeff.b2*gyro_x_pre[1].AXIS_X
-                                                    + gyro_fil_coeff.a1*gyro_y_pre[0].AXIS_X + gyro_fil_coeff.a2*gyro_y_pre[1].AXIS_X;
-    gyro_fil.AXIS_Y = gyro_fil_coeff.b0*gyro.AXIS_Y + gyro_fil_coeff.b1*gyro_x_pre[0].AXIS_Y + gyro_fil_coeff.b2*gyro_x_pre[1].AXIS_Y
-                                                    + gyro_fil_coeff.a1*gyro_y_pre[0].AXIS_Y + gyro_fil_coeff.a2*gyro_y_pre[1].AXIS_Y;
-    gyro_fil.AXIS_Z = gyro_fil_coeff.b0*gyro.AXIS_Z + gyro_fil_coeff.b1*gyro_x_pre[0].AXIS_Z + gyro_fil_coeff.b2*gyro_x_pre[1].AXIS_Z
-                                                    + gyro_fil_coeff.a1*gyro_y_pre[0].AXIS_Z + gyro_fil_coeff.a2*gyro_y_pre[1].AXIS_Z;
+    gyro_fil.AXIS_X = (gyro_fil_coeff.b0 * gyro.AXIS_X) + (gyro_fil_coeff.b1 * gyro_x_pre[0].AXIS_X) + (gyro_fil_coeff.b2 * gyro_x_pre[1].AXIS_X)
+                                                    + (gyro_fil_coeff.a1 * gyro_y_pre[0].AXIS_X) + (gyro_fil_coeff.a2 * gyro_y_pre[1].AXIS_X);
+    gyro_fil.AXIS_Y = (gyro_fil_coeff.b0 * gyro.AXIS_Y) + (gyro_fil_coeff.b1 * gyro_x_pre[0].AXIS_Y) + (gyro_fil_coeff.b2 * gyro_x_pre[1].AXIS_Y)
+                                                    + (gyro_fil_coeff.a1 * gyro_y_pre[0].AXIS_Y) + (gyro_fil_coeff.a2 * gyro_y_pre[1].AXIS_Y);
+    gyro_fil.AXIS_Z = (gyro_fil_coeff.b0 * gyro.AXIS_Z) + (gyro_fil_coeff.b1 * gyro_x_pre[0].AXIS_Z) + (gyro_fil_coeff.b2 * gyro_x_pre[1].AXIS_Z)
+                                                    + (gyro_fil_coeff.a1 * gyro_y_pre[0].AXIS_Z) + (gyro_fil_coeff.a2 * gyro_y_pre[1].AXIS_Z);
     // Shift IIR filter state
     for (int32_t i = 1; i > 0; i--)
     {

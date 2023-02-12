@@ -1722,6 +1722,7 @@
             <file>$PROJ_DIR$\..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_spi.h</file>
             <file>$PROJ_DIR$\..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_flash_ramfunc.h</file>
             <file>$TOOLKIT_DIR$\inc\c\stddef.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\errno.h</file>
         </outputs>
         <file>
             <name>$PROJ_DIR$\..\Src\main.c</name>
@@ -1990,7 +1991,7 @@
             <inputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 252 282 279 241 256 8 200 204 20 246 232 38 55 272 254 270 242 26 238 127 280 15 240 274 228 239 235 249 112 123 9 210 118 284 13 128 111 261 283 12 248 230 201 229 250 31 110 214 247</file>
+                    <file> 252 282 279 241 256 8 200 204 20 246 232 38 55 272 254 270 242 26 238 127 280 15 240 274 228 239 235 249 112 123 9 210 118 284 13 128 111 261 283 12 248 230 201 229 250 31 110 214 247 286</file>
                 </tool>
             </inputs>
         </file>

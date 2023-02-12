@@ -19,10 +19,10 @@ typedef struct
 
 
 void QuaternionNorm(QuaternionTypeDef *q);
-void QuaternionMult(QuaternionTypeDef *qa, QuaternionTypeDef *qb, QuaternionTypeDef *qo);
-void QuaternionRotation(QuaternionTypeDef *qr, QuaternionTypeDef *qv, QuaternionTypeDef *qo);
-void QuaternionConj(QuaternionTypeDef *qa, QuaternionTypeDef *qo);
-void QuaternionToEuler(QuaternionTypeDef *qr, EulerAngleTypeDef *ea);
+void QuaternionMult(const QuaternionTypeDef *qa, const QuaternionTypeDef *qb, QuaternionTypeDef *qo);
+void QuaternionRotation(const QuaternionTypeDef *qr, const QuaternionTypeDef *qv, QuaternionTypeDef *qo);
+void QuaternionConj(const QuaternionTypeDef *qa, QuaternionTypeDef *qo);
+void QuaternionToEuler(const QuaternionTypeDef *qr, EulerAngleTypeDef *ea);
 
 #define MAX_RAD    1.5
 

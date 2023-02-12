@@ -19,7 +19,7 @@ int32_t myprintf(const char *format, ...)
     return len;
 }
     
-static int usart_puts(const char *str, int32_t len)
+static int32_t usart_puts(const char *str, int32_t len)
 {
     //putc(*str ++);
     //while (huart1.Lock == HAL_LOCKED);

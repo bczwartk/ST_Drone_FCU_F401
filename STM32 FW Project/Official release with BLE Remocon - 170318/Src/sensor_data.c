@@ -73,12 +73,12 @@ void ReadSensorRawData(void *ACC_handle, void *GYR_handle, void *MAG_handle, voi
     AxesRaw_TypeDef acc_temp, gyro_temp; 
     /* Data Type int32_t */
     // Read data is in mg unit
-    (void)BSP_ACCELERO_Get_Axes(ACC_handle, &acc_temp_int16);
+    (void) BSP_ACCELERO_Get_Axes(ACC_handle, &acc_temp_int16);
     acc_temp.AXIS_X = (int32_t) acc_temp_int16.AXIS_X;                /* Casting data to int32_t */
     acc_temp.AXIS_Y = (int32_t) acc_temp_int16.AXIS_Y;
     acc_temp.AXIS_Z = (int32_t) acc_temp_int16.AXIS_Z;
     // Read data is in mdps unit
-    (void)BSP_GYRO_Get_Axes(GYR_handle, &gyro_temp_int16);
+    (void) BSP_GYRO_Get_Axes(GYR_handle, &gyro_temp_int16);
     gyro_temp.AXIS_X = (int32_t) gyro_temp_int16.AXIS_X;                /* Casting data to int32_t */
     gyro_temp.AXIS_Y = (int32_t) gyro_temp_int16.AXIS_Y;
     gyro_temp.AXIS_Z = (int32_t) gyro_temp_int16.AXIS_Z;
@@ -95,7 +95,7 @@ void ReadSensorRawData(void *ACC_handle, void *GYR_handle, void *MAG_handle, voi
     }
     
     if (USE_PRESSURE_SENSOR) {
-    	(void)BSP_PRESSURE_Get_Press(PRE_handle, pPre);
+    	(void) BSP_PRESSURE_Get_Press(PRE_handle, pPre);
     } else {
     	pPre = NULL;
     }
@@ -139,5 +139,7 @@ void ReadSensorRawData(void *ACC_handle, void *GYR_handle, void *MAG_handle, voi
         // convert mag
     	pMag->AXIS_X = - pMag->AXIS_X;
         pMag->AXIS_Y = - pMag->AXIS_Y;
+    } else {
+    	// nothing to do - MISRAC2012-RULE_15_7-a
     }
 }
