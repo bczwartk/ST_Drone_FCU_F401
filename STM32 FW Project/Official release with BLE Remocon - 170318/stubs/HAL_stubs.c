@@ -32,6 +32,7 @@
  * Verify #include directives and add any additional header files as necessary.
  */
 #include "stm32f4xx_hal.h"
+#include "stm32f4xx_hal_pcd.h"
 
 /** User stub definition for function: uint32_t HAL_GetTick(void) */
 EXTERN_C_LINKAGE uint32_t HAL_GetTick () ;
@@ -102,4 +103,81 @@ EXTERN_C_LINKAGE void CppTest_Stub_HAL_Delay (volatile uint32_t Delay)
 
     }
 
+}
+
+/** User stub definition for function: HAL_StatusTypeDef HAL_PCD_Init(PCD_HandleTypeDef *) */
+EXTERN_C_LINKAGE HAL_StatusTypeDef HAL_PCD_Init (PCD_HandleTypeDef * hpcd) ;
+EXTERN_C_LINKAGE HAL_StatusTypeDef CppTest_Stub_HAL_PCD_Init (PCD_HandleTypeDef * hpcd) 
+{
+    CPPTEST_STUB_CALLED("HAL_PCD_Init");
+
+    HAL_StatusTypeDef __return = HAL_OK;
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo, HAL_StatusTypeDef* __return, PCD_HandleTypeDef * hpcd)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("HAL_PCD_Init", &CppTest_StubCallback_SomeName);
+     *
+     * 3. Fill out the body of the stub callback function according to intent.
+     * The following line may be used to call original function inside stub callback:
+     *     *__return = HAL_PCD_Init(hpcd);
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS(HAL_StatusTypeDef* __return, PCD_HandleTypeDef * hpcd);
+        CPPTEST_STUB_INVOKE_CALLBACK(&__return, hpcd);
+
+    // calling the original causes tests to hang
+    // } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
+    //     __return = HAL_PCD_Init(hpcd);
+
+    } else {
+        /* You can put additional stub logic here. */
+    }
+
+    return __return;
+}
+
+/** User stub definition for function: HAL_StatusTypeDef HAL_PCD_DeInit(PCD_HandleTypeDef *) */
+EXTERN_C_LINKAGE HAL_StatusTypeDef HAL_PCD_DeInit (PCD_HandleTypeDef * hpcd) ;
+EXTERN_C_LINKAGE HAL_StatusTypeDef CppTest_Stub_HAL_PCD_DeInit (PCD_HandleTypeDef * hpcd) 
+{
+    CPPTEST_STUB_CALLED("HAL_PCD_DeInit");
+
+    HAL_StatusTypeDef __return = HAL_OK;
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo, HAL_StatusTypeDef* __return, PCD_HandleTypeDef * hpcd)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("HAL_PCD_DeInit", &CppTest_StubCallback_SomeName);
+     *
+     * 3. Fill out the body of the stub callback function according to intent.
+     * The following line may be used to call original function inside stub callback:
+     *     *__return = HAL_PCD_DeInit(hpcd);
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS(HAL_StatusTypeDef* __return, PCD_HandleTypeDef * hpcd);
+        CPPTEST_STUB_INVOKE_CALLBACK(&__return, hpcd);
+
+    // access viol when calling HAL
+    // } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
+    //    __return = HAL_PCD_DeInit(hpcd);
+
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
+    return __return;
 }

@@ -14,11 +14,17 @@ CPPTEST_TEST_SUITE(TS_usbd_conf);
         CPPTEST_TEST(TS_usbd_conf_test_USBD_LL_Delay_value);
         CPPTEST_TEST(TS_usbd_conf_test_USBD_LL_Delay_zero);
         CPPTEST_TEST_SUITE_TEARDOWN(TS_usbd_conf_testSuiteTearDown);
+CPPTEST_TEST(TS_usbd_conf_test_USBD_LL_Init_no_FS);
+CPPTEST_TEST(TS_usbd_conf_test_USBD_LL_Init_with_FS);
+CPPTEST_TEST(TS_usbd_conf_test_USBD_LL_DeInit);
 CPPTEST_TEST_SUITE_END();
         
 void TS_usbd_conf_test_USBD_LL_Delay_value(void);
 void TS_usbd_conf_test_USBD_LL_Delay_zero(void);
 
+void TS_usbd_conf_test_USBD_LL_Init_no_FS(void);
+void TS_usbd_conf_test_USBD_LL_Init_with_FS(void);
+void TS_usbd_conf_test_USBD_LL_DeInit(void);
 CPPTEST_TEST_SUITE_REGISTRATION(TS_usbd_conf);
 
 void TS_usbd_conf_testSuiteSetUp(void);
@@ -50,6 +56,20 @@ void TS_usbd_conf_tearDown(void)
 }
 
 
+/* CPPTEST_TEST_CASE_BEGIN test_USBD_LL_DeInit */
+void TS_usbd_conf_test_USBD_LL_DeInit()
+{
+	CPPTEST_EXPECT_NCALLS("HAL_PCD_DeInit", 1);
+
+    USBD_HandleTypeDef dev;
+    USBD_StatusTypeDef ret;
+
+    ret = USBD_LL_DeInit(& dev);
+
+    CPPTEST_ASSERT_EQUAL(USBD_OK, ret);
+}
+/* CPPTEST_TEST_CASE_END test_USBD_LL_DeInit */
+
 void CppTest_StubCallback_HAL_Delay(CppTest_StubCallInfo* stubCallInfo, volatile uint32_t Delay)
 {
 	// do nothing - the original causes test exe to get stuck
@@ -72,3 +92,31 @@ void TS_usbd_conf_test_USBD_LL_Delay_zero()
 	USBD_LL_Delay(0u);
 }
 /* CPPTEST_TEST_CASE_END test_USBD_LL_Delay_zero */
+
+/* CPPTEST_TEST_CASE_BEGIN test_USBD_LL_Init_no_FS */
+void TS_usbd_conf_test_USBD_LL_Init_no_FS()
+{
+    USBD_HandleTypeDef dev;
+    USBD_StatusTypeDef ret;
+    dev.id = DEVICE_FS + 1;
+
+    ret = USBD_LL_Init(& dev);
+
+    CPPTEST_ASSERT_EQUAL(USBD_OK, ret);
+}
+/* CPPTEST_TEST_CASE_END test_USBD_LL_Init_no_FS */
+
+/* CPPTEST_TEST_CASE_BEGIN test_USBD_LL_Init_with_FS */
+void TS_usbd_conf_test_USBD_LL_Init_with_FS()
+{
+	CPPTEST_EXPECT_NCALLS("HAL_PCD_Init", 1);
+
+	USBD_HandleTypeDef dev;
+    USBD_StatusTypeDef ret;
+    dev.id = DEVICE_FS;
+
+    ret = USBD_LL_Init(& dev);
+
+    CPPTEST_ASSERT_EQUAL(USBD_OK, ret);
+}
+/* CPPTEST_TEST_CASE_END test_USBD_LL_Init_with_FS */

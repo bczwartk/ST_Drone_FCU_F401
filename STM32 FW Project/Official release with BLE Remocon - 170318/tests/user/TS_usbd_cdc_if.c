@@ -16,6 +16,7 @@ CPPTEST_TEST(TS_usbd_cdc_if_test_CDC_DeInit_FS);
 CPPTEST_TEST(TS_usbd_cdc_if_test_CDC_Receive_FS);
 CPPTEST_TEST_DS(TS_usbd_cdc_if_test_CDC_Control_FS, CPPTEST_DS("TS_usbd_cdc_if_CDC_Control_FS"));
 CPPTEST_TEST(TS_usbd_cdc_if_test_CDC_Init_FS);
+CPPTEST_TEST_DISABLED(TS_usbd_cdc_if_test_CDC_Transmit_FS);
 CPPTEST_TEST_SUITE_END();
         
 
@@ -23,6 +24,7 @@ void TS_usbd_cdc_if_test_CDC_DeInit_FS(void);
 void TS_usbd_cdc_if_test_CDC_Receive_FS(void);
 void TS_usbd_cdc_if_test_CDC_Control_FS(void);
 void TS_usbd_cdc_if_test_CDC_Init_FS(void);
+void TS_usbd_cdc_if_test_CDC_Transmit_FS(void);
 CPPTEST_TEST_SUITE_REGISTRATION(TS_usbd_cdc_if);
 
 void TS_usbd_cdc_if_testSuiteSetUp(void);
@@ -106,3 +108,24 @@ void TS_usbd_cdc_if_test_CDC_Init_FS()
     CPPTEST_ASSERT_INTEGER_EQUAL(USBD_OK, ret);
 }
 /* CPPTEST_TEST_CASE_END test_CDC_Init_FS */
+
+/* CPPTEST_TEST_CASE_BEGIN test_CDC_Transmit_FS */
+void TS_usbd_cdc_if_test_CDC_Transmit_FS()
+{
+	uint8_t buf[8u];
+    int8_t ret;
+    buf[0] = 1u;
+    buf[1] = 2u;
+    buf[2] = 3u;
+    buf[3] = 0u;
+
+    ret = CDC_Transmit_FS(buf, 4u);
+
+    CPPTEST_ASSERT_INTEGER_EQUAL(USBD_OK, ret);
+    // no changes expected here:
+    CPPTEST_ASSERT_UINTEGER_EQUAL(1u, buf[0]);
+    CPPTEST_ASSERT_UINTEGER_EQUAL(2u, buf[1]);
+    CPPTEST_ASSERT_UINTEGER_EQUAL(3u, buf[2]);
+    CPPTEST_ASSERT_UINTEGER_EQUAL(0u, buf[3]);
+}
+/* CPPTEST_TEST_CASE_END test_CDC_Transmit_FS */
