@@ -105,8 +105,8 @@ int32_t uartReceiveChar(void)
 
 #if defined (__IAR_SYSTEMS_ICC__)
 
-size_t __write(int32_t Handle, const unsigned char * Buf, size_t Bufsize);
-size_t __read(int32_t Handle, unsigned char *Buf, size_t Bufsize);
+size_t __write(int32_t Handle, const uint8_t * Buf, size_t Bufsize);
+size_t __read(int32_t Handle, uint8_t *Buf, size_t Bufsize);
 
 /** @brief IAR specific low level standard input
  * @param Handle IAR internal handle
@@ -114,7 +114,7 @@ size_t __read(int32_t Handle, unsigned char *Buf, size_t Bufsize);
  * @param Bufsize Number of characters to read
  * @retval Number of characters read
  */
-size_t __read(int32_t Handle, unsigned char *Buf, size_t Bufsize)
+size_t __read(int32_t Handle, uint8_t *Buf, size_t Bufsize)
 {
   int32_t i;
 
@@ -134,7 +134,7 @@ size_t __read(int32_t Handle, unsigned char *Buf, size_t Bufsize)
  * @param Bufsize Number of characters to write
  * @retval Number of characters read
  */
-size_t __write(int32_t Handle, const unsigned char * Buf, size_t Bufsize)
+size_t __write(int32_t Handle, const uint8_t * Buf, size_t Bufsize)
 {
 	int32_t i;
 

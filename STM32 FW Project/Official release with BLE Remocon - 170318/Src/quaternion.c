@@ -2,7 +2,9 @@
 #include <math.h>
 #include <errno.h>
 
+#if 0
 EulerAngleTypeDef ea_pre;
+#endif
 
 void QuaternionNorm(QuaternionTypeDef *q)
 {
@@ -98,20 +100,21 @@ void QuaternionToEuler(const QuaternionTypeDef *qr, EulerAngleTypeDef *ea)
     dq2q3 = dq2 * qr->q3;
 
     errno = 0;
-    ea->thx = atan2(dq0q1 + dq2q3, q0q0 + q3q3 - q1q1 - q2q2);
+    ea->thx = atan2(dq0q1 + dq2q3, (q0q0 + q3q3) - q1q1 - q2q2);
     errno = 0;
     ea->thy = asin(dq0q2 - dq1q3);
 
     /* This part is removed to manage angle >90deg */
 #if 0
-    if(ea->thx > MAX_RAD || ea->thx < -MAX_RAD)
+    if (ea->thx > MAX_RAD || ea->thx < -MAX_RAD) {
       ea->thx = ea_pre.thx;
-    if(ea->thy > MAX_RAD || ea->thy < -MAX_RAD)
+    }
+    if (ea->thy > MAX_RAD || ea->thy < -MAX_RAD) {
       ea->thy = ea_pre.thy;
-
+    }
     ea_pre.thx = ea->thx;
     ea_pre.thy = ea->thy;
 #endif
 
-    // ea->thz = atan2(dq1q2 + dq0q3, q0q0 + q1q1 - q2q2 - q3q3);
+    // ea->thz = atan2(dq1q2 + dq0q3, (q0q0 + q1q1) - q2q2 - q3q3);
 }

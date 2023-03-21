@@ -98,7 +98,7 @@ int32_t rc_cal_flag = 0;
 int32_t rc_enable_motor = 0;
 int32_t rc_cal_cnt = 0;
 int32_t fly_ready = 0;
-unsigned char ch, ch_flag;
+uint8_t ch, ch_flag;
 
 uint32_t tim9_event_flag = 0, tim9_cnt = 0, tim9_cnt2 = 0;
 float32_t tmp_euler_z = 0.0f;
@@ -114,7 +114,7 @@ uint8_t bdaddr[6];
 //static uint16_t ConsoleW2STHandle;
 //static uint16_t TermCharHandle;
 //static uint16_t StdErrCharHandle;
-extern int connected;
+extern int32_t connected;
 //int8_t RSSI_level;
 
 
@@ -200,7 +200,7 @@ SensorAxes_t tmp_mag;
 /* BLE */
 extern uint8_t set_connectable;
 uint16_t service_handle, dev_name_char_handle, appearance_char_handle;
-uint32_t ConnectionBleStatus=0;
+uint32_t ConnectionBleStatus = 0u;
 uint8_t BufferToWrite[256];
 int32_t BytesToWrite;
 

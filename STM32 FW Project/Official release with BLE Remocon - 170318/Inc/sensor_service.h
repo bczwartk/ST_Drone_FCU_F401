@@ -143,25 +143,25 @@ used in Console service */
 
 /* BLE Characteristic connection control */
 /* Environmental Data */
-#define W2ST_CONNECT_ENV           (1)
+#define W2ST_CONNECT_ENV           (1u)
 
 /* LED status */
-#define W2ST_CONNECT_LED           (1 << 1)
+#define W2ST_CONNECT_LED           (1u << 1u)
 
 /* Acceleration/Gyroscope/Magneto */
-#define W2ST_CONNECT_ACC_GYRO_MAG  (1 << 2)
+#define W2ST_CONNECT_ACC_GYRO_MAG  (1u << 2u)
 
 /* Standard Terminal */
-#define W2ST_CONNECT_STD_TERM      (1 << 8)
+#define W2ST_CONNECT_STD_TERM      (1u << 8u)
 
 /* Standard Error */
-#define W2ST_CONNECT_STD_ERR       (1 << 9)
+#define W2ST_CONNECT_STD_ERR       (1u << 9u)
 
 /* HW Advance Features */
-#define W2ST_CONNECT_ACC_EVENT     (1 << 10)
+#define W2ST_CONNECT_ACC_EVENT     (1u << 10u)
 
 /* Gas Gauge Feature */
-// define W2ST_CONNECT_GG_EVENT      (1 << 11)
+// define W2ST_CONNECT_GG_EVENT      (1u << 11u)
 
 #ifdef __cplusplus
 }

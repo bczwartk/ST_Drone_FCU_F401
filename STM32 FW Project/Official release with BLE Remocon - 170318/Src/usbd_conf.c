@@ -409,13 +409,13 @@ uint8_t USBD_LL_IsStallEP (USBD_HandleTypeDef *pdev, uint8_t ep_addr)
   PCD_HandleTypeDef *hpcd = pdev->pData; 
   uint8_t ret;
   
-  if((ep_addr & 0x80) == 0x80)
+  if((ep_addr & 0x80u) == 0x80u)
   {
-    ret = hpcd->IN_ep[ep_addr & 0x7F].is_stall;
+    ret = hpcd->IN_ep[ep_addr & 0x7Fu].is_stall;
   }
   else
   {
-    ret = hpcd->OUT_ep[ep_addr & 0x7F].is_stall;
+    ret = hpcd->OUT_ep[ep_addr & 0x7Fu].is_stall;
   }
   return ret;
 }

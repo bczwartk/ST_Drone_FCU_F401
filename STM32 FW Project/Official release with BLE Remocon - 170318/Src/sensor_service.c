@@ -50,7 +50,7 @@
 #include "uuid_ble_service.h"
 #include "steval_fcu001_v1_pressure.h"
 
-#define W2ST_CHECK_CONNECTION(BleChar) ((ConnectionBleStatus & (BleChar)) != 0 ? 1 : 0)
+#define W2ST_CHECK_CONNECTION(BleChar) (((ConnectionBleStatus & (BleChar)) != 0u) ? 1 : 0)
 #define W2ST_ON_CONNECTION(BleChar)    (ConnectionBleStatus |= (BleChar))
 #define W2ST_OFF_CONNECTION(BleChar)   (ConnectionBleStatus &= (~(BleChar)))
 
@@ -192,7 +192,7 @@ tBleStatus Add_ConsoleW2ST_Service(void)
   uint8_t uuid[16];
 
   COPY_CONSOLE_SERVICE_UUID(uuid);
-  ret = aci_gatt_add_serv(UUID_TYPE_128,  uuid, PRIMARY_SERVICE, 1+3*2,&ConsoleW2STHandle);
+  ret = aci_gatt_add_serv(UUID_TYPE_128,  uuid, PRIMARY_SERVICE, 1 + (3 * 2), &ConsoleW2STHandle);
 
   if (ret != BLE_STATUS_SUCCESS) {
     goto fail;
@@ -302,10 +302,10 @@ static tBleStatus Stderr_Update_AfterRead(void)
 
   ret = aci_gatt_update_char_value(ConsoleW2STHandle, StdErrCharHandle, 0, LastStderrLen , LastStderrBuffer);
   if (ret != BLE_STATUS_SUCCESS) {
-    return BLE_STATUS_ERROR;
+    ret = BLE_STATUS_ERROR;
   }
 
-  return BLE_STATUS_SUCCESS;
+  return ret;
 }
 
 /**
@@ -325,10 +325,10 @@ static tBleStatus Term_Update_AfterRead(void)
     } else {
       PRINTF("Error Updating Stdout Char\r\n");
     }
-    return BLE_STATUS_ERROR;
+    ret = BLE_STATUS_ERROR;
   }
 
-  return BLE_STATUS_SUCCESS;
+  return ret;
 }
 /* @brief  Send a notification for answering to a configuration command for Accelerometer events
  * @param  uint32_t Feature Feature calibrated
@@ -354,9 +354,9 @@ tBleStatus Config_Notify(uint32_t feature, uint8_t command, uint8_t data)
     } else {
       PRINTF("Error Updating Configuration Char\r\n");
     }
-    return BLE_STATUS_ERROR;
+    ret = BLE_STATUS_ERROR;
   }
-  return BLE_STATUS_SUCCESS;
+  return ret;
 }
 
 /**
@@ -380,9 +380,9 @@ tBleStatus AccEvent_Notify(uint16_t Command)
     } else {
       PRINTF("Error Updating AccEvent_Notify Char\r\n");
     }
-    return BLE_STATUS_ERROR;
+    ret = BLE_STATUS_ERROR;
   }
-  return BLE_STATUS_SUCCESS;
+  return ret;
 }
 
 /**
@@ -406,7 +406,7 @@ tBleStatus Add_HWServW2ST_Service(void)
 
   COPY_HW_SENS_W2ST_SERVICE_UUID(uuid);
   ret = aci_gatt_add_serv(UUID_TYPE_128,  uuid, PRIMARY_SERVICE,
-                          1+3*NumberChars,
+                          1 + (3 * NumberChars),
                           &HWServW2STHandle);
 
   if (ret != BLE_STATUS_SUCCESS) {
@@ -453,7 +453,7 @@ tBleStatus Add_HWServW2ST_Service(void)
   }
 
   COPY_ACC_GYRO_MAG_W2ST_CHAR_UUID(uuid);
-  ret =  aci_gatt_add_char(HWServW2STHandle, UUID_TYPE_128, uuid, 2 + 3 * 3 * 2,
+  ret =  aci_gatt_add_char(HWServW2STHandle, UUID_TYPE_128, uuid, 2 + (3 * 3 * 2),
                            CHAR_PROP_NOTIFY,
                            ATTR_PERMISSION_NONE,
                            GATT_NOTIFY_READ_REQ_AND_WAIT_FOR_APPL_RESP,
@@ -532,7 +532,7 @@ tBleStatus AccGyroMag_Update(SensorAxes_t *Acc,SensorAxes_t *Gyro,SensorAxes_t *
 {  
   tBleStatus ret;
 
-  uint8_t buff[2 + 3 * 3 * 2];
+  uint8_t buff[2 + (3 * 3 * 2)];
 
   STORE_LE_16(buff, (HAL_GetTick() >> 3));
   
@@ -552,7 +552,7 @@ tBleStatus AccGyroMag_Update(SensorAxes_t *Acc,SensorAxes_t *Gyro,SensorAxes_t *
   STORE_LE_16(buff + 16, Mag->AXIS_Y);
   STORE_LE_16(buff + 18, Mag->AXIS_Z);
   
-  ret = ACI_GATT_UPDATE_CHAR_VALUE(HWServW2STHandle, AccGyroMagCharHandle, 0, 2 + 3 * 3 * 2, buff);
+  ret = ACI_GATT_UPDATE_CHAR_VALUE(HWServW2STHandle, AccGyroMagCharHandle, 0, 2 + (3 * 3 * 2), buff);
 	
   if (ret != BLE_STATUS_SUCCESS) {
     if (0 != W2ST_CHECK_CONNECTION(W2ST_CONNECT_STD_ERR)) {
@@ -561,9 +561,9 @@ tBleStatus AccGyroMag_Update(SensorAxes_t *Acc,SensorAxes_t *Gyro,SensorAxes_t *
     } else {
       PRINTF("Error Updating Acc/Gyro/Mag Char\r\n");
     }
-    return BLE_STATUS_ERROR;
+    ret = BLE_STATUS_ERROR;
   }
-  return BLE_STATUS_SUCCESS;	
+  return ret;
 }
 
 /**
@@ -604,9 +604,9 @@ tBleStatus Batt_Env_RSSI_Update(int32_t Press,uint16_t Batt,int16_t Temp,int16_t
     } else {
       PRINTF("Error Updating Environmental Char\r\n");
     }
-    return BLE_STATUS_ERROR;
+    ret = BLE_STATUS_ERROR;
   }
-  return BLE_STATUS_SUCCESS;
+  return ret;
 }
 
 
@@ -634,9 +634,9 @@ tBleStatus ARMING_Update(uint8_t ArmingStatus)
     } else {
       PRINTF("Error Updating Temp Char\r\n");
     }
-    return BLE_STATUS_ERROR;
+    ret = BLE_STATUS_ERROR;
   }
-  return BLE_STATUS_SUCCESS;
+  return ret;
 }
 
 
@@ -759,7 +759,7 @@ static void GAP_DisconnectionComplete_CB(void)
 void Read_Request_CB(uint16_t handle)
 {
   uint8_t Status;  
-  if (handle == EnvironmentalCharHandle + 1) {
+  if (handle == (EnvironmentalCharHandle + 1)) {
     /* Read Request for Pressure,Battery, and Temperatures*/
     float32_t SensorValue;
     int32_t PressToSend = 0;
@@ -775,19 +775,19 @@ void Read_Request_CB(uint16_t handle)
     }
 
     (void) Batt_Env_RSSI_Update(PressToSend, BattToSend, TempToSend, RSSIToSend);
-  } else if (handle == ArmingCharHandle + 1) {
+  } else if (handle == (ArmingCharHandle + 1)) {
     /* Read Request for Arming Status */
 	  (void) ARMING_Update(TargetBoardFeatures.LedStatus);
-  } else if (handle == AccEventCharHandle + 1) {
+  } else if (handle == (AccEventCharHandle + 1)) {
     
-  } else if (handle == StdErrCharHandle + 1) {
+  } else if (handle == (StdErrCharHandle + 1)) {
     /* Send again the last packet for StdError */
 	  (void) Stderr_Update_AfterRead();
-  } else if (handle == TermCharHandle + 1) {
+  } else if (handle == (TermCharHandle + 1)) {
     /* Send again the last packet for Terminal */
 	  (void) Term_Update_AfterRead();
 #ifdef STM32_SENSORTILE
-  } else if (handle == GGCharHandle + 1) {
+  } else if (handle == (GGCharHandle + 1)) {
     GG_Update();
 #endif /* STM32_SENSORTILE */
   } else {
@@ -811,9 +811,9 @@ void Read_Request_CB(uint16_t handle)
  */
 void Attribute_Modified_CB(uint16_t attr_handle, uint8_t * att_data, uint8_t data_length) 
 {
-  if (attr_handle == ConfigCharHandle + 2) {
+  if (attr_handle == (ConfigCharHandle + 2)) {
     ;/* do nothing... only for removing the message "Notification UNKNOW handle" */
-  } else if(attr_handle == StdErrCharHandle + 2) {
+  } else if(attr_handle == (StdErrCharHandle + 2)) {
     if (att_data[0] == 1) {
       W2ST_ON_CONNECTION(W2ST_CONNECT_STD_ERR);
     } else if (att_data[0] == 0) {
@@ -821,7 +821,7 @@ void Attribute_Modified_CB(uint16_t attr_handle, uint8_t * att_data, uint8_t dat
     } else {
     	// nothing to do - MISRAC2012-RULE_15_7-a
     }
-  } else if(attr_handle == TermCharHandle + 2) {
+  } else if(attr_handle == (TermCharHandle + 2)) {
     if (att_data[0] == 1) {
       W2ST_ON_CONNECTION(W2ST_CONNECT_STD_TERM);
     } else if (att_data[0] == 0) {
@@ -829,7 +829,7 @@ void Attribute_Modified_CB(uint16_t attr_handle, uint8_t * att_data, uint8_t dat
     } else {
     	// nothing to do - MISRAC2012-RULE_15_7-a
     }
-  } else if (attr_handle == TermCharHandle + 1) {
+  } else if (attr_handle == (TermCharHandle + 1)) {
     uint32_t SendBackData = 1; /* By default Answer with the same message received */
     {
       /* Received one write from Client on Terminal characteristc */
@@ -838,9 +838,9 @@ void Attribute_Modified_CB(uint16_t attr_handle, uint8_t * att_data, uint8_t dat
 
     /* Send it back for testing */
     if (0 != SendBackData) {
-    	(void) Term_Update(att_data,data_length);
+    	(void) Term_Update(att_data, data_length);
     }
-  } else if (attr_handle == ArmingCharHandle + 2) {
+  } else if (attr_handle == (ArmingCharHandle + 2)) {
     if (att_data[0] == 1) {
       W2ST_ON_CONNECTION(W2ST_CONNECT_LED);
       /* Update the LED feature */
@@ -853,15 +853,15 @@ void Attribute_Modified_CB(uint16_t attr_handle, uint8_t * att_data, uint8_t dat
 #ifdef MOTENV_DEBUG_CONNECTION
     if (0 != W2ST_CHECK_CONNECTION(W2ST_CONNECT_STD_TERM)) {
       BytesToWrite = sprintf((char *)BufferToWrite, "--->Led=%s\r\n", (0 != W2ST_CHECK_CONNECTION(W2ST_CONNECT_LED)) ? "ON" : "OFF");
-      (void) Term_Update(BufferToWrite,BytesToWrite);
+      (void) Term_Update(BufferToWrite, BytesToWrite);
     } else {
       PRINTF("--->Led=%s\r\n", (0 != W2ST_CHECK_CONNECTION(W2ST_CONNECT_LED)) ? "ON" : "OFF");
     }
 #endif /* MOTENV_DEBUG_CONNECTION */
-  } else if (attr_handle == ConfigCharHandle + 1) {
+  } else if (attr_handle == (ConfigCharHandle + 1)) {
     /* Received one write command from Client on Configuration characteristc */
 	  (void) ConfigCommandParsing(att_data, data_length);
-  } else if (attr_handle == MaxCharHandle + 1) {
+  } else if (attr_handle == (MaxCharHandle + 1)) {
      joydata[0] = att_data[1];
      joydata[1] = att_data[2];
      joydata[2] = att_data[3];
@@ -995,7 +995,7 @@ static uint32_t DebugConsoleCommandParsing(uint8_t * att_data, uint8_t data_leng
                           (hwVersion > 0x30) ? "BleMS" : "Ble",
                           fwVersion >> 8,
                           (fwVersion >> 4) & 0xF,
-                          (hwVersion > 0x30) ? ('a' + (fwVersion&0xF) - 1) : 'a');
+                          (hwVersion > 0x30) ? (('a' + (fwVersion & 0xF)) - 1) : 'a');
     (void) Term_Update(BufferToWrite, BytesToWrite);
     SendBackData = 0;
   }
@@ -1112,7 +1112,7 @@ void HCI_Event_CB(void *pckt)
     return;
   }
   
-  switch(event_pckt->evt){
+  switch (event_pckt->evt) {
     
   case EVT_DISCONN_COMPLETE:
     {

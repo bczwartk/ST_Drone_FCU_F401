@@ -73,7 +73,7 @@
 /*---------- -----------*/
 #define USBD_CDC_INTERVAL     1000
 
-/* #define for FS and HS identification */
+/* define for FS and HS identification */
 #define DEVICE_FS 		0
 #define DEVICE_HS 		1
 
