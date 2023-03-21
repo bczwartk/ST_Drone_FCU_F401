@@ -17,6 +17,14 @@ CPPTEST_TEST_SUITE(TS_usbd_conf);
 CPPTEST_TEST(TS_usbd_conf_test_USBD_LL_Init_no_FS);
 CPPTEST_TEST(TS_usbd_conf_test_USBD_LL_Init_with_FS);
 CPPTEST_TEST(TS_usbd_conf_test_USBD_LL_DeInit);
+CPPTEST_TEST(TS_usbd_conf_test_USBD_LL_Start);
+CPPTEST_TEST(TS_usbd_conf_test_USBD_LL_Stop);
+CPPTEST_TEST(TS_usbd_conf_test_USBD_LL_Stop_copy);
+CPPTEST_TEST(TS_usbd_conf_test_USBD_LL_OpenEP);
+CPPTEST_TEST(TS_usbd_conf_test_USBD_LL_CloseEP);
+CPPTEST_TEST(TS_usbd_conf_test_USBD_LL_FlushEP);
+CPPTEST_TEST(TS_usbd_conf_test_USBD_LL_StallEP);
+CPPTEST_TEST(TS_usbd_conf_test_USBD_LL_ClearStallEP);
 CPPTEST_TEST_SUITE_END();
         
 void TS_usbd_conf_test_USBD_LL_Delay_value(void);
@@ -25,6 +33,14 @@ void TS_usbd_conf_test_USBD_LL_Delay_zero(void);
 void TS_usbd_conf_test_USBD_LL_Init_no_FS(void);
 void TS_usbd_conf_test_USBD_LL_Init_with_FS(void);
 void TS_usbd_conf_test_USBD_LL_DeInit(void);
+void TS_usbd_conf_test_USBD_LL_Start(void);
+void TS_usbd_conf_test_USBD_LL_Stop(void);
+void TS_usbd_conf_test_USBD_LL_Stop_copy(void);
+void TS_usbd_conf_test_USBD_LL_OpenEP(void);
+void TS_usbd_conf_test_USBD_LL_CloseEP(void);
+void TS_usbd_conf_test_USBD_LL_FlushEP(void);
+void TS_usbd_conf_test_USBD_LL_StallEP(void);
+void TS_usbd_conf_test_USBD_LL_ClearStallEP(void);
 CPPTEST_TEST_SUITE_REGISTRATION(TS_usbd_conf);
 
 void TS_usbd_conf_testSuiteSetUp(void);
@@ -96,6 +112,10 @@ void TS_usbd_conf_test_USBD_LL_Delay_zero()
 /* CPPTEST_TEST_CASE_BEGIN test_USBD_LL_Init_no_FS */
 void TS_usbd_conf_test_USBD_LL_Init_no_FS()
 {
+	CPPTEST_EXPECT_NCALLS("HAL_PCD_Init", 0);
+	CPPTEST_EXPECT_NCALLS("HAL_PCDEx_SetRxFiFo", 0);
+	CPPTEST_EXPECT_NCALLS("HAL_PCDEx_SetTxFiFo", 0);
+
     USBD_HandleTypeDef dev;
     USBD_StatusTypeDef ret;
     dev.id = DEVICE_FS + 1;
@@ -110,6 +130,8 @@ void TS_usbd_conf_test_USBD_LL_Init_no_FS()
 void TS_usbd_conf_test_USBD_LL_Init_with_FS()
 {
 	CPPTEST_EXPECT_NCALLS("HAL_PCD_Init", 1);
+	CPPTEST_EXPECT_NCALLS("HAL_PCDEx_SetRxFiFo", 1);
+	CPPTEST_EXPECT_NCALLS("HAL_PCDEx_SetTxFiFo", 2);
 
 	USBD_HandleTypeDef dev;
     USBD_StatusTypeDef ret;
@@ -120,3 +142,118 @@ void TS_usbd_conf_test_USBD_LL_Init_with_FS()
     CPPTEST_ASSERT_EQUAL(USBD_OK, ret);
 }
 /* CPPTEST_TEST_CASE_END test_USBD_LL_Init_with_FS */
+
+/* CPPTEST_TEST_CASE_BEGIN test_USBD_LL_Start */
+void TS_usbd_conf_test_USBD_LL_Start()
+{
+	CPPTEST_EXPECT_NCALLS("HAL_PCD_Start", 1);
+	USBD_HandleTypeDef dev;
+    USBD_StatusTypeDef ret;
+    ret = USBD_LL_Start(& dev);
+    CPPTEST_ASSERT_EQUAL(USBD_OK, ret);
+}
+/* CPPTEST_TEST_CASE_END test_USBD_LL_Start */
+
+/* CPPTEST_TEST_CASE_BEGIN test_USBD_LL_Stop */
+void TS_usbd_conf_test_USBD_LL_Stop()
+{
+	CPPTEST_EXPECT_NCALLS("HAL_PCD_Stop", 1);
+	USBD_HandleTypeDef dev;
+    USBD_StatusTypeDef ret;
+    ret = USBD_LL_Stop(& dev);
+    CPPTEST_ASSERT_EQUAL(USBD_OK, ret);
+}
+/* CPPTEST_TEST_CASE_END test_USBD_LL_Stop */
+
+/* CPPTEST_TEST_CASE_BEGIN test_USBD_LL_Stop_copy */
+void TS_usbd_conf_test_USBD_LL_Stop_copy()
+{
+	CPPTEST_EXPECT_NCALLS("HAL_PCD_Stop", 1);
+	USBD_HandleTypeDef dev;
+    USBD_StatusTypeDef ret;
+    ret = USBD_LL_Stop(& dev);
+    CPPTEST_ASSERT_EQUAL(USBD_OK, ret);
+}
+/* CPPTEST_TEST_CASE_END test_USBD_LL_Stop_copy */
+
+/* CPPTEST_TEST_CASE_BEGIN test_USBD_LL_OpenEP */
+/* CPPTEST_TEST_CASE_CONTEXT USBD_StatusTypeDef USBD_LL_OpenEP(USBD_HandleTypeDef *, uint8_t, uint8_t, uint16_t) */
+void TS_usbd_conf_test_USBD_LL_OpenEP()
+{
+	CPPTEST_EXPECT_NCALLS("HAL_PCD_EP_Open", 1);
+    USBD_HandleTypeDef pdev ;
+    uint8_t ep_addr = 0;
+    uint8_t ep_type = 0;
+    uint16_t ep_mps = 0u;
+
+    /* Tested function call */
+    USBD_StatusTypeDef ret  = USBD_LL_OpenEP(& pdev, ep_addr, ep_type, ep_mps);
+
+    /* Post-condition check */
+    CPPTEST_ASSERT_EQUAL(USBD_OK, ret);
+}
+/* CPPTEST_TEST_CASE_END test_USBD_LL_OpenEP */
+
+/* CPPTEST_TEST_CASE_BEGIN test_USBD_LL_CloseEP */
+/* CPPTEST_TEST_CASE_CONTEXT USBD_StatusTypeDef USBD_LL_OpenEP(USBD_HandleTypeDef *, uint8_t, uint8_t, uint16_t) */
+void TS_usbd_conf_test_USBD_LL_CloseEP()
+{
+	CPPTEST_EXPECT_NCALLS("HAL_PCD_EP_Close", 1);
+    USBD_HandleTypeDef pdev ;
+    uint8_t ep_addr = 0;
+
+    /* Tested function call */
+    USBD_StatusTypeDef ret  = USBD_LL_CloseEP(& pdev, ep_addr);
+
+    /* Post-condition check */
+    CPPTEST_ASSERT_EQUAL(USBD_OK, ret);
+}
+/* CPPTEST_TEST_CASE_END test_USBD_LL_CloseEP */
+
+/* CPPTEST_TEST_CASE_BEGIN test_USBD_LL_FlushEP */
+/* CPPTEST_TEST_CASE_CONTEXT USBD_StatusTypeDef USBD_LL_OpenEP(USBD_HandleTypeDef *, uint8_t, uint8_t, uint16_t) */
+void TS_usbd_conf_test_USBD_LL_FlushEP()
+{
+	CPPTEST_EXPECT_NCALLS("HAL_PCD_EP_Flush", 1);
+    USBD_HandleTypeDef pdev ;
+    uint8_t ep_addr = 0;
+
+    /* Tested function call */
+    USBD_StatusTypeDef ret = USBD_LL_FlushEP(& pdev, ep_addr);
+
+    /* Post-condition check */
+    CPPTEST_ASSERT_EQUAL(USBD_OK, ret);
+}
+/* CPPTEST_TEST_CASE_END test_USBD_LL_FlushEP */
+
+/* CPPTEST_TEST_CASE_BEGIN test_USBD_LL_StallEP */
+/* CPPTEST_TEST_CASE_CONTEXT USBD_StatusTypeDef USBD_LL_OpenEP(USBD_HandleTypeDef *, uint8_t, uint8_t, uint16_t) */
+void TS_usbd_conf_test_USBD_LL_StallEP()
+{
+	CPPTEST_EXPECT_NCALLS("HAL_PCD_EP_SetStall", 1);
+    USBD_HandleTypeDef pdev ;
+    uint8_t ep_addr = 0;
+
+    /* Tested function call */
+    USBD_StatusTypeDef ret  = USBD_LL_StallEP(& pdev, ep_addr);
+
+    /* Post-condition check */
+    CPPTEST_ASSERT_EQUAL(USBD_OK, ret);
+}
+/* CPPTEST_TEST_CASE_END test_USBD_LL_StallEP */
+
+/* CPPTEST_TEST_CASE_BEGIN test_USBD_LL_ClearStallEP */
+/* CPPTEST_TEST_CASE_CONTEXT USBD_StatusTypeDef USBD_LL_OpenEP(USBD_HandleTypeDef *, uint8_t, uint8_t, uint16_t) */
+void TS_usbd_conf_test_USBD_LL_ClearStallEP()
+{
+	CPPTEST_EXPECT_NCALLS("HAL_PCD_EP_ClrStall", 1);
+    USBD_HandleTypeDef pdev ;
+    uint8_t ep_addr = 0;
+
+    /* Tested function call */
+    USBD_StatusTypeDef ret = USBD_LL_ClearStallEP(& pdev, ep_addr);
+
+    /* Post-condition check */
+    CPPTEST_ASSERT_EQUAL(USBD_OK, ret);
+}
+/* CPPTEST_TEST_CASE_END test_USBD_LL_ClearStallEP */
