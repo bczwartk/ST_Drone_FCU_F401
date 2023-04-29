@@ -50,3 +50,4 @@ STM32 FW Project/BLE Remocon Beta release 301117/EWARM/ToyDrone_Configuration/Li
 reports/
 workspace/
 wksp_cli/
+c++test_static_problems.txt

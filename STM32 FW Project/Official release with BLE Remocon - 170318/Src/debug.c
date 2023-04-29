@@ -21,8 +21,6 @@ int32_t myprintf(const char *format, ...)
     
 static int32_t usart_puts(const char *str, int32_t len)
 {
-    //putc(*str ++);
-    //while (huart1.Lock == HAL_LOCKED);
 	(void)HAL_UART_Transmit(&huart1, (uint8_t *)str, len, 1000);
     return 0;
 }

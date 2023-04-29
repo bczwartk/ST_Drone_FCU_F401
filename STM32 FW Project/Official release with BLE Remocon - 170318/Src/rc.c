@@ -71,7 +71,7 @@ int16_t gAIL, gELE, gTHR, gRUD;
 Queue_TypeDef que;
 int32_t cnt;
 
-extern uint8_t joydata[7];
+extern uint8_t joydata[8];
 
 // privite function
 void init_rc_variables(void);

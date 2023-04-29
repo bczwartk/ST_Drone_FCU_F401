@@ -84,6 +84,7 @@ void QuaternionToEuler(const QuaternionTypeDef *qr, EulerAngleTypeDef *ea)
     float32_t dq0, dq1, dq2;
     float32_t dq1q3, dq0q2/*, dq1q2*/;
     float32_t dq0q1, dq2q3/*, dq0q3*/;
+    float32_t asin_diff;
 
     q0q0 = qr->q0 * qr->q0;
     q1q1 = qr->q1 * qr->q1;
@@ -101,8 +102,12 @@ void QuaternionToEuler(const QuaternionTypeDef *qr, EulerAngleTypeDef *ea)
 
     errno = 0;
     ea->thx = atan2(dq0q1 + dq2q3, (q0q0 + q3q3) - q1q1 - q2q2);
+
     errno = 0;
-    ea->thy = asin(dq0q2 - dq1q3);
+    asin_diff = dq0q2 - dq1q3;
+    if ((asin_diff < 1.0f) && (asin_diff > -1.0f)) {
+    	ea->thy = asin(asin_diff);
+    }
 
     /* This part is removed to manage angle >90deg */
 #if 0

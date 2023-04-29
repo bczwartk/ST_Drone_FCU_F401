@@ -49,7 +49,7 @@
 #include <stdio.h>
 
 /* Exported macro ------------------------------------------------------------*/
-//#define DEBUG
+// define DEBUG
 #ifdef DEBUG
 #define PRINTF(...) (void)myprintf(__VA_ARGS__)
 int32_t myprintf(const char *format, ...);
@@ -59,7 +59,7 @@ static int32_t usart_puts(const char *str, int32_t len) ;
 #endif
 
 /* Print the data travelling over the SPI in the .csv format for the GUI*/
-//#define PRINT_CSV_FORMAT 
+// define PRINT_CSV_FORMAT
 #ifdef PRINT_CSV_FORMAT
 #define PRINT_CSV(...) printf(__VA_ARGS__)
 #else

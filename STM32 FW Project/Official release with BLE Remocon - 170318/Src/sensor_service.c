@@ -240,6 +240,7 @@ tBleStatus Stderr_Update(uint8_t *data,uint8_t length)
   uint8_t DataToSend;
 
   /* Split the code in packages*/
+  ret = BLE_STATUS_SUCCESS;
   for (Offset = 0u; Offset < length; Offset += W2ST_CONSOLE_MAX_CHAR_LEN) {
     DataToSend = (length - Offset);
     DataToSend = (DataToSend > W2ST_CONSOLE_MAX_CHAR_LEN) ? W2ST_CONSOLE_MAX_CHAR_LEN : DataToSend;
@@ -250,12 +251,12 @@ tBleStatus Stderr_Update(uint8_t *data,uint8_t length)
 
     ret = aci_gatt_update_char_value(ConsoleW2STHandle, StdErrCharHandle, 0, DataToSend , data + Offset);
     if (ret != BLE_STATUS_SUCCESS) {
-      return BLE_STATUS_ERROR;
+      ret = BLE_STATUS_ERROR;
     }
     HAL_Delay(10u);
   }
 
-  return BLE_STATUS_SUCCESS;
+  return ret;
 }
 
 
@@ -272,6 +273,7 @@ tBleStatus Term_Update(uint8_t *data,uint8_t length)
   uint8_t DataToSend;
 
   /* Split the code in packages */
+  ret = BLE_STATUS_SUCCESS;
   for (Offset = 0u; Offset < length; Offset += W2ST_CONSOLE_MAX_CHAR_LEN) {
     DataToSend = (length - Offset);
     DataToSend = (DataToSend > W2ST_CONSOLE_MAX_CHAR_LEN) ? W2ST_CONSOLE_MAX_CHAR_LEN : DataToSend;
@@ -283,12 +285,12 @@ tBleStatus Term_Update(uint8_t *data,uint8_t length)
     ret = aci_gatt_update_char_value(ConsoleW2STHandle, TermCharHandle, 0, DataToSend, data + Offset);
     if (ret != BLE_STATUS_SUCCESS) {
         PRINTF("Error Updating Stdout Char\r\n");
-      return BLE_STATUS_ERROR;
+      ret = BLE_STATUS_ERROR;
     }
     HAL_Delay(20u);
   }
 
-  return BLE_STATUS_SUCCESS;
+  return ret;
 }
 
 /**
@@ -1106,56 +1108,53 @@ static uint32_t ConfigCommandParsing(const uint8_t * att_data, uint8_t data_leng
 void HCI_Event_CB(void *pckt)
 {
   hci_uart_pckt *hci_pckt = pckt;
-  hci_event_pckt *event_pckt = (hci_event_pckt*)hci_pckt->data;
+  hci_event_pckt *event_pckt = (hci_event_pckt*) hci_pckt->data;
   
-  if (hci_pckt->type != HCI_EVENT_PKT) {
-    return;
-  }
-  
-  switch (event_pckt->evt) {
-    
-  case EVT_DISCONN_COMPLETE:
-    {
-      GAP_DisconnectionComplete_CB();
-    }
-    break;
-  case EVT_LE_META_EVENT:
-    {
-      evt_le_meta_event *evt = (void *)event_pckt->data;
-      if (EVT_LE_CONN_COMPLETE == evt->subevent) {
-          evt_le_connection_complete *cc = (void *)evt->data;
-          GAP_ConnectionComplete_CB(cc->peer_bdaddr, cc->handle);
-      }
-    }
-    break;
-  case EVT_VENDOR:
-    {
-      evt_blue_aci *blue_evt = (void*)event_pckt->data;
-      switch (blue_evt->ecode){
-      case EVT_BLUE_GATT_READ_PERMIT_REQ:
-        {
-          evt_gatt_read_permit_req *pr = (void*)blue_evt->data; 
-          Read_Request_CB(pr->attr_handle);                    
-        }
-        break;
-      case EVT_BLUE_GATT_ATTRIBUTE_MODIFIED:
-        if (TargetBoardFeatures.bnrg_expansion_board == IDB05A1) {
-              evt_gatt_attr_modified_IDB05A1 *evt = (evt_gatt_attr_modified_IDB05A1*)blue_evt->data;
-              Attribute_Modified_CB(evt->attr_handle, evt->att_data,evt->data_length);
-            } else {
-              evt_gatt_attr_modified_IDB04A1 *evt = (evt_gatt_attr_modified_IDB04A1*)blue_evt->data;
-              Attribute_Modified_CB(evt->attr_handle, evt->att_data,evt->data_length);
-            }
-        break;
-      default:
-    	  /* no action needed here */
-    	break;      
-      }
-    }
-    break;
-    default:
-	/* no action needed here */
-	break;
+  if (hci_pckt->type == HCI_EVENT_PKT) {
+	  switch (event_pckt->evt) {
+	  case EVT_DISCONN_COMPLETE:
+	    {
+	      GAP_DisconnectionComplete_CB();
+	    }
+	    break;
+	  case EVT_LE_META_EVENT:
+	    {
+	      evt_le_meta_event *evt = (void *)event_pckt->data;
+	      if (EVT_LE_CONN_COMPLETE == evt->subevent) {
+	          evt_le_connection_complete *cc = (void *)evt->data;
+	          GAP_ConnectionComplete_CB(cc->peer_bdaddr, cc->handle);
+	      }
+	    }
+	    break;
+	  case EVT_VENDOR:
+	    {
+	      evt_blue_aci *blue_evt = (void*)event_pckt->data;
+	      switch (blue_evt->ecode){
+	      case EVT_BLUE_GATT_READ_PERMIT_REQ:
+	        {
+	          evt_gatt_read_permit_req *pr = (void*)blue_evt->data;
+	          Read_Request_CB(pr->attr_handle);
+	        }
+	        break;
+	      case EVT_BLUE_GATT_ATTRIBUTE_MODIFIED:
+	        if (TargetBoardFeatures.bnrg_expansion_board == IDB05A1) {
+	              evt_gatt_attr_modified_IDB05A1 *evt = (evt_gatt_attr_modified_IDB05A1*)blue_evt->data;
+	              Attribute_Modified_CB(evt->attr_handle, evt->att_data,evt->data_length);
+	            } else {
+	              evt_gatt_attr_modified_IDB04A1 *evt = (evt_gatt_attr_modified_IDB04A1*)blue_evt->data;
+	              Attribute_Modified_CB(evt->attr_handle, evt->att_data,evt->data_length);
+	            }
+	        break;
+	      default:
+	    	  /* no action needed here */
+	    	break;
+	      }
+	    }
+	    break;
+	    default:
+		/* no action needed here */
+		break;
+	  }
   }
 }
 
