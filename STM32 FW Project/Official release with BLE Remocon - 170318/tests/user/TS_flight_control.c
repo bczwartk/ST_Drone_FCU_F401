@@ -15,18 +15,42 @@ CPPTEST_TEST_SUITE(TS_flight_control);
         CPPTEST_TEST_SUITE_TEARDOWN(TS_flight_control_testSuiteTearDown);
 CPPTEST_TEST(TS_flight_control_test_PIDOuterLoopFrameTrans_zeros);
 CPPTEST_TEST_DS(TS_flight_control_test_PIDOuterLoopFrameTrans_ds, CPPTEST_DS("TS_flight_control_PIDOuterLoopFrameTrans"));
-CPPTEST_TEST(TS_flight_control_test_FlightControlPID_zero);
+CPPTEST_TEST(TS_flight_control_test_FlightControlPID_f_zero);
 CPPTEST_TEST(TS_flight_control_test_FlightControlPID_OuterLoop_zero);
 CPPTEST_TEST(TS_flight_control_test_FlightControlPID_innerLoop_zero);
+CPPTEST_TEST(TS_flight_control_test_FlightControlPID_OuterLoop_gTHR_reset);
+CPPTEST_TEST(TS_flight_control_test_FlightControlPID_f_gTHR_reset);
+CPPTEST_TEST(TS_flight_control_test_FlightControlPID_f_above_limits);
+CPPTEST_TEST(TS_flight_control_test_FlightControlPID_f_below_limits);
+CPPTEST_TEST(TS_flight_control_test_FlightControlPID_f_at_limits);
+CPPTEST_TEST(TS_flight_control_test_FlightControlPID_OuterLoop_at_limits);
+CPPTEST_TEST(TS_flight_control_test_FlightControlPID_OuterLoop_above_limits);
+CPPTEST_TEST(TS_flight_control_test_FlightControlPID_OuterLoop_below_limits);
+CPPTEST_TEST(TS_flight_control_test_FlightControlPID_innerLoop_gTHR_reset);
+CPPTEST_TEST(TS_flight_control_test_FlightControlPID_innerLoop_at_limits);
+CPPTEST_TEST(TS_flight_control_test_FlightControlPID_innerLoop_above_limits);
+CPPTEST_TEST(TS_flight_control_test_FlightControlPID_innerLoop_below_limits);
 CPPTEST_TEST_SUITE_END();
         
 void TS_flight_control_test_PIDControlInit(void);
 
 void TS_flight_control_test_PIDOuterLoopFrameTrans_zeros(void);
 void TS_flight_control_test_PIDOuterLoopFrameTrans_ds(void);
-void TS_flight_control_test_FlightControlPID_zero(void);
+void TS_flight_control_test_FlightControlPID_f_zero(void);
 void TS_flight_control_test_FlightControlPID_OuterLoop_zero(void);
 void TS_flight_control_test_FlightControlPID_innerLoop_zero(void);
+void TS_flight_control_test_FlightControlPID_OuterLoop_gTHR_reset(void);
+void TS_flight_control_test_FlightControlPID_f_gTHR_reset(void);
+void TS_flight_control_test_FlightControlPID_f_above_limits(void);
+void TS_flight_control_test_FlightControlPID_f_below_limits(void);
+void TS_flight_control_test_FlightControlPID_f_at_limits(void);
+void TS_flight_control_test_FlightControlPID_OuterLoop_at_limits(void);
+void TS_flight_control_test_FlightControlPID_OuterLoop_above_limits(void);
+void TS_flight_control_test_FlightControlPID_OuterLoop_below_limits(void);
+void TS_flight_control_test_FlightControlPID_innerLoop_gTHR_reset(void);
+void TS_flight_control_test_FlightControlPID_innerLoop_at_limits(void);
+void TS_flight_control_test_FlightControlPID_innerLoop_above_limits(void);
+void TS_flight_control_test_FlightControlPID_innerLoop_below_limits(void);
 CPPTEST_TEST_SUITE_REGISTRATION(TS_flight_control);
 
 void TS_flight_control_testSuiteSetUp(void);
@@ -144,8 +168,8 @@ void TS_flight_control_test_PIDOuterLoopFrameTrans_ds()
 }
 /* CPPTEST_TEST_CASE_END test_PIDOuterLoopFrameTrans_ds */
 
-/* CPPTEST_TEST_CASE_BEGIN test_FlightControlPID_zero */
-void TS_flight_control_test_FlightControlPID_zero()
+/* CPPTEST_TEST_CASE_BEGIN test_FlightControlPID_f_zero */
+void TS_flight_control_test_FlightControlPID_f_zero()
 {
 	EulerAngleTypeDef euler_rc_in = { 0.0f, 0.0f, 0.0f };
 	EulerAngleTypeDef euler_ahrs_in = { 0.0f, 0.0f, 0.0f };
@@ -157,8 +181,14 @@ void TS_flight_control_test_FlightControlPID_zero()
 
 	FlightControlPID(&euler_rc_in, &euler_ahrs_in, &gyro_in_rad, &pid, &motor_pwm);
 
+	CPPTEST_ASSERT_FLOAT_EQUAL(0.0f, pid_x_integ1, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(0.0f, pid_y_integ1, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(0.0f, pid_z_integ1, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(0.0f, pid_x_integ2, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(0.0f, pid_y_integ2, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(0.0f, pid_z_integ2, 0.001f);
 }
-/* CPPTEST_TEST_CASE_END test_FlightControlPID_zero */
+/* CPPTEST_TEST_CASE_END test_FlightControlPID_f_zero */
 
 /* CPPTEST_TEST_CASE_BEGIN test_FlightControlPID_OuterLoop_zero */
 void TS_flight_control_test_FlightControlPID_OuterLoop_zero()
@@ -183,5 +213,330 @@ void TS_flight_control_test_FlightControlPID_innerLoop_zero()
 	PIDControlInit(&pid);
 
 	FlightControlPID_innerLoop(&gyro_in_rad, &pid, &motor_pwm);
+
+	CPPTEST_ASSERT_FLOAT_EQUAL(0.0f, pid_x_integ2, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(0.0f, pid_y_integ2, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(0.0f, pid_z_integ2, 0.001f);
 }
 /* CPPTEST_TEST_CASE_END test_FlightControlPID_innerLoop_zero */
+
+/* CPPTEST_TEST_CASE_BEGIN test_FlightControlPID_OuterLoop_gTHR_reset */
+void TS_flight_control_test_FlightControlPID_OuterLoop_gTHR_reset()
+{
+	EulerAngleTypeDef euler_rc_in = { 0.0f, 0.0f, 0.0f };
+	EulerAngleTypeDef euler_ahrs_in = { 0.0f, 0.0f, 0.0f };
+	P_PI_PIDControlTypeDef pid;
+	gTHR = MIN_THR - 1;
+
+	PIDControlInit(&pid);
+
+	FlightControlPID_OuterLoop(&euler_rc_in, &euler_ahrs_in, &pid);
+
+	CPPTEST_ASSERT_FLOAT_EQUAL(0.0f, pid_x_integ1, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(0.0f, pid_y_integ1, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(0.0f, pid_z_integ1, 0.001f);
+}
+/* CPPTEST_TEST_CASE_END test_FlightControlPID_OuterLoop_gTHR_reset */
+
+/* CPPTEST_TEST_CASE_BEGIN test_FlightControlPID_f_gTHR_reset */
+void TS_flight_control_test_FlightControlPID_f_gTHR_reset()
+{
+	EulerAngleTypeDef euler_rc_in = { 0.0f, 0.0f, 0.0f };
+	EulerAngleTypeDef euler_ahrs_in = { 0.0f, 0.0f, 0.0f };
+	Gyro_Rad gyro_in_rad = { 0.0f, 0.0f, 0.0f };
+	P_PI_PIDControlTypeDef pid;
+	MotorControlTypeDef motor_pwm = { 0.0f, 0.0f, 0.0f, 0.0f };
+	gTHR = MIN_THR - 1;
+
+	PIDControlInit(&pid);
+
+	FlightControlPID(&euler_rc_in, &euler_ahrs_in, &gyro_in_rad, &pid, &motor_pwm);
+
+	CPPTEST_ASSERT_FLOAT_EQUAL(0.0f, pid_x_integ1, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(0.0f, pid_y_integ1, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(0.0f, pid_z_integ1, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(0.0f, pid_x_integ2, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(0.0f, pid_y_integ2, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(0.0f, pid_z_integ2, 0.001f);
+}
+/* CPPTEST_TEST_CASE_END test_FlightControlPID_f_gTHR_reset */
+
+/* CPPTEST_TEST_CASE_BEGIN test_FlightControlPID_f_above_limits */
+void TS_flight_control_test_FlightControlPID_f_above_limits()
+{
+	/* basic reset first */
+	EulerAngleTypeDef euler_rc_in = { 0.0f, 0.0f, 0.0f };
+	EulerAngleTypeDef euler_ahrs_in = { 0.0f, 0.0f, 0.0f };
+	Gyro_Rad gyro_in_rad = { 0.0f, 0.0f, 0.0f };
+	P_PI_PIDControlTypeDef pid;
+	MotorControlTypeDef motor_pwm = { 0.0f, 0.0f, 0.0f, 0.0f };
+
+	PIDControlInit(&pid);
+
+	/* make sure the controlled values are not reset */
+	gTHR = MIN_THR + 1;
+
+	/* put the values of interest above limits */
+	pid_x_integ1 = pid.x_i1_limit + 1.0f;
+	pid_x_integ2 = pid.x_i2_limit + 1.0f;
+	pid_y_integ1 = pid.y_i1_limit + 1.0f;
+	pid_y_integ2 = pid.y_i2_limit + 1.0f;
+	pid_z_integ2 = pid.z_i2_limit + 1.0f;
+
+	FlightControlPID(&euler_rc_in, &euler_ahrs_in, &gyro_in_rad, &pid, &motor_pwm);
+
+	/* see if the values were brought back to their limits */
+	CPPTEST_ASSERT_FLOAT_EQUAL(pid.x_i1_limit, pid_x_integ1, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(pid.x_i2_limit, pid_x_integ2, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(pid.y_i1_limit, pid_y_integ1, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(pid.y_i2_limit, pid_y_integ2, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(pid.z_i2_limit, pid_z_integ2, 0.001f);
+}
+/* CPPTEST_TEST_CASE_END test_FlightControlPID_f_above_limits */
+
+/* CPPTEST_TEST_CASE_BEGIN test_FlightControlPID_f_below_limits */
+void TS_flight_control_test_FlightControlPID_f_below_limits()
+{
+	/* basic reset first */
+	EulerAngleTypeDef euler_rc_in = { 0.0f, 0.0f, 0.0f };
+	EulerAngleTypeDef euler_ahrs_in = { 0.0f, 0.0f, 0.0f };
+	Gyro_Rad gyro_in_rad = { 0.0f, 0.0f, 0.0f };
+	P_PI_PIDControlTypeDef pid;
+	MotorControlTypeDef motor_pwm = { 0.0f, 0.0f, 0.0f, 0.0f };
+
+	PIDControlInit(&pid);
+
+	/* make sure the controlled values are not reset */
+	gTHR = MIN_THR + 1;
+
+	/* put the values of interest below limits */
+	pid_x_integ1 = -pid.x_i1_limit - 1.0f;
+	pid_x_integ2 = -pid.x_i2_limit - 1.0f;
+	pid_y_integ1 = -pid.y_i1_limit - 1.0f;
+	pid_y_integ2 = -pid.y_i2_limit - 1.0f;
+	pid_z_integ2 = -pid.z_i2_limit - 1.0f;
+
+	FlightControlPID(&euler_rc_in, &euler_ahrs_in, &gyro_in_rad, &pid, &motor_pwm);
+
+	/* see if the values were brought back to their limits */
+	CPPTEST_ASSERT_FLOAT_EQUAL(-pid.x_i1_limit, pid_x_integ1, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(-pid.x_i2_limit, pid_x_integ2, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(-pid.y_i1_limit, pid_y_integ1, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(-pid.y_i2_limit, pid_y_integ2, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(-pid.z_i2_limit, pid_z_integ2, 0.001f);
+}
+/* CPPTEST_TEST_CASE_END test_FlightControlPID_f_below_limits */
+
+/* CPPTEST_TEST_CASE_BEGIN test_FlightControlPID_f_at_limits */
+void TS_flight_control_test_FlightControlPID_f_at_limits()
+{
+	/* basic reset first */
+	EulerAngleTypeDef euler_rc_in = { 0.0f, 0.0f, 0.0f };
+	EulerAngleTypeDef euler_ahrs_in = { 0.0f, 0.0f, 0.0f };
+	Gyro_Rad gyro_in_rad = { 0.0f, 0.0f, 0.0f };
+	P_PI_PIDControlTypeDef pid;
+	MotorControlTypeDef motor_pwm = { 0.0f, 0.0f, 0.0f, 0.0f };
+
+	PIDControlInit(&pid);
+
+	/* make sure the controlled values are not reset */
+	gTHR = MIN_THR + 1;
+
+	/* put the values of interest at limits */
+	pid_x_integ1 = pid.x_i1_limit;
+	pid_x_integ2 = pid.x_i2_limit;
+	pid_y_integ1 = pid.y_i1_limit;
+	pid_y_integ2 = pid.y_i2_limit;
+	pid_z_integ2 = pid.z_i2_limit;
+
+	FlightControlPID(&euler_rc_in, &euler_ahrs_in, &gyro_in_rad, &pid, &motor_pwm);
+
+	/* see if the values were still at their limits */
+	CPPTEST_ASSERT_FLOAT_EQUAL(pid.x_i1_limit, pid_x_integ1, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(pid.x_i2_limit, pid_x_integ2, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(pid.y_i1_limit, pid_y_integ1, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(pid.y_i2_limit, pid_y_integ2, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(pid.z_i2_limit, pid_z_integ2, 0.001f);
+}
+/* CPPTEST_TEST_CASE_END test_FlightControlPID_f_at_limits */
+
+/* CPPTEST_TEST_CASE_BEGIN test_FlightControlPID_OuterLoop_at_limits */
+void TS_flight_control_test_FlightControlPID_OuterLoop_at_limits()
+{
+	EulerAngleTypeDef euler_rc_in = { 0.0f, 0.0f, 0.0f };
+	EulerAngleTypeDef euler_ahrs_in = { 0.0f, 0.0f, 0.0f };
+	P_PI_PIDControlTypeDef pid;
+
+	PIDControlInit(&pid);
+
+	/* make sure the controlled values are not reset */
+	gTHR = MIN_THR + 1;
+
+	/* put the values of interest at limits */
+	pid_x_integ1 = pid.x_i1_limit;
+	pid_y_integ1 = pid.y_i1_limit;
+	pid_z_integ1 = pid.z_i2_limit;
+
+	FlightControlPID_OuterLoop(&euler_rc_in, &euler_ahrs_in, &pid);
+
+	/* see if the values were still at their limits */
+	CPPTEST_ASSERT_FLOAT_EQUAL(pid.x_i1_limit, pid_x_integ1, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(pid.y_i1_limit, pid_y_integ1, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(pid.z_i1_limit, pid_z_integ1, 0.001f);
+}
+/* CPPTEST_TEST_CASE_END test_FlightControlPID_OuterLoop_at_limits */
+
+/* CPPTEST_TEST_CASE_BEGIN test_FlightControlPID_OuterLoop_above_limits */
+void TS_flight_control_test_FlightControlPID_OuterLoop_above_limits()
+{
+	EulerAngleTypeDef euler_rc_in = { 0.0f, 0.0f, 0.0f };
+	EulerAngleTypeDef euler_ahrs_in = { 0.0f, 0.0f, 0.0f };
+	P_PI_PIDControlTypeDef pid;
+	gTHR = MIN_THR - 1;
+
+	PIDControlInit(&pid);
+
+	/* make sure the controlled values are not reset */
+	gTHR = MIN_THR + 1;
+
+	/* put the values of interest above limits */
+	pid_x_integ1 = pid.x_i1_limit + 1.0f;
+	pid_y_integ1 = pid.y_i1_limit + 1.0f;
+	pid_z_integ1 = pid.z_i2_limit + 1.0f;
+
+	FlightControlPID_OuterLoop(&euler_rc_in, &euler_ahrs_in, &pid);
+
+	/* see if the values were brought back to their limits */
+	CPPTEST_ASSERT_FLOAT_EQUAL(pid.x_i1_limit, pid_x_integ1, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(pid.y_i1_limit, pid_y_integ1, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(pid.z_i1_limit, pid_z_integ1, 0.001f);
+}
+/* CPPTEST_TEST_CASE_END test_FlightControlPID_OuterLoop_above_limits */
+
+/* CPPTEST_TEST_CASE_BEGIN test_FlightControlPID_OuterLoop_below_limits */
+void TS_flight_control_test_FlightControlPID_OuterLoop_below_limits()
+{
+	EulerAngleTypeDef euler_rc_in = { 0.0f, 0.0f, 0.0f };
+	EulerAngleTypeDef euler_ahrs_in = { 0.0f, 0.0f, 0.0f };
+	P_PI_PIDControlTypeDef pid;
+	gTHR = MIN_THR - 1;
+
+	PIDControlInit(&pid);
+
+	/* make sure the controlled values are not reset */
+	gTHR = MIN_THR + 1;
+
+	/* put the values of interest above limits */
+	pid_x_integ1 = -pid.x_i1_limit - 1.0f;
+	pid_y_integ1 = -pid.y_i1_limit - 1.0f;
+	pid_z_integ1 = -pid.z_i2_limit - 1.0f;
+
+	FlightControlPID_OuterLoop(&euler_rc_in, &euler_ahrs_in, &pid);
+
+	/* see if the values were brought back to their limits */
+	CPPTEST_ASSERT_FLOAT_EQUAL(-pid.x_i1_limit, pid_x_integ1, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(-pid.y_i1_limit, pid_y_integ1, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(-pid.z_i1_limit, pid_z_integ1, 0.001f);
+}
+/* CPPTEST_TEST_CASE_END test_FlightControlPID_OuterLoop_below_limits */
+
+/* CPPTEST_TEST_CASE_BEGIN test_FlightControlPID_innerLoop_gTHR_reset */
+void TS_flight_control_test_FlightControlPID_innerLoop_gTHR_reset()
+{
+	Gyro_Rad gyro_in_rad = { 0.0f, 0.0f, 0.0f };
+	P_PI_PIDControlTypeDef pid;
+	MotorControlTypeDef motor_pwm = { 0.0f, 0.0f, 0.0f, 0.0f };
+	gTHR = MIN_THR - 1;
+
+	PIDControlInit(&pid);
+
+	FlightControlPID_innerLoop(&gyro_in_rad, &pid, &motor_pwm);
+
+	CPPTEST_ASSERT_FLOAT_EQUAL(0.0f, pid_x_integ2, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(0.0f, pid_y_integ2, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(0.0f, pid_z_integ2, 0.001f);
+}
+/* CPPTEST_TEST_CASE_END test_FlightControlPID_innerLoop_gTHR_reset */
+
+/* CPPTEST_TEST_CASE_BEGIN test_FlightControlPID_innerLoop_at_limits */
+void TS_flight_control_test_FlightControlPID_innerLoop_at_limits()
+{
+	Gyro_Rad gyro_in_rad = { 0.0f, 0.0f, 0.0f };
+	P_PI_PIDControlTypeDef pid;
+	MotorControlTypeDef motor_pwm = { 0.0f, 0.0f, 0.0f, 0.0f };
+	gTHR = MIN_THR - 1;
+
+	PIDControlInit(&pid);
+
+	/* make sure the controlled values are not reset */
+	gTHR = MIN_THR + 1;
+
+	/* put the values of interest at limits */
+	pid_x_integ2 = pid.x_i2_limit;
+	pid_y_integ2 = pid.y_i2_limit;
+	pid_z_integ2 = pid.z_i2_limit;
+
+	FlightControlPID_innerLoop(&gyro_in_rad, &pid, &motor_pwm);
+
+	/* see if the values were still at their limits */
+	CPPTEST_ASSERT_FLOAT_EQUAL(pid.x_i2_limit, pid_x_integ2, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(pid.y_i2_limit, pid_y_integ2, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(pid.z_i2_limit, pid_z_integ2, 0.001f);
+}
+/* CPPTEST_TEST_CASE_END test_FlightControlPID_innerLoop_at_limits */
+
+/* CPPTEST_TEST_CASE_BEGIN test_FlightControlPID_innerLoop_above_limits */
+void TS_flight_control_test_FlightControlPID_innerLoop_above_limits()
+{
+	Gyro_Rad gyro_in_rad = { 0.0f, 0.0f, 0.0f };
+	P_PI_PIDControlTypeDef pid;
+	MotorControlTypeDef motor_pwm = { 0.0f, 0.0f, 0.0f, 0.0f };
+	gTHR = MIN_THR - 1;
+
+	PIDControlInit(&pid);
+
+	/* make sure the controlled values are not reset */
+	gTHR = MIN_THR + 1;
+
+	/* put the values of interest at limits */
+	pid_x_integ2 = pid.x_i2_limit + 1.0f;
+	pid_y_integ2 = pid.y_i2_limit + 1.0f;
+	pid_z_integ2 = pid.z_i2_limit + 1.0f;
+	//pid.z_s2 = MAX_ADJ_AMOUNT_YAW + 1.0f;
+
+	FlightControlPID_innerLoop(&gyro_in_rad, &pid, &motor_pwm);
+
+	/* see if the values were brought back to their limits */
+	CPPTEST_ASSERT_FLOAT_EQUAL(pid.x_i2_limit, pid_x_integ2, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(pid.y_i2_limit, pid_y_integ2, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(pid.z_i2_limit, pid_z_integ2, 0.001f);
+	//CPPTEST_ASSERT_FLOAT_EQUAL(MAX_ADJ_AMOUNT_YAW, pid.z_s2, 0.001f);
+}
+/* CPPTEST_TEST_CASE_END test_FlightControlPID_innerLoop_above_limits */
+
+/* CPPTEST_TEST_CASE_BEGIN test_FlightControlPID_innerLoop_below_limits */
+void TS_flight_control_test_FlightControlPID_innerLoop_below_limits()
+{
+	Gyro_Rad gyro_in_rad = { 0.0f, 0.0f, 0.0f };
+	P_PI_PIDControlTypeDef pid;
+	MotorControlTypeDef motor_pwm = { 0.0f, 0.0f, 0.0f, 0.0f };
+	gTHR = MIN_THR - 1;
+
+	PIDControlInit(&pid);
+
+	/* make sure the controlled values are not reset */
+	gTHR = MIN_THR + 1;
+
+	/* put the values of interest at limits */
+	pid_x_integ2 = -pid.x_i2_limit - 1.0f;
+	pid_y_integ2 = -pid.y_i2_limit - 1.0f;
+	pid_z_integ2 = -pid.z_i2_limit - 1.0f;
+
+	FlightControlPID_innerLoop(&gyro_in_rad, &pid, &motor_pwm);
+
+	/* see if the values were brought back to their limits */
+	CPPTEST_ASSERT_FLOAT_EQUAL(-pid.x_i2_limit, pid_x_integ2, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(-pid.y_i2_limit, pid_y_integ2, 0.001f);
+	CPPTEST_ASSERT_FLOAT_EQUAL(-pid.z_i2_limit, pid_z_integ2, 0.001f);
+}
+/* CPPTEST_TEST_CASE_END test_FlightControlPID_innerLoop_below_limits */
