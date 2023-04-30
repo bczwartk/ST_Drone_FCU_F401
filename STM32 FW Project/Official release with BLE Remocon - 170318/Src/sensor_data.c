@@ -58,6 +58,10 @@
 #include "steval_fcu001_v1_pressure.h"  
 
 
+static uint8_t useMagSensor = USE_MAG_SENSOR;
+static uint8_t usePressureSensor = USE_PRESSURE_SENSOR;
+static uint8_t coordinateSystem = COORDINATE_SYSTEM;
+
 /*
  * This function read sensor data and prepare data for proper coordinate system
  * according to definition of COORDINATE_SYSTEM
@@ -83,7 +87,7 @@ void ReadSensorRawData(void *ACC_handle, void *GYR_handle, void *MAG_handle, voi
     gyro_temp.AXIS_Y = (int32_t) gyro_temp_int16.AXIS_Y;
     gyro_temp.AXIS_Z = (int32_t) gyro_temp_int16.AXIS_Z;
     // Read data is in mg unit
-    if (USE_MAG_SENSOR) {
+    if (useMagSensor) {
     	(void) BSP_MAGNETO_Get_Axes(MAG_handle, &mag_temp_int16);
     	pMag->AXIS_X = (int32_t) mag_temp_int16.AXIS_X;
     	pMag->AXIS_Y = (int32_t) mag_temp_int16.AXIS_Y;
@@ -94,13 +98,13 @@ void ReadSensorRawData(void *ACC_handle, void *GYR_handle, void *MAG_handle, voi
     	pMag->AXIS_Z = 0;
     }
     
-    if (USE_PRESSURE_SENSOR) {
+    if (usePressureSensor) {
     	(void) BSP_PRESSURE_Get_Press(PRE_handle, pPre);
     } else {
     	pPre = NULL;
     }
     
-    if (COORDINATE_SYSTEM == 1) {
+    if (coordinateSystem == 1u) {
         // convert acc
         t1 = pAcc->AXIS_X;
         pAcc->AXIS_X = pAcc->AXIS_Y;
@@ -113,10 +117,9 @@ void ReadSensorRawData(void *ACC_handle, void *GYR_handle, void *MAG_handle, voi
         t1 = pMag->AXIS_X;
         pMag->AXIS_X = pMag->AXIS_Y;
         pMag->AXIS_Y = -t1;
-    } else if (COORDINATE_SYSTEM == 2) {
+    } else if (coordinateSystem == 2u) {
         // No need to convert in this case
-    } else if (COORDINATE_SYSTEM == 3) {
-     
+    } else if (coordinateSystem == 3u) {
     	pAcc->AXIS_X = -acc_temp.AXIS_Y;
     	pAcc->AXIS_Y = acc_temp.AXIS_X;
     	pAcc->AXIS_Z = acc_temp.AXIS_Z;
@@ -125,11 +128,11 @@ void ReadSensorRawData(void *ACC_handle, void *GYR_handle, void *MAG_handle, voi
     	pGyro->AXIS_Y = gyro_temp.AXIS_X;
     	pGyro->AXIS_Z = gyro_temp.AXIS_Z;
       
-      // convert mag
-      t1 = pMag->AXIS_X;
-      pMag->AXIS_X = - pMag->AXIS_Y;
-      pMag->AXIS_Y = t1;
-    } else if (COORDINATE_SYSTEM == 4) {
+        // convert mag
+        t1 = pMag->AXIS_X;
+        pMag->AXIS_X = - pMag->AXIS_Y;
+        pMag->AXIS_Y = t1;
+    } else if (coordinateSystem == 4u) {
         // convert acc
     	pAcc->AXIS_X = - pAcc->AXIS_X;
     	pAcc->AXIS_Y = - pAcc->AXIS_Y;

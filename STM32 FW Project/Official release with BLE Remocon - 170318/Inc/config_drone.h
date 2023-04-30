@@ -23,10 +23,10 @@
 #define RC_CHANNEL4_PIN     GPIO_PIN_3
 
 // Choose coordinate system defined in sensor_data.c
-#define COORDINATE_SYSTEM   3
+#define COORDINATE_SYSTEM   3u
 // Use magnetic sensor or not 1 = use
-#define USE_MAG_SENSOR      1
+#define USE_MAG_SENSOR      1u
 // Use presure sensor or not 1 = use
-#define USE_PRESSURE_SENSOR  1
+#define USE_PRESSURE_SENSOR  1u
 
 #endif /* CONFIG_DRONE_H */
