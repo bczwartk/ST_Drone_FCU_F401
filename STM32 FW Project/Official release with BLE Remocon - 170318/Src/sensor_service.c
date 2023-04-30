@@ -44,7 +44,6 @@
 #include "TargetFeatures.h"
 #include "main.h"
 #include "sensor_service.h"
-#include "console.h"
 #include "bluenrg_utils.h"
 #include "bluenrg_l2cap_aci.h"
 #include "uuid_ble_service.h"
@@ -155,7 +154,7 @@ tBleStatus Add_ConfigW2ST_Service(void)
   uint8_t uuid[16];
 
   COPY_CONFIG_SERVICE_UUID(uuid);
-  ret = aci_gatt_add_serv(UUID_TYPE_128,  uuid, PRIMARY_SERVICE, 1+3,&ConfigServW2STHandle);
+  ret = aci_gatt_add_serv(UUID_TYPE_128,  uuid, PRIMARY_SERVICE, 1 + 3, &ConfigServW2STHandle);
 
   if (ret != BLE_STATUS_SUCCESS) {
     goto fail;

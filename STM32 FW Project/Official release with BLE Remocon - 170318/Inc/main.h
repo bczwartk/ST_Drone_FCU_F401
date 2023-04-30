@@ -62,7 +62,7 @@
 #define NAME_BLUEMS 'B','M','2','V','2','1','0'
 #define STM32_UUID ((uint32_t *)0x1FFF7A10)
 #define GAP_PERIPHERAL_ROLE_IDB05A1			(0x01)
-#define GAP_BROADCASTER_ROLE_IDB05A1		        (0x02)
+#define GAP_BROADCASTER_ROLE_IDB05A1		(0x02)
 #define GAP_CENTRAL_ROLE_IDB05A1			(0x04)
 #define GAP_OBSERVER_ROLE_IDB05A1			(0x08)
 #define MAC_BLUEMS 0xFF, 0xEE, 0xDD, 0xAA, 0xAA, 0xAA
@@ -167,12 +167,7 @@ for each packet used for Console Service */
  * @}
  */
 
-
-//static int HCI_ProcessEvent=0;
-//static volatile uint32_t HCI_ProcessEvent=0;
 extern volatile uint32_t HCI_ProcessEvent;  
-// define MCR_BLUEMS_F2I_2D(in, out_int, out_dec) {out_int = (int32_t)in; out_dec= (int32_t)((in-out_int)*100);};
-
 
 /* USER CODE END Private defines */
 
