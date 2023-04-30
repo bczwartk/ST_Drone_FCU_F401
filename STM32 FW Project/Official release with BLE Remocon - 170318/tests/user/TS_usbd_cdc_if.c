@@ -16,7 +16,7 @@ CPPTEST_TEST(TS_usbd_cdc_if_test_CDC_DeInit_FS);
 CPPTEST_TEST(TS_usbd_cdc_if_test_CDC_Receive_FS);
 CPPTEST_TEST_DS(TS_usbd_cdc_if_test_CDC_Control_FS, CPPTEST_DS("TS_usbd_cdc_if_CDC_Control_FS"));
 CPPTEST_TEST(TS_usbd_cdc_if_test_CDC_Init_FS);
-CPPTEST_TEST_DISABLED(TS_usbd_cdc_if_test_CDC_Transmit_FS);
+CPPTEST_TEST(TS_usbd_cdc_if_test_CDC_Transmit_FS);
 CPPTEST_TEST_SUITE_END();
         
 
@@ -109,9 +109,28 @@ void TS_usbd_cdc_if_test_CDC_Init_FS()
 }
 /* CPPTEST_TEST_CASE_END test_CDC_Init_FS */
 
+
+void CppTest_StubCallback_USBD_CDC_SetTxBuffer(CppTest_StubCallInfo* stubCallInfo, uint8_t* __return, USBD_HandleTypeDef * pdev, uint8_t * pbuff, uint16_t length)
+{
+	*__return = USBD_OK;
+}
+
+void CppTest_StubCallback_USBD_CDC_TransmitPacket(CppTest_StubCallInfo* stubCallInfo, uint8_t* __return, USBD_HandleTypeDef * pdev)
+{
+	*__return = USBD_OK;
+}
+
 /* CPPTEST_TEST_CASE_BEGIN test_CDC_Transmit_FS */
 void TS_usbd_cdc_if_test_CDC_Transmit_FS()
 {
+	// note:  we cannot operate on the real tx buffer not to hang everything
+	//        so we stub the functions that do the actual tx stuff,
+	//        and only check if they were called
+	CPPTEST_REGISTER_STUB_CALLBACK("USBD_CDC_SetTxBuffer", &CppTest_StubCallback_USBD_CDC_SetTxBuffer);
+	CPPTEST_REGISTER_STUB_CALLBACK("USBD_CDC_TransmitPacket", &CppTest_StubCallback_USBD_CDC_TransmitPacket);
+	CPPTEST_EXPECT_NCALLS("USBD_CDC_SetTxBuffer", 1);
+	CPPTEST_EXPECT_NCALLS("USBD_CDC_TransmitPacket", 1);
+
 	uint8_t buf[8u];
     int8_t ret;
     buf[0] = 1u;
