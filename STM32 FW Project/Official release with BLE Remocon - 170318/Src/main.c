@@ -181,7 +181,7 @@ typedef struct
 //IIR_Coeff gyro_fil_coeff = {1.3489677452527946 ,  -0.51398189421967566, 0.041253537241720303, 0.082507074483440607, 0.041253537241720303};
 
 //100hz, 800hz
-IIR_Coeff gyro_fil_coeff = {0.94280904158206336,  -0.33333333333333343, 0.09763107293781749 , 0.19526214587563498 , 0.09763107293781749 };
+IIR_Coeff gyro_fil_coeff = {0.94280904158206336, -0.33333333333333343, 0.09763107293781749, 0.19526214587563498, 0.09763107293781749 };
 
 Attitude_Degree  Fly, Fly_offset, Fly_origin;
 Gyro_Rad gyro_in_rad, gyro_degree, gyro_cali_degree;
@@ -206,9 +206,8 @@ int32_t BytesToWrite;
 
 /* USER CODE END 0 */
 
- int main(void)
+int main(void)
 {
-
   /* USER CODE BEGIN 1 */
   int16_t pid_interval, i;
   
@@ -241,8 +240,7 @@ int32_t BytesToWrite;
   euler_ahrs_offset.thx = 0.0f;
   euler_ahrs_offset.thy = 0.0f;
 
-  for(i=0;i<4;i++)
-  {
+  for (i = 0; i < 4; i++) {
     acc_y_pre[i].AXIS_X = 0.0f;
     acc_y_pre[i].AXIS_Y = 0.0f;
     acc_y_pre[i].AXIS_Z = 0.0f;
@@ -337,16 +335,16 @@ int32_t BytesToWrite;
   init_remote_control();
 
   /* Initialize TIM2 for External Remocon RF receiver PWM Input*/
-  (void)HAL_TIM_IC_Start_IT(&htim2,TIM_CHANNEL_1);
-  (void)HAL_TIM_IC_Start_IT(&htim2,TIM_CHANNEL_2);
-  (void)HAL_TIM_IC_Start_IT(&htim2,TIM_CHANNEL_3);
-  (void)HAL_TIM_IC_Start_IT(&htim2,TIM_CHANNEL_4);
+  (void)HAL_TIM_IC_Start_IT(&htim2, TIM_CHANNEL_1);
+  (void)HAL_TIM_IC_Start_IT(&htim2, TIM_CHANNEL_2);
+  (void)HAL_TIM_IC_Start_IT(&htim2, TIM_CHANNEL_3);
+  (void)HAL_TIM_IC_Start_IT(&htim2, TIM_CHANNEL_4);
 
   /* Initialize TIM4 for Motors PWM Output*/
-  (void)HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_1);
-  (void)HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_2);
-  (void)HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_3);
-  (void)HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_4);
+  (void)HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
+  (void)HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);
+  (void)HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);
+  (void)HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_4);
 
   /* Initialize General purpose TIM9 50Hz*/
   (void)HAL_TIM_Base_Start_IT(&htim9);
@@ -356,40 +354,35 @@ int32_t BytesToWrite;
   set_motor_pwm_zero(&motor_pwm);
 
   /* Setup a timer with 1ms interval */
-  pid_interval = (int16_t)(PID_SAMPLING_TIME*1000.0f);
+  pid_interval = (int16_t)(PID_SAMPLING_TIME * 1000.0f);
   SetupTimer(&tim, pid_interval);
 
   /* Start timer */
   StartTimer(&tim);
-  ch = 0;
-  ch_flag = 0;
-  
+  ch = 0u;
+  ch_flag = 0u;
   
   /* BLE communication */
   (void)PRINTF("BLE communication initialization...\n\n");
   BlueNRG_Init();
+
   /* Initialize the BlueNRG Custom services */
   Init_BlueNRG_Custom_Services();
-  
   
   /* Read initial value of Pressure and Temperature for Altitude estimation */ 
   (void)BSP_PRESSURE_Get_Press(LPS22HB_P_0_handle, &press_zero_level);      /* Read the Pressure level when arming (0m reference) for altitude calculation */
   (void)BSP_TEMPERATURE_Get_Temp(LPS22HB_T_0_handle, &temperature);         /* Read the Temperature when arming (0m reference) for altitude calculation */
   
-  
   /* USER CODE END 2 */
 
-            
-  
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-  {
+  while (1) {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */    
     if (0 != HCI_ProcessEvent) {
-          HCI_ProcessEvent=0;
+          HCI_ProcessEvent = 0;
           HCI_Process();
     }
     
@@ -399,8 +392,8 @@ int32_t BytesToWrite;
           set_connectable = FALSE;
     }  
         
-    if (tim9_event_flag == 1)
-    {     // Timer9 event: frequency 800Hz
+    if (tim9_event_flag == 1) {
+      // Timer9 event: frequency 800Hz
       tim9_event_flag = 0;
           
       count1++;
@@ -412,8 +405,7 @@ int32_t BytesToWrite;
       gyro_ahrs.AXIS_Y = 0.0f;
       gyro_ahrs.AXIS_Z = 0.0f;
 
-      for(i=0;i<FIFO_Order;i++)
-      {
+      for (i = 0; i < FIFO_Order; i++) {
         acc_ahrs.AXIS_X += acc_ahrs_FIFO[i].AXIS_X;
         acc_ahrs.AXIS_Y += acc_ahrs_FIFO[i].AXIS_Y;
         acc_ahrs.AXIS_Z += acc_ahrs_FIFO[i].AXIS_Z;
@@ -422,12 +414,12 @@ int32_t BytesToWrite;
         gyro_ahrs.AXIS_Z += gyro_ahrs_FIFO[i].AXIS_Z;
       }
 
-      acc_ahrs.AXIS_X *=FIFO_Order_Recip;
-      acc_ahrs.AXIS_Y *=FIFO_Order_Recip;
-      acc_ahrs.AXIS_Z *=FIFO_Order_Recip;
-      gyro_ahrs.AXIS_X *=FIFO_Order_Recip;
-      gyro_ahrs.AXIS_Y *=FIFO_Order_Recip;
-      gyro_ahrs.AXIS_Z *=FIFO_Order_Recip;
+      acc_ahrs.AXIS_X *= FIFO_Order_Recip;
+      acc_ahrs.AXIS_Y *= FIFO_Order_Recip;
+      acc_ahrs.AXIS_Z *= FIFO_Order_Recip;
+      gyro_ahrs.AXIS_X *= FIFO_Order_Recip;
+      gyro_ahrs.AXIS_Y *= FIFO_Order_Recip;
+      gyro_ahrs.AXIS_Z *= FIFO_Order_Recip;
 
       
       acc_fil_int.AXIS_X = (int32_t) acc_ahrs.AXIS_X;  
@@ -474,7 +466,6 @@ int32_t BytesToWrite;
             rc_enable_motor = 0u;
             fly_ready = 0;
           }
-          
 
           if (TRUE == connected) {
             rc_connection_flag = 1;                       /* BLE Remocon connected flag for enabling motor output */
@@ -494,8 +485,6 @@ int32_t BytesToWrite;
             rc_cal_flag = 1;
             BSP_LED_On(LED1);
           }
-          
-          
       #endif
           
       #ifdef REMOCON_PWM
@@ -514,14 +503,10 @@ int32_t BytesToWrite;
           }
       #endif
       
-      
       // Get target euler angle from remote control
       GetTargetEulerAngle(&euler_rc, &euler_ahrs);
-
-      
           
-      if(gTHR<MIN_THR)
-      {
+      if (gTHR < MIN_THR) {
         euler_ahrs_offset.thx = 0.0f;
         euler_ahrs_offset.thy = 0.0f;
       }
@@ -531,8 +516,7 @@ int32_t BytesToWrite;
       Fly_origin.Z_Degree = (int16_t)(euler_ahrs.thz * 5730);
 
 
-      if(gTHR<MIN_THR)
-      {
+      if (gTHR < MIN_THR) {
         euler_rc.thz = 0.0f;
         euler_ahrs.thz = 0.0f;
       }
@@ -562,17 +546,16 @@ int32_t BytesToWrite;
 
     }
 
-  if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_1) == GPIO_PIN_SET)
-  {
+  if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_1) == GPIO_PIN_SET) {
     ch_flag = 1;
   }
 
   if (0 != isTimerEventExist(&tim)) {    // Check if a timer event is present
         ClearTimer(&tim);           // Clear current event;
 
-        count2++;
+        count2 ++;
 
-        mytimcnt++;
+        mytimcnt ++;
         if (rc_connection_flag && (rc_enable_motor != 0u)) {
           if ((mytimcnt % 50) == 0) {
             BSP_LED_On(LED2);
@@ -587,7 +570,6 @@ int32_t BytesToWrite;
 
   return 0; /* not reachable - just to make MISRAC2012-RULE_17_4-a happy */
   /* USER CODE END 3 */
-
 }
 
 /** System Clock Configuration
@@ -636,14 +618,11 @@ void SystemClock_Config(void)
 
   /* SysTick_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
-
-  
 }
 
 /* ADC1 init function */
 static void MX_ADC1_Init(void)
 {
-
   ADC_ChannelConfTypeDef sConfig;
 
     /**Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion)
@@ -669,46 +648,6 @@ static void MX_ADC1_Init(void)
   (void)HAL_ADC_ConfigChannel(&hadc1, &sConfig);
 
 }
-
-///* SPI1 init function */
-//void MX_SPI1_Init(void)
-//{
-//
-//  hspi1.Instance = SPI1;
-//  hspi1.Init.Mode = SPI_MODE_MASTER;
-//  hspi1.Init.Direction = SPI_DIRECTION_2LINES;
-//  hspi1.Init.DataSize = SPI_DATASIZE_8BIT;
-//  hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
-//  hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
-//  hspi1.Init.NSS = SPI_NSS_SOFT;
-//  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
-//  hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
-//  hspi1.Init.TIMode = SPI_TIMODE_DISABLED;
-//  hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLED;
-//  hspi1.Init.CRCPolynomial = 10;
-//  HAL_SPI_Init(&hspi1);
-//
-//}
-//
-///* SPI2 init function */
-//void MX_SPI2_Init(void)
-//{
-//
-//  hspi2.Instance = SPI2;
-//  hspi2.Init.Mode = SPI_MODE_MASTER;
-//  hspi2.Init.Direction = SPI_DIRECTION_2LINES;
-//  hspi2.Init.DataSize = SPI_DATASIZE_8BIT;
-//  hspi2.Init.CLKPolarity = SPI_POLARITY_LOW;
-//  hspi2.Init.CLKPhase = SPI_PHASE_1EDGE;
-//  hspi2.Init.NSS = SPI_NSS_SOFT;
-//  hspi2.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_4;
-//  hspi2.Init.FirstBit = SPI_FIRSTBIT_MSB;
-//  hspi2.Init.TIMode = SPI_TIMODE_DISABLED;
-//  hspi2.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLED;
-//  hspi2.Init.CRCPolynomial = 10;
-//  HAL_SPI_Init(&hspi2);
-//
-//}
 
 /* TIM2 init function */
 static void MX_TIM2_Init(void)
@@ -858,12 +797,10 @@ static void MX_GPIO_Init(void)
  */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-  if(sensor_init_cali == 0)
-  {
+  if (sensor_init_cali == 0) {
     sensor_init_cali_count++;
 
-    if(sensor_init_cali_count > 800)
-    {
+    if (sensor_init_cali_count > 800) {
       // Read sensor data and prepare for specific coodinate system
       ReadSensorRawData(LSM6DSL_X_0_handle, LSM6DSL_G_0_handle, LIS2MDL_M_0_handle, LPS22HB_P_0_handle, &acc, &gyro, &mag, &press);
 
@@ -875,8 +812,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
       gyro_off_calc.AXIS_Y += gyro.AXIS_Y;
       gyro_off_calc.AXIS_Z += gyro.AXIS_Z;
 
-      if (sensor_init_cali_count >= 1600)
-      {
+      if (sensor_init_cali_count >= 1600) {
         acc_offset.AXIS_X = (int32_t) (acc_off_calc.AXIS_X * 0.00125f);
         acc_offset.AXIS_Y = (int32_t) (acc_off_calc.AXIS_Y * 0.00125f);
         acc_offset.AXIS_Z = (int32_t) (acc_off_calc.AXIS_Z * 0.00125f);
@@ -898,16 +834,14 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     }
   }
 
-  if(sensor_init_cali == 1)
-  {
+  if (sensor_init_cali == 1) {
     tim9_cnt++;
     tim9_cnt2++;
 
     // Read sensor data and prepare for specific coodinate system
     ReadSensorRawData(LSM6DSL_X_0_handle, LSM6DSL_G_0_handle, LIS2MDL_M_0_handle, LPS22HB_P_0_handle, &acc, &gyro, &mag, &press);
     
-    if (rc_cal_flag == 1)
-    {
+    if (rc_cal_flag == 1) {
       acc_off_calc.AXIS_X += acc.AXIS_X;
       acc_off_calc.AXIS_Y += acc.AXIS_Y;
       acc_off_calc.AXIS_Z += acc.AXIS_Z;
@@ -918,8 +852,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
       rc_cal_cnt++;
 
-      if (rc_cal_cnt >= 800)
-      {
+      if (rc_cal_cnt >= 800) {
         acc_offset.AXIS_X = (int32_t) (acc_off_calc.AXIS_X * 0.00125f);
         acc_offset.AXIS_Y = (int32_t) (acc_off_calc.AXIS_Y * 0.00125f);
         acc_offset.AXIS_Z = (int32_t) (acc_off_calc.AXIS_Z * 0.00125f);
@@ -960,8 +893,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     gyro_fil.AXIS_Z = (gyro_fil_coeff.b0 * gyro.AXIS_Z) + (gyro_fil_coeff.b1 * gyro_x_pre[0].AXIS_Z) + (gyro_fil_coeff.b2 * gyro_x_pre[1].AXIS_Z)
                                                     + (gyro_fil_coeff.a1 * gyro_y_pre[0].AXIS_Z) + (gyro_fil_coeff.a2 * gyro_y_pre[1].AXIS_Z);
     // Shift IIR filter state
-    for (int32_t i = 1; i > 0; i--)
-    {
+    for (int32_t i = 1; i > 0; i--) {
       gyro_x_pre[i].AXIS_X = gyro_x_pre[i-1].AXIS_X;
       gyro_x_pre[i].AXIS_Y = gyro_x_pre[i-1].AXIS_Y;
       gyro_x_pre[i].AXIS_Z = gyro_x_pre[i-1].AXIS_Z;
@@ -982,12 +914,10 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     gyro_FIFO[tim9_cnt2-1].AXIS_Z = gyro_fil.AXIS_Z;
     
 
-    if (tim9_cnt2 == FIFO_Order)
-    {
+    if (tim9_cnt2 == FIFO_Order) {
       tim9_cnt2 = 0;
       tim9_event_flag = 1;
-      for (int32_t i = 0; i < FIFO_Order; i++)
-      {
+      for (int32_t i = 0; i < FIFO_Order; i++) {
         acc_ahrs_FIFO[i].AXIS_X = acc_FIFO[i].AXIS_X;
         acc_ahrs_FIFO[i].AXIS_Y = acc_FIFO[i].AXIS_Y;
         acc_ahrs_FIFO[i].AXIS_Z = acc_FIFO[i].AXIS_Z;
@@ -998,30 +928,26 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     }
 
       
-    gyro_in_rad.gx = ((float32_t)gyro_fil.AXIS_X)*((float32_t)COE_MDPS_TO_RADPS);
-    gyro_in_rad.gy = ((float32_t)gyro_fil.AXIS_Y)*((float32_t)COE_MDPS_TO_RADPS);
-    gyro_in_rad.gz = ((float32_t)gyro_fil.AXIS_Z)*((float32_t)COE_MDPS_TO_RADPS);
+    gyro_in_rad.gx = ((float32_t)gyro_fil.AXIS_X) * ((float32_t)COE_MDPS_TO_RADPS);
+    gyro_in_rad.gy = ((float32_t)gyro_fil.AXIS_Y) * ((float32_t)COE_MDPS_TO_RADPS);
+    gyro_in_rad.gz = ((float32_t)gyro_fil.AXIS_Z) * ((float32_t)COE_MDPS_TO_RADPS);
 
-      euler_ahrs.thz += gyro_in_rad.gz*PID_SAMPLING_TIME;
+      euler_ahrs.thz += gyro_in_rad.gz * PID_SAMPLING_TIME;
 
-      if(gTHR<MIN_THR)
-      {
+      if (gTHR<MIN_THR) {
         euler_rc.thz = 0.0f;
         euler_ahrs.thz = 0.0f;
       }
 
-      if (rc_connection_flag && (rc_enable_motor != 0u))
-      {   // Do PID Control
+      if (rc_connection_flag && (rc_enable_motor != 0u)) {
+    	// Do PID Control
         FlightControlPID_innerLoop(&gyro_in_rad, &pid, &motor_pwm);
-      }
-      else
-      {
+      } else {
         // set motor output zero
         set_motor_pwm_zero(&motor_pwm);
       }
 
-      if(gTHR<MIN_THR)
-      {
+      if (gTHR<MIN_THR) {
         set_motor_pwm_zero(&motor_pwm);
       }
 
