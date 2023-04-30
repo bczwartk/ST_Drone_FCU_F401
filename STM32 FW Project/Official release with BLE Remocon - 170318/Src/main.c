@@ -95,7 +95,7 @@ extern char rc_connection_flag;
 extern int16_t gAIL, gELE, gTHR, gRUD;
 int16_t gJoystick_status;
 int32_t rc_cal_flag = 0;
-int32_t rc_enable_motor = 0;
+uint8_t rc_enable_motor = 0u;
 int32_t rc_cal_cnt = 0;
 int32_t fly_ready = 0;
 uint8_t ch, ch_flag;
@@ -106,8 +106,8 @@ float32_t tmp_euler_z = 0.0f;
 
 /* BLE module */
 DrvStatusTypeDef testStatus = COMPONENT_OK;
-uint8_t test_res_global = 0;
-uint8_t testEvent = 0;
+uint8_t test_res_global = 0u;
+uint8_t testEvent = 0u;
 uint8_t bdaddr[6];
 //static uint16_t ConfigServW2STHandle;
 //static uint16_t ConfigCharHandle;
@@ -467,11 +467,11 @@ int32_t BytesToWrite;
                         third bit: Arming (0 = Disarmed,  1 = Armed) */
           gJoystick_status = joydata[7];
           if ((gJoystick_status & 0x04) == 0x04) {
-            rc_enable_motor = 1;
+            rc_enable_motor = 1u;
             fly_ready = 1;
             BSP_LED_On(LED2);
           } else {
-            rc_enable_motor = 0;
+            rc_enable_motor = 0u;
             fly_ready = 0;
           }
           
@@ -484,7 +484,7 @@ int32_t BytesToWrite;
           } else {
             rc_connection_flag = 0;
             gTHR = 0;
-            rc_enable_motor = 0;
+            rc_enable_motor = 0u;
             fly_ready = 0;
             BSP_LED_Off(LED1);
             BSP_LED_Off(LED2);
@@ -573,7 +573,7 @@ int32_t BytesToWrite;
         count2++;
 
         mytimcnt++;
-        if (rc_connection_flag && rc_enable_motor) {
+        if (rc_connection_flag && (rc_enable_motor != 0u)) {
           if ((mytimcnt % 50) == 0) {
             BSP_LED_On(LED2);
           }
@@ -1010,7 +1010,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         euler_ahrs.thz = 0.0f;
       }
 
-      if (rc_connection_flag && rc_enable_motor)
+      if (rc_connection_flag && (rc_enable_motor != 0u))
       {   // Do PID Control
         FlightControlPID_innerLoop(&gyro_in_rad, &pid, &motor_pwm);
       }
@@ -1256,56 +1256,52 @@ static void SendMotionData(void)
   MAG_Value.AXIS_X = mag.AXIS_X;
   MAG_Value.AXIS_Y = mag.AXIS_Y;
   MAG_Value.AXIS_Z = mag.AXIS_Z;
-  
-  
-  
+
   /*Debug */
   //PRINTF("ACC[X, Y, Z]: %d\t%d\t%d\t\n", ACC_Value.AXIS_X, ACC_Value.AXIS_Y, ACC_Value.AXIS_Z);
   //PRINTF("GYRO[X, Y, Z]: %d\t%d\t%d\t\n", GYR_Value.AXIS_X, GYR_Value.AXIS_Y, GYR_Value.AXIS_Z);
   //PRINTF("MAG[X, Y, Z]: %d\t%d\t%d\t\n", MAG_Value.AXIS_X, MAG_Value.AXIS_Y, MAG_Value.AXIS_Z);
   
-  (void)AccGyroMag_Update(&ACC_Value,&GYR_Value,&MAG_Value);
-  
+  (void) AccGyroMag_Update(&ACC_Value, &GYR_Value, &MAG_Value);
 }
 
 static void SendBattEnvData(void)
 {
    int32_t decPart, intPart;
-   int32_t PressToSend=0;
-   uint16_t BattToSend=0;
-   int16_t RSSIToSend=0, TempToSend=0;
+   int32_t PressToSend = 0;
+   uint16_t BattToSend = 0u;
+   int16_t RSSIToSend = 0, TempToSend = 0;
    int8_t rssi;
    uint16_t conn_handle;
    
-   (void)HAL_ADC_Start(&hadc1);
-        if (HAL_ADC_PollForConversion(&hadc1, 1000000) == HAL_OK)
-        {
+   (void) HAL_ADC_Start(&hadc1);
+        if (HAL_ADC_PollForConversion(&hadc1, 1000000u) == HAL_OK) {
             VBAT_Sense = HAL_ADC_GetValue(&hadc1);
-            VBAT = (((VBAT_Sense*3.3)/4095)*(BAT_RUP+BAT_RDW))/BAT_RDW;
+            VBAT = (((VBAT_Sense * 3.3) / 4095) * (BAT_RUP + BAT_RDW)) / BAT_RDW;
             //PRINTF("Battery voltage = %fV\n\n", VBAT);
         }
-    (void)HAL_ADC_Stop(&hadc1);
+    (void) HAL_ADC_Stop(&hadc1);
     
     MCR_BLUEMS_F2I_2D(press, intPart, decPart);
-    PressToSend=intPart*100+decPart;
-    MCR_BLUEMS_F2I_1D(((int32_t)((float32_t)VBAT*100.0f)/4.2f), intPart, decPart);
-    BattToSend = intPart*10+decPart;
-    if (BattToSend > 1000){
-      BattToSend =1000;
+    PressToSend = intPart * 100 + decPart;
+    MCR_BLUEMS_F2I_1D(((int32_t)((float32_t)VBAT * 100.0f) / 4.2f), intPart, decPart);
+    BattToSend = intPart * 10 + decPart;
+    if (BattToSend > 1000u) {
+      BattToSend = 1000u;
     }
     MCR_BLUEMS_F2I_1D(temperature, intPart, decPart);
-    TempToSend = intPart*10+decPart;
+    TempToSend = intPart * 10 + decPart;
     
     (void)hci_read_rssi(&conn_handle, &rssi);
-    RSSIToSend = (int16_t)rssi*10;
+    RSSIToSend = (int16_t)rssi * 10;
     
-    (void)Batt_Env_RSSI_Update(PressToSend,BattToSend,(int16_t) TempToSend,RSSIToSend );
+    (void)Batt_Env_RSSI_Update(PressToSend, BattToSend, TempToSend, RSSIToSend);
 }
 
 
 static void SendArmingData(void)
 {
-	(void)ARMING_Update(rc_enable_motor);
+	(void) ARMING_Update(rc_enable_motor);
 }
 
 

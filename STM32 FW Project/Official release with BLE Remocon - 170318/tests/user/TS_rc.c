@@ -207,7 +207,7 @@ void TS_rc_test_update_rc_data_calibration_activated()
     }
     /* Initializing global variable rc_enable_motor */ 
     {
-         rc_enable_motor  = 0;
+         rc_enable_motor  = 0u;
     }
     /* Initializing global variable fly_ready */ 
     {
@@ -252,7 +252,7 @@ void TS_rc_test_update_rc_data_calibration_not_activated_1()
     }
     /* Initializing global variable rc_enable_motor */ 
     {
-         rc_enable_motor  = 0;
+         rc_enable_motor  = 0u;
     }
     /* Initializing global variable fly_ready */ 
     {
@@ -297,7 +297,7 @@ void TS_rc_test_update_rc_data_calibration_not_activated_2()
     }
     /* Initializing global variable rc_enable_motor */ 
     {
-         rc_enable_motor  = 0;
+         rc_enable_motor  = 0u;
     }
     /* Initializing global variable fly_ready */ 
     {
@@ -342,7 +342,7 @@ void TS_rc_test_update_rc_data_calibration_not_activated_3()
     }
     /* Initializing global variable rc_enable_motor */ 
     {
-         rc_enable_motor  = 0;
+         rc_enable_motor  = 0u;
     }
     /* Initializing global variable fly_ready */ 
     {
@@ -387,7 +387,7 @@ void TS_rc_test_update_rc_data_calibration_not_activated_4()
     }
     /* Initializing global variable rc_enable_motor */ 
     {
-         rc_enable_motor  = 0;
+         rc_enable_motor  = 0u;
     }
     /* Initializing global variable fly_ready */ 
     {
@@ -444,7 +444,7 @@ void TS_rc_test_update_rc_data_arm_disarm_neg_ds()
     }
     /* Initializing global variable rc_enable_motor */ 
     {
-         rc_enable_motor  = CPPTEST_DS_GET_INTEGER("in_rc_enable_motor");
+         rc_enable_motor  = CPPTEST_DS_GET_UINTEGER("in_rc_enable_motor");
     }
     /* Initializing global variable rc_cal_flag */ 
     {
@@ -459,7 +459,7 @@ void TS_rc_test_update_rc_data_arm_disarm_neg_ds()
         update_rc_data(_idx);
 
         /* Post-condition check */
-        CPPTEST_ASSERT_INTEGER_EQUAL(CPPTEST_DS_GET_INTEGER("out_rc_enable_motor"), rc_enable_motor);
+        CPPTEST_ASSERT_INTEGER_EQUAL(CPPTEST_DS_GET_UINTEGER("out_rc_enable_motor"), rc_enable_motor);
         CPPTEST_ASSERT_INTEGER_EQUAL(CPPTEST_DS_GET_INTEGER("out_fly_ready"), fly_ready);
     }
 }
@@ -490,7 +490,7 @@ void TS_rc_test_update_rc_data_arm_disarm_pos_ds()
     }
     /* Initializing global variable rc_enable_motor */ 
     {
-         rc_enable_motor  = CPPTEST_DS_GET_INTEGER("in_rc_enable_motor");
+         rc_enable_motor  = CPPTEST_DS_GET_UINTEGER("in_rc_enable_motor");
     }
     /* Initializing global variable rc_cal_flag */ 
     {
@@ -505,7 +505,7 @@ void TS_rc_test_update_rc_data_arm_disarm_pos_ds()
         update_rc_data(_idx);
 
         /* Post-condition check */
-        CPPTEST_ASSERT_INTEGER_EQUAL(CPPTEST_DS_GET_INTEGER("out_rc_enable_motor"), rc_enable_motor);
+        CPPTEST_ASSERT_INTEGER_EQUAL(CPPTEST_DS_GET_UINTEGER("out_rc_enable_motor"), rc_enable_motor);
         CPPTEST_ASSERT_INTEGER_EQUAL(CPPTEST_DS_GET_INTEGER("out_fly_ready"), fly_ready);
     }
 }

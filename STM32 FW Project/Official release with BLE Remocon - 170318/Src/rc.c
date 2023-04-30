@@ -39,7 +39,7 @@ int32_t rc_acc[4] = {0};
 int32_t rc_z_control_flag = 1;
 
 extern int32_t rc_cal_flag;
-extern int32_t rc_enable_motor;
+extern uint8_t rc_enable_motor;
 extern int32_t fly_ready;
 
 GPIO_TypeDef* RC_Channel_Ports[4] =
@@ -97,8 +97,7 @@ void init_rc_variables(void)
 {
   uint32_t i;
   rc_connection_flag = 0;
-  for (i = 0; i < 4u; i++)
-  {
+  for (i = 0; i < 4u; i ++) {
     rc_flag[i] = 0;
     rc_t_rise[i] = 0;
     rc_t_fall[i] = 0;
@@ -216,11 +215,11 @@ void update_rc_data(int32_t idx)
 
   // Activate Arming/Disarming 
   if ( (gTHR == 0) && (gELE < - RC_CAL_THRESHOLD) && (gAIL < - RC_CAL_THRESHOLD) && (gRUD > RC_CAL_THRESHOLD)) {
-    if (rc_enable_motor == 0) {// if not armed -> arm
-      rc_enable_motor = 1;
+    if (rc_enable_motor == 0u) {// if not armed -> arm
+      rc_enable_motor = 1u;
       fly_ready = 1;
     } else { // if armed -> disarm
-      rc_enable_motor = 0;
+      rc_enable_motor = 0u;
       fly_ready = 0;
     }
   }
