@@ -18,42 +18,43 @@ extern int16_t gTHR;
 static int16_t motor_thr;
 static float32_t dt_recip;
 
-void PIDControlInit(P_PI_PIDControlTypeDef *pid)
+void PIDControlInit(P_PI_PIDControlTypeDef *thePid)
 {
-  pid->ts = PID_SAMPLING_TIME;
+  thePid->ts = PID_SAMPLING_TIME;
 
-  pid->x_kp1 = PITCH_PID_KP1;
-  pid->x_ki1 = PITCH_PID_KI1;
-  pid->x_i1_limit = PITCH_PID_I1_LIMIT;
-  pid->x_kp2 = PITCH_PID_KP2;
-  pid->x_ki2 = PITCH_PID_KI2;
-  pid->x_kd2 = PITCH_PID_KD2;
-  pid->x_i2_limit = PITCH_PID_I2_LIMIT;
-  pid->x_s1 = 0.0f;
-  pid->x_s2 = 0.0f;
+  thePid->x_kp1 = PITCH_PID_KP1;
+  thePid->x_ki1 = PITCH_PID_KI1;
+  thePid->x_i1_limit = PITCH_PID_I1_LIMIT;
+  thePid->x_kp2 = PITCH_PID_KP2;
+  thePid->x_ki2 = PITCH_PID_KI2;
+  thePid->x_kd2 = PITCH_PID_KD2;
+  thePid->x_i2_limit = PITCH_PID_I2_LIMIT;
+  thePid->x_s1 = 0.0f;
+  thePid->x_s2 = 0.0f;
 
-  pid->y_kp1 = ROLL_PID_KP1;
-  pid->y_ki1 = ROLL_PID_KI1;
-  pid->y_i1_limit = ROLL_PID_I1_LIMIT;
-  pid->y_kp2 = ROLL_PID_KP2;
-  pid->y_ki2 = ROLL_PID_KI2;
-  pid->y_kd2 = ROLL_PID_KD2;
-  pid->y_i2_limit = ROLL_PID_I2_LIMIT;
-  pid->y_s1 = 0.0f;
-  pid->y_s2 = 0.0f;
+  thePid->y_kp1 = ROLL_PID_KP1;
+  thePid->y_ki1 = ROLL_PID_KI1;
+  thePid->y_i1_limit = ROLL_PID_I1_LIMIT;
+  thePid->y_kp2 = ROLL_PID_KP2;
+  thePid->y_ki2 = ROLL_PID_KI2;
+  thePid->y_kd2 = ROLL_PID_KD2;
+  thePid->y_i2_limit = ROLL_PID_I2_LIMIT;
+  thePid->y_s1 = 0.0f;
+  thePid->y_s2 = 0.0f;
 
-  pid->z_kp1 = YAW_PID_KP1;
-  pid->z_ki1 = YAW_PID_KI1;
-  pid->z_i1_limit = YAW_PID_I1_LIMIT;
-  pid->z_kp2 = YAW_PID_KP2;
-  pid->z_ki2 = YAW_PID_KI2;
-  pid->z_kd2 = YAW_PID_KD2;
-  pid->z_i2_limit = YAW_PID_I2_LIMIT;
-  pid->z_s1 = 0.0f;
-  pid->z_s2 = 0.0f;
+  thePid->z_kp1 = YAW_PID_KP1;
+  thePid->z_ki1 = YAW_PID_KI1;
+  thePid->z_i1_limit = YAW_PID_I1_LIMIT;
+  thePid->z_kp2 = YAW_PID_KP2;
+  thePid->z_ki2 = YAW_PID_KI2;
+  thePid->z_kd2 = YAW_PID_KD2;
+  thePid->z_i2_limit = YAW_PID_I2_LIMIT;
+  thePid->z_s1 = 0.0f;
+  thePid->z_s2 = 0.0f;
 }
 
-void FlightControlPID(const EulerAngleTypeDef *euler_rc_in, const EulerAngleTypeDef *euler_ahrs_in, const Gyro_Rad *gyro_in_rad, P_PI_PIDControlTypeDef *pid, MotorControlTypeDef *motor_pwm)
+void FlightControlPID(const EulerAngleTypeDef *euler_rc_in, const EulerAngleTypeDef *euler_ahrs_in, const Gyro_Rad *gyro_in_rad,
+					  P_PI_PIDControlTypeDef *thePid, MotorControlTypeDef *motor_pwm)
 {
   float32_t error, deriv;
 
@@ -68,91 +69,91 @@ void FlightControlPID(const EulerAngleTypeDef *euler_rc_in, const EulerAngleType
   }
 
   
-  //x-axis pid
+  // x-axis pid
   error = euler_rc_in->thx - euler_ahrs_in->thx;
-  pid_x_integ1 += error * pid->ts;
-  if (pid_x_integ1 > pid->x_i1_limit) {
-    pid_x_integ1 = pid->x_i1_limit;
-  } else if (pid_x_integ1 < -pid->x_i1_limit) {
-    pid_x_integ1 = -pid->x_i1_limit;
+  pid_x_integ1 += error * thePid->ts;
+  if (pid_x_integ1 > thePid->x_i1_limit) {
+    pid_x_integ1 = thePid->x_i1_limit;
+  } else if (pid_x_integ1 < -thePid->x_i1_limit) {
+    pid_x_integ1 = -thePid->x_i1_limit;
   } else {
 	  // no action needed - MISRAC2012-RULE_15_7-a
   }
-  pid->x_s1 =  (pid->x_kp1 * error) + (pid->x_ki1 * pid_x_integ1);
+  thePid->x_s1 =  (thePid->x_kp1 * error) + (thePid->x_ki1 * pid_x_integ1);
 
   error = euler_rc_in->thx - gyro_in_rad->gx;
-  pid_x_integ2 += error * pid->ts;
-  if (pid_x_integ2 > pid->x_i2_limit) {
-    pid_x_integ2 = pid->x_i2_limit;
-  } else if (pid_x_integ2 < -pid->x_i2_limit) {
-    pid_x_integ2 = -pid->x_i2_limit;
+  pid_x_integ2 += error * thePid->ts;
+  if (pid_x_integ2 > thePid->x_i2_limit) {
+    pid_x_integ2 = thePid->x_i2_limit;
+  } else if (pid_x_integ2 < -thePid->x_i2_limit) {
+    pid_x_integ2 = -thePid->x_i2_limit;
   } else {
 	  // no action needed - MISRAC2012-RULE_15_7-a
   }
   deriv = error - pid_x_pre_error2;
   pid_x_pre_error2 = error;
-  pid->x_s2 = (pid->x_kp2 * error) + (pid->x_ki2 * pid_x_integ2) + (pid->x_kd2 * deriv);
+  thePid->x_s2 = (thePid->x_kp2 * error) + (thePid->x_ki2 * pid_x_integ2) + (thePid->x_kd2 * deriv);
 
-  if (pid->x_s2 > MAX_ADJ_AMOUNT)  {
-	  pid->x_s2 = MAX_ADJ_AMOUNT;
+  if (thePid->x_s2 > MAX_ADJ_AMOUNT)  {
+	  thePid->x_s2 = MAX_ADJ_AMOUNT;
   }
-  if (pid->x_s2 < -MAX_ADJ_AMOUNT)  {
-	  pid->x_s2 = -MAX_ADJ_AMOUNT;
+  if (thePid->x_s2 < -MAX_ADJ_AMOUNT)  {
+	  thePid->x_s2 = -MAX_ADJ_AMOUNT;
   }
 
 
-  //y-axis pid
+  // y-axis pid
   error = euler_rc_in->thy - euler_ahrs_in->thy;
-  pid_y_integ1 += error * pid->ts;
-  if (pid_y_integ1 > pid->y_i1_limit) {
-    pid_y_integ1 = pid->y_i1_limit;
-  } else if (pid_y_integ1 < -pid->y_i1_limit) {
-    pid_y_integ1 = -pid->y_i1_limit;
+  pid_y_integ1 += error * thePid->ts;
+  if (pid_y_integ1 > thePid->y_i1_limit) {
+    pid_y_integ1 = thePid->y_i1_limit;
+  } else if (pid_y_integ1 < -thePid->y_i1_limit) {
+    pid_y_integ1 = -thePid->y_i1_limit;
   } else {
 	  // no action needed - MISRAC2012-RULE_15_7-a
   }
-  pid->y_s1 =  (pid->y_kp1 * error) + (pid->y_ki1 * pid_y_integ1);
+  thePid->y_s1 =  (thePid->y_kp1 * error) + (thePid->y_ki1 * pid_y_integ1);
 
   error = euler_rc_in->thy - gyro_in_rad->gy;
-  pid_y_integ2 += error * pid->ts;
-  if (pid_y_integ2 > pid->y_i2_limit) {
-    pid_y_integ2 = pid->y_i2_limit;
-  } else if (pid_y_integ2 < -pid->y_i2_limit) {
-    pid_y_integ2 = -pid->y_i2_limit;
+  pid_y_integ2 += error * thePid->ts;
+  if (pid_y_integ2 > thePid->y_i2_limit) {
+    pid_y_integ2 = thePid->y_i2_limit;
+  } else if (pid_y_integ2 < -thePid->y_i2_limit) {
+    pid_y_integ2 = -thePid->y_i2_limit;
   } else {
 	  // no action needed - MISRAC2012-RULE_15_7-a
   }
   deriv = error - pid_y_pre_error2;
   pid_y_pre_error2 = error;
-  pid->y_s2 = (pid->y_kp2 * error) + (pid->y_ki2 * pid_y_integ2) + (pid->y_kd2 * deriv);
+  thePid->y_s2 = (thePid->y_kp2 * error) + (thePid->y_ki2 * pid_y_integ2) + (thePid->y_kd2 * deriv);
 
-  if (pid->y_s2 > MAX_ADJ_AMOUNT)  {
-	  pid->y_s2 = MAX_ADJ_AMOUNT;
+  if (thePid->y_s2 > MAX_ADJ_AMOUNT)  {
+	  thePid->y_s2 = MAX_ADJ_AMOUNT;
   }
-  if (pid->y_s2 < -MAX_ADJ_AMOUNT)  {
-	  pid->y_s2 = -MAX_ADJ_AMOUNT;
+  if (thePid->y_s2 < -MAX_ADJ_AMOUNT)  {
+	  thePid->y_s2 = -MAX_ADJ_AMOUNT;
   }
 
 
-  //z-axis pid
+  // z-axis pid
   error = euler_rc_in->thz - gyro_in_rad->gz;
-  pid_z_integ2 += error * pid->ts;
-  if (pid_z_integ2 > pid->z_i2_limit) {
-    pid_z_integ2 = pid->z_i2_limit;
-  } else if (pid_z_integ2 < -pid->z_i2_limit) {
-    pid_z_integ2 = -pid->z_i2_limit;
+  pid_z_integ2 += error * thePid->ts;
+  if (pid_z_integ2 > thePid->z_i2_limit) {
+    pid_z_integ2 = thePid->z_i2_limit;
+  } else if (pid_z_integ2 < -thePid->z_i2_limit) {
+    pid_z_integ2 = -thePid->z_i2_limit;
   } else {
 	  // no action needed - MISRAC2012-RULE_15_7-a
   }
   deriv = error - pid_z_pre_error2;
   pid_z_pre_error2 = error;
-  pid->z_s2 = (pid->z_kp2 * error) + (pid->z_ki2 * pid_y_integ2) + (pid->z_kd2 * deriv);
+  thePid->z_s2 = (thePid->z_kp2 * error) + (thePid->z_ki2 * pid_y_integ2) + (thePid->z_kd2 * deriv);
 
-  if (pid->z_s2 > MAX_ADJ_AMOUNT)  {
-	  pid->z_s2 = MAX_ADJ_AMOUNT;
+  if (thePid->z_s2 > MAX_ADJ_AMOUNT)  {
+	  thePid->z_s2 = MAX_ADJ_AMOUNT;
   }
-  if (pid->z_s2 < -MAX_ADJ_AMOUNT)  {
-	  pid->z_s2 = -MAX_ADJ_AMOUNT;
+  if (thePid->z_s2 < -MAX_ADJ_AMOUNT)  {
+	  thePid->z_s2 = -MAX_ADJ_AMOUNT;
   }
 
   #ifdef MOTOR_DC
@@ -169,13 +170,13 @@ void FlightControlPID(const EulerAngleTypeDef *euler_rc_in, const EulerAngleType
   #endif
   
   
-  motor_pwm->motor1_pwm = motor_thr - pid->x_s2 - pid->y_s2 + pid->z_s2 + MOTOR_OFF1;
-  motor_pwm->motor2_pwm = motor_thr + pid->x_s2 - pid->y_s2 - pid->z_s2 + MOTOR_OFF2;
-  motor_pwm->motor3_pwm = motor_thr + pid->x_s2 + pid->y_s2 + pid->z_s2 + MOTOR_OFF3;
-  motor_pwm->motor4_pwm = motor_thr - pid->x_s2 + pid->y_s2 - pid->z_s2 + MOTOR_OFF4;
+  motor_pwm->motor1_pwm = motor_thr - thePid->x_s2 - thePid->y_s2 + thePid->z_s2 + MOTOR_OFF1;
+  motor_pwm->motor2_pwm = motor_thr + thePid->x_s2 - thePid->y_s2 - thePid->z_s2 + MOTOR_OFF2;
+  motor_pwm->motor3_pwm = motor_thr + thePid->x_s2 + thePid->y_s2 + thePid->z_s2 + MOTOR_OFF3;
+  motor_pwm->motor4_pwm = motor_thr - thePid->x_s2 + thePid->y_s2 - thePid->z_s2 + MOTOR_OFF4;
 }
 
-void FlightControlPID_OuterLoop(const EulerAngleTypeDef *euler_rc_in, const EulerAngleTypeDef *euler_ahrs_in, P_PI_PIDControlTypeDef *pid)
+void FlightControlPID_OuterLoop(const EulerAngleTypeDef *euler_rc_in, const EulerAngleTypeDef *euler_ahrs_in, P_PI_PIDControlTypeDef *thePid)
 {
   float32_t error;
 
@@ -188,42 +189,42 @@ void FlightControlPID_OuterLoop(const EulerAngleTypeDef *euler_rc_in, const Eule
 
   //x-axis pid
   error = euler_rc_in->thx - euler_ahrs_in->thx;
-  pid_x_integ1 += error * pid->ts;
-  if (pid_x_integ1 > pid->x_i1_limit) {
-    pid_x_integ1 = pid->x_i1_limit;
-  } else if (pid_x_integ1 < -pid->x_i1_limit) {
-    pid_x_integ1 = -pid->x_i1_limit;
+  pid_x_integ1 += error * thePid->ts;
+  if (pid_x_integ1 > thePid->x_i1_limit) {
+    pid_x_integ1 = thePid->x_i1_limit;
+  } else if (pid_x_integ1 < -thePid->x_i1_limit) {
+    pid_x_integ1 = -thePid->x_i1_limit;
   } else {
 	  // no action needed - MISRAC2012-RULE_15_7-a
   }
-  pid->x_s1 =  (pid->x_kp1 * error) + (pid->x_ki1 * pid_x_integ1);
+  thePid->x_s1 =  (thePid->x_kp1 * error) + (thePid->x_ki1 * pid_x_integ1);
 
   //y-axis pid
   error = euler_rc_in->thy - euler_ahrs_in->thy;
-  pid_y_integ1 += error * pid->ts;
-  if (pid_y_integ1 > pid->y_i1_limit) {
-    pid_y_integ1 = pid->y_i1_limit;
-  } else if (pid_y_integ1 < -pid->y_i1_limit) {
-    pid_y_integ1 = -pid->y_i1_limit;
+  pid_y_integ1 += error * thePid->ts;
+  if (pid_y_integ1 > thePid->y_i1_limit) {
+    pid_y_integ1 = thePid->y_i1_limit;
+  } else if (pid_y_integ1 < -thePid->y_i1_limit) {
+    pid_y_integ1 = -thePid->y_i1_limit;
   } else {
 	  // no action needed - MISRAC2012-RULE_15_7-a
   }
-  pid->y_s1 =  (pid->y_kp1 * error) + (pid->y_ki1 * pid_y_integ1);
+  thePid->y_s1 =  (thePid->y_kp1 * error) + (thePid->y_ki1 * pid_y_integ1);
 
   //z-axis pid
   error = euler_rc_in->thz - euler_ahrs_in->thz;
-  pid_z_integ1 += error * pid->ts;
-  if (pid_z_integ1 > pid->z_i1_limit) {
-    pid_z_integ1 = pid->z_i1_limit;
-  } else if (pid_z_integ1 < -pid->z_i1_limit) {
-    pid_z_integ1 = -pid->z_i1_limit;
+  pid_z_integ1 += error * thePid->ts;
+  if (pid_z_integ1 > thePid->z_i1_limit) {
+    pid_z_integ1 = thePid->z_i1_limit;
+  } else if (pid_z_integ1 < -thePid->z_i1_limit) {
+    pid_z_integ1 = -thePid->z_i1_limit;
   } else {
 	  // no action needed - MISRAC2012-RULE_15_7-a
   }
-  pid->z_s1 = (pid->z_kp1 * error) + (pid->z_ki1 * pid_z_integ1);
+  thePid->z_s1 = (thePid->z_kp1 * error) + (thePid->z_ki1 * pid_z_integ1);
 }
 
-void FlightControlPID_innerLoop(const Gyro_Rad *gyro_in_rad, P_PI_PIDControlTypeDef *pid, MotorControlTypeDef *motor_pwm)
+void FlightControlPID_innerLoop(const Gyro_Rad *gyro_in_rad, P_PI_PIDControlTypeDef *thePid, MotorControlTypeDef *motor_pwm)
 {
   float32_t error, deriv;
 
@@ -233,15 +234,15 @@ void FlightControlPID_innerLoop(const Gyro_Rad *gyro_in_rad, P_PI_PIDControlType
     pid_z_integ2 = 0.0f;
   }
   
-  dt_recip = 1.0f / pid->ts;
+  dt_recip = 1.0f / thePid->ts;
 
-  //X Axis
-  error = pid->x_s1 - gyro_in_rad->gx;
-  pid_x_integ2 += error * pid->ts;
-  if (pid_x_integ2 > pid->x_i2_limit) {
-    pid_x_integ2 = pid->x_i2_limit;
-  } else if (pid_x_integ2 < -pid->x_i2_limit) {
-    pid_x_integ2 = -pid->x_i2_limit;
+  // X Axis
+  error = thePid->x_s1 - gyro_in_rad->gx;
+  pid_x_integ2 += error * thePid->ts;
+  if (pid_x_integ2 > thePid->x_i2_limit) {
+    pid_x_integ2 = thePid->x_i2_limit;
+  } else if (pid_x_integ2 < -thePid->x_i2_limit) {
+    pid_x_integ2 = -thePid->x_i2_limit;
   } else {
 	  // no action needed - MISRAC2012-RULE_15_7-a
   }
@@ -249,22 +250,22 @@ void FlightControlPID_innerLoop(const Gyro_Rad *gyro_in_rad, P_PI_PIDControlType
   pid_x_pre_error2 = error;
   deriv = pid_x_pre_deriv + ((deriv - pid_x_pre_deriv) * D_FILTER_COFF);
   pid_x_pre_deriv = deriv;
-  pid->x_s2 = (pid->x_kp2 * error) + (pid->x_ki2 * pid_x_integ2) + (pid->x_kd2 * deriv);
+  thePid->x_s2 = (thePid->x_kp2 * error) + (thePid->x_ki2 * pid_x_integ2) + (thePid->x_kd2 * deriv);
   
-  if (pid->x_s2 > MAX_ADJ_AMOUNT)  {
-	  pid->x_s2 = MAX_ADJ_AMOUNT;
+  if (thePid->x_s2 > MAX_ADJ_AMOUNT)  {
+	  thePid->x_s2 = MAX_ADJ_AMOUNT;
   }
-  if (pid->x_s2 < -MAX_ADJ_AMOUNT)  {
-	  pid->x_s2 = -MAX_ADJ_AMOUNT;
+  if (thePid->x_s2 < -MAX_ADJ_AMOUNT)  {
+	  thePid->x_s2 = -MAX_ADJ_AMOUNT;
   }
 
-  //Y Axis
-  error = pid->y_s1 - gyro_in_rad->gy;
-  pid_y_integ2 += error * pid->ts;
-  if (pid_y_integ2 > pid->y_i2_limit) {
-    pid_y_integ2 = pid->y_i2_limit;
-  } else if (pid_y_integ2 < -pid->y_i2_limit) {
-    pid_y_integ2 = -pid->y_i2_limit;
+  // Y Axis
+  error = thePid->y_s1 - gyro_in_rad->gy;
+  pid_y_integ2 += error * thePid->ts;
+  if (pid_y_integ2 > thePid->y_i2_limit) {
+    pid_y_integ2 = thePid->y_i2_limit;
+  } else if (pid_y_integ2 < -thePid->y_i2_limit) {
+    pid_y_integ2 = -thePid->y_i2_limit;
   } else {
 	  // no action needed - MISRAC2012-RULE_15_7-a
   }
@@ -272,34 +273,34 @@ void FlightControlPID_innerLoop(const Gyro_Rad *gyro_in_rad, P_PI_PIDControlType
   pid_y_pre_error2 = error;
   deriv = pid_y_pre_deriv + ((deriv - pid_y_pre_deriv) * D_FILTER_COFF);
   pid_y_pre_deriv = deriv;
-  pid->y_s2 = (pid->y_kp2 * error) + (pid->y_ki2 * pid_y_integ2) + (pid->y_kd2 * deriv);
+  thePid->y_s2 = (thePid->y_kp2 * error) + (thePid->y_ki2 * pid_y_integ2) + (thePid->y_kd2 * deriv);
 
-  if (pid->y_s2 > MAX_ADJ_AMOUNT)  {
-	  pid->y_s2 = MAX_ADJ_AMOUNT;
+  if (thePid->y_s2 > MAX_ADJ_AMOUNT)  {
+	  thePid->y_s2 = MAX_ADJ_AMOUNT;
   }
-  if (pid->y_s2 < -MAX_ADJ_AMOUNT)  {
-	  pid->y_s2 = -MAX_ADJ_AMOUNT;
+  if (thePid->y_s2 < -MAX_ADJ_AMOUNT)  {
+	  thePid->y_s2 = -MAX_ADJ_AMOUNT;
   }
 
-  //Z Axis
-  error = pid->z_s1 - gyro_in_rad->gz;
-  pid_z_integ2 += error * pid->ts;
-  if (pid_z_integ2 > pid->z_i2_limit) {
-    pid_z_integ2 = pid->z_i2_limit;
-  } else if (pid_z_integ2 < -pid->z_i2_limit) {
-    pid_z_integ2 = -pid->z_i2_limit;
+  // Z Axis
+  error = thePid->z_s1 - gyro_in_rad->gz;
+  pid_z_integ2 += error * thePid->ts;
+  if (pid_z_integ2 > thePid->z_i2_limit) {
+    pid_z_integ2 = thePid->z_i2_limit;
+  } else if (pid_z_integ2 < -thePid->z_i2_limit) {
+    pid_z_integ2 = -thePid->z_i2_limit;
   } else {
 	  // no action needed - MISRAC2012-RULE_15_7-a
   }
   deriv = (error - pid_z_pre_error2)*dt_recip;
   pid_z_pre_error2 = error;
-  pid->z_s2 = (pid->z_kp2 * error) + (pid->z_ki2 * pid_z_integ2) + (pid->z_kd2 * deriv);
+  thePid->z_s2 = (thePid->z_kp2 * error) + (thePid->z_ki2 * pid_z_integ2) + (thePid->z_kd2 * deriv);
 
-  if (pid->z_s2 > MAX_ADJ_AMOUNT_YAW)  {
-	  pid->z_s2 = MAX_ADJ_AMOUNT_YAW;
+  if (thePid->z_s2 > MAX_ADJ_AMOUNT_YAW)  {
+	  thePid->z_s2 = MAX_ADJ_AMOUNT_YAW;
   }
-  if (pid->z_s2 < -MAX_ADJ_AMOUNT_YAW)  {
-	  pid->z_s2 = -MAX_ADJ_AMOUNT_YAW;
+  if (thePid->z_s2 < -MAX_ADJ_AMOUNT_YAW)  {
+	  thePid->z_s2 = -MAX_ADJ_AMOUNT_YAW;
   }
 
   
@@ -317,16 +318,16 @@ void FlightControlPID_innerLoop(const Gyro_Rad *gyro_in_rad, P_PI_PIDControlType
 
 #endif
 
-  motor_pwm->motor1_pwm = motor_thr - pid->x_s2 - pid->y_s2 + pid->z_s2 + MOTOR_OFF1;
-  motor_pwm->motor2_pwm = motor_thr + pid->x_s2 - pid->y_s2 - pid->z_s2 + MOTOR_OFF2;
-  motor_pwm->motor3_pwm = motor_thr + pid->x_s2 + pid->y_s2 + pid->z_s2 + MOTOR_OFF3;
-  motor_pwm->motor4_pwm = motor_thr - pid->x_s2 + pid->y_s2 - pid->z_s2 + MOTOR_OFF4;
+  motor_pwm->motor1_pwm = motor_thr - thePid->x_s2 - thePid->y_s2 + thePid->z_s2 + MOTOR_OFF1;
+  motor_pwm->motor2_pwm = motor_thr + thePid->x_s2 - thePid->y_s2 - thePid->z_s2 + MOTOR_OFF2;
+  motor_pwm->motor3_pwm = motor_thr + thePid->x_s2 + thePid->y_s2 + thePid->z_s2 + MOTOR_OFF3;
+  motor_pwm->motor4_pwm = motor_thr - thePid->x_s2 + thePid->y_s2 - thePid->z_s2 + MOTOR_OFF4;
 }
 
-void PIDOuterLoopFrameTrans(P_PI_PIDControlTypeDef *pid, const EulerAngleTypeDef *euler_ahrs_in)
+void PIDOuterLoopFrameTrans(P_PI_PIDControlTypeDef *thePid, const EulerAngleTypeDef *euler_ahrs_in)
 {
   float32_t cosx;
   
   cosx = cos(euler_ahrs_in->thx);
-  pid->y_s1 = cosx * pid->y_s1;
+  thePid->y_s1 = cosx * thePid->y_s1;
 }

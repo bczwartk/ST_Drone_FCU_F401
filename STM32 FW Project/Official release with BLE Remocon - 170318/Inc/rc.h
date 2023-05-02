@@ -47,11 +47,11 @@
 // Maximum roll/pitch 35deg
 // define PITCH_MAX_DEG   45
 // define ROLL_MAX_DEG    45
-#define PITCH_MAX_DEG   30
-#define ROLL_MAX_DEG    30
+#define PITCH_MAX_DEG   30.0f
+#define ROLL_MAX_DEG    30.0f
 
 // define YAW_MAX_DEG     (180.0*SENSOR_SAMPLING_TIME)
-#define YAW_MAX_DEG     (60.0f*SENSOR_SAMPLING_TIME)
+#define YAW_MAX_DEG     (60.0f * SENSOR_SAMPLING_TIME)
 #define YAW_MIN_RAD     0.0872
 
 #define EULER_Z_TH      600
@@ -79,5 +79,10 @@ static void init_queue(Queue_TypeDef *q);
 void add_queue(Queue_TypeDef *q, int16_t idx, int16_t value);
 int32_t get_queue(Queue_TypeDef *q, int16_t *idx, int16_t *value);
 
+
+extern int32_t rc_cal_flag;
+extern uint8_t rc_enable_motor;
+extern int32_t fly_ready;
+extern uint8_t rc_connection_flag;
 
 #endif /* RC_H */

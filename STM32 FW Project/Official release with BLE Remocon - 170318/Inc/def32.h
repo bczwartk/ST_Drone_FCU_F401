@@ -78,7 +78,7 @@ typedef union
 typedef struct
 { uint8_t low;
   int8_t  shigh;
-}s8u8;
+} s8u8;
 
 typedef union
 { int16_t all;

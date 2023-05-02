@@ -65,7 +65,7 @@
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
-volatile uint32_t HCI_ProcessEvent=0;
+volatile uint32_t HCI_ProcessEvent = 0u;
 uint8_t joydata[8] = {0,0,0,0,0,0,0,0};
 
 uint32_t uhCCR4_Val = 500;
@@ -89,9 +89,6 @@ static void *LIS2MDL_M_0_handle = NULL;
 static void *LPS22HB_P_0_handle = NULL;
 static void *LPS22HB_T_0_handle = NULL; 
 
-//extern Queue_TypeDef que;
-extern volatile tUserTimer tim;
-extern char rc_connection_flag;
 extern int16_t gAIL, gELE, gTHR, gRUD;
 int16_t gJoystick_status;
 int32_t rc_cal_flag = 0;
@@ -100,7 +97,7 @@ int32_t rc_cal_cnt = 0;
 int32_t fly_ready = 0;
 uint8_t ch, ch_flag;
 
-uint32_t tim9_event_flag = 0, tim9_cnt = 0, tim9_cnt2 = 0;
+uint32_t tim9_event_flag = 0u, tim9_cnt = 0u, tim9_cnt2 = 0u;
 float32_t tmp_euler_z = 0.0f;
 
 
@@ -109,33 +106,22 @@ DrvStatusTypeDef testStatus = COMPONENT_OK;
 uint8_t test_res_global = 0u;
 uint8_t testEvent = 0u;
 uint8_t bdaddr[6];
-//static uint16_t ConfigServW2STHandle;
-//static uint16_t ConfigCharHandle;
-//static uint16_t ConsoleW2STHandle;
-//static uint16_t TermCharHandle;
-//static uint16_t StdErrCharHandle;
 extern int32_t connected;
-//int8_t RSSI_level;
-
 
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_ADC1_Init(void);
-//static void MX_SPI1_Init(void);
-//static void MX_SPI2_Init(void);
 static void MX_TIM2_Init(void);
 static void MX_TIM4_Init(void);
 static void MX_TIM9_Init(void);
 static void MX_USART1_UART_Init(void);
 
 static void initializeAllSensors( void );
-void enableAllSensors( void );
+static void enableAllSensors( void );
 
-void BlueNRG_Init(void);
-//tBleStatus Add_ConsoleW2ST_Service(void);
-//tBleStatus Add_ConfigW2ST_Service(void);
+static void BlueNRG_Init(void);
 static void Init_BlueNRG_Custom_Services(void);
 static void SendMotionData(void);
 static void SendBattEnvData(void);
@@ -160,12 +146,12 @@ typedef struct
   int16_t X_Degree;
   int16_t Y_Degree;
   int16_t Z_Degree;
-}Attitude_Degree;
+} Attitude_Degree;
 
 typedef struct
 {
   float32_t a1, a2, b0, b1, b2;
-}IIR_Coeff;
+} IIR_Coeff;
 
 //sensor filter
 //7hz, 800hz
@@ -181,7 +167,7 @@ typedef struct
 //IIR_Coeff gyro_fil_coeff = {1.3489677452527946 ,  -0.51398189421967566, 0.041253537241720303, 0.082507074483440607, 0.041253537241720303};
 
 //100hz, 800hz
-IIR_Coeff gyro_fil_coeff = {0.94280904158206336, -0.33333333333333343, 0.09763107293781749, 0.19526214587563498, 0.09763107293781749 };
+IIR_Coeff gyro_fil_coeff = {0.94280904158206336f, -0.33333333333333343f, 0.09763107293781749f, 0.19526214587563498f, 0.09763107293781749f };
 
 Attitude_Degree  Fly, Fly_offset, Fly_origin;
 Gyro_Rad gyro_in_rad, gyro_degree, gyro_cali_degree;
@@ -278,13 +264,12 @@ int main(void)
   MX_TIM4_Init();
   MX_TIM9_Init();
   MX_USART1_UART_Init();
-  //MX_USB_DEVICE_Init();
  
   /* USER CODE BEGIN 2 */
 
   (void)PRINTF("STEVAL-FCU001V1 FW rev.1.0 - Sep 2017\n\n");
   
-//  Initialize Onboard LED
+  //  Initialize Onboard LED
   BSP_LED_Init(LED1);
   BSP_LED_Init(LED2);
   BSP_LED_Off(LED1);
@@ -468,12 +453,12 @@ int main(void)
           }
 
           if (TRUE == connected) {
-            rc_connection_flag = 1;                       /* BLE Remocon connected flag for enabling motor output */
+            rc_connection_flag = 1u;                       /* BLE Remocon connected flag for enabling motor output */
             SendMotionData();
             SendBattEnvData();
             SendArmingData();            
           } else {
-            rc_connection_flag = 0;
+            rc_connection_flag = 0u;
             gTHR = 0;
             rc_enable_motor = 0u;
             fly_ready = 0;
@@ -547,7 +532,7 @@ int main(void)
     }
 
   if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_1) == GPIO_PIN_SET) {
-    ch_flag = 1;
+    ch_flag = 1u;
   }
 
   if (0 != isTimerEventExist(&tim)) {    // Check if a timer event is present
@@ -556,7 +541,7 @@ int main(void)
         count2 ++;
 
         mytimcnt ++;
-        if (rc_connection_flag && (rc_enable_motor != 0u)) {
+        if ((rc_connection_flag != 0u) && (rc_enable_motor != 0u)) {
           if ((mytimcnt % 50) == 0) {
             BSP_LED_On(LED2);
           }
@@ -881,9 +866,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     gyro.AXIS_Z -= gyro_offset.AXIS_Z;
 
     // Save filtered data to acc_FIFO
-    acc_FIFO[tim9_cnt2-1].AXIS_X = acc.AXIS_X;
-    acc_FIFO[tim9_cnt2-1].AXIS_Y = acc.AXIS_Y;
-    acc_FIFO[tim9_cnt2-1].AXIS_Z = acc.AXIS_Z;
+    acc_FIFO[tim9_cnt2 - 1].AXIS_X = acc.AXIS_X;
+    acc_FIFO[tim9_cnt2 - 1].AXIS_Y = acc.AXIS_Y;
+    acc_FIFO[tim9_cnt2 - 1].AXIS_Z = acc.AXIS_Z;
 
     // IIR Filtering on gyro
     gyro_fil.AXIS_X = (gyro_fil_coeff.b0 * gyro.AXIS_X) + (gyro_fil_coeff.b1 * gyro_x_pre[0].AXIS_X) + (gyro_fil_coeff.b2 * gyro_x_pre[1].AXIS_X)
@@ -894,12 +879,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
                                                     + (gyro_fil_coeff.a1 * gyro_y_pre[0].AXIS_Z) + (gyro_fil_coeff.a2 * gyro_y_pre[1].AXIS_Z);
     // Shift IIR filter state
     for (int32_t i = 1; i > 0; i--) {
-      gyro_x_pre[i].AXIS_X = gyro_x_pre[i-1].AXIS_X;
-      gyro_x_pre[i].AXIS_Y = gyro_x_pre[i-1].AXIS_Y;
-      gyro_x_pre[i].AXIS_Z = gyro_x_pre[i-1].AXIS_Z;
-      gyro_y_pre[i].AXIS_X = gyro_y_pre[i-1].AXIS_X;
-      gyro_y_pre[i].AXIS_Y = gyro_y_pre[i-1].AXIS_Y;
-      gyro_y_pre[i].AXIS_Z = gyro_y_pre[i-1].AXIS_Z;
+      gyro_x_pre[i].AXIS_X = gyro_x_pre[i - 1].AXIS_X;
+      gyro_x_pre[i].AXIS_Y = gyro_x_pre[i - 1].AXIS_Y;
+      gyro_x_pre[i].AXIS_Z = gyro_x_pre[i - 1].AXIS_Z;
+      gyro_y_pre[i].AXIS_X = gyro_y_pre[i - 1].AXIS_X;
+      gyro_y_pre[i].AXIS_Y = gyro_y_pre[i - 1].AXIS_Y;
+      gyro_y_pre[i].AXIS_Z = gyro_y_pre[i - 1].AXIS_Z;
     }
     gyro_x_pre[0].AXIS_X = gyro.AXIS_X;
     gyro_x_pre[0].AXIS_Y = gyro.AXIS_Y;
@@ -909,14 +894,14 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     gyro_y_pre[0].AXIS_Z = gyro_fil.AXIS_Z;
 
     //  Save filtered data to gyro_FIFO
-    gyro_FIFO[tim9_cnt2-1].AXIS_X = gyro_fil.AXIS_X;
-    gyro_FIFO[tim9_cnt2-1].AXIS_Y = gyro_fil.AXIS_Y;
-    gyro_FIFO[tim9_cnt2-1].AXIS_Z = gyro_fil.AXIS_Z;
+    gyro_FIFO[tim9_cnt2 - 1].AXIS_X = gyro_fil.AXIS_X;
+    gyro_FIFO[tim9_cnt2 - 1].AXIS_Y = gyro_fil.AXIS_Y;
+    gyro_FIFO[tim9_cnt2 - 1].AXIS_Z = gyro_fil.AXIS_Z;
     
 
     if (tim9_cnt2 == FIFO_Order) {
-      tim9_cnt2 = 0;
-      tim9_event_flag = 1;
+      tim9_cnt2 = 0u;
+      tim9_event_flag = 1u;
       for (int32_t i = 0; i < FIFO_Order; i++) {
         acc_ahrs_FIFO[i].AXIS_X = acc_FIFO[i].AXIS_X;
         acc_ahrs_FIFO[i].AXIS_Y = acc_FIFO[i].AXIS_Y;
@@ -934,12 +919,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
       euler_ahrs.thz += gyro_in_rad.gz * PID_SAMPLING_TIME;
 
-      if (gTHR<MIN_THR) {
+      if (gTHR < MIN_THR) {
         euler_rc.thz = 0.0f;
         euler_ahrs.thz = 0.0f;
       }
 
-      if (rc_connection_flag && (rc_enable_motor != 0u)) {
+      if ((rc_connection_flag != 0u) && (rc_enable_motor != 0u)) {
     	// Do PID Control
         FlightControlPID_innerLoop(&gyro_in_rad, &pid, &motor_pwm);
       } else {
@@ -947,7 +932,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         set_motor_pwm_zero(&motor_pwm);
       }
 
-      if (gTHR<MIN_THR) {
+      if (gTHR < MIN_THR) {
         set_motor_pwm_zero(&motor_pwm);
       }
 
@@ -963,33 +948,25 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 */
 static void initializeAllSensors( void )
 {
-  if (BSP_ACCELERO_Init( LSM6DSL_X_0, &LSM6DSL_X_0_handle ) != COMPONENT_OK)
-  {
+  if (BSP_ACCELERO_Init( LSM6DSL_X_0, &LSM6DSL_X_0_handle ) != COMPONENT_OK) {
     while (1) {}
   }
   
-  if (BSP_GYRO_Init( LSM6DSL_G_0, &LSM6DSL_G_0_handle ) != COMPONENT_OK)
-  {
+  if (BSP_GYRO_Init( LSM6DSL_G_0, &LSM6DSL_G_0_handle ) != COMPONENT_OK) {
     while (1) {}
   }
   
-  if (BSP_MAGNETO_Init( LIS2MDL_M_0, &LIS2MDL_M_0_handle ) != COMPONENT_OK)
-  {
+  if (BSP_MAGNETO_Init( LIS2MDL_M_0, &LIS2MDL_M_0_handle ) != COMPONENT_OK) {
     while (1) {}
   }
   
-  
-  if (BSP_PRESSURE_Init( LPS22HB_P_0, &LPS22HB_P_0_handle ) != COMPONENT_OK)
-  {
+  if (BSP_PRESSURE_Init( LPS22HB_P_0, &LPS22HB_P_0_handle ) != COMPONENT_OK) {
     while (1) {}
   }
 
-  if (BSP_TEMPERATURE_Init( LPS22HB_T_0, &LPS22HB_T_0_handle ) != COMPONENT_OK)
-  {
+  if (BSP_TEMPERATURE_Init( LPS22HB_T_0, &LPS22HB_T_0_handle ) != COMPONENT_OK) {
     while (1) {}
   }
- 
-  
 }
 
 /**
@@ -997,7 +974,7 @@ static void initializeAllSensors( void )
 * @param  None
 * @retval None
 */
-void enableAllSensors( void )
+static void enableAllSensors( void )
 {
   (void)BSP_ACCELERO_Sensor_Enable( LSM6DSL_X_0_handle );
   (void)PRINTF("LSM6DSL MEMS Accelerometer initialized and enabled\n");
@@ -1013,17 +990,17 @@ void enableAllSensors( void )
 
 
 
-void BlueNRG_Init(void)
+static void BlueNRG_Init(void)
 {
   
   int32_t ret = 1;
-  uint8_t  hwVersion=0;
-  uint16_t fwVersion=0;
+  uint8_t  hwVersion = 0u;
+  uint16_t fwVersion = 0u;
   
   PRINTF("****** START BLE TESTS ******\r\n");
   BNRG_SPI_Init();
 
-  uint8_t tmp_bdaddr[6]= {MAC_BLUEMS};
+  uint8_t tmp_bdaddr[6] = {MAC_BLUEMS};
   int32_t i;
   for(i = 0; i < 6; i++) {
     bdaddr[i] = tmp_bdaddr[i];
@@ -1037,8 +1014,7 @@ void BlueNRG_Init(void)
   
   /* get the BlueNRG HW and FW versions */
   PRINTF("\r\nReading BlueNRG version ...\r\n");
-  if (getBlueNRGVersion(&hwVersion, &fwVersion)== BLE_STATUS_SUCCESS)
-  {
+  if (getBlueNRGVersion(&hwVersion, &fwVersion) == BLE_STATUS_SUCCESS) {
     
     /* 
      * Reset BlueNRG again otherwise it will fail.
@@ -1101,7 +1077,7 @@ void BlueNRG_Init(void)
            bdaddr[5],bdaddr[4],bdaddr[3],bdaddr[2],bdaddr[1],bdaddr[0]);
 
     /* Set output power level */
-    (void)aci_hal_set_tx_power_level(1,4);    /* -2.1dBm */
+    (void)aci_hal_set_tx_power_level(1, 4);    /* -2.1dBm */
     
     ret = Add_ConsoleW2ST_Service();
     if (ret == BLE_STATUS_SUCCESS) {
@@ -1138,7 +1114,7 @@ fail:
  */
 static void Init_BlueNRG_Custom_Services(void)
 {
-  int32_t ret;
+  tBleStatus ret;
   
   ret = Add_HWServW2ST_Service();
   if (ret == BLE_STATUS_SUCCESS) {

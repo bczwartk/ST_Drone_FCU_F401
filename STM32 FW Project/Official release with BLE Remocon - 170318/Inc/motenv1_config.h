@@ -48,7 +48,7 @@
 /* Exported define ------------------------------------------------------------*/
 
 /* Define the MOTENV1 MAC address, otherwise it will create a MAC related to STM32 UID */
-//#define MAC_MOTENV 0xFF, 0xEE, 0xDD, 0xAA, 0xAA, 0xAA
+// define MAC_MOTENV 0xFF, 0xEE, 0xDD, 0xAA, 0xAA, 0xAA
 
 #ifndef MAC_MOTENV
   /* For creating one MAC related to STM32 UID, Otherwise the BLE will use it's random MAC */
@@ -62,7 +62,7 @@
    * it will introduce a delay of 10Seconds before starting the application
    * for having time to open the Terminal
    * for looking the BlueMicrosystem Initialization phase */
-  //#define MOTENV_ENABLE_PRINTF
+  // define MOTENV_ENABLE_PRINTF
 #else /* STM32_SENSORTILE */
   #ifndef USE_STM32L0XX_NUCLEO
     /* For Nucleo F401RE/L476RG it's enable by default */

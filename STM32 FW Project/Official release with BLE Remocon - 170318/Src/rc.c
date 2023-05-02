@@ -29,18 +29,16 @@
 
 #define AUTO_CONNECTION_CENTER  0
 
+#ifdef REMOCON_PWM
 int32_t ail_center = AIL_MIDDLE;
 int32_t ele_center = ELE_MIDDLE;
 int32_t rud_center = RUD_MIDDLE;
+#endif
 
 int32_t rc_cnt = 0;
 int32_t rc_acc[4] = {0};
 
 int32_t rc_z_control_flag = 1;
-
-extern int32_t rc_cal_flag;
-extern uint8_t rc_enable_motor;
-extern int32_t fly_ready;
 
 GPIO_TypeDef* RC_Channel_Ports[4] =
     {
@@ -59,7 +57,7 @@ uint16_t RC_Channel_Pins[4] =
     };
 
 volatile int32_t rc_timeout;    // R/C timeout counter
-char rc_connection_flag;    // R/C connection status
+uint8_t rc_connection_flag;    // R/C connection status
 char rc_flag[4];            // flag for received input capture interrupt count
 /* timer data for rising and falling edge and pulse width */
 int32_t rc_t_rise[4], rc_t_fall[4], rc_t[4];
@@ -78,7 +76,7 @@ void init_rc_variables(void);
 
 void init_remote_control(void)
 {
-  rc_connection_flag = 0;
+  rc_connection_flag = 0u;
   rc_timeout = 1000;
 
   // Initial R/C global variables
@@ -96,7 +94,7 @@ void init_remote_control(void)
 void init_rc_variables(void)
 {
   uint32_t i;
-  rc_connection_flag = 0;
+  rc_connection_flag = 0u;
   for (i = 0; i < 4u; i ++) {
     rc_flag[i] = 0;
     rc_t_rise[i] = 0;
@@ -107,7 +105,7 @@ void init_rc_variables(void)
 
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 {
-  #ifdef REMOCON_PWM
+#ifdef REMOCON_PWM
     int32_t timcnt, idx;
     // save the counter data
     switch (htim->Channel)
@@ -166,12 +164,11 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
         add_queue(&que, idx, rc_t[idx]);
       }
   }
-  #endif
-  #ifdef REMOCON_BLE
-        
+#endif
+
+#ifdef REMOCON_BLE
         update_rc_data(0);
-      
-  #endif
+#endif
 }
 
 
@@ -190,7 +187,7 @@ void HAL_SYSTICK_Callback(void)
     rc_connection_flag = (rc_timeout <= RC_TIMEOUT_VALUE);
   #endif
   #ifdef REMOCON_BLE
-    rc_connection_flag = 1;             /* To modify and check status of BLE connection */
+    rc_connection_flag = 1u;             /* To modify and check status of BLE connection */
   #endif
 }
 
@@ -246,9 +243,9 @@ static int32_t limit_value(int32_t val)
  */
 void GetTargetEulerAngle(EulerAngleTypeDef *euler_rc_in, const EulerAngleTypeDef *euler_ahrs_in)
 {
-	const float32_t max_pitch_rad = PI * PITCH_MAX_DEG / 180.0f;
-	const float32_t max_roll_rad = PI * ROLL_MAX_DEG / 180.0f;
-	const float32_t max_yaw_rad = PI * YAW_MAX_DEG / 180.0f;
+	const float32_t max_pitch_rad = (PI * PITCH_MAX_DEG) / 180.0f;
+	const float32_t max_roll_rad = (PI * ROLL_MAX_DEG) / 180.0f;
+	const float32_t max_yaw_rad = (PI * YAW_MAX_DEG) / 180.0f;
 	int32_t t1;
 
     t1 = limit_value(gELE);

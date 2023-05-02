@@ -13,7 +13,7 @@ typedef volatile struct tUserTimerStruct
     uint32_t    event_cnt;
 } tUserTimer;
 
-extern tUserTimer tim;
+extern volatile tUserTimer tim;
 
 void SetupTimer(tUserTimer *t, uint32_t interval);
 void StartTimer(tUserTimer *t);
