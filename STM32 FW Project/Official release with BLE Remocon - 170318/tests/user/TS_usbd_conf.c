@@ -25,6 +25,19 @@ CPPTEST_TEST(TS_usbd_conf_test_USBD_LL_CloseEP);
 CPPTEST_TEST(TS_usbd_conf_test_USBD_LL_FlushEP);
 CPPTEST_TEST(TS_usbd_conf_test_USBD_LL_StallEP);
 CPPTEST_TEST(TS_usbd_conf_test_USBD_LL_ClearStallEP);
+CPPTEST_TEST(TS_usbd_conf_test_HAL_PCD_ResetCallback_speed_full);
+CPPTEST_TEST(TS_usbd_conf_test_HAL_PCD_ResetCallback_speed_high);
+CPPTEST_TEST(TS_usbd_conf_test_HAL_PCD_ResetCallback_speed_default);
+CPPTEST_TEST(TS_usbd_conf_test_HAL_PCD_SetupStageCallback);
+CPPTEST_TEST(TS_usbd_conf_test_HAL_PCD_DataOutStageCallback);
+CPPTEST_TEST(TS_usbd_conf_test_HAL_PCD_DataInStageCallback);
+CPPTEST_TEST(TS_usbd_conf_test_HAL_PCD_SOFCallback_not_configured);
+CPPTEST_TEST(TS_usbd_conf_test_HAL_PCD_SOFCallback_no_callback);
+CPPTEST_TEST(TS_usbd_conf_test_HAL_PCD_SOFCallback_with_callback);
+CPPTEST_TEST(TS_usbd_conf_test_HAL_PCD_ISOOUTIncompleteCallback);
+CPPTEST_TEST(TS_usbd_conf_test_HAL_PCD_ISOINIncompleteCallback);
+CPPTEST_TEST(TS_usbd_conf_test_HAL_PCD_ConnectCallback);
+CPPTEST_TEST(TS_usbd_conf_test_HAL_PCD_DisconnectCallback);
 CPPTEST_TEST_SUITE_END();
         
 void TS_usbd_conf_test_USBD_LL_Delay_value(void);
@@ -41,6 +54,19 @@ void TS_usbd_conf_test_USBD_LL_CloseEP(void);
 void TS_usbd_conf_test_USBD_LL_FlushEP(void);
 void TS_usbd_conf_test_USBD_LL_StallEP(void);
 void TS_usbd_conf_test_USBD_LL_ClearStallEP(void);
+void TS_usbd_conf_test_HAL_PCD_ResetCallback_speed_full(void);
+void TS_usbd_conf_test_HAL_PCD_ResetCallback_speed_high(void);
+void TS_usbd_conf_test_HAL_PCD_ResetCallback_speed_default(void);
+void TS_usbd_conf_test_HAL_PCD_SetupStageCallback(void);
+void TS_usbd_conf_test_HAL_PCD_DataOutStageCallback(void);
+void TS_usbd_conf_test_HAL_PCD_DataInStageCallback(void);
+void TS_usbd_conf_test_HAL_PCD_SOFCallback_not_configured(void);
+void TS_usbd_conf_test_HAL_PCD_SOFCallback_not_callback(void);
+void TS_usbd_conf_test_HAL_PCD_SOFCallback_with_callback(void);
+void TS_usbd_conf_test_HAL_PCD_ISOOUTIncompleteCallback(void);
+void TS_usbd_conf_test_HAL_PCD_ISOINIncompleteCallback(void);
+void TS_usbd_conf_test_HAL_PCD_ConnectCallback(void);
+void TS_usbd_conf_test_HAL_PCD_DisconnectCallback(void);
 CPPTEST_TEST_SUITE_REGISTRATION(TS_usbd_conf);
 
 void TS_usbd_conf_testSuiteSetUp(void);
@@ -257,3 +283,221 @@ void TS_usbd_conf_test_USBD_LL_ClearStallEP()
     CPPTEST_ASSERT_EQUAL(USBD_OK, ret);
 }
 /* CPPTEST_TEST_CASE_END test_USBD_LL_ClearStallEP */
+
+/* CPPTEST_TEST_CASE_BEGIN test_HAL_PCD_ResetCallback_speed_full */
+void TS_usbd_conf_test_HAL_PCD_ResetCallback_speed_full()
+{
+	CPPTEST_EXPECT_NCALLS("USBD_LL_Reset", 1);
+
+	PCD_HandleTypeDef pcdHandle;
+	USBD_HandleTypeDef usbdHandle;
+
+	pcdHandle.Init.speed = PCD_SPEED_FULL;
+	pcdHandle.pData = & usbdHandle;
+
+	HAL_PCD_ResetCallback(& pcdHandle);
+
+	CPPTEST_ASSERT_EQUAL(USBD_SPEED_FULL, usbdHandle.dev_speed);
+}
+/* CPPTEST_TEST_CASE_END test_HAL_PCD_ResetCallback_speed_full */
+
+/* CPPTEST_TEST_CASE_BEGIN test_HAL_PCD_ResetCallback_speed_high */
+void TS_usbd_conf_test_HAL_PCD_ResetCallback_speed_high()
+{
+	CPPTEST_EXPECT_NCALLS("USBD_LL_Reset", 1);
+
+	PCD_HandleTypeDef pcdHandle;
+	USBD_HandleTypeDef usbdHandle;
+
+	pcdHandle.Init.speed = PCD_SPEED_HIGH;
+	pcdHandle.pData = & usbdHandle;
+
+	HAL_PCD_ResetCallback(& pcdHandle);
+
+	CPPTEST_ASSERT_EQUAL(USBD_SPEED_HIGH, usbdHandle.dev_speed);
+}
+/* CPPTEST_TEST_CASE_END test_HAL_PCD_ResetCallback_speed_high */
+
+/* CPPTEST_TEST_CASE_BEGIN test_HAL_PCD_ResetCallback_speed_default */
+void TS_usbd_conf_test_HAL_PCD_ResetCallback_speed_default()
+{
+	CPPTEST_EXPECT_NCALLS("USBD_LL_Reset", 1);
+
+	PCD_HandleTypeDef pcdHandle;
+	USBD_HandleTypeDef usbdHandle;
+
+	// see Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd.h
+	pcdHandle.Init.speed = PCD_SPEED_HIGH_IN_FULL; // TODO: set to a "strange" value
+	pcdHandle.pData = & usbdHandle;
+
+	HAL_PCD_ResetCallback(& pcdHandle);
+
+	CPPTEST_ASSERT_EQUAL(USBD_SPEED_FULL, usbdHandle.dev_speed);
+}
+/* CPPTEST_TEST_CASE_END test_HAL_PCD_ResetCallback_speed_default */
+
+/* CPPTEST_TEST_CASE_BEGIN test_HAL_PCD_SetupStageCallback */
+void TS_usbd_conf_test_HAL_PCD_SetupStageCallback()
+{
+	CPPTEST_EXPECT_NCALLS("USBD_LL_SetupStage", 1);
+	PCD_HandleTypeDef pcdHandle;
+	HAL_PCD_SetupStageCallback(&pcdHandle);
+}
+/* CPPTEST_TEST_CASE_END test_HAL_PCD_SetupStageCallback */
+
+/* CPPTEST_TEST_CASE_BEGIN test_HAL_PCD_DataOutStageCallback */
+void TS_usbd_conf_test_HAL_PCD_DataOutStageCallback()
+{
+	CPPTEST_EXPECT_NCALLS("USBD_LL_DataOutStage", 1);
+
+	uint8_t epnum = 0u;
+	PCD_HandleTypeDef pcdHandle;
+	USBD_HandleTypeDef usbdHandle;
+	pcdHandle.pData = & usbdHandle;
+	pcdHandle.OUT_ep[epnum].xfer_buff = NULL; // we can pass null because of no-op stub
+
+	HAL_PCD_DataOutStageCallback(&pcdHandle, epnum);
+}
+/* CPPTEST_TEST_CASE_END test_HAL_PCD_DataOutStageCallback */
+
+/* CPPTEST_TEST_CASE_BEGIN test_HAL_PCD_DataInStageCallback */
+void TS_usbd_conf_test_HAL_PCD_DataInStageCallback()
+{
+	CPPTEST_EXPECT_NCALLS("USBD_LL_DataInStage", 1);
+
+	uint8_t epnum = 0u;
+	PCD_HandleTypeDef pcdHandle;
+	USBD_HandleTypeDef usbdHandle;
+	pcdHandle.pData = & usbdHandle;
+	pcdHandle.IN_ep[epnum].xfer_buff = NULL; // we can pass null because of no-op stub
+
+	HAL_PCD_DataInStageCallback(&pcdHandle, epnum);}
+/* CPPTEST_TEST_CASE_END test_HAL_PCD_DataInStageCallback */
+
+static uint8_t helper_HAL_PCD_SOFCallback_ncalls = 0u;
+static uint8_t helper_HAL_PCD_SOFCallback(struct _USBD_HandleTypeDef *pdev)
+{
+	helper_HAL_PCD_SOFCallback_ncalls ++;
+}
+
+/* CPPTEST_TEST_CASE_BEGIN test_HAL_PCD_SOFCallback_not_configured */
+void TS_usbd_conf_test_HAL_PCD_SOFCallback_not_configured()
+{
+	USBD_ClassTypeDef usbdClass;
+	USBD_HandleTypeDef usbdHandle;
+	PCD_HandleTypeDef pcdHandle;
+
+	usbdClass.SOF = NULL;
+	usbdHandle.dev_state = USBD_STATE_DEFAULT;
+	usbdHandle.pClass = & usbdClass;
+	pcdHandle.pData = & usbdHandle;
+
+	helper_HAL_PCD_SOFCallback_ncalls = 0u;
+
+	HAL_PCD_SOFCallback(&pcdHandle);
+
+	CPPTEST_ASSERT_UINTEGER_EQUAL(0u, helper_HAL_PCD_SOFCallback_ncalls);
+}
+/* CPPTEST_TEST_CASE_END test_HAL_PCD_SOFCallback_not_configured */
+
+/* CPPTEST_TEST_CASE_BEGIN test_HAL_PCD_SOFCallback_no_callback */
+void TS_usbd_conf_test_HAL_PCD_SOFCallback_no_callback()
+{
+	USBD_ClassTypeDef usbdClass;
+	USBD_HandleTypeDef usbdHandle;
+	PCD_HandleTypeDef pcdHandle;
+
+	usbdClass.SOF = NULL;
+	usbdHandle.dev_state = USBD_STATE_CONFIGURED;
+	usbdHandle.pClass = & usbdClass;
+	pcdHandle.pData = & usbdHandle;
+
+	helper_HAL_PCD_SOFCallback_ncalls = 0u;
+
+	HAL_PCD_SOFCallback(&pcdHandle);
+
+	CPPTEST_ASSERT_UINTEGER_EQUAL(0u, helper_HAL_PCD_SOFCallback_ncalls);
+}
+/* CPPTEST_TEST_CASE_END test_HAL_PCD_SOFCallback_no_callback */
+
+/* CPPTEST_TEST_CASE_BEGIN test_HAL_PCD_SOFCallback_with_callback */
+void TS_usbd_conf_test_HAL_PCD_SOFCallback_with_callback()
+{
+	USBD_ClassTypeDef usbdClass;
+	USBD_HandleTypeDef usbdHandle;
+	PCD_HandleTypeDef pcdHandle;
+
+	usbdClass.SOF = & helper_HAL_PCD_SOFCallback;
+	usbdHandle.dev_state = USBD_STATE_CONFIGURED;
+	usbdHandle.pClass = & usbdClass;
+	pcdHandle.pData = & usbdHandle;
+
+	helper_HAL_PCD_SOFCallback_ncalls = 0u;
+
+	HAL_PCD_SOFCallback(&pcdHandle);
+
+	CPPTEST_ASSERT_UINTEGER_EQUAL(1u, helper_HAL_PCD_SOFCallback_ncalls);
+}
+/* CPPTEST_TEST_CASE_END test_HAL_PCD_SOFCallback_with_callback */
+
+/* CPPTEST_TEST_CASE_BEGIN test_HAL_PCD_ISOOUTIncompleteCallback */
+/* CPPTEST_TEST_CASE_CONTEXT void HAL_PCD_ConnectCallback(PCD_HandleTypeDef *) */
+void TS_usbd_conf_test_HAL_PCD_ISOOUTIncompleteCallback()
+{
+	CPPTEST_EXPECT_NCALLS("USBD_LL_IsoOUTIncomplete", 1);
+	uint8_t epnum = 0u;
+	PCD_HandleTypeDef pcdHandle;
+    HAL_PCD_ISOOUTIncompleteCallback(&pcdHandle, epnum);
+}
+/* CPPTEST_TEST_CASE_END test_HAL_PCD_ISOOUTIncompleteCallback */
+
+/* CPPTEST_TEST_CASE_BEGIN test_HAL_PCD_ISOINIncompleteCallback */
+/* CPPTEST_TEST_CASE_CONTEXT void HAL_PCD_ConnectCallback(PCD_HandleTypeDef *) */
+void TS_usbd_conf_test_HAL_PCD_ISOINIncompleteCallback()
+{
+	CPPTEST_EXPECT_NCALLS("USBD_LL_IsoINIncomplete", 1);
+	uint8_t epnum = 0u;
+	PCD_HandleTypeDef pcdHandle;
+	HAL_PCD_ISOINIncompleteCallback(&pcdHandle, epnum);
+}
+/* CPPTEST_TEST_CASE_END test_HAL_PCD_ISOINIncompleteCallback */
+
+/* CPPTEST_TEST_CASE_BEGIN test_HAL_PCD_ConnectCallback */
+/* CPPTEST_TEST_CASE_CONTEXT void HAL_PCD_ConnectCallback(PCD_HandleTypeDef *) */
+void TS_usbd_conf_test_HAL_PCD_ConnectCallback()
+{
+	CPPTEST_EXPECT_NCALLS("USBD_LL_DevConnected", 1);
+	PCD_HandleTypeDef pcdHandle;
+	HAL_PCD_ConnectCallback(&pcdHandle);
+}
+/* CPPTEST_TEST_CASE_END test_HAL_PCD_ConnectCallback */
+
+static uint8_t helper_HAL_PCD_DisconnectCallback_DeInit_ncalls = 0u;
+static uint8_t helper_HAL_PCD_DisconnectCallback_DeInit(struct _USBD_HandleTypeDef *pdev, uint8_t cfgidx)
+{
+	helper_HAL_PCD_DisconnectCallback_DeInit_ncalls ++;
+}
+
+/* CPPTEST_TEST_CASE_BEGIN test_HAL_PCD_DisconnectCallback */
+/* CPPTEST_TEST_CASE_CONTEXT void HAL_PCD_ConnectCallback(PCD_HandleTypeDef *) */
+void TS_usbd_conf_test_HAL_PCD_DisconnectCallback()
+{
+	CPPTEST_EXPECT_NCALLS("USBD_LL_DevDisconnected", 1);
+
+	USBD_ClassTypeDef usbdClass;
+	USBD_HandleTypeDef usbdHandle;
+	PCD_HandleTypeDef pcdHandle;
+
+	usbdClass.DeInit = & helper_HAL_PCD_DisconnectCallback_DeInit;
+	usbdHandle.dev_state = USBD_STATE_CONFIGURED;
+	usbdHandle.pClass = & usbdClass;
+	pcdHandle.pData = & usbdHandle;
+
+	helper_HAL_PCD_DisconnectCallback_DeInit_ncalls = 0u;
+
+	HAL_PCD_DisconnectCallback(&pcdHandle);
+
+	CPPTEST_ASSERT_EQUAL(USBD_STATE_DEFAULT, usbdHandle.dev_state);
+	CPPTEST_ASSERT_UINTEGER_EQUAL(1u, helper_HAL_PCD_DisconnectCallback_DeInit_ncalls);
+}
+/* CPPTEST_TEST_CASE_END test_HAL_PCD_DisconnectCallback */
