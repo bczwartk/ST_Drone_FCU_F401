@@ -38,6 +38,13 @@ CPPTEST_TEST(TS_usbd_conf_test_HAL_PCD_ISOOUTIncompleteCallback);
 CPPTEST_TEST(TS_usbd_conf_test_HAL_PCD_ISOINIncompleteCallback);
 CPPTEST_TEST(TS_usbd_conf_test_HAL_PCD_ConnectCallback);
 CPPTEST_TEST(TS_usbd_conf_test_HAL_PCD_DisconnectCallback);
+CPPTEST_TEST(TS_usbd_conf_test_USBD_LL_Transmit);
+CPPTEST_TEST(TS_usbd_conf_test_USBD_LL_PrepareReceive);
+CPPTEST_TEST(TS_usbd_conf_test_USBD_LL_SetUSBAddress);
+CPPTEST_TEST(TS_usbd_conf_test_HAL_PCD_ResumeCallback_1);
+CPPTEST_TEST(TS_usbd_conf_test_HAL_PCD_ResumeCallback_2);
+CPPTEST_TEST_DS(TS_usbd_conf_test_USBD_LL_GetRxDataSize_ds, CPPTEST_DS("TS_usbd_conf_test_USBD_LL_GetRxDataSiz"));
+CPPTEST_TEST_DS(TS_usbd_conf_test_USBD_LL_IsStallEP_ds, CPPTEST_DS("TS_usbd_conf_test_USBD_LL_IsStallEP"));
 CPPTEST_TEST_SUITE_END();
         
 void TS_usbd_conf_test_USBD_LL_Delay_value(void);
@@ -67,6 +74,13 @@ void TS_usbd_conf_test_HAL_PCD_ISOOUTIncompleteCallback(void);
 void TS_usbd_conf_test_HAL_PCD_ISOINIncompleteCallback(void);
 void TS_usbd_conf_test_HAL_PCD_ConnectCallback(void);
 void TS_usbd_conf_test_HAL_PCD_DisconnectCallback(void);
+void TS_usbd_conf_test_USBD_LL_Transmit(void);
+void TS_usbd_conf_test_USBD_LL_PrepareReceive(void);
+void TS_usbd_conf_test_USBD_LL_SetUSBAddress(void);
+void TS_usbd_conf_test_HAL_PCD_ResumeCallback_1(void);
+void TS_usbd_conf_test_HAL_PCD_ResumeCallback_2(void);
+void TS_usbd_conf_test_USBD_LL_GetRxDataSize_ds(void);
+void TS_usbd_conf_test_USBD_LL_IsStallEP_ds(void);
 CPPTEST_TEST_SUITE_REGISTRATION(TS_usbd_conf);
 
 void TS_usbd_conf_testSuiteSetUp(void);
@@ -501,3 +515,138 @@ void TS_usbd_conf_test_HAL_PCD_DisconnectCallback()
 	CPPTEST_ASSERT_UINTEGER_EQUAL(1u, helper_HAL_PCD_DisconnectCallback_DeInit_ncalls);
 }
 /* CPPTEST_TEST_CASE_END test_HAL_PCD_DisconnectCallback */
+
+/* CPPTEST_TEST_CASE_BEGIN test_USBD_LL_Transmit */
+void TS_usbd_conf_test_USBD_LL_Transmit()
+{
+	CPPTEST_EXPECT_NCALLS("HAL_PCD_EP_Transmit", 1);
+
+	USBD_HandleTypeDef usbdHandle;
+	uint8_t epaddr = 0u;
+	uint8_t buf[16u] = { 0u };
+	uint16_t size = sizeof(buf) / sizeof(buf[0]);
+	USBD_StatusTypeDef ret;
+
+	ret = USBD_LL_Transmit(&usbdHandle, epaddr, buf, size);
+
+	CPPTEST_ASSERT_EQUAL(USBD_OK, ret);
+}
+/* CPPTEST_TEST_CASE_END test_USBD_LL_Transmit */
+
+/* CPPTEST_TEST_CASE_BEGIN test_USBD_LL_PrepareReceive */
+void TS_usbd_conf_test_USBD_LL_PrepareReceive()
+{
+	CPPTEST_EXPECT_NCALLS("HAL_PCD_EP_Receive", 1);
+
+    USBD_HandleTypeDef usbdHandle;
+	uint8_t epaddr = 0u;
+	uint8_t buf[16u] = { 0u };
+	uint16_t size = sizeof(buf) / sizeof(buf[0]);
+	USBD_StatusTypeDef ret;
+
+	ret = USBD_LL_PrepareReceive(&usbdHandle, epaddr, buf, size);
+
+	CPPTEST_ASSERT_EQUAL(USBD_OK, ret);
+}
+/* CPPTEST_TEST_CASE_END test_USBD_LL_PrepareReceive */
+
+/* CPPTEST_TEST_CASE_BEGIN test_USBD_LL_GetRxDataSize_ds */
+/* CPPTEST_TEST_CASE_CONTEXT uint32_t USBD_LL_GetRxDataSize(USBD_HandleTypeDef *, uint8_t) */
+void TS_usbd_conf_test_USBD_LL_GetRxDataSize_ds()
+{
+	USBD_HandleTypeDef usbdHandle;
+	PCD_HandleTypeDef pcdHandle;
+	uint8_t epaddr = CPPTEST_DS_GET_UINTEGER("epaddr_in");
+	uint8_t epaddr_trunc = CPPTEST_DS_GET_UINTEGER("epaddr_trunc_in");
+	const uint32_t count = CPPTEST_DS_GET_UINTEGER("count");
+	uint32_t ret;
+
+	pcdHandle.OUT_ep[epaddr_trunc].xfer_count = count; // the 4 LSB bits of address are important
+	usbdHandle.pData = &pcdHandle;
+
+    ret = USBD_LL_GetRxDataSize(&usbdHandle, epaddr);
+    CPPTEST_ASSERT_UINTEGER_EQUAL(CPPTEST_DS_GET_UINTEGER("count"), ret);
+}
+/* CPPTEST_TEST_CASE_END test_USBD_LL_GetRxDataSize_ds */
+
+/* CPPTEST_TEST_CASE_BEGIN test_USBD_LL_SetUSBAddress */
+void TS_usbd_conf_test_USBD_LL_SetUSBAddress()
+{
+	CPPTEST_EXPECT_NCALLS("HAL_PCD_SetAddress", 1);
+
+	USBD_HandleTypeDef usbdHandle;
+	uint8_t dev_addr = 0u;
+	USBD_StatusTypeDef ret;
+
+	ret = USBD_LL_SetUSBAddress(&usbdHandle, dev_addr);
+
+	CPPTEST_ASSERT_EQUAL(USBD_OK, ret);
+}
+/* CPPTEST_TEST_CASE_END test_USBD_LL_SetUSBAddress */
+
+/* CPPTEST_TEST_CASE_BEGIN test_HAL_PCD_ResumeCallback_1 */
+void TS_usbd_conf_test_HAL_PCD_ResumeCallback_1()
+{
+	USBD_HandleTypeDef usbdHandle;
+	PCD_HandleTypeDef pcdHandle;
+
+	usbdHandle.dev_state = USBD_STATE_SUSPENDED;
+	usbdHandle.dev_old_state = USBD_STATE_DEFAULT;
+	pcdHandle.pData = & usbdHandle;
+
+	HAL_PCD_ResumeCallback(&pcdHandle);
+
+	CPPTEST_ASSERT_EQUAL(USBD_STATE_DEFAULT, usbdHandle.dev_state);
+}
+/* CPPTEST_TEST_CASE_END test_HAL_PCD_ResumeCallback_1 */
+
+/* CPPTEST_TEST_CASE_BEGIN test_HAL_PCD_ResumeCallback_2 */
+void TS_usbd_conf_test_HAL_PCD_ResumeCallback_2()
+{
+	USBD_HandleTypeDef usbdHandle;
+	PCD_HandleTypeDef pcdHandle;
+
+	usbdHandle.dev_state = USBD_STATE_CONFIGURED;
+	usbdHandle.dev_old_state = USBD_STATE_ADDRESSED;
+	pcdHandle.pData = & usbdHandle;
+
+	HAL_PCD_ResumeCallback(&pcdHandle);
+
+	CPPTEST_ASSERT_EQUAL(USBD_STATE_ADDRESSED, usbdHandle.dev_state);
+}
+/* CPPTEST_TEST_CASE_END test_HAL_PCD_ResumeCallback_2 */
+
+
+/* CPPTEST_TEST_CASE_BEGIN test_USBD_LL_IsStallEP_ds */
+/* CPPTEST_TEST_CASE_CONTEXT uint8_t USBD_LL_IsStallEP(USBD_HandleTypeDef *, uint8_t) */
+void TS_usbd_conf_test_USBD_LL_IsStallEP_ds()
+{
+	USBD_HandleTypeDef usbdHandle;
+	PCD_HandleTypeDef pcdHandle;
+	uint8_t epaddr = CPPTEST_DS_GET_UINTEGER("epaddr_in");
+	const uint8_t epaddr_trunc = CPPTEST_DS_GET_UINTEGER("epaddr_trunc_in");
+	const uint8_t is_in = CPPTEST_DS_GET_UINTEGER("is_in");
+	const uint8_t is_stall_in = CPPTEST_DS_GET_UINTEGER("is_stall");
+	uint8_t ret;
+
+	CPPTEST_REPORT_UINTEGER("epaddr", epaddr);
+
+	usbdHandle.pData = & pcdHandle;
+	// the 4 LSB bits of address are important
+	if (is_in > 0u) {
+		epaddr |= 0x80u;
+		pcdHandle.IN_ep[epaddr_trunc].is_stall = is_stall_in;
+	} else {
+		pcdHandle.OUT_ep[epaddr_trunc].is_stall = is_stall_in;
+	}
+
+	CPPTEST_REPORT_UINTEGER("epaddr(mod)", epaddr);
+	CPPTEST_REPORT_UINTEGER("epaddr_trunc", epaddr_trunc);
+	CPPTEST_REPORT_UINTEGER("is_in", is_in);
+	CPPTEST_REPORT_UINTEGER("is_stall", is_stall_in);
+
+    ret = USBD_LL_IsStallEP(&usbdHandle, epaddr);
+
+    CPPTEST_ASSERT_UINTEGER_EQUAL(is_stall_in, ret);
+}
+/* CPPTEST_TEST_CASE_END test_USBD_LL_IsStallEP_ds */
