@@ -27,6 +27,9 @@ CPPTEST_TEST(TS_sensor_service_test_safe_aci_gatt_update_char_value_success);
 CPPTEST_TEST(TS_sensor_service_test_Add_ConfigW2ST_Service_success);
 CPPTEST_TEST(TS_sensor_service_test_Add_ConfigW2ST_Service_add_serv_error);
 CPPTEST_TEST(TS_sensor_service_test_Add_ConfigW2ST_Service_add_char_error);
+CPPTEST_TEST(TS_sensor_service_test_Term_Update_AfterRead_success);
+CPPTEST_TEST(TS_sensor_service_test_Term_Update_AfterRead_error_conxn);
+CPPTEST_TEST(TS_sensor_service_test_Term_Update_AfterRead_error_other);
 CPPTEST_TEST_SUITE_END();
         
 
@@ -45,6 +48,9 @@ void TS_sensor_service_test_safe_aci_gatt_update_char_value_success(void);
 void TS_sensor_service_test_Add_ConfigW2ST_Service_success(void);
 void TS_sensor_service_test_Add_ConfigW2ST_Service_add_serv_error(void);
 void TS_sensor_service_test_Add_ConfigW2ST_Service_add_char_error(void);
+void TS_sensor_service_test_Term_Update_AfterRead_success(void);
+void TS_sensor_service_test_Term_Update_AfterRead_error_conxn(void);
+void TS_sensor_service_test_Term_Update_AfterRead_error_other(void);
 CPPTEST_TEST_SUITE_REGISTRATION(TS_sensor_service);
 
 void TS_sensor_service_testSuiteSetUp(void);
@@ -419,3 +425,43 @@ void TS_sensor_service_test_Add_ConfigW2ST_Service_add_char_error()
 	CPPTEST_ASSERT_UINTEGER_EQUAL(BLE_STATUS_ERROR, ret);
 }
 /* CPPTEST_TEST_CASE_END test_Add_ConfigW2ST_Service_add_char_error */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Term_Update_AfterRead_success */
+void TS_sensor_service_test_Term_Update_AfterRead_success()
+{
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_update_char_value", &CppTest_StubCallback_aci_gatt_update_char_value);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_update_char_value", 1);
+	tBleStatus ret;
+	CppTest_StubCallback_aci_gatt_update_char_value_retval = BLE_STATUS_SUCCESS;
+	ret = Term_Update_AfterRead();
+	CPPTEST_ASSERT_UINTEGER_EQUAL(BLE_STATUS_SUCCESS, ret);
+}
+/* CPPTEST_TEST_CASE_END test_Term_Update_AfterRead_success */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Term_Update_AfterRead_error_conxn */
+void TS_sensor_service_test_Term_Update_AfterRead_error_conxn()
+{
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_update_char_value", &CppTest_StubCallback_aci_gatt_update_char_value);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_update_char_value", 1);
+	CPPTEST_EXPECT_NCALLS("Stderr_Update", 1);
+	tBleStatus ret;
+	CppTest_StubCallback_aci_gatt_update_char_value_retval = BLE_STATUS_ADDR_NOT_RESOLVED;
+	ConnectionBleStatus = W2ST_CONNECT_STD_ERR;
+	ret = Term_Update_AfterRead();
+	CPPTEST_ASSERT_UINTEGER_EQUAL(BLE_STATUS_ERROR, ret);
+}
+/* CPPTEST_TEST_CASE_END test_Term_Update_AfterRead_error_conxn */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Term_Update_AfterRead_error_other */
+void TS_sensor_service_test_Term_Update_AfterRead_error_other()
+{
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_update_char_value", &CppTest_StubCallback_aci_gatt_update_char_value);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_update_char_value", 1);
+	CPPTEST_EXPECT_NCALLS("Stderr_Update", 0);
+	tBleStatus ret;
+	CppTest_StubCallback_aci_gatt_update_char_value_retval = BLE_STATUS_ADDR_NOT_RESOLVED;
+	ConnectionBleStatus = 0u;
+	ret = Term_Update_AfterRead();
+	CPPTEST_ASSERT_UINTEGER_EQUAL(BLE_STATUS_ERROR, ret);
+}
+/* CPPTEST_TEST_CASE_END test_Term_Update_AfterRead_error_other */
