@@ -3,7 +3,7 @@
 rem setlocal ENABLEDELAYEDEXPANSION
 
 rem the defaults
-set CPPTEST_HOME=c:\Parasoft\apps\cpptest-pro-2022.2.0
+set CPPTEST_HOME=c:\Parasoft\apps\cpptest-pro-2023.1.1
 set IAR_HOME=c:\Program Files\IAR Systems\Embedded Workbench 9.1
 
 IF %COMPUTERNAME%==HOUND2 (

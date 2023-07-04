@@ -12,10 +12,10 @@ cpptesttrace --cpptesttraceResponseFileOption=-f iarbuild ToyDrone.ewp -make cpp
 dir .\cpptest
 
 rem update BDF to fix issue with trailing baskslashes in include paths
-%CPPTEST_HOME%\bin\engine\bin\cpptestpy.exe %~dp0\update_bdf.py .\cpptest\cpptestscan.bdf
-move /y .\cpptest\cpptestscan.bdf .\cpptest\cpptestscan.orig.bdf
-move /y .\cpptest\cpptestscan.bdf.updated .\cpptest\cpptestscan.bdf
-dir .\cpptest
+rem %CPPTEST_HOME%\bin\engine\bin\cpptestpy.exe %~dp0\update_bdf.py .\cpptest\cpptestscan.bdf
+rem move /y .\cpptest\cpptestscan.bdf .\cpptest\cpptestscan.orig.bdf
+rem move /y .\cpptest\cpptestscan.bdf.updated .\cpptest\cpptestscan.bdf
+rem dir .\cpptest
 
 popd
 
