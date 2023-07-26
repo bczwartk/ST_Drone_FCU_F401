@@ -78,10 +78,10 @@
 
 #define D_FILTER_COFF         0.025f
 
-#define MOTOR_OFF1          0
-#define MOTOR_OFF2          0
-#define MOTOR_OFF3          0
-#define MOTOR_OFF4          0
+#define MOTOR_OFF1          0.0f
+#define MOTOR_OFF2          0.0f
+#define MOTOR_OFF3          0.0f
+#define MOTOR_OFF4          0.0f
 
 #define X_AXIS_OFFSET       -0.056
 #define Y_AXIS_OFFSET       -0.029
@@ -93,8 +93,8 @@
 #define GYRO_OFFSET_Z      -0.064
 
 #define FIFO_Order          5
-#define MID_FIFO            (FIFO_Order>>1)
-#define FIFO_Order_Recip    (1.0/FIFO_Order)
+#define MID_FIFO            (FIFO_Order >> 1)
+#define FIFO_Order_Recip    (1.0 / FIFO_Order)
 
 // Structure for P-PI type PID control
 //first stage is angle stage, second stage is angle rate stage.
@@ -112,9 +112,9 @@ typedef struct
 } P_PI_PIDControlTypeDef;
 
 void FlightControlPID(const EulerAngleTypeDef *euler_rc_in, const EulerAngleTypeDef *euler_ahrs_in,
-					  const Gyro_Rad *gyro_in_rad, P_PI_PIDControlTypeDef *thePid, MotorControlTypeDef *motor_pwm);
+					  const Gyro_Rad *gyro_in_rad, P_PI_PIDControlTypeDef *thePid, MotorControlTypeDef *motor_pwm_out);
 void FlightControlPID_OuterLoop(const EulerAngleTypeDef *euler_rc_in, const EulerAngleTypeDef *euler_ahrs_in, P_PI_PIDControlTypeDef *thePid);
-void FlightControlPID_innerLoop(const Gyro_Rad *gyro_in_rad, P_PI_PIDControlTypeDef *thePid, MotorControlTypeDef *motor_pwm);
+void FlightControlPID_innerLoop(const Gyro_Rad *gyro_in_rad, P_PI_PIDControlTypeDef *thePid, MotorControlTypeDef *motor_pwm_out);
 void PIDControlInit(P_PI_PIDControlTypeDef *thePid);
 void PIDOuterLoopFrameTrans(P_PI_PIDControlTypeDef *thePid, const EulerAngleTypeDef *euler_ahrs_in);
 

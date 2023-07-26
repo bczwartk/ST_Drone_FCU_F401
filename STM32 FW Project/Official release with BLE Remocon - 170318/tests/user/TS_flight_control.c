@@ -283,6 +283,10 @@ void TS_flight_control_test_FlightControlPID_f_above_limits()
 	pid_y_integ2 = pid.y_i2_limit + 1.0f;
 	pid_z_integ2 = pid.z_i2_limit + 1.0f;
 
+	pid.z_kp2 = 1000.0f;
+	pid.z_ki2 = 1000.0f;
+	pid.z_kd2 = 1000.0f;
+
 	FlightControlPID(&euler_rc_in, &euler_ahrs_in, &gyro_in_rad, &pid, &motor_pwm);
 
 	/* see if the values were brought back to their limits */
@@ -315,6 +319,10 @@ void TS_flight_control_test_FlightControlPID_f_below_limits()
 	pid_y_integ1 = -pid.y_i1_limit - 1.0f;
 	pid_y_integ2 = -pid.y_i2_limit - 1.0f;
 	pid_z_integ2 = -pid.z_i2_limit - 1.0f;
+
+	pid.z_kp2 = 1000.0f;
+	pid.z_ki2 = 1000.0f;
+	pid.z_kd2 = 1000.0f;
 
 	FlightControlPID(&euler_rc_in, &euler_ahrs_in, &gyro_in_rad, &pid, &motor_pwm);
 
@@ -504,7 +512,13 @@ void TS_flight_control_test_FlightControlPID_innerLoop_above_limits()
 	pid_z_integ2 = pid.z_i2_limit + 1.0f;
 	//pid.z_s2 = MAX_ADJ_AMOUNT_YAW + 1.0f;
 
+	pid.z_kp2 = 1000.0f;
+	pid.z_ki2 = 1000.0f;
+	pid.z_kd2 = 1000.0f;
+
 	FlightControlPID_innerLoop(&gyro_in_rad, &pid, &motor_pwm);
+
+	CPPTEST_REPORT_FLOAT("## z_s2", pid.z_s2);
 
 	/* see if the values were brought back to their limits */
 	CPPTEST_ASSERT_FLOAT_EQUAL(pid.x_i2_limit, pid_x_integ2, 0.001f);
@@ -532,7 +546,13 @@ void TS_flight_control_test_FlightControlPID_innerLoop_below_limits()
 	pid_y_integ2 = -pid.y_i2_limit - 1.0f;
 	pid_z_integ2 = -pid.z_i2_limit - 1.0f;
 
+	pid.z_kp2 = 1000.0f;
+	pid.z_ki2 = 1000.0f;
+	pid.z_kd2 = 1000.0f;
+
 	FlightControlPID_innerLoop(&gyro_in_rad, &pid, &motor_pwm);
+
+	CPPTEST_REPORT_FLOAT("## z_s2", pid.z_s2);
 
 	/* see if the values were brought back to their limits */
 	CPPTEST_ASSERT_FLOAT_EQUAL(-pid.x_i2_limit, pid_x_integ2, 0.001f);

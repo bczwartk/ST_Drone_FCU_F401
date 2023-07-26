@@ -14,11 +14,7 @@ float32_t wbx = 0.0f, wby = 0.0f, wbz = 0.0f;
 float32_t by = 1.0f, bz = 0.0f;
 static float32_t exInt = 0.0f, eyInt = 0.0f, ezInt = 0.0f;
 
-int32_t count;
-int32_t ahrs_init_flag = 0;
-int32_t acc_over = 0;
 extern int16_t gTHR;
-static float32_t ahrs_kp;
 
 void ahrs_fusion_ag(const AxesRaw_TypeDef_Float *acc_in, const AxesRaw_TypeDef_Float *gyro_in, AHRS_State_TypeDef *ahrs_in)
 {
@@ -28,6 +24,7 @@ void ahrs_fusion_ag(const AxesRaw_TypeDef_Float *acc_in, const AxesRaw_TypeDef_F
   float32_t ex, ey, ez;
   float32_t q0q0, q0q1, q0q2, /*q0q3,*/ q1q1, /*q1q2,*/ q1q3, q2q2, q2q3, q3q3;
   float32_t halfT;
+  float32_t ahrs_kp;
  
   if (gTHR < MIN_THR) {
     ahrs_kp = AHRS_KP_BIG;
