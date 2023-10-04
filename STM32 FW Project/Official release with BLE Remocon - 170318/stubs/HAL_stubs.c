@@ -34,6 +34,8 @@
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx_hal_pcd.h"
 #include "stm32f4xx_hal_pcd_ex.h"
+#include "stm32f4xx_hal_cortex.h"
+#include "stm32f4xx_hal_gpio.h"
 
 /** User stub definition for function: uint32_t HAL_GetTick(void) */
 EXTERN_C_LINKAGE uint32_t HAL_GetTick () ;
@@ -637,4 +639,179 @@ EXTERN_C_LINKAGE HAL_StatusTypeDef CppTest_Stub_HAL_PCD_SetAddress (PCD_HandleTy
     }
 
     return __return;
+}
+
+/** User stub definition for function: void HAL_GPIO_DeInit(GPIO_TypeDef *, uint32_t) */
+EXTERN_C_LINKAGE void HAL_GPIO_DeInit (GPIO_TypeDef * GPIOx, uint32_t GPIO_Pin) ;
+EXTERN_C_LINKAGE void CppTest_Stub_HAL_GPIO_DeInit (GPIO_TypeDef * GPIOx, uint32_t GPIO_Pin) 
+{
+    CPPTEST_STUB_CALLED("HAL_GPIO_DeInit");
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo, GPIO_TypeDef * GPIOx, uint32_t GPIO_Pin)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("HAL_GPIO_DeInit", &CppTest_StubCallback_SomeName);
+     *
+     * 3. Fill out the body of the stub callback function according to intent.
+     * The following line may be used to call original function inside stub callback:
+     *     HAL_GPIO_DeInit(GPIOx, GPIO_Pin);
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS(GPIO_TypeDef * GPIOx, uint32_t GPIO_Pin);
+        CPPTEST_STUB_INVOKE_CALLBACK(GPIOx, GPIO_Pin);
+
+    } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
+        HAL_GPIO_DeInit(GPIOx, GPIO_Pin);
+
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
+}
+
+/** User stub definition for function: void HAL_GPIO_Init(GPIO_TypeDef *, GPIO_InitTypeDef *) */
+EXTERN_C_LINKAGE void HAL_GPIO_Init (GPIO_TypeDef * GPIOx, GPIO_InitTypeDef * GPIO_Init) ;
+EXTERN_C_LINKAGE void CppTest_Stub_HAL_GPIO_Init (GPIO_TypeDef * GPIOx, GPIO_InitTypeDef * GPIO_Init) 
+{
+    CPPTEST_STUB_CALLED("HAL_GPIO_Init");
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo, GPIO_TypeDef * GPIOx, GPIO_InitTypeDef * GPIO_Init)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("HAL_GPIO_Init", &CppTest_StubCallback_SomeName);
+     *
+     * 3. Fill out the body of the stub callback function according to intent.
+     * The following line may be used to call original function inside stub callback:
+     *     HAL_GPIO_Init(GPIOx, GPIO_Init);
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS(GPIO_TypeDef * GPIOx, GPIO_InitTypeDef * GPIO_Init);
+        CPPTEST_STUB_INVOKE_CALLBACK(GPIOx, GPIO_Init);
+
+    } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
+        HAL_GPIO_Init(GPIOx, GPIO_Init);
+
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
+}
+
+/** User stub definition for function: void HAL_NVIC_EnableIRQ(IRQn_Type) */
+EXTERN_C_LINKAGE void HAL_NVIC_EnableIRQ (IRQn_Type IRQn) ;
+EXTERN_C_LINKAGE void CppTest_Stub_HAL_NVIC_EnableIRQ (IRQn_Type IRQn) 
+{
+    CPPTEST_STUB_CALLED("HAL_NVIC_EnableIRQ");
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo, IRQn_Type IRQn)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("HAL_NVIC_EnableIRQ", &CppTest_StubCallback_SomeName);
+     *
+     * 3. Fill out the body of the stub callback function according to intent.
+     * The following line may be used to call original function inside stub callback:
+     *     HAL_NVIC_EnableIRQ(IRQn);
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS(IRQn_Type IRQn);
+        CPPTEST_STUB_INVOKE_CALLBACK(IRQn);
+
+    } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
+        HAL_NVIC_EnableIRQ(IRQn);
+
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
+}
+
+/** User stub definition for function: void HAL_NVIC_DisableIRQ(IRQn_Type) */
+EXTERN_C_LINKAGE void HAL_NVIC_DisableIRQ (IRQn_Type IRQn) ;
+EXTERN_C_LINKAGE void CppTest_Stub_HAL_NVIC_DisableIRQ (IRQn_Type IRQn)
+{
+    CPPTEST_STUB_CALLED("HAL_NVIC_DisableIRQ");
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo, IRQn_Type IRQn)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("HAL_NVIC_DisableIRQ", &CppTest_StubCallback_SomeName);
+     *
+     * 3. Fill out the body of the stub callback function according to intent.
+     * The following line may be used to call original function inside stub callback:
+     *     HAL_NVIC_DisableIRQ(IRQn);
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS(IRQn_Type IRQn);
+        CPPTEST_STUB_INVOKE_CALLBACK(IRQn);
+
+    } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
+    	HAL_NVIC_DisableIRQ(IRQn);
+
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
+}
+
+/** User stub definition for function: void HAL_NVIC_SetPriority(IRQn_Type, uint32_t, uint32_t) */
+EXTERN_C_LINKAGE void HAL_NVIC_SetPriority (IRQn_Type IRQn, uint32_t PreemptPriority, uint32_t SubPriority) ;
+EXTERN_C_LINKAGE void CppTest_Stub_HAL_NVIC_SetPriority (IRQn_Type IRQn, uint32_t PreemptPriority, uint32_t SubPriority) 
+{
+    CPPTEST_STUB_CALLED("HAL_NVIC_SetPriority");
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo, IRQn_Type IRQn, uint32_t PreemptPriority, uint32_t SubPriority)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("HAL_NVIC_SetPriority", &CppTest_StubCallback_SomeName);
+     *
+     * 3. Fill out the body of the stub callback function according to intent.
+     * The following line may be used to call original function inside stub callback:
+     *     HAL_NVIC_SetPriority(IRQn, PreemptPriority, SubPriority);
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS(IRQn_Type IRQn, uint32_t PreemptPriority, uint32_t SubPriority);
+        CPPTEST_STUB_INVOKE_CALLBACK(IRQn, PreemptPriority, SubPriority);
+
+    } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
+        HAL_NVIC_SetPriority(IRQn, PreemptPriority, SubPriority);
+
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
 }

@@ -45,6 +45,11 @@ CPPTEST_TEST(TS_usbd_conf_test_HAL_PCD_ResumeCallback_1);
 CPPTEST_TEST(TS_usbd_conf_test_HAL_PCD_ResumeCallback_2);
 CPPTEST_TEST_DS(TS_usbd_conf_test_USBD_LL_GetRxDataSize_ds, CPPTEST_DS("TS_usbd_conf_test_USBD_LL_GetRxDataSiz"));
 CPPTEST_TEST_DS(TS_usbd_conf_test_USBD_LL_IsStallEP_ds, CPPTEST_DS("TS_usbd_conf_test_USBD_LL_IsStallEP"));
+CPPTEST_TEST(TS_usbd_conf_test_HAL_PCD_SuspendCallback);
+CPPTEST_TEST(TS_usbd_conf_test_HAL_PCD_MspDeInit_no_instance);
+CPPTEST_TEST(TS_usbd_conf_test_HAL_PCD_MspDeInit_with_USB_OTG_FS);
+CPPTEST_TEST(TS_usbd_conf_test_HAL_PCD_MspInit_no_instance);
+CPPTEST_TEST(TS_usbd_conf_test_HAL_PCD_MspInit_with_USB_OTG_FS);
 CPPTEST_TEST_SUITE_END();
         
 void TS_usbd_conf_test_USBD_LL_Delay_value(void);
@@ -81,6 +86,11 @@ void TS_usbd_conf_test_HAL_PCD_ResumeCallback_1(void);
 void TS_usbd_conf_test_HAL_PCD_ResumeCallback_2(void);
 void TS_usbd_conf_test_USBD_LL_GetRxDataSize_ds(void);
 void TS_usbd_conf_test_USBD_LL_IsStallEP_ds(void);
+void TS_usbd_conf_test_HAL_PCD_SuspendCallback(void);
+void TS_usbd_conf_test_HAL_PCD_MspDeInit_no_instance(void);
+void TS_usbd_conf_test_HAL_PCD_MspDeInit_with_USB_OTG_FS(void);
+void TS_usbd_conf_test_HAL_PCD_MspInit_no_instance(void);
+void TS_usbd_conf_test_HAL_PCD_MspInit_with_USB_OTG_FS(void);
 CPPTEST_TEST_SUITE_REGISTRATION(TS_usbd_conf);
 
 void TS_usbd_conf_testSuiteSetUp(void);
@@ -650,3 +660,62 @@ void TS_usbd_conf_test_USBD_LL_IsStallEP_ds()
     CPPTEST_ASSERT_UINTEGER_EQUAL(is_stall_in, ret);
 }
 /* CPPTEST_TEST_CASE_END test_USBD_LL_IsStallEP_ds */
+
+/* CPPTEST_TEST_CASE_BEGIN test_HAL_PCD_SuspendCallback */
+/* CPPTEST_TEST_CASE_CONTEXT void HAL_PCD_ConnectCallback(PCD_HandleTypeDef *) */
+void TS_usbd_conf_test_HAL_PCD_SuspendCallback()
+{
+	CPPTEST_EXPECT_NCALLS("USBD_LL_Suspend", 1);
+	PCD_HandleTypeDef pcdHandle;
+	pcdHandle.Instance = NULL;
+	HAL_PCD_SuspendCallback(&pcdHandle);
+}
+/* CPPTEST_TEST_CASE_END test_HAL_PCD_SuspendCallback */
+
+/* CPPTEST_TEST_CASE_BEGIN test_HAL_PCD_MspDeInit_no_instance */
+void TS_usbd_conf_test_HAL_PCD_MspDeInit_no_instance()
+{
+	CPPTEST_EXPECT_NCALLS("HAL_GPIO_DeInit", 0);
+	CPPTEST_EXPECT_NCALLS("HAL_NVIC_DisableIRQ", 0);
+	PCD_HandleTypeDef pcdHandle;
+	pcdHandle.Instance = NULL;
+	HAL_PCD_MspDeInit(&pcdHandle);
+}
+/* CPPTEST_TEST_CASE_END test_HAL_PCD_MspDeInit_no_instance */
+
+/* CPPTEST_TEST_CASE_BEGIN test_HAL_PCD_MspDeInit_with_USB_OTG_FS */
+void TS_usbd_conf_test_HAL_PCD_MspDeInit_with_USB_OTG_FS()
+{
+	CPPTEST_EXPECT_NCALLS("HAL_GPIO_DeInit", 1);
+	CPPTEST_EXPECT_NCALLS("HAL_NVIC_DisableIRQ", 1);
+	PCD_HandleTypeDef pcdHandle;
+	pcdHandle.Instance = USB_OTG_FS;
+	HAL_PCD_MspDeInit(&pcdHandle);
+}
+/* CPPTEST_TEST_CASE_END test_HAL_PCD_MspDeInit_with_USB_OTG_FS */
+
+/* CPPTEST_TEST_CASE_BEGIN test_HAL_PCD_MspInit_no_instance */
+void TS_usbd_conf_test_HAL_PCD_MspInit_no_instance()
+{
+	CPPTEST_EXPECT_NCALLS("HAL_GPIO_Init", 0);
+	CPPTEST_EXPECT_NCALLS("HAL_NVIC_EnableIRQ", 0);
+	CPPTEST_EXPECT_NCALLS("HAL_NVIC_SetPriority", 0);
+
+	PCD_HandleTypeDef pcdHandle;
+	pcdHandle.Instance = NULL;
+	HAL_PCD_MspInit(&pcdHandle);
+}
+/* CPPTEST_TEST_CASE_END test_HAL_PCD_MspInit_no_instance */
+
+/* CPPTEST_TEST_CASE_BEGIN test_HAL_PCD_MspInit_with_USB_OTG_FS */
+void TS_usbd_conf_test_HAL_PCD_MspInit_with_USB_OTG_FS()
+{
+	CPPTEST_EXPECT_NCALLS("HAL_GPIO_Init", 1);
+	CPPTEST_EXPECT_NCALLS("HAL_NVIC_EnableIRQ", 1);
+	CPPTEST_EXPECT_NCALLS("HAL_NVIC_SetPriority", 1);
+
+	PCD_HandleTypeDef pcdHandle;
+	pcdHandle.Instance = USB_OTG_FS;
+	HAL_PCD_MspInit(&pcdHandle);
+}
+/* CPPTEST_TEST_CASE_END test_HAL_PCD_MspInit_with_USB_OTG_FS */

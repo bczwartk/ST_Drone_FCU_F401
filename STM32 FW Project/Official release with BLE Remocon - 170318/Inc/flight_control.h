@@ -112,9 +112,9 @@ typedef struct
 } P_PI_PIDControlTypeDef;
 
 void FlightControlPID(const EulerAngleTypeDef *euler_rc_in, const EulerAngleTypeDef *euler_ahrs_in,
-					  const Gyro_Rad *gyro_in_rad, P_PI_PIDControlTypeDef *thePid, MotorControlTypeDef *motor_pwm_out);
+					  const Gyro_Rad *gyro_in_rad_arg, P_PI_PIDControlTypeDef *thePid, MotorControlTypeDef *motor_pwm_out);
 void FlightControlPID_OuterLoop(const EulerAngleTypeDef *euler_rc_in, const EulerAngleTypeDef *euler_ahrs_in, P_PI_PIDControlTypeDef *thePid);
-void FlightControlPID_innerLoop(const Gyro_Rad *gyro_in_rad, P_PI_PIDControlTypeDef *thePid, MotorControlTypeDef *motor_pwm_out);
+void FlightControlPID_innerLoop(const Gyro_Rad *gyro_in_rad_arg, P_PI_PIDControlTypeDef *thePid, MotorControlTypeDef *motor_pwm_out);
 void PIDControlInit(P_PI_PIDControlTypeDef *thePid);
 void PIDOuterLoopFrameTrans(P_PI_PIDControlTypeDef *thePid, const EulerAngleTypeDef *euler_ahrs_in);
 

@@ -265,3 +265,41 @@ EXTERN_C_LINKAGE USBD_StatusTypeDef CppTest_Stub_USBD_LL_DevDisconnected (USBD_H
 
     return __return;
 }
+
+/** User stub definition for function: USBD_StatusTypeDef USBD_LL_Suspend(USBD_HandleTypeDef *) */
+EXTERN_C_LINKAGE USBD_StatusTypeDef USBD_LL_Suspend (USBD_HandleTypeDef * pdev) ;
+EXTERN_C_LINKAGE USBD_StatusTypeDef CppTest_Stub_USBD_LL_Suspend (USBD_HandleTypeDef * pdev) 
+{
+    CPPTEST_STUB_CALLED("USBD_LL_Suspend");
+
+    USBD_StatusTypeDef __return = USBD_OK;
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo, USBD_StatusTypeDef* __return, USBD_HandleTypeDef * pdev)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("USBD_LL_Suspend", &CppTest_StubCallback_SomeName);
+     *
+     * 3. Fill out the body of the stub callback function according to intent.
+     * The following line may be used to call original function inside stub callback:
+     *     *__return = USBD_LL_Suspend(pdev);
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS(USBD_StatusTypeDef* __return, USBD_HandleTypeDef * pdev);
+        CPPTEST_STUB_INVOKE_CALLBACK(&__return, pdev);
+
+    /* } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
+        USBD_LL_DevDisconnected(pdev);
+     */
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
+    return __return;
+}

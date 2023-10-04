@@ -496,9 +496,9 @@ int main(void)
         euler_ahrs_offset.thy = 0.0f;
       }
 
-      Fly_origin.X_Degree = (int16_t)(euler_ahrs.thx * 5730);
-      Fly_origin.Y_Degree = (int16_t)(euler_ahrs.thy * 5730);
-      Fly_origin.Z_Degree = (int16_t)(euler_ahrs.thz * 5730);
+      Fly_origin.X_Degree = (int16_t)(euler_ahrs.thx * 5730.0f);
+      Fly_origin.Y_Degree = (int16_t)(euler_ahrs.thy * 5730.0f);
+      Fly_origin.Z_Degree = (int16_t)(euler_ahrs.thz * 5730.0f);
 
 
       if (gTHR < MIN_THR) {
@@ -535,7 +535,7 @@ int main(void)
     ch_flag = 1u;
   }
 
-  if (0 != isTimerEventExist(&tim)) {    // Check if a timer event is present
+  if (0u != isTimerEventExist(&tim)) {    // Check if a timer event is present
         ClearTimer(&tim);           // Clear current event;
 
         count2 ++;
@@ -866,9 +866,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     gyro.AXIS_Z -= gyro_offset.AXIS_Z;
 
     // Save filtered data to acc_FIFO
-    acc_FIFO[tim9_cnt2 - 1].AXIS_X = acc.AXIS_X;
-    acc_FIFO[tim9_cnt2 - 1].AXIS_Y = acc.AXIS_Y;
-    acc_FIFO[tim9_cnt2 - 1].AXIS_Z = acc.AXIS_Z;
+    acc_FIFO[tim9_cnt2 - 1u].AXIS_X = acc.AXIS_X;
+    acc_FIFO[tim9_cnt2 - 1u].AXIS_Y = acc.AXIS_Y;
+    acc_FIFO[tim9_cnt2 - 1u].AXIS_Z = acc.AXIS_Z;
 
     // IIR Filtering on gyro
     gyro_fil.AXIS_X = (gyro_fil_coeff.b0 * gyro.AXIS_X) + (gyro_fil_coeff.b1 * gyro_x_pre[0].AXIS_X) + (gyro_fil_coeff.b2 * gyro_x_pre[1].AXIS_X)
@@ -894,9 +894,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     gyro_y_pre[0].AXIS_Z = gyro_fil.AXIS_Z;
 
     //  Save filtered data to gyro_FIFO
-    gyro_FIFO[tim9_cnt2 - 1].AXIS_X = gyro_fil.AXIS_X;
-    gyro_FIFO[tim9_cnt2 - 1].AXIS_Y = gyro_fil.AXIS_Y;
-    gyro_FIFO[tim9_cnt2 - 1].AXIS_Z = gyro_fil.AXIS_Z;
+    gyro_FIFO[tim9_cnt2 - 1u].AXIS_X = gyro_fil.AXIS_X;
+    gyro_FIFO[tim9_cnt2 - 1u].AXIS_Y = gyro_fil.AXIS_Y;
+    gyro_FIFO[tim9_cnt2 - 1u].AXIS_Z = gyro_fil.AXIS_Z;
     
 
     if (tim9_cnt2 == FIFO_Order) {
