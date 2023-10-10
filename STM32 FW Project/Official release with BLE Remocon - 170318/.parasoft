@@ -1,4 +1,4 @@
-#Tue Oct 10 11:06:46 CEST 2023
+#Tue Oct 10 23:35:52 CEST 2023
 /ST_Drone_FCU_F401_Official_BLE_Remocon_170318//com.parasoft.eclipse.excludedfiles=**%2FDrivers%2F**;**%2FMiddlewares%2F**;Src%2Fstm32f4xx_hal_msp.c;Src%2Fstm32f4xx_it.c;Src%2Fstm32f4xx_nucleo.c
 /ST_Drone_FCU_F401_Official_BLE_Remocon_170318//com.parasoft.xtest.checkers.api.cpp.options.advanced.options=xharness.routineManager+%22symbol_file%3D*core_cm4.h%22+command%3DsetProperty+property%3DcanAddCoverageIn+value%3Doff;xharness.routineManager+%22symbol_file%3D*stm32f4xx_hal_cortex.h%22+command%3DsetProperty+property%3DcanAddCoverageIn+value%3Doff
 /ST_Drone_FCU_F401_Official_BLE_Remocon_170318//com.parasoft.xtest.checkers.api.cpp.options.compiler.command.c.win32.x86=iccarm
@@ -6,6 +6,7 @@
 /ST_Drone_FCU_F401_Official_BLE_Remocon_170318//com.parasoft.xtest.checkers.api.cpp.options.compiler.family.win32.x86=iccarm_9_10
 /ST_Drone_FCU_F401_Official_BLE_Remocon_170318//com.parasoft.xtest.checkers.api.cpp.options.extractor.id=options_dir_extractor_id
 /ST_Drone_FCU_F401_Official_BLE_Remocon_170318//com.parasoft.xtest.checkers.api.cpp.options.linker.command.win32.x86=ilinkarm
+/ST_Drone_FCU_F401_Official_BLE_Remocon_170318//com.parasoft.xtest.checkers.api.cpp.options.linker.options.win32.x86=${cpptest\:original_options} 
 /ST_Drone_FCU_F401_Official_BLE_Remocon_170318//com.parasoft.xtest.checkers.api.cpp.options.ode_options_dir=${project_loc}/EWARM/cpptest/cpptestscan.bdf
 /ST_Drone_FCU_F401_Official_BLE_Remocon_170318//com.parasoft.xtest.checkers.api.cpp.options.preference.store.version=1.1
 /ST_Drone_FCU_F401_Official_BLE_Remocon_170318//com.parasoft.xtest.testcases.cpp.datasources.portable=true
