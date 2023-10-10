@@ -30,6 +30,35 @@ CPPTEST_TEST(TS_sensor_service_test_Add_ConfigW2ST_Service_add_char_error);
 CPPTEST_TEST(TS_sensor_service_test_Term_Update_AfterRead_success);
 CPPTEST_TEST(TS_sensor_service_test_Term_Update_AfterRead_error_conxn);
 CPPTEST_TEST(TS_sensor_service_test_Term_Update_AfterRead_error_other);
+CPPTEST_TEST(TS_sensor_service_test_Add_ConsoleW2ST_Service_add_serv_error);
+CPPTEST_TEST(TS_sensor_service_test_Add_ConsoleW2ST_Service_success);
+CPPTEST_TEST(TS_sensor_service_test_Add_ConsoleW2ST_Service_add_char_1st_error);
+CPPTEST_TEST(TS_sensor_service_test_Add_ConsoleW2ST_Service_add_char_2nd_error);
+CPPTEST_TEST(TS_sensor_service_test_Stderr_Update_ok);
+CPPTEST_TEST(TS_sensor_service_test_Stderr_Update_failed);
+CPPTEST_TEST(TS_sensor_service_test_Stderr_Update_noop);
+CPPTEST_TEST(TS_sensor_service_test_Term_Update_ok);
+CPPTEST_TEST(TS_sensor_service_test_Term_Update_failed);
+CPPTEST_TEST(TS_sensor_service_test_Term_Update_noop);
+CPPTEST_TEST(TS_sensor_service_test_Stderr_Update_ok_mult_chars);
+CPPTEST_TEST(TS_sensor_service_test_Term_Update_ok_mult_chars);
+CPPTEST_TEST(TS_sensor_service_test_Stderr_Update_AfterRead_ok);
+CPPTEST_TEST(TS_sensor_service_test_Stderr_Update_AfterRead_failed);
+CPPTEST_TEST(TS_sensor_service_test_Config_Notify_ok);
+CPPTEST_TEST(TS_sensor_service_test_Config_Notify_conxn_error);
+CPPTEST_TEST(TS_sensor_service_test_Config_Notify_other_error);
+CPPTEST_TEST(TS_sensor_service_test_AccEvent_Notify_ok);
+CPPTEST_TEST(TS_sensor_service_test_AccEvent_Notify_conxn_error);
+CPPTEST_TEST(TS_sensor_service_test_AccEvent_Notify_other_error);
+CPPTEST_TEST(TS_sensor_service_test_AccGyroMag_Update_ok);
+CPPTEST_TEST(TS_sensor_service_test_AccGyroMag_Update_conxn_error);
+CPPTEST_TEST(TS_sensor_service_test_AccGyroMag_Update_other_error);
+CPPTEST_TEST(TS_sensor_service_test_Batt_Env_RSSI_Update_ok_);
+CPPTEST_TEST(TS_sensor_service_test_Batt_Env_RSSI_Update_conxn_error);
+CPPTEST_TEST(TS_sensor_service_test_Batt_Env_RSSI_Update_other_error);
+CPPTEST_TEST(TS_sensor_service_test_ARMING_Update_ok);
+CPPTEST_TEST(TS_sensor_service_test_ARMING_Update_conxn_error);
+CPPTEST_TEST(TS_sensor_service_test_ARMING_Update_other_error);
 CPPTEST_TEST_SUITE_END();
         
 
@@ -51,6 +80,35 @@ void TS_sensor_service_test_Add_ConfigW2ST_Service_add_char_error(void);
 void TS_sensor_service_test_Term_Update_AfterRead_success(void);
 void TS_sensor_service_test_Term_Update_AfterRead_error_conxn(void);
 void TS_sensor_service_test_Term_Update_AfterRead_error_other(void);
+void TS_sensor_service_test_Add_ConsoleW2ST_Service_add_serv_error(void);
+void TS_sensor_service_test_Add_ConsoleW2ST_Service_success(void);
+void TS_sensor_service_test_Add_ConsoleW2ST_Service_add_char_1st_error(void);
+void TS_sensor_service_test_Add_ConsoleW2ST_Service_add_char_2nd_error(void);
+void TS_sensor_service_test_Stderr_Update_ok(void);
+void TS_sensor_service_test_Stderr_Update_failed(void);
+void TS_sensor_service_test_Stderr_Update_noop(void);
+void TS_sensor_service_test_Term_Update_ok(void);
+void TS_sensor_service_test_Term_Update_failed(void);
+void TS_sensor_service_test_Term_Update_noop(void);
+void TS_sensor_service_test_Stderr_Update_ok_mult_chars(void);
+void TS_sensor_service_test_Term_Update_ok_mult_chars(void);
+void TS_sensor_service_test_Stderr_Update_AfterRead_ok(void);
+void TS_sensor_service_test_Stderr_Update_AfterRead_failed(void);
+void TS_sensor_service_test_Config_Notify_ok(void);
+void TS_sensor_service_test_Config_Notify_conxn_error(void);
+void TS_sensor_service_test_Config_Notify_other_error(void);
+void TS_sensor_service_test_AccEvent_Notify_ok(void);
+void TS_sensor_service_test_AccEvent_Notify_conxn_error(void);
+void TS_sensor_service_test_AccEvent_Notify_other_error(void);
+void TS_sensor_service_test_AccGyroMag_Update_ok(void);
+void TS_sensor_service_test_AccGyroMag_Update_conxn_error(void);
+void TS_sensor_service_test_AccGyroMag_Update_other_error(void);
+void TS_sensor_service_test_Batt_Env_RSSI_Update_ok_(void);
+void TS_sensor_service_test_Batt_Env_RSSI_Update_conxn_error(void);
+void TS_sensor_service_test_Batt_Env_RSSI_Update_other_error(void);
+void TS_sensor_service_test_ARMING_Update_ok(void);
+void TS_sensor_service_test_ARMING_Update_conxn_error(void);
+void TS_sensor_service_test_ARMING_Update_other_error(void);
 CPPTEST_TEST_SUITE_REGISTRATION(TS_sensor_service);
 
 void TS_sensor_service_testSuiteSetUp(void);
@@ -102,12 +160,29 @@ void CppTest_StubCallback_aci_gatt_add_serv(
 }
 // CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_add_serv", &CppTest_StubCallback_aci_gatt_add_serv);
 
+// specify return value from the stub - to be set in a test case
 static tBleStatus CppTest_StubCallback_aci_gatt_add_char_retval = BLE_STATUS_SUCCESS;
 void CppTest_StubCallback_aci_gatt_add_char(
 		CppTest_StubCallInfo* stubCallInfo, tBleStatus* __return, uint8_t service_uuid_type,
 		const uint8_t * service_uuid, uint8_t service_type, uint8_t max_attr_records, uint16_t * serviceHandle)
 {
 	*__return = CppTest_StubCallback_aci_gatt_add_char_retval;
+}
+// CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_add_char", &CppTest_StubCallback_aci_gatt_add_char);
+
+// specify at which call of the stub to return the error value - to be set in a test case
+// uses CppTest_StubCallback_aci_gatt_add_char_retval to specify return value
+// the other calls will return BLE_STATUS_SUCCESS
+static int CppTest_StubCallback_aci_gatt_add_char_retval_call_no = 1;
+void CppTest_StubCallback_aci_gatt_add_char_counted(
+		CppTest_StubCallInfo* stubCallInfo, tBleStatus* __return, uint8_t service_uuid_type,
+		const uint8_t * service_uuid, uint8_t service_type, uint8_t max_attr_records, uint16_t * serviceHandle)
+{
+	if (stubCallInfo->callNo == CppTest_StubCallback_aci_gatt_add_char_retval_call_no) {
+	    *__return = CppTest_StubCallback_aci_gatt_add_char_retval;
+	} else {
+		*__return = BLE_STATUS_SUCCESS;
+	}
 }
 // CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_add_char", &CppTest_StubCallback_aci_gatt_add_char);
 
@@ -465,3 +540,558 @@ void TS_sensor_service_test_Term_Update_AfterRead_error_other()
 	CPPTEST_ASSERT_UINTEGER_EQUAL(BLE_STATUS_ERROR, ret);
 }
 /* CPPTEST_TEST_CASE_END test_Term_Update_AfterRead_error_other */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Add_ConsoleW2ST_Service_add_serv_error */
+void TS_sensor_service_test_Add_ConsoleW2ST_Service_add_serv_error()
+{
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_add_char", &CppTest_StubCallback_aci_gatt_add_char);
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_add_serv", &CppTest_StubCallback_aci_gatt_add_serv);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_add_char", 0);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_add_serv", 1);
+
+	tBleStatus ret;
+	CppTest_StubCallback_aci_gatt_add_char_retval = BLE_STATUS_SUCCESS;
+	CppTest_StubCallback_aci_gatt_add_serv_retval = BLE_STATUS_SEC_DB_FULL;
+	ret = Add_ConsoleW2ST_Service();
+	CPPTEST_ASSERT_UINTEGER_EQUAL(BLE_STATUS_ERROR, ret);
+}
+/* CPPTEST_TEST_CASE_END test_Add_ConsoleW2ST_Service_add_serv_error */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Add_ConsoleW2ST_Service_success */
+void TS_sensor_service_test_Add_ConsoleW2ST_Service_success()
+{
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_add_char", &CppTest_StubCallback_aci_gatt_add_char);
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_add_serv", &CppTest_StubCallback_aci_gatt_add_serv);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_add_char", 2);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_add_serv", 1);
+
+	tBleStatus ret;
+	CppTest_StubCallback_aci_gatt_add_char_retval = BLE_STATUS_SUCCESS;
+	CppTest_StubCallback_aci_gatt_add_serv_retval = BLE_STATUS_SUCCESS;
+	ret = Add_ConsoleW2ST_Service();
+	CPPTEST_ASSERT_UINTEGER_EQUAL(BLE_STATUS_SUCCESS, ret);
+}
+/* CPPTEST_TEST_CASE_END test_Add_ConsoleW2ST_Service_success */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Add_ConsoleW2ST_Service_add_char_1st_error */
+void TS_sensor_service_test_Add_ConsoleW2ST_Service_add_char_1st_error()
+{
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_add_char", &CppTest_StubCallback_aci_gatt_add_char_counted);
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_add_serv", &CppTest_StubCallback_aci_gatt_add_serv);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_add_char", 1);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_add_serv", 1);
+
+	tBleStatus ret;
+	CppTest_StubCallback_aci_gatt_add_char_retval = BLE_STATUS_IRK_NOT_FOUND;
+	CppTest_StubCallback_aci_gatt_add_char_retval_call_no = 1; // return error from the first call
+	CppTest_StubCallback_aci_gatt_add_serv_retval = BLE_STATUS_SUCCESS;
+	ret = Add_ConsoleW2ST_Service();
+	CPPTEST_ASSERT_UINTEGER_EQUAL(BLE_STATUS_ERROR, ret);
+}
+/* CPPTEST_TEST_CASE_END test_Add_ConsoleW2ST_Service_add_char_1st_error */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Add_ConsoleW2ST_Service_add_char_2nd_error */
+void TS_sensor_service_test_Add_ConsoleW2ST_Service_add_char_2nd_error()
+{
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_add_char", &CppTest_StubCallback_aci_gatt_add_char_counted);
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_add_serv", &CppTest_StubCallback_aci_gatt_add_serv);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_add_char", 2);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_add_serv", 1);
+
+	tBleStatus ret;
+	CppTest_StubCallback_aci_gatt_add_char_retval = BLE_STATUS_IRK_NOT_FOUND;
+	CppTest_StubCallback_aci_gatt_add_char_retval_call_no = 2; // return error from the first call
+	CppTest_StubCallback_aci_gatt_add_serv_retval = BLE_STATUS_SUCCESS;
+	ret = Add_ConsoleW2ST_Service();
+	CPPTEST_ASSERT_UINTEGER_EQUAL(BLE_STATUS_ERROR, ret);
+}
+/* CPPTEST_TEST_CASE_END test_Add_ConsoleW2ST_Service_add_char_2nd_error */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Stderr_Update_ok */
+void TS_sensor_service_test_Stderr_Update_ok()
+{
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_update_char_value", &CppTest_StubCallback_aci_gatt_update_char_value);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_update_char_value", 1);
+	CPPTEST_EXPECT_NCALLS("HAL_Delay", 1);
+
+	uint8_t data = 0xab;
+	uint8_t length = 1u;
+	tBleStatus ret;
+
+	LastStderrBuffer[0u] = 0u;
+	CppTest_StubCallback_aci_gatt_update_char_value_retval = BLE_STATUS_SUCCESS;
+
+	ret = Stderr_Update(&data, length);
+
+	CPPTEST_ASSERT_UINTEGER_EQUAL(BLE_STATUS_SUCCESS, ret);
+	// better to assert in the stub
+	CPPTEST_ASSERT_UINTEGER_EQUAL(0xab, LastStderrBuffer[0u]);
+}
+/* CPPTEST_TEST_CASE_END test_Stderr_Update_ok */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Stderr_Update_failed */
+void TS_sensor_service_test_Stderr_Update_failed()
+{
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_update_char_value", &CppTest_StubCallback_aci_gatt_update_char_value);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_update_char_value", 1);
+	CPPTEST_EXPECT_NCALLS("HAL_Delay", 1);
+
+	uint8_t data = 0xab;
+	uint8_t length = 1u;
+	tBleStatus ret;
+
+	LastStderrBuffer[0u] = 0u;
+	CppTest_StubCallback_aci_gatt_update_char_value_retval = BLE_STATUS_ADDR_NOT_RESOLVED;
+
+	ret = Stderr_Update(&data, length);
+
+	CPPTEST_ASSERT_UINTEGER_EQUAL(BLE_STATUS_ERROR, ret);
+}
+/* CPPTEST_TEST_CASE_END test_Stderr_Update_failed */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Stderr_Update_noop */
+void TS_sensor_service_test_Stderr_Update_noop()
+{
+	CPPTEST_EXPECT_NCALLS("aci_gatt_update_char_value", 0);
+	CPPTEST_EXPECT_NCALLS("HAL_Delay", 0);
+
+	uint8_t data = 0xab;
+	uint8_t length = 0u;  // nothing to send
+	tBleStatus ret;
+
+	ret = Stderr_Update(&data, length);
+
+	CPPTEST_ASSERT_UINTEGER_EQUAL(BLE_STATUS_SUCCESS, ret);
+}
+/* CPPTEST_TEST_CASE_END test_Stderr_Update_noop */
+
+
+/* CPPTEST_TEST_CASE_BEGIN test_Term_Update_ok */
+void TS_sensor_service_test_Term_Update_ok()
+{
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_update_char_value", &CppTest_StubCallback_aci_gatt_update_char_value);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_update_char_value", 1);
+	CPPTEST_EXPECT_NCALLS("HAL_Delay", 1);
+
+	uint8_t data = 0xab;
+	uint8_t length = 1u;
+	tBleStatus ret;
+
+	LastTermBuffer[0u] = 0u;
+	CppTest_StubCallback_aci_gatt_update_char_value_retval = BLE_STATUS_SUCCESS;
+
+	ret = Term_Update(&data, length);
+
+	CPPTEST_ASSERT_UINTEGER_EQUAL(BLE_STATUS_SUCCESS, ret);
+	// better to assert in the stub
+	CPPTEST_ASSERT_UINTEGER_EQUAL(0xab, LastTermBuffer[0u]);
+}
+/* CPPTEST_TEST_CASE_END test_Term_Update_ok */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Term_Update_failed */
+void TS_sensor_service_test_Term_Update_failed()
+{
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_update_char_value", &CppTest_StubCallback_aci_gatt_update_char_value);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_update_char_value", 1);
+	CPPTEST_EXPECT_NCALLS("HAL_Delay", 1);
+
+	uint8_t data = 0xab;
+	uint8_t length = 1u;
+	tBleStatus ret;
+
+	LastStderrBuffer[0u] = 0u;
+	CppTest_StubCallback_aci_gatt_update_char_value_retval = BLE_STATUS_ADDR_NOT_RESOLVED;
+
+	ret = Term_Update(&data, length);
+
+	CPPTEST_ASSERT_UINTEGER_EQUAL(BLE_STATUS_ERROR, ret);
+}
+/* CPPTEST_TEST_CASE_END test_Term_Update_failed */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Term_Update_noop */
+void TS_sensor_service_test_Term_Update_noop()
+{
+	CPPTEST_EXPECT_NCALLS("aci_gatt_update_char_value", 0);
+	CPPTEST_EXPECT_NCALLS("HAL_Delay", 0);
+
+	uint8_t data = 0xab;
+	uint8_t length = 0u;  // nothing to send
+	tBleStatus ret;
+
+	ret = Term_Update(&data, length);
+
+	CPPTEST_ASSERT_UINTEGER_EQUAL(BLE_STATUS_SUCCESS, ret);
+}
+/* CPPTEST_TEST_CASE_END test_Term_Update_noop */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Stderr_Update_ok_mult_chars */
+void TS_sensor_service_test_Stderr_Update_ok_mult_chars()
+{
+	uint8_t data[] = { 0xab, 0xde, 0xad, 0xbe, 0xef, 0x00 };
+	uint8_t length = sizeof(data) / sizeof(data[0u]);
+	tBleStatus ret;
+
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_update_char_value", &CppTest_StubCallback_aci_gatt_update_char_value);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_update_char_value", 1);
+	CPPTEST_EXPECT_NCALLS("HAL_Delay", 1);
+
+	CppTest_StubCallback_aci_gatt_update_char_value_retval = BLE_STATUS_SUCCESS;
+
+	ret = Stderr_Update(data, length);
+
+	CPPTEST_ASSERT_UINTEGER_EQUAL(BLE_STATUS_SUCCESS, ret);
+}
+/* CPPTEST_TEST_CASE_END test_Stderr_Update_ok_mult_chars */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Term_Update_ok_mult_chars */
+void TS_sensor_service_test_Term_Update_ok_mult_chars()
+{
+	uint8_t data[] = { 0xab, 0xde, 0xad, 0xbe, 0xef, 0x00 };
+	uint8_t length = sizeof(data) / sizeof(data[0u]);
+	tBleStatus ret;
+
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_update_char_value", &CppTest_StubCallback_aci_gatt_update_char_value);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_update_char_value", 1);
+	CPPTEST_EXPECT_NCALLS("HAL_Delay", 1);
+
+	CppTest_StubCallback_aci_gatt_update_char_value_retval = BLE_STATUS_SUCCESS;
+
+	ret = Term_Update(data, length);
+
+	CPPTEST_ASSERT_UINTEGER_EQUAL(BLE_STATUS_SUCCESS, ret);
+}
+/* CPPTEST_TEST_CASE_END test_Term_Update_ok_mult_chars */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Stderr_Update_AfterRead_ok */
+void TS_sensor_service_test_Stderr_Update_AfterRead_ok()
+{
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_update_char_value", &CppTest_StubCallback_aci_gatt_update_char_value);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_update_char_value", 1);
+
+	tBleStatus ret;
+	CppTest_StubCallback_aci_gatt_update_char_value_retval = BLE_STATUS_SUCCESS;
+
+	ret = Stderr_Update_AfterRead();
+
+	CPPTEST_ASSERT_UINTEGER_EQUAL(BLE_STATUS_SUCCESS, ret);
+}
+/* CPPTEST_TEST_CASE_END test_Stderr_Update_AfterRead_ok */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Stderr_Update_AfterRead_failed */
+void TS_sensor_service_test_Stderr_Update_AfterRead_failed()
+{
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_update_char_value", &CppTest_StubCallback_aci_gatt_update_char_value);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_update_char_value", 1);
+
+	tBleStatus ret;
+	CppTest_StubCallback_aci_gatt_update_char_value_retval = BLE_STATUS_ADDR_NOT_RESOLVED;
+
+	ret = Stderr_Update_AfterRead();
+
+	CPPTEST_ASSERT_UINTEGER_EQUAL(BLE_STATUS_ERROR, ret);
+}
+/* CPPTEST_TEST_CASE_END test_Stderr_Update_AfterRead_failed */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Config_Notify_ok */
+void TS_sensor_service_test_Config_Notify_ok()
+{
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_update_char_value", &CppTest_StubCallback_aci_gatt_update_char_value);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_update_char_value", 1);
+	CPPTEST_EXPECT_NCALLS("Stderr_Update", 0);
+
+	tBleStatus ret;
+	uint32_t feature = 0u;
+	uint8_t command = 0u;
+	uint8_t data = 0u;
+
+	CppTest_StubCallback_aci_gatt_update_char_value_retval = BLE_STATUS_SUCCESS;
+
+	ret = Config_Notify(feature, command, data);
+
+	CPPTEST_ASSERT_UINTEGER_EQUAL(BLE_STATUS_SUCCESS, ret);
+}
+/* CPPTEST_TEST_CASE_END test_Config_Notify_ok */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Config_Notify_conxn_error */
+void TS_sensor_service_test_Config_Notify_conxn_error()
+{
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_update_char_value", &CppTest_StubCallback_aci_gatt_update_char_value);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_update_char_value", 1);
+	CPPTEST_EXPECT_NCALLS("Stderr_Update", 1);
+
+	tBleStatus ret;
+	uint32_t feature = 0u;
+	uint8_t command = 0u;
+	uint8_t data = 0u;
+
+	CppTest_StubCallback_aci_gatt_update_char_value_retval = BLE_STATUS_ADDR_NOT_RESOLVED;
+	ConnectionBleStatus = W2ST_CONNECT_STD_ERR;
+
+	ret = Config_Notify(feature, command, data);
+
+	CPPTEST_ASSERT_UINTEGER_EQUAL(BLE_STATUS_ERROR, ret);
+}
+/* CPPTEST_TEST_CASE_END test_Config_Notify_conxn_error */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Config_Notify_other_error */
+void TS_sensor_service_test_Config_Notify_other_error()
+{
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_update_char_value", &CppTest_StubCallback_aci_gatt_update_char_value);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_update_char_value", 1);
+	CPPTEST_EXPECT_NCALLS("Stderr_Update", 0);
+
+	tBleStatus ret;
+	uint32_t feature = 0u;
+	uint8_t command = 0u;
+	uint8_t data = 0u;
+
+	CppTest_StubCallback_aci_gatt_update_char_value_retval = BLE_STATUS_IRK_NOT_FOUND;
+	ConnectionBleStatus = ~(W2ST_CONNECT_STD_ERR);
+
+	ret = Config_Notify(feature, command, data);
+
+	CPPTEST_ASSERT_UINTEGER_EQUAL(BLE_STATUS_ERROR, ret);
+}
+/* CPPTEST_TEST_CASE_END test_Config_Notify_other_error */
+
+/* CPPTEST_TEST_CASE_BEGIN test_AccEvent_Notify_ok */
+void TS_sensor_service_test_AccEvent_Notify_ok()
+{
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_update_char_value", &CppTest_StubCallback_aci_gatt_update_char_value);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_update_char_value", 1);
+	CPPTEST_EXPECT_NCALLS("Stderr_Update", 0);
+
+	tBleStatus ret;
+	uint8_t command = 0u;
+
+	CppTest_StubCallback_aci_gatt_update_char_value_retval = BLE_STATUS_SUCCESS;
+
+	ret = AccEvent_Notify(command);
+
+	CPPTEST_ASSERT_UINTEGER_EQUAL(BLE_STATUS_SUCCESS, ret);
+}
+/* CPPTEST_TEST_CASE_END test_AccEvent_Notify_ok */
+
+/* CPPTEST_TEST_CASE_BEGIN test_AccEvent_Notify_conxn_error */
+void TS_sensor_service_test_AccEvent_Notify_conxn_error()
+{
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_update_char_value", &CppTest_StubCallback_aci_gatt_update_char_value);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_update_char_value", 1);
+	CPPTEST_EXPECT_NCALLS("Stderr_Update", 1);
+
+	tBleStatus ret;
+	uint8_t command = 0u;
+
+	CppTest_StubCallback_aci_gatt_update_char_value_retval = BLE_STATUS_ADDR_NOT_RESOLVED;
+	ConnectionBleStatus = W2ST_CONNECT_STD_ERR;
+
+	ret = AccEvent_Notify(command);
+
+	CPPTEST_ASSERT_UINTEGER_EQUAL(BLE_STATUS_ERROR, ret);
+}
+/* CPPTEST_TEST_CASE_END test_AccEvent_Notify_conxn_error */
+
+/* CPPTEST_TEST_CASE_BEGIN test_AccEvent_Notify_other_error */
+void TS_sensor_service_test_AccEvent_Notify_other_error()
+{
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_update_char_value", &CppTest_StubCallback_aci_gatt_update_char_value);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_update_char_value", 1);
+	CPPTEST_EXPECT_NCALLS("Stderr_Update", 0);
+
+	tBleStatus ret;
+	uint8_t command = 0u;
+
+	CppTest_StubCallback_aci_gatt_update_char_value_retval = BLE_STATUS_IRK_NOT_FOUND;
+	ConnectionBleStatus = ~(W2ST_CONNECT_STD_ERR);
+
+	ret = AccEvent_Notify(command);
+
+	CPPTEST_ASSERT_UINTEGER_EQUAL(BLE_STATUS_ERROR, ret);
+}
+/* CPPTEST_TEST_CASE_END test_AccEvent_Notify_other_error */
+
+/* CPPTEST_TEST_CASE_BEGIN test_AccGyroMag_Update_ok */
+void TS_sensor_service_test_AccGyroMag_Update_ok()
+{
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_update_char_value", &CppTest_StubCallback_aci_gatt_update_char_value);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_update_char_value", 1);
+	CPPTEST_EXPECT_NCALLS("Stderr_Update", 0);
+
+	tBleStatus ret;
+	SensorAxes_t acc = { 1, 2, 3 };
+	SensorAxes_t gyro = { 400, 500, 600 };
+	SensorAxes_t mag = { 7, 8, 9 };
+
+	breath = 0;
+	CppTest_StubCallback_aci_gatt_update_char_value_retval = BLE_STATUS_SUCCESS;
+
+	ret = AccGyroMag_Update(&acc, &gyro, &mag);
+
+	CPPTEST_ASSERT_UINTEGER_EQUAL(BLE_STATUS_SUCCESS, ret);
+}
+/* CPPTEST_TEST_CASE_END test_AccGyroMag_Update_ok */
+
+/* CPPTEST_TEST_CASE_BEGIN test_AccGyroMag_Update_conxn_error */
+void TS_sensor_service_test_AccGyroMag_Update_conxn_error()
+{
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_update_char_value", &CppTest_StubCallback_aci_gatt_update_char_value);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_update_char_value", 1);
+	CPPTEST_EXPECT_NCALLS("Stderr_Update", 1);
+
+	tBleStatus ret;
+	SensorAxes_t acc = { 1, 2, 3 };
+	SensorAxes_t gyro = { 400, 500, 600 };
+	SensorAxes_t mag = { 7, 8, 9 };
+
+	breath = 0;
+	ConnectionBleStatus = W2ST_CONNECT_STD_ERR;
+	CppTest_StubCallback_aci_gatt_update_char_value_retval = BLE_STATUS_ADDR_NOT_RESOLVED;
+
+	ret = AccGyroMag_Update(&acc, &gyro, &mag);
+
+	CPPTEST_ASSERT_UINTEGER_EQUAL(BLE_STATUS_ERROR, ret);
+}
+/* CPPTEST_TEST_CASE_END test_AccGyroMag_Update_conxn_error */
+
+/* CPPTEST_TEST_CASE_BEGIN test_AccGyroMag_Update_other_error */
+void TS_sensor_service_test_AccGyroMag_Update_other_error()
+{
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_update_char_value", &CppTest_StubCallback_aci_gatt_update_char_value);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_update_char_value", 1);
+	CPPTEST_EXPECT_NCALLS("Stderr_Update", 0);
+
+	tBleStatus ret;
+	SensorAxes_t acc = { 1, 2, 3 };
+	SensorAxes_t gyro = { 400, 500, 600 };
+	SensorAxes_t mag = { 7, 8, 9 };
+
+	breath = 0;
+	ConnectionBleStatus = ~(W2ST_CONNECT_STD_ERR);
+	CppTest_StubCallback_aci_gatt_update_char_value_retval = BLE_STATUS_IRK_NOT_FOUND;
+
+	ret = AccGyroMag_Update(&acc, &gyro, &mag);
+
+	CPPTEST_ASSERT_UINTEGER_EQUAL(BLE_STATUS_ERROR, ret);
+}
+/* CPPTEST_TEST_CASE_END test_AccGyroMag_Update_other_error */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Batt_Env_RSSI_Update_ok_ */
+void TS_sensor_service_test_Batt_Env_RSSI_Update_ok_()
+{
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_update_char_value", &CppTest_StubCallback_aci_gatt_update_char_value);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_update_char_value", 1);
+	CPPTEST_EXPECT_NCALLS("Stderr_Update", 0);
+
+	tBleStatus ret;
+	int32_t Press = 0;
+	uint16_t Batt = 0u;
+	int16_t Temp = 0;
+	int16_t RSSI = 0;
+
+	CppTest_StubCallback_aci_gatt_update_char_value_retval = BLE_STATUS_SUCCESS;
+
+	ret = Batt_Env_RSSI_Update(Press, Batt, Temp, RSSI);
+
+	CPPTEST_ASSERT_UINTEGER_EQUAL(BLE_STATUS_SUCCESS, ret);
+}
+/* CPPTEST_TEST_CASE_END test_Batt_Env_RSSI_Update_ok_ */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Batt_Env_RSSI_Update_conxn_error */
+void TS_sensor_service_test_Batt_Env_RSSI_Update_conxn_error()
+{
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_update_char_value", &CppTest_StubCallback_aci_gatt_update_char_value);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_update_char_value", 1);
+	CPPTEST_EXPECT_NCALLS("Stderr_Update", 1);
+
+	tBleStatus ret;
+	int32_t Press = 0;
+	uint16_t Batt = 0u;
+	int16_t Temp = 0;
+	int16_t RSSI = 0;
+
+	CppTest_StubCallback_aci_gatt_update_char_value_retval = BLE_STATUS_ADDR_NOT_RESOLVED;
+	ConnectionBleStatus = W2ST_CONNECT_STD_ERR;
+
+	ret = Batt_Env_RSSI_Update(Press, Batt, Temp, RSSI);
+
+	CPPTEST_ASSERT_UINTEGER_EQUAL(BLE_STATUS_ERROR, ret);
+}
+/* CPPTEST_TEST_CASE_END test_Batt_Env_RSSI_Update_conxn_error */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Batt_Env_RSSI_Update_other_error */
+void TS_sensor_service_test_Batt_Env_RSSI_Update_other_error()
+{
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_update_char_value", &CppTest_StubCallback_aci_gatt_update_char_value);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_update_char_value", 1);
+	CPPTEST_EXPECT_NCALLS("Stderr_Update", 0);
+
+	tBleStatus ret;
+	int32_t Press = 0;
+	uint16_t Batt = 0u;
+	int16_t Temp = 0;
+	int16_t RSSI = 0;
+
+	CppTest_StubCallback_aci_gatt_update_char_value_retval = BLE_STATUS_IRK_NOT_FOUND;
+	ConnectionBleStatus = ~(W2ST_CONNECT_STD_ERR);
+
+	ret = Batt_Env_RSSI_Update(Press, Batt, Temp, RSSI);
+
+	CPPTEST_ASSERT_UINTEGER_EQUAL(BLE_STATUS_ERROR, ret);
+}
+/* CPPTEST_TEST_CASE_END test_Batt_Env_RSSI_Update_other_error */
+
+/* CPPTEST_TEST_CASE_BEGIN test_ARMING_Update_ok */
+void TS_sensor_service_test_ARMING_Update_ok()
+{
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_update_char_value", &CppTest_StubCallback_aci_gatt_update_char_value);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_update_char_value", 1);
+	CPPTEST_EXPECT_NCALLS("Stderr_Update", 0);
+
+	tBleStatus ret;
+	uint8_t armingStatus = 0u;
+
+	CppTest_StubCallback_aci_gatt_update_char_value_retval = BLE_STATUS_SUCCESS;
+
+	ret = ARMING_Update(armingStatus);
+
+	CPPTEST_ASSERT_UINTEGER_EQUAL(BLE_STATUS_SUCCESS, ret);
+}
+/* CPPTEST_TEST_CASE_END test_ARMING_Update_ok */
+
+/* CPPTEST_TEST_CASE_BEGIN test_ARMING_Update_conxn_error */
+void TS_sensor_service_test_ARMING_Update_conxn_error()
+{
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_update_char_value", &CppTest_StubCallback_aci_gatt_update_char_value);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_update_char_value", 1);
+	CPPTEST_EXPECT_NCALLS("Stderr_Update", 1);
+
+	tBleStatus ret;
+	uint8_t armingStatus = 0u;
+
+	CppTest_StubCallback_aci_gatt_update_char_value_retval = BLE_STATUS_ADDR_NOT_RESOLVED;
+	ConnectionBleStatus = W2ST_CONNECT_STD_ERR;
+
+	ret = ARMING_Update(armingStatus);
+
+	CPPTEST_ASSERT_UINTEGER_EQUAL(BLE_STATUS_ERROR, ret);
+}
+/* CPPTEST_TEST_CASE_END test_ARMING_Update_conxn_error */
+
+/* CPPTEST_TEST_CASE_BEGIN test_ARMING_Update_other_error */
+void TS_sensor_service_test_ARMING_Update_other_error()
+{
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_update_char_value", &CppTest_StubCallback_aci_gatt_update_char_value);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_update_char_value", 1);
+	CPPTEST_EXPECT_NCALLS("Stderr_Update", 0);
+
+	tBleStatus ret;
+	uint8_t armingStatus = 0u;
+
+	CppTest_StubCallback_aci_gatt_update_char_value_retval = BLE_STATUS_IRK_NOT_FOUND;
+	ConnectionBleStatus = ~(W2ST_CONNECT_STD_ERR);
+
+	ret = ARMING_Update(armingStatus);
+
+	CPPTEST_ASSERT_UINTEGER_EQUAL(BLE_STATUS_ERROR, ret);
+}
+/* CPPTEST_TEST_CASE_END test_ARMING_Update_other_error */

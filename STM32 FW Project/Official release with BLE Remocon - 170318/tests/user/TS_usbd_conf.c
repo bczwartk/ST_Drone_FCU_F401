@@ -136,15 +136,9 @@ void TS_usbd_conf_test_USBD_LL_DeInit()
 }
 /* CPPTEST_TEST_CASE_END test_USBD_LL_DeInit */
 
-void CppTest_StubCallback_HAL_Delay(CppTest_StubCallInfo* stubCallInfo, volatile uint32_t Delay)
-{
-	// do nothing - the original causes test exe to get stuck
-}
-
 /* CPPTEST_TEST_CASE_BEGIN test_USBD_LL_Delay_value */
 void TS_usbd_conf_test_USBD_LL_Delay_value()
 {
-	CPPTEST_REGISTER_STUB_CALLBACK("HAL_Delay", &CppTest_StubCallback_HAL_Delay);
 	CPPTEST_EXPECT_NCALLS("HAL_Delay", 1);
 	USBD_LL_Delay(1u);
 }
@@ -153,7 +147,6 @@ void TS_usbd_conf_test_USBD_LL_Delay_value()
 /* CPPTEST_TEST_CASE_BEGIN test_USBD_LL_Delay_zero */
 void TS_usbd_conf_test_USBD_LL_Delay_zero()
 {
-	CPPTEST_REGISTER_STUB_CALLBACK("HAL_Delay", &CppTest_StubCallback_HAL_Delay);
 	CPPTEST_EXPECT_NCALLS("HAL_Delay", 1);
 	USBD_LL_Delay(0u);
 }

@@ -98,8 +98,8 @@ EXTERN_C_LINKAGE void CppTest_Stub_HAL_Delay (volatile uint32_t Delay)
         CPPTEST_STUB_INVOKE_CALLBACK(Delay);
 
     } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
-    	// Note: this causes the test exe to get stuck - use callback to bypass
-        HAL_Delay(Delay);
+    	// Note: this causes the test exe to get stuck - disabled
+        // HAL_Delay(Delay);
 
     } else {
         /* You can put additional stub logic here. */
