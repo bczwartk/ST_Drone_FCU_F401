@@ -63,7 +63,7 @@ CPPTEST_TEST(TS_sensor_service_test_setConnectable);
 CPPTEST_TEST(TS_sensor_service_test_GAP_ConnectionComplete_CB_no_hw);
 CPPTEST_TEST(TS_sensor_service_test_GAP_ConnectionComplete_CB_with_hw);
 CPPTEST_TEST(TS_sensor_service_test_Add_HWServW2ST_Service_success);
-CPPTEST_TEST_DS(TS_sensor_service_test_Add_HWServW2ST_Service_error_ds, CPPTEST_DS("TS_sensor_service_test_Add_HWServW2ST_Service_error"));
+CPPTEST_TEST_DS(TS_sensor_service_test_Add_HWServW2ST_Service_error_ds, CPPTEST_DS_REPEAT(5));
 CPPTEST_TEST(TS_sensor_service_test_Add_HWServW2ST_Service_error_serv);
 CPPTEST_TEST_SUITE_END();
         
@@ -1217,13 +1217,14 @@ void TS_sensor_service_test_Add_HWServW2ST_Service_success()
 /* CPPTEST_TEST_CASE_BEGIN test_Add_HWServW2ST_Service_error_ds */
 void TS_sensor_service_test_Add_HWServW2ST_Service_error_ds()
 {
-	// Note: the data source is trivial for this case, but it lets iterate the test case required number of times.
-	// TODO: consider in-code DS perhaps
+	// the trivial data source is needed to iterate the test case required number of times
 
 	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_add_serv", &CppTest_StubCallback_aci_gatt_add_serv);
 	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_add_char", &CppTest_StubCallback_aci_gatt_add_char_counted);
 
-	const int32_t fail_call_no = CPPTEST_DS_GET_INTEGER("fail_call_no");
+	// at which aci_gatt_add_char() call to fail:
+	// const int32_t fail_call_no = CPPTEST_DS_GET_INTEGER("fail_call_no");
+	const int32_t fail_call_no = CPPTEST_DS_GET_ITERATION();
 
 	CPPTEST_EXPECT_NCALLS("aci_gatt_add_serv", 1);
 	// number of calls depends on injected point of failure
