@@ -59,6 +59,12 @@ CPPTEST_TEST(TS_sensor_service_test_Batt_Env_RSSI_Update_other_error);
 CPPTEST_TEST(TS_sensor_service_test_ARMING_Update_ok);
 CPPTEST_TEST(TS_sensor_service_test_ARMING_Update_conxn_error);
 CPPTEST_TEST(TS_sensor_service_test_ARMING_Update_other_error);
+CPPTEST_TEST(TS_sensor_service_test_setConnectable);
+CPPTEST_TEST(TS_sensor_service_test_GAP_ConnectionComplete_CB_no_hw);
+CPPTEST_TEST(TS_sensor_service_test_GAP_ConnectionComplete_CB_with_hw);
+CPPTEST_TEST(TS_sensor_service_test_Add_HWServW2ST_Service_success);
+CPPTEST_TEST_DS(TS_sensor_service_test_Add_HWServW2ST_Service_error_ds, CPPTEST_DS("TS_sensor_service_test_Add_HWServW2ST_Service_error"));
+CPPTEST_TEST(TS_sensor_service_test_Add_HWServW2ST_Service_error_serv);
 CPPTEST_TEST_SUITE_END();
         
 
@@ -109,6 +115,12 @@ void TS_sensor_service_test_Batt_Env_RSSI_Update_other_error(void);
 void TS_sensor_service_test_ARMING_Update_ok(void);
 void TS_sensor_service_test_ARMING_Update_conxn_error(void);
 void TS_sensor_service_test_ARMING_Update_other_error(void);
+void TS_sensor_service_test_setConnectable(void);
+void TS_sensor_service_test_GAP_ConnectionComplete_CB_no_hw(void);
+void TS_sensor_service_test_GAP_ConnectionComplete_CB_with_hw(void);
+void TS_sensor_service_test_Add_HWServW2ST_Service_success(void);
+void TS_sensor_service_test_Add_HWServW2ST_Service_error_ds(void);
+void TS_sensor_service_test_Add_HWServW2ST_Service_error_serv(void);
 CPPTEST_TEST_SUITE_REGISTRATION(TS_sensor_service);
 
 void TS_sensor_service_testSuiteSetUp(void);
@@ -223,6 +235,8 @@ void TS_sensor_service_test_DisableHWFeatures()
 void TS_sensor_service_test_GAP_DisconnectionComplete_CB_no_hw()
 {
     /* Pre-condition initialization */
+	CPPTEST_EXPECT_NCALLS("DisableHWFeatures", 1);
+
     /* Initializing global variable ConnectionBleStatus */ 
     {
          ConnectionBleStatus  = 1u;
@@ -265,7 +279,9 @@ void TS_sensor_service_test_GAP_DisconnectionComplete_CB_no_hw()
 void TS_sensor_service_test_GAP_DisconnectionComplete_CB_with_hw()
 {
     /* Pre-condition initialization */
-    /* Initializing global variable ConnectionBleStatus */ 
+	CPPTEST_EXPECT_NCALLS("DisableHWFeatures", 0);
+
+	/* Initializing global variable ConnectionBleStatus */
     {
          ConnectionBleStatus  = 1u;
     }
@@ -1095,3 +1111,151 @@ void TS_sensor_service_test_ARMING_Update_other_error()
 	CPPTEST_ASSERT_UINTEGER_EQUAL(BLE_STATUS_ERROR, ret);
 }
 /* CPPTEST_TEST_CASE_END test_ARMING_Update_other_error */
+
+/* CPPTEST_TEST_CASE_BEGIN test_setConnectable */
+void TS_sensor_service_test_setConnectable()
+{
+	CPPTEST_EXPECT_NCALLS("hci_le_set_scan_resp_data", 1);
+	CPPTEST_EXPECT_NCALLS("aci_gap_set_discoverable", 1);
+	CPPTEST_EXPECT_NCALLS("aci_gap_update_adv_data", 1);
+
+	setConnectable();
+}
+/* CPPTEST_TEST_CASE_END test_setConnectable */
+
+/* CPPTEST_TEST_CASE_BEGIN test_GAP_ConnectionComplete_CB_no_hw */
+/* CPPTEST_TEST_CASE_CONTEXT void GAP_DisconnectionComplete_CB(void) */
+void TS_sensor_service_test_GAP_ConnectionComplete_CB_no_hw()
+{
+    /* Pre-condition initialization */
+	CPPTEST_EXPECT_NCALLS("aci_l2cap_connection_parameter_update_request", 1);
+	CPPTEST_EXPECT_NCALLS("DisableHWFeatures", 1);
+
+	ConnectionBleStatus  = 1u;
+	connected  = FALSE;
+	uint8_t addr[6] = { 0u };
+	connection_handle = 0u;
+	const uint16_t handle = 3u;
+
+	TargetBoardFeatures.BoardType  = TARGET_NUCLEO;
+	TargetBoardFeatures.NumTempSensors  = 0;
+	TargetBoardFeatures.HandlePressSensor  = 0 ;
+	TargetBoardFeatures.HandleHumSensor  = 0 ;
+	TargetBoardFeatures.HWAdvanceFeatures  = 1;
+	TargetBoardFeatures.HandleAccSensor  = 0 ;
+	TargetBoardFeatures.HandleGyroSensor  = 0 ;
+	TargetBoardFeatures.HandleMagSensor  = 0 ;
+	TargetBoardFeatures.LedStatus  = 0;
+	TargetBoardFeatures.bnrg_expansion_board  = 0;
+	TargetBoardFeatures.SnsAltFunc  = 0;
+
+	/* Tested function call */
+	GAP_ConnectionComplete_CB(addr, handle);
+
+	/* Post-condition check */
+	CPPTEST_ASSERT_UINTEGER_EQUAL(0u, ConnectionBleStatus);
+	CPPTEST_ASSERT_INTEGER_EQUAL(TRUE, connected);
+	CPPTEST_ASSERT_UINTEGER_EQUAL(handle, connection_handle);
+}
+/* CPPTEST_TEST_CASE_END test_GAP_ConnectionComplete_CB_no_hw */
+
+/* CPPTEST_TEST_CASE_BEGIN test_GAP_ConnectionComplete_CB_with_hw */
+/* CPPTEST_TEST_CASE_CONTEXT void GAP_DisconnectionComplete_CB(void) */
+void TS_sensor_service_test_GAP_ConnectionComplete_CB_with_hw()
+{
+    /* Pre-condition initialization */
+	CPPTEST_EXPECT_NCALLS("aci_l2cap_connection_parameter_update_request", 1);
+	CPPTEST_EXPECT_NCALLS("DisableHWFeatures", 0);
+
+	ConnectionBleStatus  = 1u;
+	connected  = FALSE;
+	uint8_t addr[6] = { 0u };
+	connection_handle = 0u;
+	const uint16_t handle = 3u;
+
+	TargetBoardFeatures.BoardType  = TARGET_NUCLEO;
+	TargetBoardFeatures.NumTempSensors  = 0;
+	TargetBoardFeatures.HandlePressSensor  = 0 ;
+	TargetBoardFeatures.HandleHumSensor  = 0 ;
+	TargetBoardFeatures.HWAdvanceFeatures  = 0;  // use HW
+	TargetBoardFeatures.HandleAccSensor  = 0 ;
+	TargetBoardFeatures.HandleGyroSensor  = 0 ;
+	TargetBoardFeatures.HandleMagSensor  = 0 ;
+	TargetBoardFeatures.LedStatus  = 0;
+	TargetBoardFeatures.bnrg_expansion_board  = 0;
+	TargetBoardFeatures.SnsAltFunc  = 0;
+
+    /* Tested function call */
+    GAP_ConnectionComplete_CB(addr, handle);
+
+    /* Post-condition check */
+	CPPTEST_ASSERT_UINTEGER_EQUAL(0u, ConnectionBleStatus);
+	CPPTEST_ASSERT_INTEGER_EQUAL(TRUE, connected);
+	CPPTEST_ASSERT_UINTEGER_EQUAL(handle, connection_handle);
+}
+/* CPPTEST_TEST_CASE_END test_GAP_ConnectionComplete_CB_with_hw */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Add_HWServW2ST_Service_success */
+void TS_sensor_service_test_Add_HWServW2ST_Service_success()
+{
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_add_serv", &CppTest_StubCallback_aci_gatt_add_serv);
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_add_char", &CppTest_StubCallback_aci_gatt_add_char);
+
+	CPPTEST_EXPECT_NCALLS("aci_gatt_add_serv", 1);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_add_char", 5);
+
+	tBleStatus ret;
+	CppTest_StubCallback_aci_gatt_add_serv_retval = BLE_STATUS_SUCCESS;
+	CppTest_StubCallback_aci_gatt_add_char_retval = BLE_STATUS_SUCCESS;
+
+	ret = Add_HWServW2ST_Service();
+
+	CPPTEST_ASSERT_UINTEGER_EQUAL(BLE_STATUS_SUCCESS, ret);
+}
+/* CPPTEST_TEST_CASE_END test_Add_HWServW2ST_Service_success */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Add_HWServW2ST_Service_error_ds */
+void TS_sensor_service_test_Add_HWServW2ST_Service_error_ds()
+{
+	// Note: the data source is trivial for this case, but it lets iterate the test case required number of times.
+	// TODO: consider in-code DS perhaps
+
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_add_serv", &CppTest_StubCallback_aci_gatt_add_serv);
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_add_char", &CppTest_StubCallback_aci_gatt_add_char_counted);
+
+	const int32_t fail_call_no = CPPTEST_DS_GET_INTEGER("fail_call_no");
+
+	CPPTEST_EXPECT_NCALLS("aci_gatt_add_serv", 1);
+	// number of calls depends on injected point of failure
+	CPPTEST_EXPECT_NCALLS("aci_gatt_add_char", fail_call_no);
+
+	tBleStatus ret;
+	CppTest_StubCallback_aci_gatt_add_serv_retval = BLE_STATUS_SUCCESS;
+	// set the correct call to fail:
+	CppTest_StubCallback_aci_gatt_add_char_retval_call_no = fail_call_no;
+	CppTest_StubCallback_aci_gatt_add_char_retval = BLE_STATUS_IRK_NOT_FOUND;
+
+	ret = Add_HWServW2ST_Service();
+
+	CPPTEST_ASSERT_UINTEGER_EQUAL(BLE_STATUS_ERROR, ret);
+}
+/* CPPTEST_TEST_CASE_END test_Add_HWServW2ST_Service_error_ds */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Add_HWServW2ST_Service_error_serv */
+void TS_sensor_service_test_Add_HWServW2ST_Service_error_serv()
+{
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_add_serv", &CppTest_StubCallback_aci_gatt_add_serv);
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_add_char", &CppTest_StubCallback_aci_gatt_add_char);
+
+	CPPTEST_EXPECT_NCALLS("aci_gatt_add_serv", 1);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_add_char", 0);
+
+	tBleStatus ret;
+	CppTest_StubCallback_aci_gatt_add_serv_retval = BLE_STATUS_IRK_NOT_FOUND;
+	CppTest_StubCallback_aci_gatt_add_char_retval = BLE_STATUS_SUCCESS;
+
+	ret = Add_HWServW2ST_Service();
+
+	CPPTEST_ASSERT_UINTEGER_EQUAL(BLE_STATUS_ERROR, ret);
+}
+/* CPPTEST_TEST_CASE_END test_Add_HWServW2ST_Service_error_serv */

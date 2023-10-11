@@ -760,7 +760,7 @@ static void GAP_DisconnectionComplete_CB(void)
 void Read_Request_CB(uint16_t handle)
 {
   uint8_t Status;  
-  if (handle == (EnvironmentalCharHandle + 1)) {
+  if (handle == (EnvironmentalCharHandle + 1u)) {
     /* Read Request for Pressure,Battery, and Temperatures*/
     float32_t SensorValue;
     int32_t PressToSend = 0;
@@ -776,19 +776,19 @@ void Read_Request_CB(uint16_t handle)
     }
 
     (void) Batt_Env_RSSI_Update(PressToSend, BattToSend, TempToSend, RSSIToSend);
-  } else if (handle == (ArmingCharHandle + 1)) {
+  } else if (handle == (ArmingCharHandle + 1u)) {
     /* Read Request for Arming Status */
 	  (void) ARMING_Update(TargetBoardFeatures.LedStatus);
-  } else if (handle == (AccEventCharHandle + 1)) {
+  } else if (handle == (AccEventCharHandle + 1u)) {
     
-  } else if (handle == (StdErrCharHandle + 1)) {
+  } else if (handle == (StdErrCharHandle + 1u)) {
     /* Send again the last packet for StdError */
 	  (void) Stderr_Update_AfterRead();
-  } else if (handle == (TermCharHandle + 1)) {
+  } else if (handle == (TermCharHandle + 1u)) {
     /* Send again the last packet for Terminal */
 	  (void) Term_Update_AfterRead();
 #ifdef STM32_SENSORTILE
-  } else if (handle == (GGCharHandle + 1)) {
+  } else if (handle == (GGCharHandle + 1u)) {
     GG_Update();
 #endif /* STM32_SENSORTILE */
   } else {

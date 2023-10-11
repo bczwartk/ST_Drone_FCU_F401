@@ -146,3 +146,41 @@ EXTERN_C_LINKAGE tBleStatus CppTest_Stub_aci_gatt_add_char (uint16_t serviceHand
 
     return __return;
 }
+
+/** User stub definition for function: tBleStatus aci_gatt_allow_read(uint16_t) */
+EXTERN_C_LINKAGE tBleStatus aci_gatt_allow_read (uint16_t conn_handle) ;
+EXTERN_C_LINKAGE tBleStatus CppTest_Stub_aci_gatt_allow_read (uint16_t conn_handle) 
+{
+    CPPTEST_STUB_CALLED("aci_gatt_allow_read");
+
+    tBleStatus __return = (unsigned char)0;
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo, tBleStatus* __return, uint16_t conn_handle)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_allow_read", &CppTest_StubCallback_SomeName);
+     *
+     * 3. Fill out the body of the stub callback function according to intent.
+     * The following line may be used to call original function inside stub callback:
+     *     *__return = aci_gatt_allow_read(conn_handle);
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS(tBleStatus* __return, uint16_t conn_handle);
+        CPPTEST_STUB_INVOKE_CALLBACK(&__return, conn_handle);
+
+    } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
+        // __return = aci_gatt_allow_read(conn_handle);
+
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
+    return __return;
+}
