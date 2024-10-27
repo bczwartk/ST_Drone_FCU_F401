@@ -19,6 +19,7 @@ CPPTEST_TEST(TS_sensor_service_2_test_Read_Request_CB_StdErrCharHandle);
 CPPTEST_TEST(TS_sensor_service_2_test_Read_Request_CB_AccEventCharHandle);
 CPPTEST_TEST(TS_sensor_service_2_test_Read_Request_CB_ArmingCharHandle);
 CPPTEST_TEST(TS_sensor_service_2_test_Read_Request_CB_EnvironmentalCharHandle_no_press);
+CPPTEST_TEST_DISABLED(TS_sensor_service_2_test_Read_Request_CB_EnvironmentalCharHandle_not_init);
 CPPTEST_TEST_SUITE_END();
         
 
@@ -29,6 +30,7 @@ void TS_sensor_service_2_test_Read_Request_CB_StdErrCharHandle(void);
 void TS_sensor_service_2_test_Read_Request_CB_AccEventCharHandle(void);
 void TS_sensor_service_2_test_Read_Request_CB_ArmingCharHandle(void);
 void TS_sensor_service_2_test_Read_Request_CB_EnvironmentalCharHandle_no_press(void);
+void TS_sensor_service_2_test_Read_Request_CB_EnvironmentalCharHandle_not_init(void);
 CPPTEST_TEST_SUITE_REGISTRATION(TS_sensor_service_2);
 
 void TS_sensor_service_2_testSuiteSetUp(void);
@@ -224,3 +226,26 @@ void TS_sensor_service_2_test_Read_Request_CB_EnvironmentalCharHandle_no_press()
 	Read_Request_CB(handle);
 }
 /* CPPTEST_TEST_CASE_END test_Read_Request_CB_EnvironmentalCharHandle_no_press */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Read_Request_CB_EnvironmentalCharHandle_not_init */
+/* CPPTEST_TEST_CASE_CONTEXT void Read_Request_CB(uint16_t) */
+void TS_sensor_service_2_test_Read_Request_CB_EnvironmentalCharHandle_not_init()
+{
+	CPPTEST_EXPECT_NCALLS("aci_gatt_allow_read", 1);
+	CPPTEST_EXPECT_NCALLS("Batt_Env_RSSI_Update", 1);
+
+    // initialize globals
+	test_helper_Read_Request_CB_init_inputs();
+    // not initialized pressure sensor
+	DrvContextTypeDef pressCtx;
+	pressCtx.isInitialized = 0u;
+    TargetBoardFeatures.HandlePressSensor = &pressCtx;
+    connection_handle  = 1u;  // on
+
+    // input
+    uint16_t handle  = EnvironmentalCharHandle + 1u;
+
+    /* Tested function call */
+	Read_Request_CB(handle);
+}
+/* CPPTEST_TEST_CASE_END test_Read_Request_CB_EnvironmentalCharHandle_not_init */
