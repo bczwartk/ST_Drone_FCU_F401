@@ -1,0 +1,57 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  name: cpp-agent-pool
+
+steps:
+- script: echo Hello, world!
+  displayName: 'Run a one-line script'
+
+- script: |
+    echo Add other tasks to build, test, and deploy your project.
+    echo See https://aka.ms/yaml
+  displayName: 'Run a multi-line script'
+
+- script: set
+  displayName: 'Show environment'
+
+- script: |
+    git clone -v -b cpptest https://github.com/bczwartk/ST_Drone_FCU_F401.git
+    dir
+    cd ST_Drone_FCU_F401
+    git branch -a
+  displayName: 'Clone the project'
+
+- script: |
+    .\ST_Drone_FCU_F401\scripts\make_bdf.bat
+  displayName: 'Build project and create BDF'
+
+- script: |
+    .\ST_Drone_FCU_F401\scripts\cpptest_run_sca.bat
+  displayName: 'Run C/C++test static analysis'
+
+- script: |
+    copy reports\sca\*.* reports
+    dir reports
+  displayName: 'Copy reports for ADO Scans extension'
+
+# Uploads analysis results in the SARIF format, so that they can be accessed in the 'Scans' tab.
+- task: PublishBuildArtifacts@1
+  inputs:
+    # For C/C++test Professional version 2023.1 and earlier, use "PathtoPublish: 'reports/report.sarif'".
+    PathtoPublish: 'reports/report_azure.sarif'
+    ArtifactName: 'CodeAnalysisLogs'
+    publishLocation: 'Container'
+
+# Uploads all report files (.xml, .html, .sarif) as build artifacts.
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: 'reports'
+    ArtifactName: 'CpptestReports'
+    publishLocation: 'Container'
