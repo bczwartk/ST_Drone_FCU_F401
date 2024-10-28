@@ -14,5 +14,6 @@ cpptestcli ^
   -import "%PROJECT_DIR%" ^
   -config "%~dp0\MISRA_C_2012_No_Limit.properties" ^
   -report "%REPORTS%"\sca ^
+  -property "report.format=html,sarif-azure" ^
   %*
   
