@@ -4,10 +4,10 @@
 # https://aka.ms/yaml
 
 trigger:
-- master
+- cpptest
 
 pool:
-  vmImage: ubuntu-latest
+  name: cpp-agent-pool
 
 steps:
 - script: echo Hello, world!
