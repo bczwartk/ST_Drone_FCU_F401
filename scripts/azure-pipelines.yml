@@ -10,22 +10,18 @@ pool:
   name: cpp-agent-pool
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
-
 - script: set
   displayName: 'Show environment'
 
+# clone the project manually because it needs repo form a different owne than registered in ADO
+# TODO: somehow I cannot make ADO work with 'bczwartk' repo directly if I am registered with ADO 
+#       as 'bczwartk4ps' and I am a contributor to the project
 - script: |
     git clone -v -b cpptest https://github.com/bczwartk/ST_Drone_FCU_F401.git
     dir
     cd ST_Drone_FCU_F401
     git branch -a
+    git log -1
   displayName: 'Clone the project'
 
 - script: |
@@ -37,21 +33,38 @@ steps:
   displayName: 'Run C/C++test static analysis'
 
 - script: |
-    copy reports\sca\*.* reports
-    dir reports
+    rem copy reports\sca\*.* reports
+    rem dir reports
   displayName: 'Copy reports for ADO Scans extension'
 
 # Uploads analysis results in the SARIF format, so that they can be accessed in the 'Scans' tab.
 - task: PublishBuildArtifacts@1
   inputs:
     # For C/C++test Professional version 2023.1 and earlier, use "PathtoPublish: 'reports/report.sarif'".
-    PathtoPublish: 'reports/report_azure.sarif'
+    PathtoPublish: 'reports\sca\report_azure.sarif'
     ArtifactName: 'CodeAnalysisLogs'
     publishLocation: 'Container'
 
 # Uploads all report files (.xml, .html, .sarif) as build artifacts.
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: 'reports'
+    PathtoPublish: 'reports\sca'
     ArtifactName: 'CpptestReports'
     publishLocation: 'Container'
+
+# run unit testing script
+# to run only selected test suites, use -resourse options, for example
+# .\ST_Drone_FCU_F401\scripts\cpptest_run_ut.bat ^
+#     -resource /ST_Drone_FCU_F401_Official_BLE_Remocon_170318/tests/user/TS_timer.c ^
+#     -resource /ST_Drone_FCU_F401_Official_BLE_Remocon_170318/tests/user/TS_ahrs.c
+- script: |
+    .\ST_Drone_FCU_F401\scripts\cpptest_run_ut.bat
+  displayName: 'Run C/C++test unit tests and coverage'
+
+# Publish code coverage results v2
+# Publish any of the code coverage results from a build.
+- task: PublishCodeCoverageResults@2
+  inputs:
+    summaryFileLocation: '.\reports\std\cobertura.xml'
+    #pathToSources: # string. Path to Source files. 
+    #failIfCoverageEmpty: false # boolean. Fail if code coverage results are missing. Default: false.

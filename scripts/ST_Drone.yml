@@ -1,0 +1,59 @@
+trigger:
+  branches:
+    include:
+    - main
+stages:
+- stage: __default
+  jobs:
+  - job: Job
+    pool:
+      name: cpp-agent-pool
+    steps:
+    - task: CmdLine@2
+      displayName: 'Show environment'
+      inputs:
+        script: set
+    - task: CmdLine@2
+      displayName: 'Clone the project'
+      inputs:
+        script: |
+          git clone -v -b cpptest https://github.com/bczwartk/ST_Drone_FCU_F401.git
+          dir
+          cd ST_Drone_FCU_F401
+          git branch -a
+          git log -1
+    - task: CmdLine@2
+      displayName: 'Build project and create BDF'
+      inputs:
+        script: |
+          .\ST_Drone_FCU_F401\scripts\make_bdf.bat
+    - task: CmdLine@2
+      displayName: 'Run C/C++test static analysis'
+      inputs:
+        script: |
+          .\ST_Drone_FCU_F401\scripts\cpptest_run_sca.bat
+    - task: CmdLine@2
+      displayName: 'Copy reports for ADO Scans extension'
+      inputs:
+        script: |
+          rem copy reports\sca\*.* reports
+          rem dir reports
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: 'reports\sca\report_azure.sarif'
+        ArtifactName: 'CodeAnalysisLogs'
+        publishLocation: 'Container'
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: 'reports\sca'
+        ArtifactName: 'CpptestReports'
+        publishLocation: 'Container'
+    - task: CmdLine@2
+      displayName: 'Run C/C++test unit tests and coverage'
+      inputs:
+        script: |
+          .\ST_Drone_FCU_F401\scripts\cpptest_run_ut.bat
+    - task: PublishCodeCoverageResults@2
+      inputs:
+        summaryFileLocation: '.\reports\std\cobertura.xml'
+
