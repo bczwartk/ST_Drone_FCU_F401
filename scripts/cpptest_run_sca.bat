@@ -16,4 +16,5 @@ cpptestcli ^
   -report "%REPORTS%"\sca ^
   -property "report.format=html,sarif-azure" ^
   %*
-  
+dir "%REPORTS%"\sca
+
