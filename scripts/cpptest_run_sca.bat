@@ -12,7 +12,7 @@ cpptestcli ^
   -data "%WKSP%" -showdetails -appconsole stdout ^
   -settings "%~dp0\cpptestcli.settings" ^
   -import "%PROJECT_DIR%" ^
-  -config "%~dp0\MISRA_C_2012_No_Limit.properties" ^
+  -config "%~dp0\MISRA_C_2023_No_Limit.properties" ^
   -report "%REPORTS%"\sca ^
   -property "report.format=html,sarif-azure" ^
   %*
