@@ -21,7 +21,7 @@
         <stlinkfoundProbes />
     </stlink>
     <DebugChecksum>
-        <Checksum>433757080</Checksum>
+        <Checksum>2813211604</Checksum>
     </DebugChecksum>
     <Exceptions>
         <StopOnUncaught>_ 0</StopOnUncaught>
@@ -130,8 +130,7 @@
         <mode>0</mode>
     </DisassembleMode>
     <Breakpoints2>
-        <Bp0>_ 1 "STD_CODE2" "{$PROJ_DIR$\..\Src\rc.c}.239.5" 0 0 1 "" 0 ""</Bp0>
-        <Count>1</Count>
+        <Count>0</Count>
     </Breakpoints2>
     <Interrupts>
         <Enabled>1</Enabled>
