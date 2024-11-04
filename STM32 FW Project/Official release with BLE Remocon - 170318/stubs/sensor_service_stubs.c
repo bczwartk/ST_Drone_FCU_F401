@@ -237,3 +237,135 @@ EXTERN_C_LINKAGE tBleStatus CppTest_Stub_Batt_Env_RSSI_Update (int32_t Press, ui
 
     return __return;
 }
+
+/** User stub definition for function: void GAP_DisconnectionComplete_CB(void) */
+EXTERN_C_LINKAGE void GAP_DisconnectionComplete_CB (void) ;
+EXTERN_C_LINKAGE void CppTest_Stub_GAP_DisconnectionComplete_CB (void) 
+{
+    CPPTEST_STUB_CALLED("GAP_DisconnectionComplete_CB");
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("GAP_DisconnectionComplete_CB", &CppTest_StubCallback_SomeName);
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS();
+        CPPTEST_STUB_INVOKE_CALLBACK();
+
+//    } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
+//    	GAP_DisconnectionComplete_CB();
+
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
+}
+
+/** User stub definition for function: void GAP_ConnectionComplete_CB(uint8_t *, uint16_t) */
+EXTERN_C_LINKAGE void GAP_ConnectionComplete_CB (uint8_t  addr[6], uint16_t handle) ;
+EXTERN_C_LINKAGE void CppTest_Stub_GAP_ConnectionComplete_CB (uint8_t  addr[6], uint16_t handle) 
+{
+    CPPTEST_STUB_CALLED("GAP_ConnectionComplete_CB");
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo, uint8_t * addr, uint16_t handle)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("GAP_ConnectionComplete_CB", &CppTest_StubCallback_SomeName);
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS(uint8_t * addr, uint16_t handle);
+        CPPTEST_STUB_INVOKE_CALLBACK(addr, handle);
+
+        //    } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
+        //    	GAP_ConnectionComplete_CB(addr, handle);
+
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
+}
+
+/** User stub definition for function: void Read_Request_CB(uint16_t) */
+EXTERN_C_LINKAGE void Read_Request_CB (uint16_t handle) ;
+EXTERN_C_LINKAGE void CppTest_Stub_Read_Request_CB (uint16_t handle) 
+{
+    CPPTEST_STUB_CALLED("Read_Request_CB");
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo, uint16_t handle)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("Read_Request_CB", &CppTest_StubCallback_SomeName);
+     *
+     * 3. Fill out the body of the stub callback function according to intent.
+     * The following line may be used to call original function inside stub callback:
+     *     Read_Request_CB(handle);
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS(uint16_t handle);
+        CPPTEST_STUB_INVOKE_CALLBACK(handle);
+
+    } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
+        Read_Request_CB(handle);
+
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
+}
+
+/** User stub definition for function: void Attribute_Modified_CB(uint16_t, uint8_t *, uint8_t) */
+EXTERN_C_LINKAGE void Attribute_Modified_CB (uint16_t attr_handle, uint8_t * att_data, uint8_t data_length) ;
+EXTERN_C_LINKAGE void CppTest_Stub_Attribute_Modified_CB (uint16_t attr_handle, uint8_t * att_data, uint8_t data_length) 
+{
+    CPPTEST_STUB_CALLED("Attribute_Modified_CB");
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo, uint16_t attr_handle, uint8_t * att_data, uint8_t data_length)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("Attribute_Modified_CB", &CppTest_StubCallback_SomeName);
+     *
+     * 3. Fill out the body of the stub callback function according to intent.
+     * The following line may be used to call original function inside stub callback:
+     *     Attribute_Modified_CB(attr_handle, att_data, data_length);
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS(uint16_t attr_handle, uint8_t * att_data, uint8_t data_length);
+        CPPTEST_STUB_INVOKE_CALLBACK(attr_handle, att_data, data_length);
+
+    } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
+        Attribute_Modified_CB(attr_handle, att_data, data_length);
+
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
+}

@@ -20,6 +20,16 @@ CPPTEST_TEST(TS_sensor_service_2_test_Read_Request_CB_AccEventCharHandle);
 CPPTEST_TEST(TS_sensor_service_2_test_Read_Request_CB_ArmingCharHandle);
 CPPTEST_TEST(TS_sensor_service_2_test_Read_Request_CB_EnvironmentalCharHandle_no_press);
 CPPTEST_TEST_DISABLED(TS_sensor_service_2_test_Read_Request_CB_EnvironmentalCharHandle_not_init);
+CPPTEST_TEST_DISABLED(TS_sensor_service_2_test_Read_Request_CB_EnvironmentalCharHandle_with_press);
+CPPTEST_TEST(TS_sensor_service_2_test_Attribute_Modified_CB_config_char_ignore);
+CPPTEST_TEST(TS_sensor_service_2_test_Attribute_Modified_CB_stderr_char_off);
+CPPTEST_TEST(TS_sensor_service_2_test_Attribute_Modified_CB_stderr_char_on);
+CPPTEST_TEST(TS_sensor_service_2_test_Attribute_Modified_CB_stderr_char_ignore_on);
+CPPTEST_TEST(TS_sensor_service_2_test_Attribute_Modified_CB_stderr_char_ignore_off);
+CPPTEST_TEST(TS_sensor_service_2_test_Attribute_Modified_CB_term_char_on);
+CPPTEST_TEST(TS_sensor_service_2_test_Attribute_Modified_CB_term_char_off);
+CPPTEST_TEST(TS_sensor_service_2_test_Attribute_Modified_CB_term_char_ignore_off);
+CPPTEST_TEST(TS_sensor_service_2_test_Attribute_Modified_CB_term_char_ignore_on);
 CPPTEST_TEST_SUITE_END();
         
 
@@ -31,6 +41,16 @@ void TS_sensor_service_2_test_Read_Request_CB_AccEventCharHandle(void);
 void TS_sensor_service_2_test_Read_Request_CB_ArmingCharHandle(void);
 void TS_sensor_service_2_test_Read_Request_CB_EnvironmentalCharHandle_no_press(void);
 void TS_sensor_service_2_test_Read_Request_CB_EnvironmentalCharHandle_not_init(void);
+void TS_sensor_service_2_test_Read_Request_CB_EnvironmentalCharHandle_with_press(void);
+void TS_sensor_service_2_test_Attribute_Modified_CB_config_char_ignore(void);
+void TS_sensor_service_2_test_Attribute_Modified_CB_stderr_char_off(void);
+void TS_sensor_service_2_test_Attribute_Modified_CB_stderr_char_on(void);
+void TS_sensor_service_2_test_Attribute_Modified_CB_stderr_char_ignore_on(void);
+void TS_sensor_service_2_test_Attribute_Modified_CB_stderr_char_ignore_off(void);
+void TS_sensor_service_2_test_Attribute_Modified_CB_term_char_on(void);
+void TS_sensor_service_2_test_Attribute_Modified_CB_term_char_off(void);
+void TS_sensor_service_2_test_Attribute_Modified_CB_term_char_ignore_off(void);
+void TS_sensor_service_2_test_Attribute_Modified_CB_term_char_ignore_on(void);
 CPPTEST_TEST_SUITE_REGISTRATION(TS_sensor_service_2);
 
 void TS_sensor_service_2_testSuiteSetUp(void);
@@ -66,11 +86,11 @@ static void test_helper_Read_Request_CB_init_inputs(void)
 {
     // initialize global handles:
     TermCharHandle  = 1u;
-    ConsoleW2STHandle  = 2;
-    StdErrCharHandle  = 3;
-    EnvironmentalCharHandle  = 4;
-    ArmingCharHandle  = 5;
-    AccEventCharHandle  = 6;
+    ConsoleW2STHandle  = TermCharHandle + 4u;
+    StdErrCharHandle  = ConsoleW2STHandle + 4u;
+    EnvironmentalCharHandle  = StdErrCharHandle + 4u;
+    ArmingCharHandle  = EnvironmentalCharHandle + 4u;
+    AccEventCharHandle  = ArmingCharHandle + 4u;
 
     // connection handle
     // connection_handle  = 1u;  // on
@@ -249,3 +269,210 @@ void TS_sensor_service_2_test_Read_Request_CB_EnvironmentalCharHandle_not_init()
 	Read_Request_CB(handle);
 }
 /* CPPTEST_TEST_CASE_END test_Read_Request_CB_EnvironmentalCharHandle_not_init */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Read_Request_CB_EnvironmentalCharHandle_with_press */
+/* CPPTEST_TEST_CASE_CONTEXT void Read_Request_CB(uint16_t) */
+void TS_sensor_service_2_test_Read_Request_CB_EnvironmentalCharHandle_with_press()
+{
+	CPPTEST_EXPECT_NCALLS("aci_gatt_allow_read", 1);
+
+    // initialize globals
+	test_helper_Read_Request_CB_init_inputs();
+    // with pressure sensor
+    TargetBoardFeatures.HandlePressSensor  = /* TODO - set to non NULL */ 0;
+    connection_handle  = 1u;  // on
+
+    // input
+    uint16_t handle  = EnvironmentalCharHandle + 1u;
+
+    /* Tested function call */
+	Read_Request_CB(handle);
+	CPPTEST_FAIL("TODO");
+}
+/* CPPTEST_TEST_CASE_END test_Read_Request_CB_EnvironmentalCharHandle_with_press */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Attribute_Modified_CB_config_char_ignore */
+void TS_sensor_service_2_test_Attribute_Modified_CB_config_char_ignore()
+{
+	uint16_t attr_handle;
+	uint8_t att_data;
+	uint8_t data_length;
+
+    // initialize globals
+	test_helper_Read_Request_CB_init_inputs();
+
+	attr_handle = ConfigCharHandle + 2;
+	att_data = 0u; // ignored
+	data_length = 0u;
+
+	Attribute_Modified_CB(attr_handle, &att_data, data_length);
+}
+/* CPPTEST_TEST_CASE_END test_Attribute_Modified_CB_config_char_ignore */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Attribute_Modified_CB_stderr_char_off */
+void TS_sensor_service_2_test_Attribute_Modified_CB_stderr_char_off()
+{
+	uint16_t attr_handle;
+	uint8_t att_data;
+	uint8_t data_length;
+
+    // initialize globals
+	test_helper_Read_Request_CB_init_inputs();
+
+	attr_handle = StdErrCharHandle + 2;
+	att_data = 0u;  // turn off
+	data_length = 1u;
+	ConnectionBleStatus |= (W2ST_CONNECT_STD_ERR); // initially set to on
+
+	Attribute_Modified_CB(attr_handle, &att_data, data_length);
+
+	CPPTEST_ASSERT_INTEGER_EQUAL(0, W2ST_CHECK_CONNECTION(W2ST_CONNECT_STD_ERR));
+}
+/* CPPTEST_TEST_CASE_END test_Attribute_Modified_CB_stderr_char_off */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Attribute_Modified_CB_stderr_char_on */
+void TS_sensor_service_2_test_Attribute_Modified_CB_stderr_char_on()
+{
+	uint16_t attr_handle;
+	uint8_t att_data;
+	uint8_t data_length;
+
+    // initialize globals
+	test_helper_Read_Request_CB_init_inputs();
+
+	attr_handle = StdErrCharHandle + 2;
+	att_data = 1u;  // turn on
+	data_length = 1u;
+	ConnectionBleStatus &= ~(W2ST_CONNECT_STD_ERR); // initially set to off
+
+	Attribute_Modified_CB(attr_handle, &att_data, data_length);
+
+	CPPTEST_ASSERT_INTEGER_EQUAL(1, W2ST_CHECK_CONNECTION(W2ST_CONNECT_STD_ERR));
+}
+/* CPPTEST_TEST_CASE_END test_Attribute_Modified_CB_stderr_char_on */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Attribute_Modified_CB_stderr_char_ignore_on */
+void TS_sensor_service_2_test_Attribute_Modified_CB_stderr_char_ignore_on()
+{
+	uint16_t attr_handle;
+	uint8_t att_data;
+	uint8_t data_length;
+
+    // initialize globals
+	test_helper_Read_Request_CB_init_inputs();
+
+	attr_handle = StdErrCharHandle + 2;
+	att_data = 3u;  // anything
+	data_length = 1u;
+	ConnectionBleStatus |= (W2ST_CONNECT_STD_ERR); // initially set to on
+
+	Attribute_Modified_CB(attr_handle, &att_data, data_length);
+
+	CPPTEST_ASSERT_INTEGER_EQUAL(1, W2ST_CHECK_CONNECTION(W2ST_CONNECT_STD_ERR));
+}
+/* CPPTEST_TEST_CASE_END test_Attribute_Modified_CB_stderr_char_ignore_on */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Attribute_Modified_CB_stderr_char_ignore_off */
+void TS_sensor_service_2_test_Attribute_Modified_CB_stderr_char_ignore_off()
+{
+	uint16_t attr_handle;
+	uint8_t att_data;
+	uint8_t data_length;
+
+    // initialize globals
+	test_helper_Read_Request_CB_init_inputs();
+
+	attr_handle = StdErrCharHandle + 2;
+	att_data = 3u;  // anything
+	data_length = 1u;
+	ConnectionBleStatus &= ~(W2ST_CONNECT_STD_ERR); // initially set to off
+
+	Attribute_Modified_CB(attr_handle, &att_data, data_length);
+
+	CPPTEST_ASSERT_INTEGER_EQUAL(0, W2ST_CHECK_CONNECTION(W2ST_CONNECT_STD_ERR));
+}
+/* CPPTEST_TEST_CASE_END test_Attribute_Modified_CB_stderr_char_ignore_off */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Attribute_Modified_CB_term_char_on */
+void TS_sensor_service_2_test_Attribute_Modified_CB_term_char_on()
+{
+	uint16_t attr_handle;
+	uint8_t att_data;
+	uint8_t data_length;
+
+    // initialize globals
+	test_helper_Read_Request_CB_init_inputs();
+
+	attr_handle = TermCharHandle + 2;
+	att_data = 1u;  // turn on
+	data_length = 1u;
+	ConnectionBleStatus &= ~(W2ST_CONNECT_STD_TERM); // initially set to off
+
+	Attribute_Modified_CB(attr_handle, &att_data, data_length);
+
+	CPPTEST_ASSERT_INTEGER_EQUAL(1, W2ST_CHECK_CONNECTION(W2ST_CONNECT_STD_TERM));
+}
+/* CPPTEST_TEST_CASE_END test_Attribute_Modified_CB_term_char_on */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Attribute_Modified_CB_term_char_off */
+void TS_sensor_service_2_test_Attribute_Modified_CB_term_char_off()
+{
+	uint16_t attr_handle;
+	uint8_t att_data;
+	uint8_t data_length;
+
+    // initialize globals
+	test_helper_Read_Request_CB_init_inputs();
+
+	attr_handle = TermCharHandle + 2;
+	att_data = 0u;  // turn off
+	data_length = 1u;
+	ConnectionBleStatus |= (W2ST_CONNECT_STD_TERM); // initially set to on
+
+	Attribute_Modified_CB(attr_handle, &att_data, data_length);
+
+	CPPTEST_ASSERT_INTEGER_EQUAL(0, W2ST_CHECK_CONNECTION(W2ST_CONNECT_STD_TERM));
+}
+/* CPPTEST_TEST_CASE_END test_Attribute_Modified_CB_term_char_off */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Attribute_Modified_CB_term_char_ignore_off */
+void TS_sensor_service_2_test_Attribute_Modified_CB_term_char_ignore_off()
+{
+	uint16_t attr_handle;
+	uint8_t att_data;
+	uint8_t data_length;
+
+    // initialize globals
+	test_helper_Read_Request_CB_init_inputs();
+
+	attr_handle = TermCharHandle + 2;
+	att_data = 3u;  // anything
+	data_length = 1u;
+	ConnectionBleStatus &= ~(W2ST_CONNECT_STD_TERM); // initially set to off
+
+	Attribute_Modified_CB(attr_handle, &att_data, data_length);
+
+	CPPTEST_ASSERT_INTEGER_EQUAL(0, W2ST_CHECK_CONNECTION(W2ST_CONNECT_STD_TERM));
+}
+/* CPPTEST_TEST_CASE_END test_Attribute_Modified_CB_term_char_ignore_off */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Attribute_Modified_CB_term_char_ignore_on */
+void TS_sensor_service_2_test_Attribute_Modified_CB_term_char_ignore_on()
+{
+	uint16_t attr_handle;
+	uint8_t att_data;
+	uint8_t data_length;
+
+    // initialize globals
+	test_helper_Read_Request_CB_init_inputs();
+
+	attr_handle = TermCharHandle + 2;
+	att_data = 3u;  // anything
+	data_length = 1u;
+	ConnectionBleStatus |= (W2ST_CONNECT_STD_TERM); // initially set to on
+
+	Attribute_Modified_CB(attr_handle, &att_data, data_length);
+
+	CPPTEST_ASSERT_INTEGER_EQUAL(1, W2ST_CHECK_CONNECTION(W2ST_CONNECT_STD_TERM));
+}
+/* CPPTEST_TEST_CASE_END test_Attribute_Modified_CB_term_char_ignore_on */
