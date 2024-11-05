@@ -369,3 +369,103 @@ EXTERN_C_LINKAGE void CppTest_Stub_Attribute_Modified_CB (uint16_t attr_handle, 
     }
 
 }
+
+/** User stub definition for function: uint32_t DebugConsoleCommandParsing(uint8_t *, uint8_t) */
+EXTERN_C_LINKAGE uint32_t DebugConsoleCommandParsing (uint8_t * att_data, uint8_t data_length) ;
+EXTERN_C_LINKAGE uint32_t CppTest_Stub_DebugConsoleCommandParsing (uint8_t * att_data, uint8_t data_length) 
+{
+    CPPTEST_STUB_CALLED("DebugConsoleCommandParsing");
+
+    uint32_t __return = 0U;
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo, uint32_t* __return, uint8_t * att_data, uint8_t data_length)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("DebugConsoleCommandParsing", &CppTest_StubCallback_SomeName);
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS(uint32_t* __return, uint8_t * att_data, uint8_t data_length);
+        CPPTEST_STUB_INVOKE_CALLBACK(&__return, att_data, data_length);
+
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
+    return __return;
+}
+
+/** User stub definition for function: tBleStatus Term_Update(uint8_t *, uint8_t) */
+EXTERN_C_LINKAGE tBleStatus Term_Update (uint8_t * data, uint8_t length) ;
+EXTERN_C_LINKAGE tBleStatus CppTest_Stub_Term_Update (uint8_t * data, uint8_t length) 
+{
+    CPPTEST_STUB_CALLED("Term_Update");
+
+    tBleStatus __return = (unsigned char)0;
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo, tBleStatus* __return, uint8_t * data, uint8_t length)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("Term_Update", &CppTest_StubCallback_SomeName);
+     *
+     * 3. Fill out the body of the stub callback function according to intent.
+     * The following line may be used to call original function inside stub callback:
+     *     *__return = Term_Update(data, length);
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS(tBleStatus* __return, uint8_t * data, uint8_t length);
+        CPPTEST_STUB_INVOKE_CALLBACK(&__return, data, length);
+
+    } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
+    	Term_Update(data, length);
+
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
+    return __return;
+}
+
+/** User stub definition for function: uint32_t ConfigCommandParsing(const uint8_t *, uint8_t) */
+EXTERN_C_LINKAGE uint32_t ConfigCommandParsing (const uint8_t * att_data, uint8_t data_length) ;
+EXTERN_C_LINKAGE uint32_t CppTest_Stub_ConfigCommandParsing (const uint8_t * att_data, uint8_t data_length) 
+{
+    CPPTEST_STUB_CALLED("ConfigCommandParsing");
+
+    uint32_t __return = 1U;
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo, uint32_t* __return, const uint8_t * att_data, uint8_t data_length)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("ConfigCommandParsing", &CppTest_StubCallback_SomeName);
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS(uint32_t* __return, const uint8_t * att_data, uint8_t data_length);
+        CPPTEST_STUB_INVOKE_CALLBACK(&__return, att_data, data_length);
+
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
+    return __return;
+}

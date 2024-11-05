@@ -30,6 +30,15 @@ CPPTEST_TEST(TS_sensor_service_2_test_Attribute_Modified_CB_term_char_on);
 CPPTEST_TEST(TS_sensor_service_2_test_Attribute_Modified_CB_term_char_off);
 CPPTEST_TEST(TS_sensor_service_2_test_Attribute_Modified_CB_term_char_ignore_off);
 CPPTEST_TEST(TS_sensor_service_2_test_Attribute_Modified_CB_term_char_ignore_on);
+CPPTEST_TEST(TS_sensor_service_2_test_Attribute_Modified_CB_term_char_send_back);
+CPPTEST_TEST(TS_sensor_service_2_test_Attribute_Modified_CB_term_char_no_send_back);
+CPPTEST_TEST(TS_sensor_service_2_test_Attribute_Modified_CB_arming_char_off);
+CPPTEST_TEST(TS_sensor_service_2_test_Attribute_Modified_CB_arming_char_on);
+CPPTEST_TEST(TS_sensor_service_2_test_Attribute_Modified_CB_arming_char_ignore_off);
+CPPTEST_TEST(TS_sensor_service_2_test_Attribute_Modified_CB_arming_char_ignore_on);
+CPPTEST_TEST(TS_sensor_service_2_test_Attribute_Modified_CB_arming_char_off_with_term);
+CPPTEST_TEST(TS_sensor_service_2_test_Attribute_Modified_CB_arming_char_on_with_term);
+CPPTEST_TEST(TS_sensor_service_2_test_Attribute_Modified_CB_config_char_handle);
 CPPTEST_TEST_SUITE_END();
         
 
@@ -51,6 +60,15 @@ void TS_sensor_service_2_test_Attribute_Modified_CB_term_char_on(void);
 void TS_sensor_service_2_test_Attribute_Modified_CB_term_char_off(void);
 void TS_sensor_service_2_test_Attribute_Modified_CB_term_char_ignore_off(void);
 void TS_sensor_service_2_test_Attribute_Modified_CB_term_char_ignore_on(void);
+void TS_sensor_service_2_test_Attribute_Modified_CB_term_char_send_back(void);
+void TS_sensor_service_2_test_Attribute_Modified_CB_term_char_no_send_back(void);
+void TS_sensor_service_2_test_Attribute_Modified_CB_arming_char_off(void);
+void TS_sensor_service_2_test_Attribute_Modified_CB_arming_char_on(void);
+void TS_sensor_service_2_test_Attribute_Modified_CB_arming_char_ignore_off(void);
+void TS_sensor_service_2_test_Attribute_Modified_CB_arming_char_ignore_on(void);
+void TS_sensor_service_2_test_Attribute_Modified_CB_arming_char_off_with_term(void);
+void TS_sensor_service_2_test_Attribute_Modified_CB_arming_char_on_with_term(void);
+void TS_sensor_service_2_test_Attribute_Modified_CB_config_char_handle(void);
 CPPTEST_TEST_SUITE_REGISTRATION(TS_sensor_service_2);
 
 void TS_sensor_service_2_testSuiteSetUp(void);
@@ -81,16 +99,18 @@ void TS_sensor_service_2_tearDown(void)
 /* CPPTEST_TEST_SUITE_CODE_END TestCaseTearDown */
 }
 
-// commin input initialization for Read_Request_CB() tests
+// common input initialization for Read_Request_CB() tests
 static void test_helper_Read_Request_CB_init_inputs(void)
 {
     // initialize global handles:
-    TermCharHandle  = 1u;
+	ConfigCharHandle = 1u;
+	TermCharHandle  = ConfigCharHandle + 4u;
     ConsoleW2STHandle  = TermCharHandle + 4u;
     StdErrCharHandle  = ConsoleW2STHandle + 4u;
     EnvironmentalCharHandle  = StdErrCharHandle + 4u;
     ArmingCharHandle  = EnvironmentalCharHandle + 4u;
     AccEventCharHandle  = ArmingCharHandle + 4u;
+    MaxCharHandle = AccEventCharHandle + 4u;
 
     // connection handle
     // connection_handle  = 1u;  // on
@@ -476,3 +496,251 @@ void TS_sensor_service_2_test_Attribute_Modified_CB_term_char_ignore_on()
 	CPPTEST_ASSERT_INTEGER_EQUAL(1, W2ST_CHECK_CONNECTION(W2ST_CONNECT_STD_TERM));
 }
 /* CPPTEST_TEST_CASE_END test_Attribute_Modified_CB_term_char_ignore_on */
+
+
+// callback for DebugConsoleCommandParsing()
+// return is controlled by setting value of the variable below in a test case
+static uint32_t CppTest_StubCallback_DebugConsoleCommandParsing_SendBackData = 0u;
+void CppTest_StubCallback_DebugConsoleCommandParsing(
+		CppTest_StubCallInfo* stubCallInfo, uint32_t* __return,
+		uint8_t * att_data, uint8_t data_length)
+{
+	*__return = CppTest_StubCallback_DebugConsoleCommandParsing_SendBackData;
+}
+
+/* CPPTEST_TEST_CASE_BEGIN test_Attribute_Modified_CB_term_char_send_back */
+void TS_sensor_service_2_test_Attribute_Modified_CB_term_char_send_back()
+{
+	uint16_t attr_handle;
+	uint8_t att_data;
+	uint8_t data_length;
+
+	CPPTEST_REGISTER_STUB_CALLBACK("DebugConsoleCommandParsing", &CppTest_StubCallback_DebugConsoleCommandParsing);
+	CPPTEST_EXPECT_NCALLS("DebugConsoleCommandParsing", 1);
+	CPPTEST_EXPECT_NCALLS("Term_Update", 1);
+	// configure stub callback
+	CppTest_StubCallback_DebugConsoleCommandParsing_SendBackData = 1u;
+
+    // initialize globals
+	test_helper_Read_Request_CB_init_inputs();
+
+	attr_handle = TermCharHandle + 1;
+	att_data = 1u;	  // irrelevant for the test - stubs used
+	data_length = 1u; // irrelevant for the test - stubs used
+
+	// test call
+	Attribute_Modified_CB(attr_handle, &att_data, data_length);
+}
+/* CPPTEST_TEST_CASE_END test_Attribute_Modified_CB_term_char_send_back */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Attribute_Modified_CB_term_char_no_send_back */
+void TS_sensor_service_2_test_Attribute_Modified_CB_term_char_no_send_back()
+{
+	uint16_t attr_handle;
+	uint8_t att_data;
+	uint8_t data_length;
+
+	CPPTEST_REGISTER_STUB_CALLBACK("DebugConsoleCommandParsing", &CppTest_StubCallback_DebugConsoleCommandParsing);
+	CPPTEST_EXPECT_NCALLS("DebugConsoleCommandParsing", 1);
+	CPPTEST_EXPECT_NCALLS("Term_Update", 0);
+	// configure stub callback
+	CppTest_StubCallback_DebugConsoleCommandParsing_SendBackData = 0u;
+
+    // initialize globals
+	test_helper_Read_Request_CB_init_inputs();
+
+	attr_handle = TermCharHandle + 1;
+	att_data = 1u;	  // irrelevant for the test - stubs used
+	data_length = 1u; // irrelevant for the test - stubs used
+
+	// test call
+	Attribute_Modified_CB(attr_handle, &att_data, data_length);
+}
+/* CPPTEST_TEST_CASE_END test_Attribute_Modified_CB_term_char_no_send_back */
+
+
+/* CPPTEST_TEST_CASE_BEGIN test_Attribute_Modified_CB_arming_char_off */
+void TS_sensor_service_2_test_Attribute_Modified_CB_arming_char_off()
+{
+	uint16_t attr_handle;
+	uint8_t att_data;
+	uint8_t data_length;
+
+	CPPTEST_EXPECT_NCALLS("ARMING_Update", 0);
+	CPPTEST_EXPECT_NCALLS("Term_Update", 0);
+
+    // initialize globals
+	test_helper_Read_Request_CB_init_inputs();
+
+	attr_handle = ArmingCharHandle + 2;
+	att_data = 0u;  // turn off
+	data_length = 1u;
+	ConnectionBleStatus |= (W2ST_CONNECT_LED); // initially set to on
+	ConnectionBleStatus &= ~(W2ST_CONNECT_STD_TERM); // keep terminal off for this test
+
+	Attribute_Modified_CB(attr_handle, &att_data, data_length);
+
+	CPPTEST_ASSERT_INTEGER_EQUAL(0, W2ST_CHECK_CONNECTION(W2ST_CONNECT_LED));
+}
+/* CPPTEST_TEST_CASE_END test_Attribute_Modified_CB_arming_char_off */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Attribute_Modified_CB_arming_char_on */
+void TS_sensor_service_2_test_Attribute_Modified_CB_arming_char_on()
+{
+	uint16_t attr_handle;
+	uint8_t att_data;
+	uint8_t data_length;
+
+	CPPTEST_EXPECT_NCALLS("ARMING_Update", 1);
+	CPPTEST_EXPECT_NCALLS("Term_Update", 0);
+
+	// initialize globals
+	test_helper_Read_Request_CB_init_inputs();
+
+	attr_handle = ArmingCharHandle + 2;
+	att_data = 1u;  // turn on
+	data_length = 1u;
+	ConnectionBleStatus &= ~(W2ST_CONNECT_LED); // initially set to off
+	ConnectionBleStatus &= ~(W2ST_CONNECT_STD_TERM); // keep terminal off for this test
+
+	Attribute_Modified_CB(attr_handle, &att_data, data_length);
+
+	CPPTEST_ASSERT_INTEGER_EQUAL(1, W2ST_CHECK_CONNECTION(W2ST_CONNECT_LED));
+}
+/* CPPTEST_TEST_CASE_END test_Attribute_Modified_CB_arming_char_on */
+
+
+/* CPPTEST_TEST_CASE_BEGIN test_Attribute_Modified_CB_arming_char_ignore_off */
+void TS_sensor_service_2_test_Attribute_Modified_CB_arming_char_ignore_off()
+{
+	uint16_t attr_handle;
+	uint8_t att_data;
+	uint8_t data_length;
+
+	CPPTEST_EXPECT_NCALLS("ARMING_Update", 0);
+	CPPTEST_EXPECT_NCALLS("Term_Update", 0);
+
+    // initialize globals
+	test_helper_Read_Request_CB_init_inputs();
+
+	attr_handle = ArmingCharHandle + 2;
+	att_data = 3u;  // anything
+	data_length = 1u;
+	ConnectionBleStatus &= ~(W2ST_CONNECT_LED); // initially set to off
+	ConnectionBleStatus &= ~(W2ST_CONNECT_STD_TERM); // keep terminal off for this test
+
+	Attribute_Modified_CB(attr_handle, &att_data, data_length);
+
+	CPPTEST_ASSERT_INTEGER_EQUAL(0, W2ST_CHECK_CONNECTION(W2ST_CONNECT_LED));
+}
+/* CPPTEST_TEST_CASE_END test_Attribute_Modified_CB_arming_char_ignore_off */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Attribute_Modified_CB_arming_char_ignore_on */
+void TS_sensor_service_2_test_Attribute_Modified_CB_arming_char_ignore_on()
+{
+	uint16_t attr_handle;
+	uint8_t att_data;
+	uint8_t data_length;
+
+	CPPTEST_EXPECT_NCALLS("ARMING_Update", 0);
+	CPPTEST_EXPECT_NCALLS("Term_Update", 0);
+
+    // initialize globals
+	test_helper_Read_Request_CB_init_inputs();
+
+	attr_handle = ArmingCharHandle + 2;
+	att_data = 3u;  // anything
+	data_length = 1u;
+	ConnectionBleStatus |= (W2ST_CONNECT_LED); // initially set to on
+	ConnectionBleStatus &= ~(W2ST_CONNECT_STD_TERM); // keep terminal off for this test
+
+	Attribute_Modified_CB(attr_handle, &att_data, data_length);
+
+	CPPTEST_ASSERT_INTEGER_EQUAL(1, W2ST_CHECK_CONNECTION(W2ST_CONNECT_LED));
+}
+/* CPPTEST_TEST_CASE_END test_Attribute_Modified_CB_arming_char_ignore_on */
+
+void CppTest_StubCallback_Term_Update_Buf_Check_On(
+		CppTest_StubCallInfo* stubCallInfo, tBleStatus* __return, uint8_t * data, uint8_t length)
+{
+	*__return = Term_Update(data, length);
+	CPPTEST_ASSERT_CSTR_N_EQUAL("ON", (data + 8), 2);
+}
+void CppTest_StubCallback_Term_Update_Buf_Check_Off(
+		CppTest_StubCallInfo* stubCallInfo, tBleStatus* __return, uint8_t * data, uint8_t length)
+{
+	*__return = Term_Update(data, length);
+	CPPTEST_ASSERT_CSTR_N_EQUAL("OFF", (data + 8), 3);
+}
+
+/* CPPTEST_TEST_CASE_BEGIN test_Attribute_Modified_CB_arming_char_off_with_term */
+void TS_sensor_service_2_test_Attribute_Modified_CB_arming_char_off_with_term()
+{
+	uint16_t attr_handle;
+	uint8_t att_data;
+	uint8_t data_length;
+
+	CPPTEST_REGISTER_STUB_CALLBACK("Term_Update", &CppTest_StubCallback_Term_Update_Buf_Check_Off);
+	CPPTEST_EXPECT_NCALLS("ARMING_Update", 0);
+	CPPTEST_EXPECT_NCALLS("Term_Update", 1);
+
+    // initialize globals
+	test_helper_Read_Request_CB_init_inputs();
+
+	attr_handle = ArmingCharHandle + 2;
+	att_data = 0u;  // turn off
+	data_length = 1u;
+	ConnectionBleStatus |= (W2ST_CONNECT_LED); // initially set to on
+	ConnectionBleStatus |= (W2ST_CONNECT_STD_TERM); // keep terminal on for this test
+
+	Attribute_Modified_CB(attr_handle, &att_data, data_length);
+
+	CPPTEST_ASSERT_INTEGER_EQUAL(0, W2ST_CHECK_CONNECTION(W2ST_CONNECT_LED));
+}
+/* CPPTEST_TEST_CASE_END test_Attribute_Modified_CB_arming_char_off_with_term */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Attribute_Modified_CB_arming_char_on_with_term */
+void TS_sensor_service_2_test_Attribute_Modified_CB_arming_char_on_with_term()
+{
+	uint16_t attr_handle;
+	uint8_t att_data;
+	uint8_t data_length;
+
+	CPPTEST_REGISTER_STUB_CALLBACK("Term_Update", &CppTest_StubCallback_Term_Update_Buf_Check_On);
+	CPPTEST_EXPECT_NCALLS("ARMING_Update", 1);
+	CPPTEST_EXPECT_NCALLS("Term_Update", 1);
+
+    // initialize globals
+	test_helper_Read_Request_CB_init_inputs();
+
+	attr_handle = ArmingCharHandle + 2;
+	att_data = 1u;  // turn on
+	data_length = 1u;
+	ConnectionBleStatus &= ~(W2ST_CONNECT_LED); // initially set to off
+	ConnectionBleStatus |= (W2ST_CONNECT_STD_TERM); // keep terminal on for this test
+
+	Attribute_Modified_CB(attr_handle, &att_data, data_length);
+
+	CPPTEST_ASSERT_INTEGER_EQUAL(1, W2ST_CHECK_CONNECTION(W2ST_CONNECT_LED));
+}
+/* CPPTEST_TEST_CASE_END test_Attribute_Modified_CB_arming_char_on_with_term */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Attribute_Modified_CB_config_char_handle */
+void TS_sensor_service_2_test_Attribute_Modified_CB_config_char_handle()
+{
+	uint16_t attr_handle;
+	uint8_t att_data;
+	uint8_t data_length;
+
+	CPPTEST_EXPECT_NCALLS("ConfigCommandParsing", 1);
+
+    // initialize globals
+	test_helper_Read_Request_CB_init_inputs();
+
+	attr_handle = ConfigCharHandle + 1;
+	att_data = 0u; // ignored
+	data_length = 0u;
+
+	Attribute_Modified_CB(attr_handle, &att_data, data_length);
+}
+/* CPPTEST_TEST_CASE_END test_Attribute_Modified_CB_config_char_handle */
