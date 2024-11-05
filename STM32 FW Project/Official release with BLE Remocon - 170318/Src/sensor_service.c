@@ -156,26 +156,16 @@ tBleStatus Add_ConfigW2ST_Service(void)
   COPY_CONFIG_SERVICE_UUID(uuid);
   ret = aci_gatt_add_serv(UUID_TYPE_128,  uuid, PRIMARY_SERVICE, 1 + 3, &ConfigServW2STHandle);
 
-  if (ret != BLE_STATUS_SUCCESS) {
-    goto fail;
+  if (BLE_STATUS_SUCCESS == ret) {
+	  COPY_CONFIG_W2ST_CHAR_UUID(uuid);
+	  ret =  aci_gatt_add_char(ConfigServW2STHandle, UUID_TYPE_128, uuid, 20 /* Max Dimension */,
+	                           CHAR_PROP_NOTIFY| CHAR_PROP_WRITE_WITHOUT_RESP,
+	                           ATTR_PERMISSION_NONE,
+	                           GATT_NOTIFY_ATTRIBUTE_WRITE | GATT_NOTIFY_READ_REQ_AND_WAIT_FOR_APPL_RESP,
+	                           16, 1, &ConfigCharHandle);
   }
 
-  COPY_CONFIG_W2ST_CHAR_UUID(uuid);
-  ret =  aci_gatt_add_char(ConfigServW2STHandle, UUID_TYPE_128, uuid, 20 /* Max Dimension */,
-                           CHAR_PROP_NOTIFY| CHAR_PROP_WRITE_WITHOUT_RESP,
-                           ATTR_PERMISSION_NONE,
-                           GATT_NOTIFY_ATTRIBUTE_WRITE | GATT_NOTIFY_READ_REQ_AND_WAIT_FOR_APPL_RESP,
-                           16, 1, &ConfigCharHandle);
-
-  if (ret != BLE_STATUS_SUCCESS) {
-    goto fail;
-  }
-
-  return BLE_STATUS_SUCCESS;
-
-fail:
-  //PRINTF("Error while adding Configuration service.\n");
-  return BLE_STATUS_ERROR;
+  return ((BLE_STATUS_SUCCESS == ret) ? BLE_STATUS_SUCCESS : BLE_STATUS_ERROR);
 }
 
 
@@ -187,43 +177,30 @@ fail:
 tBleStatus Add_ConsoleW2ST_Service(void)
 {
   tBleStatus ret;
-
   uint8_t uuid[16];
 
   COPY_CONSOLE_SERVICE_UUID(uuid);
   ret = aci_gatt_add_serv(UUID_TYPE_128,  uuid, PRIMARY_SERVICE, 1 + (3 * 2), &ConsoleW2STHandle);
 
-  if (ret != BLE_STATUS_SUCCESS) {
-    goto fail;
+  if (BLE_STATUS_SUCCESS == ret) {
+	  COPY_TERM_CHAR_UUID(uuid);
+	  ret =  aci_gatt_add_char(ConsoleW2STHandle, UUID_TYPE_128, uuid, W2ST_CONSOLE_MAX_CHAR_LEN,
+	                           CHAR_PROP_NOTIFY| CHAR_PROP_WRITE_WITHOUT_RESP | CHAR_PROP_WRITE | CHAR_PROP_READ ,
+	                           ATTR_PERMISSION_NONE,
+	                           GATT_NOTIFY_ATTRIBUTE_WRITE | GATT_NOTIFY_READ_REQ_AND_WAIT_FOR_APPL_RESP,
+	                           16, 1, &TermCharHandle);
+
+	  if (BLE_STATUS_SUCCESS == ret) {
+		  COPY_STDERR_CHAR_UUID(uuid);
+		  ret =  aci_gatt_add_char(ConsoleW2STHandle, UUID_TYPE_128, uuid, W2ST_CONSOLE_MAX_CHAR_LEN,
+		                           CHAR_PROP_NOTIFY | CHAR_PROP_READ,
+		                           ATTR_PERMISSION_NONE,
+		                           GATT_NOTIFY_READ_REQ_AND_WAIT_FOR_APPL_RESP,
+		                           16, 1, &StdErrCharHandle);
+	  }
   }
 
-  COPY_TERM_CHAR_UUID(uuid);
-  ret =  aci_gatt_add_char(ConsoleW2STHandle, UUID_TYPE_128, uuid, W2ST_CONSOLE_MAX_CHAR_LEN,
-                           CHAR_PROP_NOTIFY| CHAR_PROP_WRITE_WITHOUT_RESP | CHAR_PROP_WRITE | CHAR_PROP_READ ,
-                           ATTR_PERMISSION_NONE,
-                           GATT_NOTIFY_ATTRIBUTE_WRITE | GATT_NOTIFY_READ_REQ_AND_WAIT_FOR_APPL_RESP,
-                           16, 1, &TermCharHandle);
-
-  if (ret != BLE_STATUS_SUCCESS) {
-    goto fail;
-  }
-
-  COPY_STDERR_CHAR_UUID(uuid);
-  ret =  aci_gatt_add_char(ConsoleW2STHandle, UUID_TYPE_128, uuid, W2ST_CONSOLE_MAX_CHAR_LEN,
-                           CHAR_PROP_NOTIFY | CHAR_PROP_READ,
-                           ATTR_PERMISSION_NONE,
-                           GATT_NOTIFY_READ_REQ_AND_WAIT_FOR_APPL_RESP,
-                           16, 1, &StdErrCharHandle);
-
-  if (ret != BLE_STATUS_SUCCESS) {
-     goto fail;
-  }
-
-  return BLE_STATUS_SUCCESS;
-
-fail:
-  //PRINTF("Error while adding Console service.\n");
-  return BLE_STATUS_ERROR;
+  return ((BLE_STATUS_SUCCESS == ret) ? BLE_STATUS_SUCCESS : BLE_STATUS_ERROR);
 }
 
 /**
@@ -769,7 +746,7 @@ void Read_Request_CB(uint16_t handle)
     int32_t decPart, intPart;
     if (NULL != TargetBoardFeatures.HandlePressSensor) {
       if (((0u != TargetBoardFeatures.SnsAltFunc) ? BSP_PRESSURE_IsInitialized : BSP_PRESSURE_IsInitialized)(TargetBoardFeatures.HandlePressSensor, &Status) == COMPONENT_OK) {
-        ((0u != TargetBoardFeatures.SnsAltFunc) ? BSP_PRESSURE_Get_Press : BSP_PRESSURE_Get_Press)(TargetBoardFeatures.HandlePressSensor, (float32_t *)&SensorValue);
+        (void) ((0u != TargetBoardFeatures.SnsAltFunc) ? BSP_PRESSURE_Get_Press : BSP_PRESSURE_Get_Press)(TargetBoardFeatures.HandlePressSensor, (float32_t *)&SensorValue);
         MCR_BLUEMS_F2I_2D(SensorValue, intPart, decPart);
         PressToSend = (intPart * 100) + decPart;
       }
@@ -909,7 +886,7 @@ static uint32_t DebugConsoleCommandParsing(uint8_t * att_data, uint8_t data_leng
     SendBackData = 0;
   }
 #ifndef USE_STM32L0XX_NUCLEO
-  else if (!strncmp("versionFw", (char *)(att_data), 9)) {
+  else if (0 == strncmp("versionFw", (char *)(att_data), 9)) {
     BytesToWrite = sprintf((char *)BufferToWrite, "%s_%s_%c.%c.%c\r\n",
 #ifdef STM32F401xC
                           "F401"
@@ -928,7 +905,7 @@ static uint32_t DebugConsoleCommandParsing(uint8_t * att_data, uint8_t data_leng
     SendBackData = 0;
   }
 #endif /* USE_STM32L0XX_NUCLEO */
-  else if(!strncmp("info", (char *)(att_data), 4)) {
+  else if(0 == strncmp("info", (char *)(att_data), 4)) {
     SendBackData = 0;
     
     BytesToWrite = sprintf((char *)BufferToWrite, "\r\nSTMicroelectronics %s:\r\n"
@@ -985,9 +962,9 @@ static uint32_t DebugConsoleCommandParsing(uint8_t * att_data, uint8_t data_leng
 #endif /* STM32_NUCLEO */
   }
 #ifndef USE_STM32L0XX_NUCLEO
-  else if (!strncmp("upgradeFw", (char *)(att_data), 9)) {
+  else if (0 == strncmp("upgradeFw", (char *)(att_data), 9)) {
     /* DO nothing, OTA function not integrated */
-  } else if (!strncmp("versionBle", (char *)(att_data), 10)) {
+  } else if (0 == strncmp("versionBle", (char *)(att_data), 10)) {
     uint8_t  hwVersion;
     uint16_t fwVersion;
     /* get the BlueNRG HW and FW versions */
