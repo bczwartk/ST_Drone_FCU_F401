@@ -36,6 +36,8 @@
 #include "stm32f4xx_hal_pcd_ex.h"
 #include "stm32f4xx_hal_cortex.h"
 #include "stm32f4xx_hal_gpio.h"
+#include "stm32f4xx_hal_uart.h"
+#include "stm32f4xx_hal_adc.h"
 
 /** User stub definition for function: uint32_t HAL_GetTick(void) */
 EXTERN_C_LINKAGE uint32_t HAL_GetTick () ;
@@ -814,4 +816,118 @@ EXTERN_C_LINKAGE void CppTest_Stub_HAL_NVIC_SetPriority (IRQn_Type IRQn, uint32_
 
     }
 
+}
+
+/** User stub definition for function: HAL_StatusTypeDef HAL_UART_Init(UART_HandleTypeDef *) */
+EXTERN_C_LINKAGE HAL_StatusTypeDef HAL_UART_Init (UART_HandleTypeDef * huart) ;
+EXTERN_C_LINKAGE HAL_StatusTypeDef CppTest_Stub_HAL_UART_Init (UART_HandleTypeDef * huart) 
+{
+    CPPTEST_STUB_CALLED("HAL_UART_Init");
+
+    HAL_StatusTypeDef __return = HAL_OK;
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo, HAL_StatusTypeDef* __return, UART_HandleTypeDef * huart)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("HAL_UART_Init", &CppTest_StubCallback_SomeName);
+     *
+     * 3. Fill out the body of the stub callback function according to intent.
+     * The following line may be used to call original function inside stub callback:
+     *     *__return = HAL_UART_Init(huart);
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS(HAL_StatusTypeDef* __return, UART_HandleTypeDef * huart);
+        CPPTEST_STUB_INVOKE_CALLBACK(&__return, huart);
+
+    } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
+        __return = HAL_UART_Init(huart);
+
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
+    return __return;
+}
+
+/** User stub definition for function: HAL_StatusTypeDef HAL_ADC_ConfigChannel(ADC_HandleTypeDef *, ADC_ChannelConfTypeDef *) */
+EXTERN_C_LINKAGE HAL_StatusTypeDef HAL_ADC_ConfigChannel (ADC_HandleTypeDef * hadc, ADC_ChannelConfTypeDef * sConfig) ;
+EXTERN_C_LINKAGE HAL_StatusTypeDef CppTest_Stub_HAL_ADC_ConfigChannel (ADC_HandleTypeDef * hadc, ADC_ChannelConfTypeDef * sConfig) 
+{
+    CPPTEST_STUB_CALLED("HAL_ADC_ConfigChannel");
+
+    HAL_StatusTypeDef __return = HAL_OK;
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo, HAL_StatusTypeDef* __return, ADC_HandleTypeDef * hadc, ADC_ChannelConfTypeDef * sConfig)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("HAL_ADC_ConfigChannel", &CppTest_StubCallback_SomeName);
+     *
+     * 3. Fill out the body of the stub callback function according to intent.
+     * The following line may be used to call original function inside stub callback:
+     *     *__return = HAL_ADC_ConfigChannel(hadc, sConfig);
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS(HAL_StatusTypeDef* __return, ADC_HandleTypeDef * hadc, ADC_ChannelConfTypeDef * sConfig);
+        CPPTEST_STUB_INVOKE_CALLBACK(&__return, hadc, sConfig);
+
+    } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
+        __return = HAL_ADC_ConfigChannel(hadc, sConfig);
+
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
+    return __return;
+}
+
+/** User stub definition for function: HAL_StatusTypeDef HAL_ADC_Init(ADC_HandleTypeDef *) */
+EXTERN_C_LINKAGE HAL_StatusTypeDef HAL_ADC_Init (ADC_HandleTypeDef * hadc) ;
+EXTERN_C_LINKAGE HAL_StatusTypeDef CppTest_Stub_HAL_ADC_Init (ADC_HandleTypeDef * hadc) 
+{
+    CPPTEST_STUB_CALLED("HAL_ADC_Init");
+
+    HAL_StatusTypeDef __return = HAL_OK;
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo, HAL_StatusTypeDef* __return, ADC_HandleTypeDef * hadc)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("HAL_ADC_Init", &CppTest_StubCallback_SomeName);
+     *
+     * 3. Fill out the body of the stub callback function according to intent.
+     * The following line may be used to call original function inside stub callback:
+     *     *__return = HAL_ADC_Init(hadc);
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS(HAL_StatusTypeDef* __return, ADC_HandleTypeDef * hadc);
+        CPPTEST_STUB_INVOKE_CALLBACK(&__return, hadc);
+
+    } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
+        __return = HAL_ADC_Init(hadc);
+
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
+    return __return;
 }

@@ -70,7 +70,8 @@ static uint8_t coordinateSystem = COORDINATE_SYSTEM;
  *      Gyro - mdps
  *      Mag - mguass
  */
-void ReadSensorRawData(void *ACC_handle, void *GYR_handle, void *MAG_handle, void *PRE_handle, AxesRaw_TypeDef *pAcc, AxesRaw_TypeDef *pGyro, AxesRaw_TypeDef *pMag, float32_t *pPre)
+void ReadSensorRawData(void *ACC_handle, void *GYR_handle, void *MAG_handle, void *PRE_handle,
+					   AxesRaw_TypeDef *pAcc, AxesRaw_TypeDef *pGyro, AxesRaw_TypeDef *pMag, float32_t *pPre)
 {
     int32_t t1;
     SensorAxes_t acc_temp_int16, gyro_temp_int16, mag_temp_int16;            /* Data Type int16_t */
@@ -100,8 +101,6 @@ void ReadSensorRawData(void *ACC_handle, void *GYR_handle, void *MAG_handle, voi
     
     if (0u != usePressureSensor) {
     	(void) BSP_PRESSURE_Get_Press(PRE_handle, pPre);
-    } else {
-    	pPre = NULL;
     }
     
     if (coordinateSystem == 1u) {

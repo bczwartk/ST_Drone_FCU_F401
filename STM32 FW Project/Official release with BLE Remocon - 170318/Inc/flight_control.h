@@ -92,8 +92,8 @@
 #define GYRO_OFFSET_Y       0.060
 #define GYRO_OFFSET_Z      -0.064
 
-#define FIFO_Order          5
-#define MID_FIFO            (FIFO_Order >> 1)
+#define FIFO_Order          5u
+#define MID_FIFO            (FIFO_Order >> 1u)
 #define FIFO_Order_Recip    (1.0 / FIFO_Order)
 
 // Structure for P-PI type PID control

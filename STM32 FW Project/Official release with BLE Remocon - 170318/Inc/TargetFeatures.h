@@ -103,11 +103,6 @@ typedef struct
 
 } TargetFeatures_t;
 
-/* Exported functions ------------------------------------------------------- */
-extern void InitTargetPlatform(TargetType_t BoardType);
-extern void LedOnTargetPlatform(void);
-extern void LedOffTargetPlatform(void);
-
 #ifdef __cplusplus
 }
 #endif

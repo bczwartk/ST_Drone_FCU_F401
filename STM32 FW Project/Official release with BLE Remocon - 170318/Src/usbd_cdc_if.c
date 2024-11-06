@@ -100,7 +100,7 @@ extern USBD_HandleTypeDef hUsbDeviceFS;
 static int8_t CDC_Init_FS     (void);
 static int8_t CDC_DeInit_FS   (void);
 static int8_t CDC_Control_FS  (uint8_t cmd, uint8_t* pbuf, uint16_t length);
-static int8_t CDC_Receive_FS  (uint8_t* Buf, uint32_t *Len);
+static int8_t CDC_Receive_FS  (uint8_t* pbuf, uint32_t *length);
 
 USBD_CDC_ItfTypeDef USBD_Interface_fops_FS = 
 {
@@ -122,8 +122,8 @@ static int8_t CDC_Init_FS(void)
   hUsbDevice_0 = &hUsbDeviceFS;
   /* USER CODE BEGIN 3 */ 
   /* Set Application Buffers */
-  (void)USBD_CDC_SetTxBuffer(hUsbDevice_0, UserTxBufferFS, 0);
-  (void)USBD_CDC_SetRxBuffer(hUsbDevice_0, UserRxBufferFS);
+  (void) USBD_CDC_SetTxBuffer(hUsbDevice_0, UserTxBufferFS, 0);
+  (void) USBD_CDC_SetRxBuffer(hUsbDevice_0, UserRxBufferFS);
   return ((int8_t) USBD_OK);
   /* USER CODE END 3 */ 
 }
@@ -149,29 +149,23 @@ static int8_t CDC_DeInit_FS(void)
   * @param  length: Number of data to be sent (in bytes)
   * @retval Result of the operation: USBD_OK if all operations are OK else USBD_FAIL
   */
-static int8_t CDC_Control_FS  (uint8_t cmd, uint8_t* pbuf, uint16_t length)
+static int8_t CDC_Control_FS(uint8_t cmd, uint8_t* pbuf, uint16_t length)
 { 
   /* USER CODE BEGIN 5 */
+  (void) pbuf;    // shut up MISRAC2012-RULE_2_7-a unused parameter warning
+  (void) length;  // shut up MISRAC2012-RULE_2_7-a unused parameter warning
+
   switch (cmd)
   {
   case CDC_SEND_ENCAPSULATED_COMMAND:
- 
     break;
-
   case CDC_GET_ENCAPSULATED_RESPONSE:
- 
     break;
-
   case CDC_SET_COMM_FEATURE:
- 
     break;
-
   case CDC_GET_COMM_FEATURE:
-
     break;
-
   case CDC_CLEAR_COMM_FEATURE:
-
     break;
 
   /*******************************************************************************/
@@ -192,21 +186,13 @@ static int8_t CDC_Control_FS  (uint8_t cmd, uint8_t* pbuf, uint16_t length)
   /* 6      | bDataBits  |   1   | Number Data bits (5, 6, 7, 8 or 16).          */
   /*******************************************************************************/
   case CDC_SET_LINE_CODING:   
-	
     break;
-
   case CDC_GET_LINE_CODING:     
-
     break;
-
   case CDC_SET_CONTROL_LINE_STATE:
-
     break;
-
   case CDC_SEND_BREAK:
- 
     break;    
-    
   default:
 	/* nothing really to do here */
     break;
@@ -231,9 +217,11 @@ static int8_t CDC_Control_FS  (uint8_t cmd, uint8_t* pbuf, uint16_t length)
   * @param  Len: Number of data received (in bytes)
   * @retval Result of the operation: USBD_OK if all operations are OK else USBD_FAIL
   */
-static int8_t CDC_Receive_FS (uint8_t* Buf, uint32_t *Len)
+static int8_t CDC_Receive_FS(uint8_t* pbuf, uint32_t *length)
 {
   /* USER CODE BEGIN 6 */
+  (void) pbuf;    // shut up MISRAC2012-RULE_2_7-a unused parameter warning
+  (void) length;  // shut up MISRAC2012-RULE_2_7-a unused parameter warning
   return ((int8_t) USBD_OK);
   /* USER CODE END 6 */ 
 }
@@ -249,11 +237,11 @@ static int8_t CDC_Receive_FS (uint8_t* Buf, uint32_t *Len)
   * @param  Len: Number of data to be send (in bytes)
   * @retval Result of the operation: USBD_OK if all operations are OK else USBD_FAIL or USBD_BUSY
   */
-uint8_t CDC_Transmit_FS(uint8_t* Buf, uint16_t Len)
+uint8_t CDC_Transmit_FS(uint8_t* pbuf, uint16_t length)
 {
   uint8_t result = (uint8_t) USBD_OK;
   /* USER CODE BEGIN 7 */ 
-  (void)USBD_CDC_SetTxBuffer(hUsbDevice_0, Buf, Len);
+  (void) USBD_CDC_SetTxBuffer(hUsbDevice_0, pbuf, length);
   result = USBD_CDC_TransmitPacket(hUsbDevice_0);
   /* USER CODE END 7 */ 
   return result;

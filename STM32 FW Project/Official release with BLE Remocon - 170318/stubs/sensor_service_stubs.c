@@ -469,3 +469,41 @@ EXTERN_C_LINKAGE uint32_t CppTest_Stub_ConfigCommandParsing (const uint8_t * att
 
     return __return;
 }
+
+/** User stub definition for function: tBleStatus AccGyroMag_Update(SensorAxes_t *, SensorAxes_t *, SensorAxes_t *) */
+EXTERN_C_LINKAGE tBleStatus AccGyroMag_Update (SensorAxes_t * Acc, SensorAxes_t * Gyro, SensorAxes_t * Mag) ;
+EXTERN_C_LINKAGE tBleStatus CppTest_Stub_AccGyroMag_Update (SensorAxes_t * Acc, SensorAxes_t * Gyro, SensorAxes_t * Mag) 
+{
+    CPPTEST_STUB_CALLED("AccGyroMag_Update");
+
+    tBleStatus __return = (unsigned char)0;
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo, tBleStatus* __return, SensorAxes_t * Acc, SensorAxes_t * Gyro, SensorAxes_t * Mag)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("AccGyroMag_Update", &CppTest_StubCallback_SomeName);
+     *
+     * 3. Fill out the body of the stub callback function according to intent.
+     * The following line may be used to call original function inside stub callback:
+     *     *__return = AccGyroMag_Update(Acc, Gyro, Mag);
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS(tBleStatus* __return, SensorAxes_t * Acc, SensorAxes_t * Gyro, SensorAxes_t * Mag);
+        CPPTEST_STUB_INVOKE_CALLBACK(&__return, Acc, Gyro, Mag);
+
+    } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
+        __return = AccGyroMag_Update(Acc, Gyro, Mag);
+
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
+    return __return;
+}

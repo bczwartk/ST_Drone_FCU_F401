@@ -11,8 +11,6 @@ static float32_t pid_z_integ2 = 0.0f;
 static float32_t pid_x_pre_error2 = 0.0f;
 static float32_t pid_y_pre_error2 = 0.0f;
 static float32_t pid_z_pre_error2 = 0.0f;
-static float32_t pid_x_pre_deriv = 0.0f;
-static float32_t pid_y_pre_deriv = 0.0f;
 
 extern int16_t gTHR;
 
@@ -223,6 +221,9 @@ void FlightControlPID_OuterLoop(const EulerAngleTypeDef *euler_rc_in, const Eule
 void FlightControlPID_innerLoop(const Gyro_Rad *gyro_in_rad_arg, P_PI_PIDControlTypeDef *thePid, MotorControlTypeDef *motor_pwm_out)
 {
   float32_t dt_recip, error, deriv, motor_thr;
+
+  static float32_t pid_x_pre_deriv = 0.0f;
+  static float32_t pid_y_pre_deriv = 0.0f;
 
   if (gTHR < MIN_THR) {
     pid_x_integ2 = 0.0f;

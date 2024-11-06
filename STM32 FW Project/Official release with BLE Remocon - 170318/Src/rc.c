@@ -35,26 +35,7 @@ int32_t ele_center = ELE_MIDDLE;
 int32_t rud_center = RUD_MIDDLE;
 #endif
 
-int32_t rc_cnt = 0;
-int32_t rc_acc[4] = {0};
-
 int32_t rc_z_control_flag = 1;
-
-GPIO_TypeDef* RC_Channel_Ports[4] =
-    {
-      RC_CHANNEL1_PORT,
-      RC_CHANNEL2_PORT,
-      RC_CHANNEL3_PORT,
-      RC_CHANNEL4_PORT
-    };
-
-uint16_t RC_Channel_Pins[4] =
-    {
-      RC_CHANNEL1_PIN,
-      RC_CHANNEL2_PIN,
-      RC_CHANNEL3_PIN,
-      RC_CHANNEL4_PIN
-    };
 
 volatile int32_t rc_timeout;    // R/C timeout counter
 uint8_t rc_connection_flag;    // R/C connection status
@@ -105,6 +86,7 @@ void init_rc_variables(void)
 
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 {
+  (void) htim;  // shut up MISRAC2012-RULE_2_7-a unused parameter warning
 #ifdef REMOCON_PWM
     int32_t timcnt, idx;
     // save the counter data
@@ -195,6 +177,8 @@ void HAL_SYSTICK_Callback(void)
 /* Update global variables of R/C data */
 void update_rc_data(int32_t idx)
 {
+  (void) idx;  // shut up MISRAC2012-RULE_2_7-a unused parameter warning
+
   #ifdef REMOCON_PWM
     switch (idx) {
       case 0: gAIL = rc_t[0] - ail_center; break;
@@ -248,6 +232,8 @@ void GetTargetEulerAngle(EulerAngleTypeDef *euler_rc_in, const EulerAngleTypeDef
 	const float32_t max_yaw_rad = (PI * YAW_MAX_DEG) / 180.0f;
 	int32_t t1;
 
+	(void) euler_ahrs_in;  // shut up MISRAC2012-RULE_2_7-a unused parameter warning
+
     t1 = limit_value(gELE);
     euler_rc_in->thx = (-t1 * max_pitch_rad) / RC_FULLSCALE;
 
@@ -281,7 +267,7 @@ static void init_queue(Queue_TypeDef *q)
   q->length = QUEUE_LENGTH;
   q->full = 0;
   q->empty = 1;
-  for (i=0; i < QUEUE_LENGTH; i++) {
+  for (i = 0; i < QUEUE_LENGTH; i++) {
     q->buffer[i][0] = 0;
     q->buffer[i][1] = 0;
   }

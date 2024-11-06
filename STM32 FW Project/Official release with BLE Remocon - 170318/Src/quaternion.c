@@ -61,10 +61,12 @@ void QuaternionRotation(const QuaternionTypeDef *qr, const QuaternionTypeDef *qv
     dq0q1 = dq0 * qr->q1;
     dq2q3 = dq2 * qr->q3;
 
+    // note: blame MISRAC2012-RULE_12_1-a for excessive parentheses even for
+    // the obvious elementary school operator precedence cases
     qo->q0 = 0.0f;
-    qo->q1 = ((q0q0 + q1q1) - q2q2 - q3q3) * qv->q1 + (dq1q2 + dq0q3) * qv->q2 + (dq1q3 - dq0q2) * qv->q3;
-    qo->q2 = (dq1q2 - dq0q3) * qv->q1 + (q0q0 + q2q2 - q1q1 - q3q3) * qv->q2 + (dq0q1 + dq2q3) * qv->q3;
-    qo->q3 = (dq0q2 + dq1q3) * qv->q1 + (dq2q3 - dq0q1) * qv->q2 + (q0q0 + q3q3 - q1q1 - q2q2) * qv->q3;
+    qo->q1 = (((q0q0 + q1q1) - q2q2 - q3q3) * qv->q1) + ((dq1q2 + dq0q3) * qv->q2) + ((dq1q3 - dq0q2) * qv->q3);
+    qo->q2 = ((dq1q2 - dq0q3) * qv->q1) + ((q0q0 + q2q2 - q1q1 - q3q3) * qv->q2) + ((dq0q1 + dq2q3) * qv->q3);
+    qo->q3 = ((dq0q2 + dq1q3) * qv->q1) + ((dq2q3 - dq0q1) * qv->q2) + ((q0q0 + q3q3 - q1q1 - q2q2) * qv->q3);
 }
 
 void QuaternionConj(const QuaternionTypeDef *qa, QuaternionTypeDef *qo)
@@ -82,8 +84,8 @@ void QuaternionToEuler(const QuaternionTypeDef *qr, EulerAngleTypeDef *ea)
 {
     float32_t q0q0, q1q1, q2q2, q3q3;
     float32_t dq0, dq1, dq2;
-    float32_t dq1q3, dq0q2/*, dq1q2*/;
-    float32_t dq0q1, dq2q3/*, dq0q3*/;
+    float32_t dq1q3, dq0q2 /*, dq1q2*/;
+    float32_t dq0q1, dq2q3 /*, dq0q3*/;
     float32_t asin_diff;
 
     q0q0 = qr->q0 * qr->q0;
@@ -123,5 +125,7 @@ void QuaternionToEuler(const QuaternionTypeDef *qr, EulerAngleTypeDef *ea)
     ea_pre.thy = ea->thy;
 #endif
 
-    // ea->thz = atan2(dq1q2 + dq0q3, (q0q0 + q1q1) - q2q2 - q3q3);
+#if 0
+    ea->thz = atan2(dq1q2 + dq0q3, (q0q0 + q1q1) - q2q2 - q3q3);
+#endif
 }

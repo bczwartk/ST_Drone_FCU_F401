@@ -207,8 +207,9 @@ static __ALIGN_BEGIN uint8_t USBD_StrDesc[USBD_MAX_STR_DESC_SIZ] __ALIGN_END;
 * @param  length : pointer to data length variable
 * @retval pointer to descriptor buffer
 */
-uint8_t *  USBD_FS_DeviceDescriptor( USBD_SpeedTypeDef speed , uint16_t *length)
+uint8_t *  USBD_FS_DeviceDescriptor(USBD_SpeedTypeDef speed, uint16_t *length)
 {
+  (void) speed;  // shut up MISRAC2012-RULE_2_7-a unused parameter warning
   *length = sizeof(USBD_FS_DeviceDesc);
   return USBD_FS_DeviceDesc;
 }
@@ -220,8 +221,9 @@ uint8_t *  USBD_FS_DeviceDescriptor( USBD_SpeedTypeDef speed , uint16_t *length)
 * @param  length : pointer to data length variable
 * @retval pointer to descriptor buffer
 */
-uint8_t *  USBD_FS_LangIDStrDescriptor( USBD_SpeedTypeDef speed , uint16_t *length)
+uint8_t *  USBD_FS_LangIDStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length)
 {
+  (void) speed;  // shut up MISRAC2012-RULE_2_7-a unused parameter warning
   *length =  sizeof(USBD_LangIDDesc);  
   return USBD_LangIDDesc;
 }
@@ -233,16 +235,10 @@ uint8_t *  USBD_FS_LangIDStrDescriptor( USBD_SpeedTypeDef speed , uint16_t *leng
 * @param  length : pointer to data length variable
 * @retval pointer to descriptor buffer
 */
-uint8_t *  USBD_FS_ProductStrDescriptor( USBD_SpeedTypeDef speed , uint16_t *length)
+uint8_t *  USBD_FS_ProductStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length)
 {
-  if (USBD_SPEED_HIGH == speed)
-  {   
-    USBD_GetString ((uint8_t *) USBD_PRODUCT_STRING_FS, USBD_StrDesc, length);  
-  }
-  else
-  {
-    USBD_GetString ((uint8_t *) USBD_PRODUCT_STRING_FS, USBD_StrDesc, length);    
-  }
+  (void) speed;  // shut up MISRAC2012-RULE_2_7-a unused parameter warning
+  USBD_GetString((uint8_t *) USBD_PRODUCT_STRING_FS, USBD_StrDesc, length);
   return USBD_StrDesc;
 }
 
@@ -253,9 +249,10 @@ uint8_t *  USBD_FS_ProductStrDescriptor( USBD_SpeedTypeDef speed , uint16_t *len
 * @param  length : pointer to data length variable
 * @retval pointer to descriptor buffer
 */
-uint8_t *  USBD_FS_ManufacturerStrDescriptor( USBD_SpeedTypeDef speed , uint16_t *length)
+uint8_t *  USBD_FS_ManufacturerStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length)
 {
-  USBD_GetString ((uint8_t *) USBD_MANUFACTURER_STRING, USBD_StrDesc, length);
+  (void) speed;  // shut up MISRAC2012-RULE_2_7-a unused parameter warning
+  USBD_GetString((uint8_t *) USBD_MANUFACTURER_STRING, USBD_StrDesc, length);
   return USBD_StrDesc;
 }
 
@@ -266,16 +263,10 @@ uint8_t *  USBD_FS_ManufacturerStrDescriptor( USBD_SpeedTypeDef speed , uint16_t
 * @param  length : pointer to data length variable
 * @retval pointer to descriptor buffer
 */
-uint8_t *  USBD_FS_SerialStrDescriptor( USBD_SpeedTypeDef speed , uint16_t *length)
+uint8_t *  USBD_FS_SerialStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length)
 {
-  if(speed  == USBD_SPEED_HIGH)
-  {    
-    USBD_GetString ((uint8_t *) USBD_SERIALNUMBER_STRING_FS, USBD_StrDesc, length);
-  }
-  else
-  {
-    USBD_GetString ((uint8_t *) USBD_SERIALNUMBER_STRING_FS, USBD_StrDesc, length);    
-  }
+  (void) speed;  // shut up MISRAC2012-RULE_2_7-a unused parameter warning
+  USBD_GetString ((uint8_t *) USBD_SERIALNUMBER_STRING_FS, USBD_StrDesc, length);
   return USBD_StrDesc;
 }
 
@@ -286,16 +277,10 @@ uint8_t *  USBD_FS_SerialStrDescriptor( USBD_SpeedTypeDef speed , uint16_t *leng
 * @param  length : pointer to data length variable
 * @retval pointer to descriptor buffer
 */
-uint8_t *  USBD_FS_ConfigStrDescriptor( USBD_SpeedTypeDef speed , uint16_t *length)
+uint8_t *  USBD_FS_ConfigStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length)
 {
-  if(speed  == USBD_SPEED_HIGH)
-  {  
-    USBD_GetString ((uint8_t *) USBD_CONFIGURATION_STRING_FS, USBD_StrDesc, length);
-  }
-  else
-  {
-    USBD_GetString ((uint8_t *) USBD_CONFIGURATION_STRING_FS, USBD_StrDesc, length); 
-  }
+  (void) speed;  // shut up MISRAC2012-RULE_2_7-a unused parameter warning
+  USBD_GetString ((uint8_t *) USBD_CONFIGURATION_STRING_FS, USBD_StrDesc, length);
   return USBD_StrDesc;  
 }
 
@@ -306,16 +291,10 @@ uint8_t *  USBD_FS_ConfigStrDescriptor( USBD_SpeedTypeDef speed , uint16_t *leng
 * @param  length : pointer to data length variable
 * @retval pointer to descriptor buffer
 */
-uint8_t *  USBD_FS_InterfaceStrDescriptor( USBD_SpeedTypeDef speed , uint16_t *length)
+uint8_t *  USBD_FS_InterfaceStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length)
 {
-  if(USBD_SPEED_HIGH == speed)
-  {
-    USBD_GetString ((uint8_t *) USBD_INTERFACE_STRING_FS, USBD_StrDesc, length);
-  }
-  else
-  {
-    USBD_GetString ((uint8_t *) USBD_INTERFACE_STRING_FS, USBD_StrDesc, length);
-  }
+  (void) speed;  // shut up MISRAC2012-RULE_2_7-a unused parameter warning
+  USBD_GetString ((uint8_t *) USBD_INTERFACE_STRING_FS, USBD_StrDesc, length);
   return USBD_StrDesc;  
 }
 #if (USBD_LPM_ENABLED == 1)

@@ -3,19 +3,7 @@
 #include "basic_math.h"
 #include "flight_control.h"
 
-
-float32_t offset[3];
-float32_t cor[3][3];
-
-static float32_t g_q0 = 1.0f, g_q1 = 0.0f, g_q2 = 0.0f, g_q3 = 0.0f;
-float32_t gx_off, gy_off, gz_off;
-float32_t mx_mag, my_mag, mz_mag;
-float32_t wbx = 0.0f, wby = 0.0f, wbz = 0.0f;
-float32_t by = 1.0f, bz = 0.0f;
-static float32_t exInt = 0.0f, eyInt = 0.0f, ezInt = 0.0f;
-
 extern int16_t gTHR;
-static float32_t ahrs_kp;
 
 void ahrs_fusion_ag(const AxesRaw_TypeDef_Float *acc_in, const AxesRaw_TypeDef_Float *gyro_in, AHRS_State_TypeDef *ahrs_in)
 {
@@ -25,6 +13,10 @@ void ahrs_fusion_ag(const AxesRaw_TypeDef_Float *acc_in, const AxesRaw_TypeDef_F
   float32_t ex, ey, ez;
   float32_t q0q0, q0q1, q0q2, /*q0q3,*/ q1q1, /*q1q2,*/ q1q3, q2q2, q2q3, q3q3;
   float32_t halfT;
+
+  static float32_t ahrs_kp = 0.0f;
+  static float32_t exInt = 0.0f, eyInt = 0.0f, ezInt = 0.0f;
+  static float32_t g_q0 = 1.0f, g_q1 = 0.0f, g_q2 = 0.0f, g_q3 = 0.0f;
  
   if (gTHR < MIN_THR) {
     ahrs_kp = AHRS_KP_BIG;

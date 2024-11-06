@@ -992,7 +992,7 @@ static void enableAllSensors( void )
 static void BlueNRG_Init(void)
 {
   
-  int32_t ret = 1;
+  tBleStatus ret = 1u;
   uint8_t  hwVersion = 0u;
   uint16_t fwVersion = 0u;
   
@@ -1001,7 +1001,7 @@ static void BlueNRG_Init(void)
 
   uint8_t tmp_bdaddr[6] = {MAC_BLUEMS};
   int32_t i;
-  for(i = 0; i < 6; i++) {
+  for (i = 0; i < 6; i++) {
     bdaddr[i] = tmp_bdaddr[i];
   }
   
@@ -1024,7 +1024,7 @@ static void BlueNRG_Init(void)
     ret = aci_hal_write_config_data(CONFIG_DATA_PUBADDR_OFFSET,
                                     CONFIG_DATA_PUBADDR_LEN,
                                     bdaddr);
-    if (0 != ret) {
+    if (BLE_STATUS_SUCCESS != ret) {
       testStatus = COMPONENT_ERROR;
       PRINTF("\r\nSetting Pubblic BD_ADDR failed *****\r\n");
       goto fail;
@@ -1032,7 +1032,7 @@ static void BlueNRG_Init(void)
     
     PRINTF("GATT Initializzation...\r\n");
     ret = aci_gatt_init();    
-    if (0 !=  ret) {
+    if (BLE_STATUS_SUCCESS !=  ret) {
       testStatus = COMPONENT_ERROR;
       PRINTF("\r\nGATT_Init failed ****\r\n");
       goto fail;
@@ -1070,13 +1070,13 @@ static void BlueNRG_Init(void)
            "Board HWver=%d, FWver=%d.%d.%c\r\n"
            "BoardMAC = %x:%x:%x:%x:%x:%x\r\n",
            hwVersion,
-           fwVersion>>8,
-           (fwVersion>>4)&0xF,
-           (hwVersion > 0x30) ? ('a'+(fwVersion&0xF)-1) : 'a',
-           bdaddr[5],bdaddr[4],bdaddr[3],bdaddr[2],bdaddr[1],bdaddr[0]);
+           fwVersion >> 8u,
+           (fwVersion >> 4u) & 0xFu,
+           (hwVersion > 0x30u) ? ('a' + (fwVersion & 0xFu) - 1) : 'a',
+           bdaddr[5], bdaddr[4], bdaddr[3], bdaddr[2], bdaddr[1], bdaddr[0]);
 
     /* Set output power level */
-    (void)aci_hal_set_tx_power_level(1, 4);    /* -2.1dBm */
+    (void) aci_hal_set_tx_power_level(1u, 4u);    /* -2.1dBm */
     
     ret = Add_ConsoleW2ST_Service();
     if (ret == BLE_STATUS_SUCCESS) {
@@ -1184,19 +1184,19 @@ static void SendBattEnvData(void)
     (void) HAL_ADC_Stop(&hadc1);
     
     MCR_BLUEMS_F2I_2D(press, intPart, decPart);
-    PressToSend = intPart * 100 + decPart;
+    PressToSend = (intPart * 100) + decPart;
     MCR_BLUEMS_F2I_1D(((int32_t)((float32_t)VBAT * 100.0f) / 4.2f), intPart, decPart);
-    BattToSend = intPart * 10 + decPart;
+    BattToSend = (intPart * 10) + decPart;
     if (BattToSend > 1000u) {
       BattToSend = 1000u;
     }
     MCR_BLUEMS_F2I_1D(temperature, intPart, decPart);
-    TempToSend = intPart * 10 + decPart;
+    TempToSend = (intPart * 10) + decPart;
     
-    (void)hci_read_rssi(&conn_handle, &rssi);
+    (void) hci_read_rssi(&conn_handle, &rssi);
     RSSIToSend = (int16_t)rssi * 10;
     
-    (void)Batt_Env_RSSI_Update(PressToSend, BattToSend, TempToSend, RSSIToSend);
+    (void) Batt_Env_RSSI_Update(PressToSend, BattToSend, TempToSend, RSSIToSend);
 }
 
 
