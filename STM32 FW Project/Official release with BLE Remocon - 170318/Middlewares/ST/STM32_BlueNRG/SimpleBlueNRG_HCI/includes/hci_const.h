@@ -26,11 +26,11 @@
 #define HCI_MAX_PAYLOAD_SIZE 128
 
 /* HCI Packet types */
-#define HCI_COMMAND_PKT		0x01
-#define HCI_ACLDATA_PKT		0x02
-#define HCI_SCODATA_PKT		0x03
-#define HCI_EVENT_PKT		0x04
-#define HCI_VENDOR_PKT		0xff
+#define HCI_COMMAND_PKT		0x01u
+#define HCI_ACLDATA_PKT		0x02u
+#define HCI_SCODATA_PKT		0x03u
+#define HCI_EVENT_PKT		0x04u
+#define HCI_VENDOR_PKT		0xffu
 
 typedef __packed struct _hci_uart_pckt{
   uint8_t type;
@@ -383,7 +383,7 @@ typedef __packed struct _le_test_end_rp{
 
 
 /*------------- Events -------------*/
-#define EVT_CONN_COMPLETE		0x03
+#define EVT_CONN_COMPLETE		0x03u
 typedef __packed struct _evt_conn_complete{
   uint8_t  status;
   uint16_t handle;
@@ -393,7 +393,7 @@ typedef __packed struct _evt_conn_complete{
 } PACKED evt_conn_complete;
 #define EVT_CONN_COMPLETE_SIZE 13
 
-#define EVT_DISCONN_COMPLETE		0x05
+#define EVT_DISCONN_COMPLETE		0x05u
 typedef __packed struct _evt_disconn_complete{
   uint8_t  status;
   uint16_t handle;
@@ -401,7 +401,7 @@ typedef __packed struct _evt_disconn_complete{
 } PACKED evt_disconn_complete;
 #define EVT_DISCONN_COMPLETE_SIZE 4
 
-#define EVT_ENCRYPT_CHANGE		0x08
+#define EVT_ENCRYPT_CHANGE		0x08u
 typedef __packed struct _evt_encrypt_change{
   uint8_t  status;
   uint16_t handle;
@@ -411,14 +411,14 @@ typedef __packed struct _evt_encrypt_change{
 
 #define EVT_READ_REMOTE_VERSION_COMPLETE	0x0C
 
-#define EVT_CMD_COMPLETE 		0x0E
+#define EVT_CMD_COMPLETE 		0x0Eu
 typedef __packed struct _evt_cmd_complete{
   uint8_t  ncmd;
   uint16_t opcode;
 } PACKED evt_cmd_complete;
 #define EVT_CMD_COMPLETE_SIZE 3
 
-#define EVT_CMD_STATUS 			0x0F
+#define EVT_CMD_STATUS 			0x0Fu
 typedef __packed struct _evt_cmd_status{
   uint8_t  status;
   uint8_t  ncmd;
@@ -426,13 +426,13 @@ typedef __packed struct _evt_cmd_status{
 } PACKED evt_cmd_status;
 #define EVT_CMD_STATUS_SIZE 4
 
-#define EVT_HARDWARE_ERROR		0x10
+#define EVT_HARDWARE_ERROR		0x10u
 typedef __packed struct _evt_hardware_error{
   uint8_t code;
 } PACKED evt_hardware_error;
 #define EVT_HARDWARE_ERROR_SIZE 1
 
-#define EVT_NUM_COMP_PKTS		0x13
+#define EVT_NUM_COMP_PKTS		0x13u
 typedef __packed struct _evt_num_comp_pkts{
   uint8_t num_hndl;
   /* variable length part */
@@ -446,13 +446,13 @@ typedef __packed struct _evt_num_comp_pkts_param{
 } PACKED evt_num_comp_pkts_param;
 #define EVT_NUM_COMP_PKTS_PARAM_SIZE 1
 
-#define EVT_DATA_BUFFER_OVERFLOW		0x1A
+#define EVT_DATA_BUFFER_OVERFLOW		0x1Au
 typedef __packed struct _evt_data_buffer_overflow{
   uint8_t link_type;
 } PACKED evt_data_buffer_overflow;
 #define EVT_DATA_BUFFER_OVERFLOW_SIZE 1
 
-#define EVT_ENCRYPTION_KEY_REFRESH_COMPLETE	0x30
+#define EVT_ENCRYPTION_KEY_REFRESH_COMPLETE	0x30u
 typedef __packed struct _evt_encryption_key_refresh_complete{
   uint8_t  status;
   uint16_t handle;
@@ -466,7 +466,7 @@ typedef __packed struct _evt_le_meta_event{
 } PACKED evt_le_meta_event;
 #define EVT_LE_META_EVENT_SIZE 1
 
-#define EVT_LE_CONN_COMPLETE	0x01
+#define EVT_LE_CONN_COMPLETE	0x01u
 typedef __packed struct _evt_le_connection_complete{
   uint8_t  status;
   uint16_t handle;
@@ -478,9 +478,9 @@ typedef __packed struct _evt_le_connection_complete{
   uint16_t supervision_timeout;
   uint8_t  master_clock_accuracy;
 } PACKED evt_le_connection_complete;
-#define EVT_LE_CONN_COMPLETE_SIZE 18
+#define EVT_LE_CONN_COMPLETE_SIZE 18u
 
-#define EVT_LE_ADVERTISING_REPORT	0x02
+#define EVT_LE_ADVERTISING_REPORT	0x02u
 typedef __packed struct _le_advertising_info{
   uint8_t evt_type;
   uint8_t bdaddr_type;
@@ -490,7 +490,7 @@ typedef __packed struct _le_advertising_info{
 } PACKED le_advertising_info;
 #define LE_ADVERTISING_INFO_SIZE 9
 
-#define EVT_LE_CONN_UPDATE_COMPLETE	0x03
+#define EVT_LE_CONN_UPDATE_COMPLETE	0x03u
 typedef __packed struct _evt_le_connection_update_complete{
   uint8_t  status;
   uint16_t handle;
@@ -500,7 +500,7 @@ typedef __packed struct _evt_le_connection_update_complete{
 } PACKED evt_le_connection_update_complete;
 #define EVT_LE_CONN_UPDATE_COMPLETE_SIZE 9
 
-#define EVT_LE_READ_REMOTE_USED_FEATURES_COMPLETE	0x04
+#define EVT_LE_READ_REMOTE_USED_FEATURES_COMPLETE	0x04u
 typedef __packed struct _evt_le_read_remote_used_features_complete{
   uint8_t  status;
   uint16_t handle;
@@ -508,7 +508,7 @@ typedef __packed struct _evt_le_read_remote_used_features_complete{
 } PACKED evt_le_read_remote_used_features_complete;
 #define EVT_LE_READ_REMOTE_USED_FEATURES_COMPLETE_SIZE 11
 
-#define EVT_LE_LTK_REQUEST	0x05
+#define EVT_LE_LTK_REQUEST	0x05u
 typedef __packed struct _evt_le_long_term_key_request{
   uint16_t handle;
   uint8_t  random[8];
@@ -520,7 +520,7 @@ typedef __packed struct _evt_le_long_term_key_request{
 * The event code in the @ref hci_event_pckt structure. If event code is EVT_VENDOR,
 * application can use @ref evt_blue_aci structure to parse the packet.
 */
-#define EVT_VENDOR	0xFF
+#define EVT_VENDOR	0xFFu
 
 
 /* Command opcode pack/unpack */

@@ -60,8 +60,8 @@
 #define MAX_TEMP_SENSORS 2
 
 /* BlueNRG Board Type */
-#define IDB04A1 0
-#define IDB05A1 1
+#define IDB04A1 0u
+#define IDB05A1 1u
 
 /* Exported macros ------------------------------------------------------- */
 
@@ -102,9 +102,6 @@ typedef struct
 #endif /* STM32_SENSORTILE */
 
 } TargetFeatures_t;
-
-/* Exported variables ------------------------------------------------------- */
-extern TargetFeatures_t TargetBoardFeatures;
 
 /* Exported functions ------------------------------------------------------- */
 extern void InitTargetPlatform(TargetType_t BoardType);

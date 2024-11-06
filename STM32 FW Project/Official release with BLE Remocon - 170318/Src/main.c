@@ -106,7 +106,6 @@ DrvStatusTypeDef testStatus = COMPONENT_OK;
 uint8_t test_res_global = 0u;
 uint8_t testEvent = 0u;
 uint8_t bdaddr[6];
-extern int32_t connected;
 
 
 /* Private function prototypes -----------------------------------------------*/
@@ -184,7 +183,6 @@ uint8_t tmp_lis2mdl;
 SensorAxes_t tmp_mag;
 
 /* BLE */
-extern uint8_t set_connectable;
 uint16_t service_handle, dev_name_char_handle, appearance_char_handle;
 uint32_t ConnectionBleStatus = 0u;
 uint8_t BufferToWrite[256];
@@ -552,8 +550,9 @@ int main(void)
         }
     }
   }
-
+#pragma diag_suppress = Pe111
   return 0; /* not reachable - just to make MISRAC2012-RULE_17_4-a happy */
+#pragma diag_warning = Pe111
   /* USER CODE END 3 */
 }
 

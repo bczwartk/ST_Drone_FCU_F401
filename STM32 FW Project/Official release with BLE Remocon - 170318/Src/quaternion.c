@@ -101,7 +101,9 @@ void QuaternionToEuler(const QuaternionTypeDef *qr, EulerAngleTypeDef *ea)
     dq2q3 = dq2 * qr->q3;
 
     errno = 0;
+#pragma diag_suppress = Pa205
     ea->thx = atan2(dq0q1 + dq2q3, (q0q0 + q3q3) - q1q1 - q2q2);
+#pragma diag_warning = Pa205
 
     errno = 0;
     asin_diff = dq0q2 - dq1q3;

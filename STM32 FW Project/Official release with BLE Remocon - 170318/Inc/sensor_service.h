@@ -105,7 +105,7 @@ extern void       HCI_Event_CB(void *pckt);
 
 /* Define the Max dimesion of the Bluetooth characteristics
 for each packet used for Console Service */
-#define W2ST_CONSOLE_MAX_CHAR_LEN 20
+#define W2ST_CONSOLE_MAX_CHAR_LEN 20u
 
 /* Define the symbol used for defining each termination string
 used in Console service */
@@ -115,31 +115,31 @@ used in Console service */
 #define FROM_MG_TO_G    0.001
 
 /* Feature mask for Accelerometer events */
-#define FEATURE_MASK_ACC_EVENTS 0x00000400
+#define FEATURE_MASK_ACC_EVENTS 0x00000400u
 
 /* Feature mask for LED */
-#define FEATURE_MASK_LED 0x20000000
+#define FEATURE_MASK_LED 0x20000000u
 
 /* Feature mask for Temperature1 */
-#define FEATURE_MASK_TEMP1 0x00040000
+#define FEATURE_MASK_TEMP1 0x00040000u
 
 /* Feature mask for Temperature2 */
-#define FEATURE_MASK_TEMP2 0x00010000
+#define FEATURE_MASK_TEMP2 0x00010000u
 
 /* Feature mask for Pressure */
-#define FEATURE_MASK_PRESS 0x00100000
+#define FEATURE_MASK_PRESS 0x00100000u
 
 /* Feature mask for Humidity */
-#define FEATURE_MASK_HUM   0x00080000
+#define FEATURE_MASK_HUM   0x00080000u
 
 /* Feature mask for Accelerometer */
-#define FEATURE_MASK_ACC   0x00800000
+#define FEATURE_MASK_ACC   0x00800000u
 
 /* Feature mask for Gyroscope */
-#define FEATURE_MASK_GRYO  0x00400000
+#define FEATURE_MASK_GRYO  0x00400000u
 
 /* Feature mask for Magnetometer */
-#define FEATURE_MASK_MAG   0x00200000
+#define FEATURE_MASK_MAG   0x00200000u
 
 /* BLE Characteristic connection control */
 /* Environmental Data */
@@ -162,6 +162,10 @@ used in Console service */
 
 /* Gas Gauge Feature */
 // define W2ST_CONNECT_GG_EVENT      (1u << 11u)
+
+/* Exported variables ---------------------------------------------------------*/
+extern int32_t connected;
+extern uint8_t set_connectable;
 
 #ifdef __cplusplus
 }

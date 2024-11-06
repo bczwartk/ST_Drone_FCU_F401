@@ -69,7 +69,7 @@
 
 /* Define the Max dimesion of the Bluetooth characteristics
 for each packet used for Console Service */
-#define W2ST_CONSOLE_MAX_CHAR_LEN 20
+#define W2ST_CONSOLE_MAX_CHAR_LEN 20u
 
 /**
  * @name Configuration values.

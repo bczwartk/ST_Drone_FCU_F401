@@ -196,7 +196,7 @@ void HAL_PCD_SuspendCallback(PCD_HandleTypeDef *hpcd)
   __HAL_PCD_GATE_PHYCLOCK(hpcd);
   /*Enter in STOP mode */
   /* USER CODE BEGIN 2 */
-  if (0 != hpcd->Init.low_power_enable) {
+  if (0u != hpcd->Init.low_power_enable) {
     /* Set SLEEPDEEP bit and SleepOnExit of Cortex System Control Register */
     SCB->SCR |= (uint32_t)((uint32_t)(SCB_SCR_SLEEPDEEP_Msk | SCB_SCR_SLEEPONEXIT_Msk));
   }

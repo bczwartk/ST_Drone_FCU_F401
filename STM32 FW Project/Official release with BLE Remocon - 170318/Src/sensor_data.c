@@ -87,7 +87,7 @@ void ReadSensorRawData(void *ACC_handle, void *GYR_handle, void *MAG_handle, voi
     gyro_temp.AXIS_Y = (int32_t) gyro_temp_int16.AXIS_Y;
     gyro_temp.AXIS_Z = (int32_t) gyro_temp_int16.AXIS_Z;
     // Read data is in mg unit
-    if (useMagSensor) {
+    if (0u != useMagSensor) {
     	(void) BSP_MAGNETO_Get_Axes(MAG_handle, &mag_temp_int16);
     	pMag->AXIS_X = (int32_t) mag_temp_int16.AXIS_X;
     	pMag->AXIS_Y = (int32_t) mag_temp_int16.AXIS_Y;
@@ -98,7 +98,7 @@ void ReadSensorRawData(void *ACC_handle, void *GYR_handle, void *MAG_handle, voi
     	pMag->AXIS_Z = 0;
     }
     
-    if (usePressureSensor) {
+    if (0u != usePressureSensor) {
     	(void) BSP_PRESSURE_Get_Press(PRE_handle, pPre);
     } else {
     	pPre = NULL;

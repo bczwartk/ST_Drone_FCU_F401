@@ -39,6 +39,9 @@ CPPTEST_TEST(TS_sensor_service_2_test_Attribute_Modified_CB_arming_char_ignore_o
 CPPTEST_TEST(TS_sensor_service_2_test_Attribute_Modified_CB_arming_char_off_with_term);
 CPPTEST_TEST(TS_sensor_service_2_test_Attribute_Modified_CB_arming_char_on_with_term);
 CPPTEST_TEST(TS_sensor_service_2_test_Attribute_Modified_CB_config_char_handle);
+CPPTEST_TEST(TS_sensor_service_2_test_Attribute_Modified_CB_joystick_data);
+CPPTEST_TEST(TS_sensor_service_2_test_Attribute_Modified_CB_unknown_char_stderr);
+CPPTEST_TEST(TS_sensor_service_2_test_Attribute_Modified_CB_unknown_char_default);
 CPPTEST_TEST_SUITE_END();
         
 
@@ -69,6 +72,9 @@ void TS_sensor_service_2_test_Attribute_Modified_CB_arming_char_ignore_on(void);
 void TS_sensor_service_2_test_Attribute_Modified_CB_arming_char_off_with_term(void);
 void TS_sensor_service_2_test_Attribute_Modified_CB_arming_char_on_with_term(void);
 void TS_sensor_service_2_test_Attribute_Modified_CB_config_char_handle(void);
+void TS_sensor_service_2_test_Attribute_Modified_CB_joystick_data(void);
+void TS_sensor_service_2_test_Attribute_Modified_CB_unknown_char_stderr(void);
+void TS_sensor_service_2_test_Attribute_Modified_CB_unknown_char_default(void);
 CPPTEST_TEST_SUITE_REGISTRATION(TS_sensor_service_2);
 
 void TS_sensor_service_2_testSuiteSetUp(void);
@@ -321,7 +327,7 @@ void TS_sensor_service_2_test_Attribute_Modified_CB_config_char_ignore()
     // initialize globals
 	test_helper_Read_Request_CB_init_inputs();
 
-	attr_handle = ConfigCharHandle + 2;
+	attr_handle = ConfigCharHandle + 2u;
 	att_data = 0u; // ignored
 	data_length = 0u;
 
@@ -339,7 +345,7 @@ void TS_sensor_service_2_test_Attribute_Modified_CB_stderr_char_off()
     // initialize globals
 	test_helper_Read_Request_CB_init_inputs();
 
-	attr_handle = StdErrCharHandle + 2;
+	attr_handle = StdErrCharHandle + 2u;
 	att_data = 0u;  // turn off
 	data_length = 1u;
 	ConnectionBleStatus |= (W2ST_CONNECT_STD_ERR); // initially set to on
@@ -360,7 +366,7 @@ void TS_sensor_service_2_test_Attribute_Modified_CB_stderr_char_on()
     // initialize globals
 	test_helper_Read_Request_CB_init_inputs();
 
-	attr_handle = StdErrCharHandle + 2;
+	attr_handle = StdErrCharHandle + 2u;
 	att_data = 1u;  // turn on
 	data_length = 1u;
 	ConnectionBleStatus &= ~(W2ST_CONNECT_STD_ERR); // initially set to off
@@ -381,7 +387,7 @@ void TS_sensor_service_2_test_Attribute_Modified_CB_stderr_char_ignore_on()
     // initialize globals
 	test_helper_Read_Request_CB_init_inputs();
 
-	attr_handle = StdErrCharHandle + 2;
+	attr_handle = StdErrCharHandle + 2u;
 	att_data = 3u;  // anything
 	data_length = 1u;
 	ConnectionBleStatus |= (W2ST_CONNECT_STD_ERR); // initially set to on
@@ -402,7 +408,7 @@ void TS_sensor_service_2_test_Attribute_Modified_CB_stderr_char_ignore_off()
     // initialize globals
 	test_helper_Read_Request_CB_init_inputs();
 
-	attr_handle = StdErrCharHandle + 2;
+	attr_handle = StdErrCharHandle + 2u;
 	att_data = 3u;  // anything
 	data_length = 1u;
 	ConnectionBleStatus &= ~(W2ST_CONNECT_STD_ERR); // initially set to off
@@ -423,7 +429,7 @@ void TS_sensor_service_2_test_Attribute_Modified_CB_term_char_on()
     // initialize globals
 	test_helper_Read_Request_CB_init_inputs();
 
-	attr_handle = TermCharHandle + 2;
+	attr_handle = TermCharHandle + 2u;
 	att_data = 1u;  // turn on
 	data_length = 1u;
 	ConnectionBleStatus &= ~(W2ST_CONNECT_STD_TERM); // initially set to off
@@ -444,7 +450,7 @@ void TS_sensor_service_2_test_Attribute_Modified_CB_term_char_off()
     // initialize globals
 	test_helper_Read_Request_CB_init_inputs();
 
-	attr_handle = TermCharHandle + 2;
+	attr_handle = TermCharHandle + 2u;
 	att_data = 0u;  // turn off
 	data_length = 1u;
 	ConnectionBleStatus |= (W2ST_CONNECT_STD_TERM); // initially set to on
@@ -465,7 +471,7 @@ void TS_sensor_service_2_test_Attribute_Modified_CB_term_char_ignore_off()
     // initialize globals
 	test_helper_Read_Request_CB_init_inputs();
 
-	attr_handle = TermCharHandle + 2;
+	attr_handle = TermCharHandle + 2u;
 	att_data = 3u;  // anything
 	data_length = 1u;
 	ConnectionBleStatus &= ~(W2ST_CONNECT_STD_TERM); // initially set to off
@@ -486,7 +492,7 @@ void TS_sensor_service_2_test_Attribute_Modified_CB_term_char_ignore_on()
     // initialize globals
 	test_helper_Read_Request_CB_init_inputs();
 
-	attr_handle = TermCharHandle + 2;
+	attr_handle = TermCharHandle + 2u;
 	att_data = 3u;  // anything
 	data_length = 1u;
 	ConnectionBleStatus |= (W2ST_CONNECT_STD_TERM); // initially set to on
@@ -524,7 +530,7 @@ void TS_sensor_service_2_test_Attribute_Modified_CB_term_char_send_back()
     // initialize globals
 	test_helper_Read_Request_CB_init_inputs();
 
-	attr_handle = TermCharHandle + 1;
+	attr_handle = TermCharHandle + 1u;
 	att_data = 1u;	  // irrelevant for the test - stubs used
 	data_length = 1u; // irrelevant for the test - stubs used
 
@@ -549,7 +555,7 @@ void TS_sensor_service_2_test_Attribute_Modified_CB_term_char_no_send_back()
     // initialize globals
 	test_helper_Read_Request_CB_init_inputs();
 
-	attr_handle = TermCharHandle + 1;
+	attr_handle = TermCharHandle + 1u;
 	att_data = 1u;	  // irrelevant for the test - stubs used
 	data_length = 1u; // irrelevant for the test - stubs used
 
@@ -572,7 +578,7 @@ void TS_sensor_service_2_test_Attribute_Modified_CB_arming_char_off()
     // initialize globals
 	test_helper_Read_Request_CB_init_inputs();
 
-	attr_handle = ArmingCharHandle + 2;
+	attr_handle = ArmingCharHandle + 2u;
 	att_data = 0u;  // turn off
 	data_length = 1u;
 	ConnectionBleStatus |= (W2ST_CONNECT_LED); // initially set to on
@@ -597,7 +603,7 @@ void TS_sensor_service_2_test_Attribute_Modified_CB_arming_char_on()
 	// initialize globals
 	test_helper_Read_Request_CB_init_inputs();
 
-	attr_handle = ArmingCharHandle + 2;
+	attr_handle = ArmingCharHandle + 2u;
 	att_data = 1u;  // turn on
 	data_length = 1u;
 	ConnectionBleStatus &= ~(W2ST_CONNECT_LED); // initially set to off
@@ -623,7 +629,7 @@ void TS_sensor_service_2_test_Attribute_Modified_CB_arming_char_ignore_off()
     // initialize globals
 	test_helper_Read_Request_CB_init_inputs();
 
-	attr_handle = ArmingCharHandle + 2;
+	attr_handle = ArmingCharHandle + 2u;
 	att_data = 3u;  // anything
 	data_length = 1u;
 	ConnectionBleStatus &= ~(W2ST_CONNECT_LED); // initially set to off
@@ -648,7 +654,7 @@ void TS_sensor_service_2_test_Attribute_Modified_CB_arming_char_ignore_on()
     // initialize globals
 	test_helper_Read_Request_CB_init_inputs();
 
-	attr_handle = ArmingCharHandle + 2;
+	attr_handle = ArmingCharHandle + 2u;
 	att_data = 3u;  // anything
 	data_length = 1u;
 	ConnectionBleStatus |= (W2ST_CONNECT_LED); // initially set to on
@@ -687,7 +693,7 @@ void TS_sensor_service_2_test_Attribute_Modified_CB_arming_char_off_with_term()
     // initialize globals
 	test_helper_Read_Request_CB_init_inputs();
 
-	attr_handle = ArmingCharHandle + 2;
+	attr_handle = ArmingCharHandle + 2u;
 	att_data = 0u;  // turn off
 	data_length = 1u;
 	ConnectionBleStatus |= (W2ST_CONNECT_LED); // initially set to on
@@ -713,7 +719,7 @@ void TS_sensor_service_2_test_Attribute_Modified_CB_arming_char_on_with_term()
     // initialize globals
 	test_helper_Read_Request_CB_init_inputs();
 
-	attr_handle = ArmingCharHandle + 2;
+	attr_handle = ArmingCharHandle + 2u;
 	att_data = 1u;  // turn on
 	data_length = 1u;
 	ConnectionBleStatus &= ~(W2ST_CONNECT_LED); // initially set to off
@@ -737,10 +743,86 @@ void TS_sensor_service_2_test_Attribute_Modified_CB_config_char_handle()
     // initialize globals
 	test_helper_Read_Request_CB_init_inputs();
 
-	attr_handle = ConfigCharHandle + 1;
+	attr_handle = ConfigCharHandle + 1u;
 	att_data = 0u; // ignored
 	data_length = 0u;
 
 	Attribute_Modified_CB(attr_handle, &att_data, data_length);
 }
 /* CPPTEST_TEST_CASE_END test_Attribute_Modified_CB_config_char_handle */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Attribute_Modified_CB_joystick_data */
+void TS_sensor_service_2_test_Attribute_Modified_CB_joystick_data()
+{
+	uint16_t attr_handle;
+	uint8_t att_data[1 + 8];
+	uint8_t data_length;
+
+    // initialize globals
+	test_helper_Read_Request_CB_init_inputs();
+
+	// zero the joystick data block
+	memset(&joydata[0], 0u, 8);
+	// test inputs
+	attr_handle = MaxCharHandle + 1u;
+	data_length = sizeof(att_data) / sizeof(att_data[0]);
+	// prepare joystick "data" - the first element is not used
+	for (size_t i = 0u; i < data_length; i++) {
+		att_data[i] = i;
+	}
+
+    // initialize globals
+	test_helper_Read_Request_CB_init_inputs();
+
+	// test call
+	Attribute_Modified_CB(attr_handle, att_data, data_length);
+
+	// validate
+	for (size_t i = 1u; i < data_length; i++) {
+		CPPTEST_ASSERT_UINTEGER_EQUAL(att_data[i], joydata[i - 1]);
+	}
+
+}
+/* CPPTEST_TEST_CASE_END test_Attribute_Modified_CB_joystick_data */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Attribute_Modified_CB_unknown_char_stderr */
+void TS_sensor_service_2_test_Attribute_Modified_CB_unknown_char_stderr()
+{
+	uint16_t attr_handle;
+	uint8_t att_data;
+	uint8_t data_length;
+
+	CPPTEST_EXPECT_NCALLS("Stderr_Update", 1);
+
+    // initialize globals
+	test_helper_Read_Request_CB_init_inputs();
+
+	attr_handle = MaxCharHandle + 4u; // example unknown handle
+	att_data = 0u; // ignored
+	data_length = 0u; // ignored
+	ConnectionBleStatus |= (W2ST_CONNECT_STD_ERR); // enable STDERR channel
+
+	Attribute_Modified_CB(attr_handle, &att_data, data_length);
+}
+/* CPPTEST_TEST_CASE_END test_Attribute_Modified_CB_unknown_char_stderr */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Attribute_Modified_CB_unknown_char_default */
+void TS_sensor_service_2_test_Attribute_Modified_CB_unknown_char_default()
+{
+	uint16_t attr_handle;
+	uint8_t att_data;
+	uint8_t data_length;
+
+	CPPTEST_EXPECT_NCALLS("Stderr_Update", 0);
+
+    // initialize globals
+	test_helper_Read_Request_CB_init_inputs();
+
+	attr_handle = MaxCharHandle + 4u; // example unknown handle
+	att_data = 0u; // ignored
+	data_length = 0u; // ignored
+	ConnectionBleStatus &= ~(W2ST_CONNECT_STD_ERR); // disable STDERR channel
+
+	Attribute_Modified_CB(attr_handle, &att_data, data_length);
+}
+/* CPPTEST_TEST_CASE_END test_Attribute_Modified_CB_unknown_char_default */
