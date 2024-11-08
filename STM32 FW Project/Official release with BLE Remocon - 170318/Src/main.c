@@ -66,21 +66,22 @@
 
 /* Private variables ---------------------------------------------------------*/
 volatile uint32_t HCI_ProcessEvent = 0u;
+extern uint8_t joydata[8];
 uint8_t joydata[8] = {0,0,0,0,0,0,0,0};
 
-uint32_t uhCCR4_Val = 500;
-uint32_t uhCCR1_Val = 5000;
-
-
+extern ADC_HandleTypeDef hadc1;
 ADC_HandleTypeDef hadc1;
 
+extern SPI_HandleTypeDef hspi1, hspi2;
 SPI_HandleTypeDef hspi1;
 SPI_HandleTypeDef hspi2;
 
+extern TIM_HandleTypeDef htim2, htim4, htim9;
 TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim4;
 TIM_HandleTypeDef htim9;
 
+extern UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart1;
 
 static void *LSM6DSL_X_0_handle = NULL;
@@ -90,6 +91,9 @@ static void *LPS22HB_P_0_handle = NULL;
 static void *LPS22HB_T_0_handle = NULL; 
 
 extern int16_t gAIL, gELE, gTHR, gRUD;
+extern int16_t gJoystick_status;
+extern int32_t rc_cal_flag, rc_cal_cnt, fly_ready;
+extern uint8_t rc_enable_motor, ch, ch_flag;
 int16_t gJoystick_status;
 int32_t rc_cal_flag = 0;
 uint8_t rc_enable_motor = 0u;
@@ -97,12 +101,13 @@ int32_t rc_cal_cnt = 0;
 int32_t fly_ready = 0;
 uint8_t ch, ch_flag;
 
+extern uint32_t tim9_event_flag, tim9_cnt, tim9_cnt2;
 uint32_t tim9_event_flag = 0u, tim9_cnt = 0u, tim9_cnt2 = 0u;
-float32_t tmp_euler_z = 0.0f;
-
 
 /* BLE module */
+extern DrvStatusTypeDef testStatus;
 DrvStatusTypeDef testStatus = COMPONENT_OK;
+extern uint8_t test_res_global, testEvent, bdaddr[6];
 uint8_t test_res_global = 0u;
 uint8_t testEvent = 0u;
 uint8_t bdaddr[6];
@@ -129,6 +134,16 @@ static void SendArmingData(void);
 
 
 /* USER CODE BEGIN 0 */
+extern P_PI_PIDControlTypeDef pid;
+extern EulerAngleTypeDef euler_rc, euler_ahrs, euler_rc_fil, euler_rc_y_pre[4], euler_rc_x_pre[4];
+extern AxesRaw_TypeDef acc, gyro, mag, acc_fil_int, gyro_fil_int, mag_fil_int;
+extern AxesRaw_TypeDef_Float acc_fil, acc_y_pre[4], acc_x_pre[4], acc_ahrs_FIFO[FIFO_Order], acc_FIFO[FIFO_Order], acc_ahrs;
+extern AxesRaw_TypeDef_Float gyro_fil, gyro_y_pre[4], gyro_x_pre[4], gyro_ahrs_FIFO[FIFO_Order], gyro_FIFO[FIFO_Order], gyro_ahrs;
+extern AxesRaw_TypeDef_Float mag_fil;
+extern AxesRaw_TypeDef acc_off_calc, gyro_off_calc, acc_offset, gyro_offset;
+extern EulerAngleTypeDef euler_ahrs_offset;
+extern int32_t sensor_init_cali, sensor_init_cali_count, gyro_cali_count;
+
 P_PI_PIDControlTypeDef pid;
 EulerAngleTypeDef euler_rc, euler_ahrs, euler_rc_fil, euler_rc_y_pre[4], euler_rc_x_pre[4];
 AxesRaw_TypeDef acc, gyro, mag, acc_fil_int, gyro_fil_int, mag_fil_int;
@@ -166,10 +181,26 @@ typedef struct
 //IIR_Coeff gyro_fil_coeff = {1.3489677452527946 ,  -0.51398189421967566, 0.041253537241720303, 0.082507074483440607, 0.041253537241720303};
 
 //100hz, 800hz
+extern IIR_Coeff gyro_fil_coeff;
 IIR_Coeff gyro_fil_coeff = {0.94280904158206336f, -0.33333333333333343f, 0.09763107293781749f, 0.19526214587563498f, 0.09763107293781749f };
 
-Attitude_Degree  Fly, Fly_offset, Fly_origin;
-Gyro_Rad gyro_in_rad, gyro_degree, gyro_cali_degree;
+extern Attitude_Degree  Fly_origin;
+extern Gyro_Rad gyro_in_rad;
+extern MotorControlTypeDef motor_pwm;
+extern int32_t count1, count2;
+extern AHRS_State_TypeDef ahrs;
+extern float32_t press, press_zero_level, temperature;
+extern uint32_t VBAT_Sense;
+extern float32_t VBAT;
+extern uint8_t tmp_lis2mdl;
+extern SensorAxes_t tmp_mag;
+extern uint16_t service_handle, dev_name_char_handle, appearance_char_handle;
+extern uint32_t ConnectionBleStatus;
+extern uint8_t BufferToWrite[256];
+extern int32_t BytesToWrite;
+
+Attitude_Degree  Fly_origin;
+Gyro_Rad gyro_in_rad;
 MotorControlTypeDef motor_pwm;
 int32_t count1 = 0, count2 = 0;
 AHRS_State_TypeDef ahrs;
@@ -298,7 +329,7 @@ int main(void)
   uint8_t tmp_6axis_reg_value;
   (void)BSP_ACCELERO_Read_Reg(LSM6DSL_X_0_handle, 0x10, &tmp_6axis_reg_value);
   //tmp_6axis_reg_value = tmp_6axis_reg_value | 0x01;                             /* Set LSB to 1 >> Analog filter 400Hz*/
-  tmp_6axis_reg_value = tmp_6axis_reg_value & 0xFE;                             /* Set LSB to 0 >> Analog filter 1500Hz*/
+  tmp_6axis_reg_value = tmp_6axis_reg_value & 0xFEu;                             /* Set LSB to 0 >> Analog filter 1500Hz*/
   (void)BSP_ACCELERO_Write_Reg(LSM6DSL_X_0_handle, 0x10, tmp_6axis_reg_value);
   
   /* Initialize settings for 6-axis MEMS Gyroscope */
@@ -364,8 +395,8 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */    
-    if (0 != HCI_ProcessEvent) {
-          HCI_ProcessEvent = 0;
+    if (0u != HCI_ProcessEvent) {
+          HCI_ProcessEvent = 0u;
           HCI_Process();
     }
     
@@ -375,9 +406,9 @@ int main(void)
           set_connectable = FALSE;
     }  
         
-    if (tim9_event_flag == 1) {
+    if (tim9_event_flag == 1u) {
       // Timer9 event: frequency 800Hz
-      tim9_event_flag = 0;
+      tim9_event_flag = 0u;
           
       count1++;
            
@@ -464,7 +495,7 @@ int main(void)
             BSP_LED_Off(LED2);
           }
           
-          if (0 != (joydata[7] & 0x02)) {
+          if (0 != (joydata[7] & 0x02u)) {
             rc_cal_flag = 1;
             BSP_LED_On(LED1);
           }

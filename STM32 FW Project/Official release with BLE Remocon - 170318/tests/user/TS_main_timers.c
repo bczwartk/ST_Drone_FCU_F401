@@ -52,9 +52,46 @@ void TS_main_timers_tearDown(void)
 }
 
 
+// stub callbacks
+// the currently processed timer structure - to be set in a test case init section - either htim2, htim4, or htim9
+TIM_TypeDef * pCppTest_StubCallback_HAL_TIM_curr_timer = 0;
+TIM_HandleTypeDef * pCppTest_StubCallback_HAL_TIM_curr_handle = 0;
+
+void CppTest_StubCallback_HAL_TIM_Base_Init(CppTest_StubCallInfo* stubCallInfo,
+											HAL_StatusTypeDef* __return, TIM_HandleTypeDef * htim)
+{
+	CPPTEST_ASSERT_PTR_EQUAL(pCppTest_StubCallback_HAL_TIM_curr_handle, htim);
+	CPPTEST_ASSERT_PTR_EQUAL(pCppTest_StubCallback_HAL_TIM_curr_timer, htim->Instance);
+	// delegate to the original
+	*__return = HAL_TIM_Base_Init(htim);
+}
+// CPPTEST_REGISTER_STUB_CALLBACK("HAL_TIM_Base_Init", &CppTest_StubCallback_HAL_TIM_Base_Init);
+
+void CppTest_StubCallback_HAL_TIM_ConfigClockSource(CppTest_StubCallInfo* stubCallInfo, HAL_StatusTypeDef* __return,
+								   TIM_HandleTypeDef * htim, TIM_ClockConfigTypeDef * sClockSourceConfig)
+{
+	CPPTEST_ASSERT_PTR_EQUAL(pCppTest_StubCallback_HAL_TIM_curr_handle, htim);
+	CPPTEST_ASSERT_PTR_EQUAL(pCppTest_StubCallback_HAL_TIM_curr_timer, htim->Instance);
+	// delegate to the original
+	*__return = HAL_TIM_ConfigClockSource(htim, sClockSourceConfig);;
+}
+// CPPTEST_REGISTER_STUB_CALLBACK("HAL_TIM_ConfigClockSource", &CppTest_StubCallback_HAL_TIM_ConfigClockSource);
+
+
 /* CPPTEST_TEST_CASE_BEGIN test_MX_TIM2_Init */
 void TS_main_timers_test_MX_TIM2_Init()
 {
+	CPPTEST_REGISTER_STUB_CALLBACK("HAL_TIM_Base_Init", &CppTest_StubCallback_HAL_TIM_Base_Init);
+	CPPTEST_REGISTER_STUB_CALLBACK("HAL_TIM_ConfigClockSource", &CppTest_StubCallback_HAL_TIM_ConfigClockSource);
+	CPPTEST_EXPECT_NCALLS("HAL_TIM_Base_Init", 1);
+	CPPTEST_EXPECT_NCALLS("HAL_TIM_ConfigClockSource", 1);
+	CPPTEST_EXPECT_NCALLS("HAL_TIM_IC_Init", 1);
+	CPPTEST_EXPECT_NCALLS("HAL_TIMEx_MasterConfigSynchronization", 1);
+	CPPTEST_EXPECT_NCALLS("HAL_TIM_IC_ConfigChannel", 4);
+
+	pCppTest_StubCallback_HAL_TIM_curr_timer = TIM2;
+	pCppTest_StubCallback_HAL_TIM_curr_handle = &htim2;
+
 	MX_TIM2_Init();
 	CPPTEST_MESSAGE("#### TODO: need assertions and stubs for the test case");
 }
@@ -63,6 +100,17 @@ void TS_main_timers_test_MX_TIM2_Init()
 /* CPPTEST_TEST_CASE_BEGIN test_MX_TIM4_Init */
 void TS_main_timers_test_MX_TIM4_Init()
 {
+	CPPTEST_REGISTER_STUB_CALLBACK("HAL_TIM_Base_Init", &CppTest_StubCallback_HAL_TIM_Base_Init);
+	CPPTEST_REGISTER_STUB_CALLBACK("HAL_TIM_ConfigClockSource", &CppTest_StubCallback_HAL_TIM_ConfigClockSource);
+	CPPTEST_EXPECT_NCALLS("HAL_TIM_Base_Init", 1);
+	CPPTEST_EXPECT_NCALLS("HAL_TIM_ConfigClockSource", 1);
+	CPPTEST_EXPECT_NCALLS("HAL_TIM_PWM_Init", 1);
+	CPPTEST_EXPECT_NCALLS("HAL_TIMEx_MasterConfigSynchronization", 1);
+	CPPTEST_EXPECT_NCALLS("HAL_TIM_PWM_ConfigChannel", 4);
+
+	pCppTest_StubCallback_HAL_TIM_curr_timer = TIM4;
+	pCppTest_StubCallback_HAL_TIM_curr_handle = &htim4;
+
 	MX_TIM4_Init();
 	CPPTEST_MESSAGE("#### TODO: need assertions and stubs for the test case");
 }
@@ -71,6 +119,14 @@ void TS_main_timers_test_MX_TIM4_Init()
 /* CPPTEST_TEST_CASE_BEGIN test_MX_TIM9_Init */
 void TS_main_timers_test_MX_TIM9_Init()
 {
+	CPPTEST_REGISTER_STUB_CALLBACK("HAL_TIM_Base_Init", &CppTest_StubCallback_HAL_TIM_Base_Init);
+	CPPTEST_REGISTER_STUB_CALLBACK("HAL_TIM_ConfigClockSource", &CppTest_StubCallback_HAL_TIM_ConfigClockSource);
+	CPPTEST_EXPECT_NCALLS("HAL_TIM_Base_Init", 1);
+	CPPTEST_EXPECT_NCALLS("HAL_TIM_ConfigClockSource", 1);
+
+	pCppTest_StubCallback_HAL_TIM_curr_timer = TIM9;
+	pCppTest_StubCallback_HAL_TIM_curr_handle = &htim9;
+
 	MX_TIM9_Init();
 	CPPTEST_MESSAGE("#### TODO: need assertions and stubs for the test case");
 }

@@ -507,3 +507,117 @@ EXTERN_C_LINKAGE tBleStatus CppTest_Stub_AccGyroMag_Update (SensorAxes_t * Acc, 
 
     return __return;
 }
+
+/** User stub definition for function: tBleStatus Add_HWServW2ST_Service(void) */
+EXTERN_C_LINKAGE tBleStatus Add_HWServW2ST_Service () ;
+EXTERN_C_LINKAGE tBleStatus CppTest_Stub_Add_HWServW2ST_Service (void) 
+{
+    CPPTEST_STUB_CALLED("Add_HWServW2ST_Service");
+
+    tBleStatus __return = BLE_STATUS_SUCCESS;
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo, tBleStatus* __return)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("Add_HWServW2ST_Service", &CppTest_StubCallback_SomeName);
+     *
+     * 3. Fill out the body of the stub callback function according to intent.
+     * The following line may be used to call original function inside stub callback:
+     *     *__return = Add_HWServW2ST_Service();
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS(tBleStatus* __return);
+        CPPTEST_STUB_INVOKE_CALLBACK(&__return);
+
+    } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
+        __return = Add_HWServW2ST_Service();
+
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
+    return __return;
+}
+
+/** User stub definition for function: tBleStatus Add_ConsoleW2ST_Service(void) */
+EXTERN_C_LINKAGE tBleStatus Add_ConsoleW2ST_Service () ;
+EXTERN_C_LINKAGE tBleStatus CppTest_Stub_Add_ConsoleW2ST_Service (void) 
+{
+    CPPTEST_STUB_CALLED("Add_ConsoleW2ST_Service");
+
+    tBleStatus __return = BLE_STATUS_SUCCESS;
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo, tBleStatus* __return)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("Add_ConsoleW2ST_Service", &CppTest_StubCallback_SomeName);
+     *
+     * 3. Fill out the body of the stub callback function according to intent.
+     * The following line may be used to call original function inside stub callback:
+     *     *__return = Add_ConsoleW2ST_Service();
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS(tBleStatus* __return);
+        CPPTEST_STUB_INVOKE_CALLBACK(&__return);
+
+    } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
+        __return = Add_ConsoleW2ST_Service();
+
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
+    return __return;
+}
+
+/** User stub definition for function: tBleStatus Add_ConfigW2ST_Service(void) */
+EXTERN_C_LINKAGE tBleStatus Add_ConfigW2ST_Service () ;
+EXTERN_C_LINKAGE tBleStatus CppTest_Stub_Add_ConfigW2ST_Service (void) 
+{
+    CPPTEST_STUB_CALLED("Add_ConfigW2ST_Service");
+
+    tBleStatus __return = BLE_STATUS_SUCCESS;
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo, tBleStatus* __return)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("Add_ConfigW2ST_Service", &CppTest_StubCallback_SomeName);
+     *
+     * 3. Fill out the body of the stub callback function according to intent.
+     * The following line may be used to call original function inside stub callback:
+     *     *__return = Add_ConfigW2ST_Service();
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS(tBleStatus* __return);
+        CPPTEST_STUB_INVOKE_CALLBACK(&__return);
+
+    } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
+        __return = Add_ConfigW2ST_Service();
+
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
+    return __return;
+}

@@ -19,6 +19,7 @@ CPPTEST_TEST(TS_main_periph_test_enableAllSensors);
 CPPTEST_TEST(TS_main_periph_test_MX_GPIO_Init);
 CPPTEST_TEST(TS_main_periph_test_MX_USART1_UART_Init);
 CPPTEST_TEST(TS_main_periph_test_MX_ADC1_Init);
+CPPTEST_TEST_DISABLED(TS_main_periph_test_SystemClock_Config);
 CPPTEST_TEST_SUITE_END();
         
 void TS_main_periph_test_SendArmingData(void);
@@ -29,6 +30,7 @@ void TS_main_periph_test_enableAllSensors(void);
 void TS_main_periph_test_MX_GPIO_Init(void);
 void TS_main_periph_test_MX_USART1_UART_Init(void);
 void TS_main_periph_test_MX_ADC1_Init(void);
+void TS_main_periph_test_SystemClock_Config(void);
 CPPTEST_TEST_SUITE_REGISTRATION(TS_main_periph);
 
 void TS_main_periph_testSuiteSetUp(void);
@@ -129,3 +131,19 @@ void TS_main_periph_test_MX_ADC1_Init()
 	MX_ADC1_Init();
 }
 /* CPPTEST_TEST_CASE_END test_MX_ADC1_Init */
+
+/* CPPTEST_TEST_CASE_BEGIN test_SystemClock_Config */
+void TS_main_periph_test_SystemClock_Config()
+{
+	//CPPTEST_EXPECT_NCALLS("HAL_ADC_Init", 1);
+	//CPPTEST_EXPECT_NCALLS("HAL_ADC_ConfigChannel", 1);
+
+	// test call
+	SystemClock_Config();
+
+	// TODO: cannot really tamper with clock configuration
+	//		 while the system is already running
+	//		 need to stub what is possible and see if we can even test
+	// 	     the SystemClock_Config() function
+}
+/* CPPTEST_TEST_CASE_END test_SystemClock_Config */

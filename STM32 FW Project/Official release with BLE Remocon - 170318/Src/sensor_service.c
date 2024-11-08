@@ -61,7 +61,7 @@ uint8_t set_connectable = TRUE;
 extern uint32_t ConnectionBleStatus;
 
 extern uint8_t bdaddr[6];
-extern uint8_t joydata[];
+extern uint8_t joydata[8];
 
 
 /* Private variables ------------------------------------------------------------*/

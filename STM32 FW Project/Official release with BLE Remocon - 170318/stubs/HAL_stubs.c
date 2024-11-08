@@ -38,6 +38,8 @@
 #include "stm32f4xx_hal_gpio.h"
 #include "stm32f4xx_hal_uart.h"
 #include "stm32f4xx_hal_adc.h"
+#include "stm32f4xx_hal_tim.h"
+#include "stm32f4xx_hal_tim_ex.h"
 
 /** User stub definition for function: uint32_t HAL_GetTick(void) */
 EXTERN_C_LINKAGE uint32_t HAL_GetTick () ;
@@ -923,6 +925,272 @@ EXTERN_C_LINKAGE HAL_StatusTypeDef CppTest_Stub_HAL_ADC_Init (ADC_HandleTypeDef 
 
     } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
         __return = HAL_ADC_Init(hadc);
+
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
+    return __return;
+}
+
+/** User stub definition for function: HAL_StatusTypeDef HAL_TIM_Base_Init(TIM_HandleTypeDef *) */
+EXTERN_C_LINKAGE HAL_StatusTypeDef HAL_TIM_Base_Init (TIM_HandleTypeDef * htim) ;
+EXTERN_C_LINKAGE HAL_StatusTypeDef CppTest_Stub_HAL_TIM_Base_Init (TIM_HandleTypeDef * htim) 
+{
+    CPPTEST_STUB_CALLED("HAL_TIM_Base_Init");
+
+    HAL_StatusTypeDef __return = HAL_OK;
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo, HAL_StatusTypeDef* __return, TIM_HandleTypeDef * htim)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("HAL_TIM_Base_Init", &CppTest_StubCallback_SomeName);
+     *
+     * 3. Fill out the body of the stub callback function according to intent.
+     * The following line may be used to call original function inside stub callback:
+     *     *__return = HAL_TIM_Base_Init(htim);
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS(HAL_StatusTypeDef* __return, TIM_HandleTypeDef * htim);
+        CPPTEST_STUB_INVOKE_CALLBACK(&__return, htim);
+
+    } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
+        __return = HAL_TIM_Base_Init(htim);
+
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
+    return __return;
+}
+
+/** User stub definition for function: HAL_StatusTypeDef HAL_TIM_ConfigClockSource(TIM_HandleTypeDef *, TIM_ClockConfigTypeDef *) */
+EXTERN_C_LINKAGE HAL_StatusTypeDef HAL_TIM_ConfigClockSource (TIM_HandleTypeDef * htim, TIM_ClockConfigTypeDef * sClockSourceConfig) ;
+EXTERN_C_LINKAGE HAL_StatusTypeDef CppTest_Stub_HAL_TIM_ConfigClockSource (TIM_HandleTypeDef * htim, TIM_ClockConfigTypeDef * sClockSourceConfig) 
+{
+    CPPTEST_STUB_CALLED("HAL_TIM_ConfigClockSource");
+
+    HAL_StatusTypeDef __return = HAL_OK;
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo, HAL_StatusTypeDef* __return, TIM_HandleTypeDef * htim, TIM_ClockConfigTypeDef * sClockSourceConfig)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("HAL_TIM_ConfigClockSource", &CppTest_StubCallback_SomeName);
+     *
+     * 3. Fill out the body of the stub callback function according to intent.
+     * The following line may be used to call original function inside stub callback:
+     *     *__return = HAL_TIM_ConfigClockSource(htim, sClockSourceConfig);
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS(HAL_StatusTypeDef* __return, TIM_HandleTypeDef * htim, TIM_ClockConfigTypeDef * sClockSourceConfig);
+        CPPTEST_STUB_INVOKE_CALLBACK(&__return, htim, sClockSourceConfig);
+
+    } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
+        __return = HAL_TIM_ConfigClockSource(htim, sClockSourceConfig);
+
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
+    return __return;
+}
+
+/** User stub definition for function: HAL_StatusTypeDef HAL_TIM_IC_Init(TIM_HandleTypeDef *) */
+EXTERN_C_LINKAGE HAL_StatusTypeDef HAL_TIM_IC_Init (TIM_HandleTypeDef * htim) ;
+EXTERN_C_LINKAGE HAL_StatusTypeDef CppTest_Stub_HAL_TIM_IC_Init (TIM_HandleTypeDef * htim) 
+{
+    CPPTEST_STUB_CALLED("HAL_TIM_IC_Init");
+
+    HAL_StatusTypeDef __return = HAL_OK;
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo, HAL_StatusTypeDef* __return, TIM_HandleTypeDef * htim)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("HAL_TIM_IC_Init", &CppTest_StubCallback_SomeName);
+     *
+     * 3. Fill out the body of the stub callback function according to intent.
+     * The following line may be used to call original function inside stub callback:
+     *     *__return = HAL_TIM_IC_Init(htim);
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS(HAL_StatusTypeDef* __return, TIM_HandleTypeDef * htim);
+        CPPTEST_STUB_INVOKE_CALLBACK(&__return, htim);
+
+    } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
+        __return = HAL_TIM_IC_Init(htim);
+
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
+    return __return;
+}
+
+/** User stub definition for function: HAL_StatusTypeDef HAL_TIMEx_MasterConfigSynchronization(TIM_HandleTypeDef *, TIM_MasterConfigTypeDef *) */
+EXTERN_C_LINKAGE HAL_StatusTypeDef HAL_TIMEx_MasterConfigSynchronization (TIM_HandleTypeDef * htim, TIM_MasterConfigTypeDef * sMasterConfig) ;
+EXTERN_C_LINKAGE HAL_StatusTypeDef CppTest_Stub_HAL_TIMEx_MasterConfigSynchronization (TIM_HandleTypeDef * htim, TIM_MasterConfigTypeDef * sMasterConfig) 
+{
+    CPPTEST_STUB_CALLED("HAL_TIMEx_MasterConfigSynchronization");
+
+    HAL_StatusTypeDef __return = HAL_OK;
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo, HAL_StatusTypeDef* __return, TIM_HandleTypeDef * htim, TIM_MasterConfigTypeDef * sMasterConfig)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("HAL_TIMEx_MasterConfigSynchronization", &CppTest_StubCallback_SomeName);
+     *
+     * 3. Fill out the body of the stub callback function according to intent.
+     * The following line may be used to call original function inside stub callback:
+     *     *__return = HAL_TIMEx_MasterConfigSynchronization(htim, sMasterConfig);
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS(HAL_StatusTypeDef* __return, TIM_HandleTypeDef * htim, TIM_MasterConfigTypeDef * sMasterConfig);
+        CPPTEST_STUB_INVOKE_CALLBACK(&__return, htim, sMasterConfig);
+
+    } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
+        __return = HAL_TIMEx_MasterConfigSynchronization(htim, sMasterConfig);
+
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
+    return __return;
+}
+
+/** User stub definition for function: HAL_StatusTypeDef HAL_TIM_IC_ConfigChannel(TIM_HandleTypeDef *, TIM_IC_InitTypeDef *, uint32_t) */
+EXTERN_C_LINKAGE HAL_StatusTypeDef HAL_TIM_IC_ConfigChannel (TIM_HandleTypeDef * htim, TIM_IC_InitTypeDef * sConfig, uint32_t Channel) ;
+EXTERN_C_LINKAGE HAL_StatusTypeDef CppTest_Stub_HAL_TIM_IC_ConfigChannel (TIM_HandleTypeDef * htim, TIM_IC_InitTypeDef * sConfig, uint32_t Channel) 
+{
+    CPPTEST_STUB_CALLED("HAL_TIM_IC_ConfigChannel");
+
+    HAL_StatusTypeDef __return = HAL_OK;
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo, HAL_StatusTypeDef* __return, TIM_HandleTypeDef * htim, TIM_IC_InitTypeDef * sConfig, uint32_t Channel)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("HAL_TIM_IC_ConfigChannel", &CppTest_StubCallback_SomeName);
+     *
+     * 3. Fill out the body of the stub callback function according to intent.
+     * The following line may be used to call original function inside stub callback:
+     *     *__return = HAL_TIM_IC_ConfigChannel(htim, sConfig, Channel);
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS(HAL_StatusTypeDef* __return, TIM_HandleTypeDef * htim, TIM_IC_InitTypeDef * sConfig, uint32_t Channel);
+        CPPTEST_STUB_INVOKE_CALLBACK(&__return, htim, sConfig, Channel);
+
+    } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
+        __return = HAL_TIM_IC_ConfigChannel(htim, sConfig, Channel);
+
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
+    return __return;
+}
+
+/** User stub definition for function: HAL_StatusTypeDef HAL_TIM_PWM_Init(TIM_HandleTypeDef *) */
+EXTERN_C_LINKAGE HAL_StatusTypeDef HAL_TIM_PWM_Init (TIM_HandleTypeDef * htim) ;
+EXTERN_C_LINKAGE HAL_StatusTypeDef CppTest_Stub_HAL_TIM_PWM_Init (TIM_HandleTypeDef * htim) 
+{
+    CPPTEST_STUB_CALLED("HAL_TIM_PWM_Init");
+
+    HAL_StatusTypeDef __return = HAL_OK;
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo, HAL_StatusTypeDef* __return, TIM_HandleTypeDef * htim)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("HAL_TIM_PWM_Init", &CppTest_StubCallback_SomeName);
+     *
+     * 3. Fill out the body of the stub callback function according to intent.
+     * The following line may be used to call original function inside stub callback:
+     *     *__return = HAL_TIM_PWM_Init(htim);
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS(HAL_StatusTypeDef* __return, TIM_HandleTypeDef * htim);
+        CPPTEST_STUB_INVOKE_CALLBACK(&__return, htim);
+
+    } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
+        __return = HAL_TIM_PWM_Init(htim);
+
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
+    return __return;
+}
+
+/** User stub definition for function: HAL_StatusTypeDef HAL_TIM_PWM_ConfigChannel(TIM_HandleTypeDef *, TIM_OC_InitTypeDef *, uint32_t) */
+EXTERN_C_LINKAGE HAL_StatusTypeDef HAL_TIM_PWM_ConfigChannel (TIM_HandleTypeDef * htim, TIM_OC_InitTypeDef * sConfig, uint32_t Channel) ;
+EXTERN_C_LINKAGE HAL_StatusTypeDef CppTest_Stub_HAL_TIM_PWM_ConfigChannel (TIM_HandleTypeDef * htim, TIM_OC_InitTypeDef * sConfig, uint32_t Channel) 
+{
+    CPPTEST_STUB_CALLED("HAL_TIM_PWM_ConfigChannel");
+
+    HAL_StatusTypeDef __return = HAL_OK;
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo, HAL_StatusTypeDef* __return, TIM_HandleTypeDef * htim, TIM_OC_InitTypeDef * sConfig, uint32_t Channel)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("HAL_TIM_PWM_ConfigChannel", &CppTest_StubCallback_SomeName);
+     *
+     * 3. Fill out the body of the stub callback function according to intent.
+     * The following line may be used to call original function inside stub callback:
+     *     *__return = HAL_TIM_PWM_ConfigChannel(htim, sConfig, Channel);
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS(HAL_StatusTypeDef* __return, TIM_HandleTypeDef * htim, TIM_OC_InitTypeDef * sConfig, uint32_t Channel);
+        CPPTEST_STUB_INVOKE_CALLBACK(&__return, htim, sConfig, Channel);
+
+    } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
+        __return = HAL_TIM_PWM_ConfigChannel(htim, sConfig, Channel);
 
     } else {
         /* You can put additional stub logic here. */
