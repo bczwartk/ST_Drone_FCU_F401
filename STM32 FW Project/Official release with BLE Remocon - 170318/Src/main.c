@@ -69,8 +69,7 @@ volatile uint32_t HCI_ProcessEvent = 0u;
 extern uint8_t joydata[8];
 uint8_t joydata[8] = {0,0,0,0,0,0,0,0};
 
-extern ADC_HandleTypeDef hadc1;
-ADC_HandleTypeDef hadc1;
+static ADC_HandleTypeDef hadc1;
 
 extern SPI_HandleTypeDef hspi1, hspi2;
 SPI_HandleTypeDef hspi1;
@@ -91,15 +90,10 @@ static void *LPS22HB_P_0_handle = NULL;
 static void *LPS22HB_T_0_handle = NULL; 
 
 extern int16_t gAIL, gELE, gTHR, gRUD;
-extern int16_t gJoystick_status;
-extern int32_t rc_cal_flag, rc_cal_cnt, fly_ready;
-extern uint8_t rc_enable_motor, ch, ch_flag;
-int16_t gJoystick_status;
 int32_t rc_cal_flag = 0;
 uint8_t rc_enable_motor = 0u;
-int32_t rc_cal_cnt = 0;
 int32_t fly_ready = 0;
-uint8_t ch, ch_flag;
+// uint8_t ch, ch_flag;
 
 extern uint32_t tim9_event_flag, tim9_cnt, tim9_cnt2;
 uint32_t tim9_event_flag = 0u, tim9_cnt = 0u, tim9_cnt2 = 0u;
@@ -114,7 +108,7 @@ uint8_t bdaddr[6];
 
 
 /* Private function prototypes -----------------------------------------------*/
-void SystemClock_Config(void);
+static void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_TIM2_Init(void);
@@ -134,25 +128,13 @@ static void SendArmingData(void);
 
 
 /* USER CODE BEGIN 0 */
-extern P_PI_PIDControlTypeDef pid;
-extern EulerAngleTypeDef euler_rc, euler_ahrs, euler_rc_fil, euler_rc_y_pre[4], euler_rc_x_pre[4];
-extern AxesRaw_TypeDef acc, gyro, mag, acc_fil_int, gyro_fil_int, mag_fil_int;
-extern AxesRaw_TypeDef_Float acc_fil, acc_y_pre[4], acc_x_pre[4], acc_ahrs_FIFO[FIFO_Order], acc_FIFO[FIFO_Order], acc_ahrs;
-extern AxesRaw_TypeDef_Float gyro_fil, gyro_y_pre[4], gyro_x_pre[4], gyro_ahrs_FIFO[FIFO_Order], gyro_FIFO[FIFO_Order], gyro_ahrs;
-extern AxesRaw_TypeDef_Float mag_fil;
-extern AxesRaw_TypeDef acc_off_calc, gyro_off_calc, acc_offset, gyro_offset;
-extern EulerAngleTypeDef euler_ahrs_offset;
-extern int32_t sensor_init_cali, sensor_init_cali_count, gyro_cali_count;
-
-P_PI_PIDControlTypeDef pid;
-EulerAngleTypeDef euler_rc, euler_ahrs, euler_rc_fil, euler_rc_y_pre[4], euler_rc_x_pre[4];
-AxesRaw_TypeDef acc, gyro, mag, acc_fil_int, gyro_fil_int, mag_fil_int;
-AxesRaw_TypeDef_Float acc_fil, acc_y_pre[4], acc_x_pre[4], acc_ahrs_FIFO[FIFO_Order], acc_FIFO[FIFO_Order], acc_ahrs;
-AxesRaw_TypeDef_Float gyro_fil, gyro_y_pre[4], gyro_x_pre[4], gyro_ahrs_FIFO[FIFO_Order], gyro_FIFO[FIFO_Order], gyro_ahrs;
-AxesRaw_TypeDef_Float mag_fil;
-AxesRaw_TypeDef acc_off_calc, gyro_off_calc, acc_offset, gyro_offset;
-EulerAngleTypeDef euler_ahrs_offset;
-int32_t sensor_init_cali = 0, sensor_init_cali_count = 0;
+static P_PI_PIDControlTypeDef pid;
+static EulerAngleTypeDef euler_rc, euler_ahrs, euler_rc_fil, euler_rc_y_pre[4], euler_rc_x_pre[4];
+static AxesRaw_TypeDef acc, gyro, mag, acc_fil_int, gyro_fil_int, mag_fil_int;
+static AxesRaw_TypeDef_Float acc_fil, acc_y_pre[4], acc_x_pre[4], acc_ahrs_FIFO[FIFO_Order], acc_FIFO[FIFO_Order], acc_ahrs;
+static AxesRaw_TypeDef_Float gyro_fil, gyro_y_pre[4], gyro_x_pre[4], gyro_ahrs_FIFO[FIFO_Order], gyro_FIFO[FIFO_Order], gyro_ahrs;
+static AxesRaw_TypeDef_Float mag_fil;
+static AxesRaw_TypeDef acc_off_calc, gyro_off_calc, acc_offset, gyro_offset;
 int32_t gyro_cali_count = 0;
 
 typedef struct
@@ -167,57 +149,21 @@ typedef struct
   float32_t a1, a2, b0, b1, b2;
 } IIR_Coeff;
 
-//sensor filter
-//7hz, 800hz
-//IIR_Coeff gyro_fil_coeff = {1.922286512869545,  -0.92519529534950118, 0.00072719561998898304, 0.0014543912399779661, 0.00072719561998898304};
-
-//15hz, 800hz
-//IIR_Coeff gyro_fil_coeff = {1.8337326589246479,  -0.84653197479202391, 0.003199828966843966, 0.0063996579336879321, 0.003199828966843966};
-
-//30hz, 800hz
-//IIR_Coeff gyro_fil_coeff = {1.66920314293119312,  -0.71663387350415764, 0.011857682643241156, 0.023715365286482312, 0.011857682643241156};
-
-//60hz, 800hz
-//IIR_Coeff gyro_fil_coeff = {1.3489677452527946 ,  -0.51398189421967566, 0.041253537241720303, 0.082507074483440607, 0.041253537241720303};
-
-//100hz, 800hz
-extern IIR_Coeff gyro_fil_coeff;
-IIR_Coeff gyro_fil_coeff = {0.94280904158206336f, -0.33333333333333343f, 0.09763107293781749f, 0.19526214587563498f, 0.09763107293781749f };
-
-extern Attitude_Degree  Fly_origin;
-extern Gyro_Rad gyro_in_rad;
-extern MotorControlTypeDef motor_pwm;
-extern int32_t count1, count2;
-extern AHRS_State_TypeDef ahrs;
-extern float32_t press, press_zero_level, temperature;
-extern uint32_t VBAT_Sense;
-extern float32_t VBAT;
 extern uint8_t tmp_lis2mdl;
 extern SensorAxes_t tmp_mag;
-extern uint16_t service_handle, dev_name_char_handle, appearance_char_handle;
 extern uint32_t ConnectionBleStatus;
-extern uint8_t BufferToWrite[256];
-extern int32_t BytesToWrite;
 
-Attitude_Degree  Fly_origin;
-Gyro_Rad gyro_in_rad;
-MotorControlTypeDef motor_pwm;
-int32_t count1 = 0, count2 = 0;
-AHRS_State_TypeDef ahrs;
-float32_t press, press_zero_level;
-float32_t temperature;
-
-uint32_t VBAT_Sense;
-float32_t VBAT = 0.0f;
+static MotorControlTypeDef motor_pwm;
+static float32_t press;
+static float32_t temperature;
 
 uint8_t tmp_lis2mdl;
 SensorAxes_t tmp_mag;
 
 /* BLE */
-uint16_t service_handle, dev_name_char_handle, appearance_char_handle;
 uint32_t ConnectionBleStatus = 0u;
-uint8_t BufferToWrite[256];
-int32_t BytesToWrite;
+uint8_t BufferToWrite[256] = { 0u };
+int32_t BytesToWrite = 0;
 
 /* USER CODE END 0 */
 
@@ -225,8 +171,14 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
   int16_t pid_interval, i;
-  
   int32_t mytimcnt = 0;
+  
+  static AHRS_State_TypeDef ahrs;
+  static int16_t gJoystick_status = 0;
+  static int32_t count1 = 0, count2 = 0;
+  static float32_t press_zero_level = 0.0f;
+  static EulerAngleTypeDef euler_ahrs_offset = { 0.0f, 0.0f, 0.0f };
+
   acc_fil.AXIS_X = 0.0f;
   acc_fil.AXIS_Y = 0.0f;
   acc_fil.AXIS_Z = 0.0f;
@@ -373,8 +325,6 @@ int main(void)
 
   /* Start timer */
   StartTimer(&tim);
-  ch = 0u;
-  ch_flag = 0u;
   
   /* BLE communication */
   (void)PRINTF("BLE communication initialization...\n\n");
@@ -495,7 +445,7 @@ int main(void)
             BSP_LED_Off(LED2);
           }
           
-          if (0 != (joydata[7] & 0x02u)) {
+          if (0u != (joydata[7] & 0x02u)) {
             rc_cal_flag = 1;
             BSP_LED_On(LED1);
           }
@@ -524,11 +474,6 @@ int main(void)
         euler_ahrs_offset.thx = 0.0f;
         euler_ahrs_offset.thy = 0.0f;
       }
-
-      Fly_origin.X_Degree = (int16_t)(euler_ahrs.thx * 5730.0f);
-      Fly_origin.Y_Degree = (int16_t)(euler_ahrs.thy * 5730.0f);
-      Fly_origin.Z_Degree = (int16_t)(euler_ahrs.thz * 5730.0f);
-
 
       if (gTHR < MIN_THR) {
         euler_rc.thz = 0.0f;
@@ -560,10 +505,6 @@ int main(void)
 
     }
 
-  if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_1) == GPIO_PIN_SET) {
-    ch_flag = 1u;
-  }
-
   if (0u != isTimerEventExist(&tim)) {    // Check if a timer event is present
         ClearTimer(&tim);           // Clear current event;
 
@@ -589,7 +530,7 @@ int main(void)
 
 /** System Clock Configuration
 */
-void SystemClock_Config(void)
+static void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct;
   RCC_ClkInitTypeDef RCC_ClkInitStruct;
@@ -812,6 +753,23 @@ static void MX_GPIO_Init(void)
  */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
+  (void) htim;
+  static int32_t rc_cal_cnt = 0;
+  static int32_t sensor_init_cali = 0;
+  static int32_t sensor_init_cali_count = 0;
+  //sensor filter
+  //7hz, 800hz
+  //IIR_Coeff gyro_fil_coeff = {1.922286512869545,  -0.92519529534950118, 0.00072719561998898304, 0.0014543912399779661, 0.00072719561998898304};
+  //15hz, 800hz
+  //IIR_Coeff gyro_fil_coeff = {1.8337326589246479,  -0.84653197479202391, 0.003199828966843966, 0.0063996579336879321, 0.003199828966843966};
+  //30hz, 800hz
+  //IIR_Coeff gyro_fil_coeff = {1.66920314293119312,  -0.71663387350415764, 0.011857682643241156, 0.023715365286482312, 0.011857682643241156};
+  //60hz, 800hz
+  //IIR_Coeff gyro_fil_coeff = {1.3489677452527946 ,  -0.51398189421967566, 0.041253537241720303, 0.082507074483440607, 0.041253537241720303};
+  //100hz, 800hz
+  static IIR_Coeff gyro_fil_coeff = {0.94280904158206336f, -0.33333333333333343f, 0.09763107293781749f, 0.19526214587563498f, 0.09763107293781749f };
+  static Gyro_Rad gyro_in_rad = { 0.0f, 0.0f, 0.0f };
+
   if (sensor_init_cali == 0) {
     sensor_init_cali_count++;
 
@@ -1022,10 +980,12 @@ static void enableAllSensors( void )
 
 static void BlueNRG_Init(void)
 {
-  
   tBleStatus ret = 1u;
   uint8_t  hwVersion = 0u;
   uint16_t fwVersion = 0u;
+  uint16_t service_handle = 0u;
+  uint16_t dev_name_char_handle = 0u;
+  uint16_t appearance_char_handle = 0u;
   
   PRINTF("****** START BLE TESTS ******\r\n");
   BNRG_SPI_Init();
@@ -1206,6 +1166,9 @@ static void SendBattEnvData(void)
    int8_t rssi;
    uint16_t conn_handle;
    
+   static uint32_t VBAT_Sense = 0u;
+   static float32_t VBAT = 0.0f;
+
    (void) HAL_ADC_Start(&hadc1);
         if (HAL_ADC_PollForConversion(&hadc1, 1000000u) == HAL_OK) {
             VBAT_Sense = HAL_ADC_GetValue(&hadc1);

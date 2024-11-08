@@ -865,6 +865,7 @@ void Attribute_Modified_CB(uint16_t attr_handle, uint8_t * att_data, uint8_t dat
  */
 static uint32_t DebugConsoleCommandParsing(uint8_t * att_data, uint8_t data_length)
 {
+  (void) data_length;
   uint32_t SendBackData = 1;
 
   if ((att_data[0] == '?') && (att_data[1] == '?')) {
@@ -1069,6 +1070,8 @@ static uint32_t DebugConsoleCommandParsing(uint8_t * att_data, uint8_t data_leng
  */
 static uint32_t ConfigCommandParsing(const uint8_t * att_data, uint8_t data_length)
 {
+  (void) att_data;
+  (void) data_length;
   uint32_t SendItBack = 1u;
   return SendItBack;
 }
