@@ -129,20 +129,13 @@ static void SendArmingData(void);
 
 /* USER CODE BEGIN 0 */
 static P_PI_PIDControlTypeDef pid;
-static EulerAngleTypeDef euler_rc, euler_ahrs, euler_rc_fil, euler_rc_y_pre[4], euler_rc_x_pre[4];
-static AxesRaw_TypeDef acc, gyro, mag, acc_fil_int, gyro_fil_int, mag_fil_int;
-static AxesRaw_TypeDef_Float acc_fil, acc_y_pre[4], acc_x_pre[4], acc_ahrs_FIFO[FIFO_Order], acc_FIFO[FIFO_Order], acc_ahrs;
-static AxesRaw_TypeDef_Float gyro_fil, gyro_y_pre[4], gyro_x_pre[4], gyro_ahrs_FIFO[FIFO_Order], gyro_FIFO[FIFO_Order], gyro_ahrs;
-static AxesRaw_TypeDef_Float mag_fil;
+static EulerAngleTypeDef euler_rc, euler_ahrs, euler_rc_fil;
+static AxesRaw_TypeDef acc, gyro, mag;
+static AxesRaw_TypeDef_Float acc_ahrs_FIFO[FIFO_Order], acc_FIFO[FIFO_Order], acc_ahrs;
+static AxesRaw_TypeDef_Float gyro_fil, gyro_y_pre[4], gyro_x_pre[4];
+static AxesRaw_TypeDef_Float gyro_ahrs_FIFO[FIFO_Order], gyro_FIFO[FIFO_Order], gyro_ahrs;
 static AxesRaw_TypeDef acc_off_calc, gyro_off_calc, acc_offset, gyro_offset;
 int32_t gyro_cali_count = 0;
-
-typedef struct
-{
-  int16_t X_Degree;
-  int16_t Y_Degree;
-  int16_t Z_Degree;
-} Attitude_Degree;
 
 typedef struct
 {
@@ -170,21 +163,15 @@ int32_t BytesToWrite = 0;
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-  int16_t pid_interval, i;
+  int16_t pid_interval;
+  uint16_t i;
   int32_t mytimcnt = 0;
   
   static AHRS_State_TypeDef ahrs;
   static int16_t gJoystick_status = 0;
   static int32_t count1 = 0, count2 = 0;
   static float32_t press_zero_level = 0.0f;
-  static EulerAngleTypeDef euler_ahrs_offset = { 0.0f, 0.0f, 0.0f };
 
-  acc_fil.AXIS_X = 0.0f;
-  acc_fil.AXIS_Y = 0.0f;
-  acc_fil.AXIS_Z = 0.0f;
-  mag_fil.AXIS_X = 0.0f;
-  mag_fil.AXIS_Y = 0.0f;
-  mag_fil.AXIS_Z = 0.0f;
   gyro_fil.AXIS_X = 0.0f;
   gyro_fil.AXIS_Y = 0.0f;
   gyro_fil.AXIS_Z = 0.0f;
@@ -204,28 +191,14 @@ int main(void)
   gyro_offset.AXIS_Y = 0;
   gyro_offset.AXIS_Z = 0;
   euler_rc.thz = euler_ahrs.thz;
-  euler_ahrs_offset.thx = 0.0f;
-  euler_ahrs_offset.thy = 0.0f;
 
-  for (i = 0; i < 4; i++) {
-    acc_y_pre[i].AXIS_X = 0.0f;
-    acc_y_pre[i].AXIS_Y = 0.0f;
-    acc_y_pre[i].AXIS_Z = 0.0f;
-    acc_x_pre[i].AXIS_X = 0.0f;
-    acc_x_pre[i].AXIS_Y = 0.0f;
-    acc_x_pre[i].AXIS_Z = 0.0f;
+  for (i = 0u; i < 4u; i++) {
     gyro_y_pre[i].AXIS_X = 0.0f;
     gyro_y_pre[i].AXIS_Y = 0.0f;
     gyro_y_pre[i].AXIS_Z = 0.0f;
     gyro_x_pre[i].AXIS_X = 0.0f;
     gyro_x_pre[i].AXIS_Y = 0.0f;
     gyro_x_pre[i].AXIS_Z = 0.0f;
-    euler_rc_y_pre[i].thx = 0.0f;
-    euler_rc_y_pre[i].thy = 0.0f;
-    euler_rc_y_pre[i].thz = 0.0f;
-    euler_rc_x_pre[i].thx = 0.0f;
-    euler_rc_x_pre[i].thy = 0.0f;
-    euler_rc_x_pre[i].thz = 0.0f;
   }
 
   /* USER CODE END 1 */
@@ -369,7 +342,7 @@ int main(void)
       gyro_ahrs.AXIS_Y = 0.0f;
       gyro_ahrs.AXIS_Z = 0.0f;
 
-      for (i = 0; i < FIFO_Order; i++) {
+      for (i = 0u; i < FIFO_Order; i++) {
         acc_ahrs.AXIS_X += acc_ahrs_FIFO[i].AXIS_X;
         acc_ahrs.AXIS_Y += acc_ahrs_FIFO[i].AXIS_Y;
         acc_ahrs.AXIS_Z += acc_ahrs_FIFO[i].AXIS_Z;
@@ -384,15 +357,6 @@ int main(void)
       gyro_ahrs.AXIS_X *= FIFO_Order_Recip;
       gyro_ahrs.AXIS_Y *= FIFO_Order_Recip;
       gyro_ahrs.AXIS_Z *= FIFO_Order_Recip;
-
-      
-      acc_fil_int.AXIS_X = (int32_t) acc_ahrs.AXIS_X;  
-      acc_fil_int.AXIS_Y = (int32_t) acc_ahrs.AXIS_Y;  
-      acc_fil_int.AXIS_Z = (int32_t) acc_ahrs.AXIS_Z;  
-      gyro_fil_int.AXIS_X = (int32_t) gyro_ahrs.AXIS_X;  
-      gyro_fil_int.AXIS_Y = (int32_t) gyro_ahrs.AXIS_Y;  
-      gyro_fil_int.AXIS_Z = (int32_t) gyro_ahrs.AXIS_Z;  
-
 
       //PRINTF("%f %f %f %f\n", acc_ahrs.AXIS_X, acc_ahrs.AXIS_Y, gyro_ahrs.AXIS_X, gyro_ahrs.AXIS_Y);
 
@@ -422,7 +386,7 @@ int main(void)
                         second bit: Calibration When it changes status is active
                         third bit: Arming (0 = Disarmed,  1 = Armed) */
           gJoystick_status = joydata[7];
-          if ((gJoystick_status & 0x04) == 0x04) {
+          if ((gJoystick_status & 0x04u) == 0x04u) {
             rc_enable_motor = 1u;
             fly_ready = 1;
             BSP_LED_On(LED2);
@@ -469,11 +433,6 @@ int main(void)
       
       // Get target euler angle from remote control
       GetTargetEulerAngle(&euler_rc, &euler_ahrs);
-          
-      if (gTHR < MIN_THR) {
-        euler_ahrs_offset.thx = 0.0f;
-        euler_ahrs_offset.thy = 0.0f;
-      }
 
       if (gTHR < MIN_THR) {
         euler_rc.thz = 0.0f;
@@ -552,7 +511,7 @@ static void SystemClock_Config(void)
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV4;
   RCC_OscInitStruct.PLL.PLLQ = 7;
 
-  (void)HAL_RCC_OscConfig(&RCC_OscInitStruct);
+  (void) HAL_RCC_OscConfig(&RCC_OscInitStruct);
   
     /**Initializes the CPU, AHB and APB busses clocks 
     */
@@ -562,18 +521,18 @@ static void SystemClock_Config(void)
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
-  (void)HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2);
+  (void) HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2);
 
     /**Configure the Systick interrupt time 
     */
-  (void)HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq()/1000);
+  (void) HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq() / 1000u);
 
     /**Configure the Systick 
     */
   HAL_SYSTICK_CLKSourceConfig(SYSTICK_CLKSOURCE_HCLK);
 
   /* SysTick_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
+  HAL_NVIC_SetPriority(SysTick_IRQn, 0u, 0u);
 }
 
 /* ADC1 init function */

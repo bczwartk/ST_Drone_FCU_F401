@@ -71,3 +71,42 @@ EXTERN_C_LINKAGE int CppTest_Stub_hci_le_set_scan_resp_data (uint8_t length, con
 
     return __return;
 }
+
+/** User stub definition for function: int hci_read_rssi(uint16_t *, int8_t *) */
+EXTERN_C_LINKAGE int hci_read_rssi (uint16_t * conn_handle, int8_t * rssi) ;
+EXTERN_C_LINKAGE int CppTest_Stub_hci_read_rssi (uint16_t * conn_handle, int8_t * rssi) 
+{
+    CPPTEST_STUB_CALLED("hci_read_rssi");
+
+    int __return = 0;
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo, int* __return, uint16_t * conn_handle, int8_t * rssi)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("hci_read_rssi", &CppTest_StubCallback_SomeName);
+     *
+     * 3. Fill out the body of the stub callback function according to intent.
+     * The following line may be used to call original function inside stub callback:
+     *     *__return = hci_read_rssi(conn_handle, rssi);
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS(int* __return, uint16_t * conn_handle, int8_t * rssi);
+        CPPTEST_STUB_INVOKE_CALLBACK(&__return, conn_handle, rssi);
+
+    } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
+    	// block the original as it causes exceptions inside HCI/BLE driver code
+        // __return = hci_read_rssi(conn_handle, rssi);
+
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
+    return __return;
+}
