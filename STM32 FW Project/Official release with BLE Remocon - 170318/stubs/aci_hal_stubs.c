@@ -61,7 +61,8 @@ EXTERN_C_LINKAGE tBleStatus CppTest_Stub_aci_hal_set_tx_power_level (uint8_t en_
         CPPTEST_STUB_INVOKE_CALLBACK(&__return, en_high_power, pa_level);
 
     } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
-        __return = aci_hal_set_tx_power_level(en_high_power, pa_level);
+    	// seem to hang tests - disabled
+        // __return = aci_hal_set_tx_power_level(en_high_power, pa_level);
 
     } else {
         /* You can put additional stub logic here. */

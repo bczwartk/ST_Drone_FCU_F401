@@ -110,3 +110,38 @@ EXTERN_C_LINKAGE int CppTest_Stub_hci_read_rssi (uint16_t * conn_handle, int8_t 
 
     return __return;
 }
+
+/** User stub definition for function: void HCI_Init(void) */
+EXTERN_C_LINKAGE void HCI_Init () ;
+EXTERN_C_LINKAGE void CppTest_Stub_HCI_Init (void) 
+{
+    CPPTEST_STUB_CALLED("HCI_Init");
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("HCI_Init", &CppTest_StubCallback_SomeName);
+     *
+     * 3. Fill out the body of the stub callback function according to intent.
+     * The following line may be used to call original function inside stub callback:
+     *     HCI_Init();
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS();
+        CPPTEST_STUB_INVOKE_CALLBACK();
+
+    } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
+        HCI_Init();
+
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
+}

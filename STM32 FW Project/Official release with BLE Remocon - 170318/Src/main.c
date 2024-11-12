@@ -207,7 +207,7 @@ int main(void)
   /* MCU Configuration----------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  (void)HAL_Init();
+  (void) HAL_Init();
 
   /* Configure the system clock */
   SystemClock_Config();
@@ -222,7 +222,7 @@ int main(void)
  
   /* USER CODE BEGIN 2 */
 
-  (void)PRINTF("STEVAL-FCU001V1 FW rev.1.0 - Sep 2017\n\n");
+  (void) PRINTF("STEVAL-FCU001V1 FW rev.1.0 - Sep 2017\n\n");
   
   //  Initialize Onboard LED
   BSP_LED_Init(LED1);
@@ -231,7 +231,7 @@ int main(void)
   BSP_LED_Off(LED2);
   
   /* Configure and disable all the Chip Select pins for sensors on SPI*/
-  (void)Sensor_IO_SPI_CS_Init_All();
+  (void) Sensor_IO_SPI_CS_Init_All();
   
   /* Initialize and Enable the available sensors on SPI*/
   initializeAllSensors();
@@ -244,50 +244,50 @@ int main(void)
   /* ODR/2 low pass filtered sent to composite filter */
   /* Low pass filter enabled @ ODR/400 */
   //BSP_ACCELERO_Set_ODR_Value(LSM6DSL_X_0_handle, 1660.0);       /* ODR 1.6kHz */
-  (void)BSP_ACCELERO_Set_ODR_Value(LSM6DSL_X_0_handle, 6660.0);       /* ODR 6.6kHz */
-  (void)BSP_ACCELERO_Set_FS(LSM6DSL_X_0_handle, FS_MID);                   /* FS 4g */
-  //(void)LSM6DSL_ACC_GYRO_W_InComposit(LSM6DSL_X_0_handle, LSM6DSL_ACC_GYRO_IN_ODR_DIV_4);   /* ODR/4 low pass filtered sent to composite filter */
-  (void)LSM6DSL_ACC_GYRO_W_InComposit(LSM6DSL_X_0_handle, LSM6DSL_ACC_GYRO_IN_ODR_DIV_2);   /* ODR/2 low pass filtered sent to composite filter */
-  (void)LSM6DSL_ACC_GYRO_W_LowPassFiltSel_XL(LSM6DSL_X_0_handle, LSM6DSL_ACC_GYRO_LPF2_XL_ENABLE); /* Enable LPF2 filter in composite filter block */
-  //(void)LSM6DSL_ACC_GYRO_W_HPCF_XL(LSM6DSL_X_0_handle, LSM6DSL_ACC_GYRO_HPCF_XL_DIV4); /* Low pass filter @ ODR/50 */
-  //(void)LSM6DSL_ACC_GYRO_W_HPCF_XL(LSM6DSL_X_0_handle, LSM6DSL_ACC_GYRO_HPCF_XL_DIV100); /* Low pass filter @ ODR/100 */
-  (void)LSM6DSL_ACC_GYRO_W_HPCF_XL(LSM6DSL_X_0_handle, LSM6DSL_ACC_GYRO_HPCF_XL_DIV400); /* Low pass filter @ ODR/400 */
+  (void) BSP_ACCELERO_Set_ODR_Value(LSM6DSL_X_0_handle, 6660.0);       /* ODR 6.6kHz */
+  (void) BSP_ACCELERO_Set_FS(LSM6DSL_X_0_handle, FS_MID);                   /* FS 4g */
+  //(void) LSM6DSL_ACC_GYRO_W_InComposit(LSM6DSL_X_0_handle, LSM6DSL_ACC_GYRO_IN_ODR_DIV_4);   /* ODR/4 low pass filtered sent to composite filter */
+  (void) LSM6DSL_ACC_GYRO_W_InComposit(LSM6DSL_X_0_handle, LSM6DSL_ACC_GYRO_IN_ODR_DIV_2);   /* ODR/2 low pass filtered sent to composite filter */
+  (void) LSM6DSL_ACC_GYRO_W_LowPassFiltSel_XL(LSM6DSL_X_0_handle, LSM6DSL_ACC_GYRO_LPF2_XL_ENABLE); /* Enable LPF2 filter in composite filter block */
+  //(void) LSM6DSL_ACC_GYRO_W_HPCF_XL(LSM6DSL_X_0_handle, LSM6DSL_ACC_GYRO_HPCF_XL_DIV4); /* Low pass filter @ ODR/50 */
+  //(void) LSM6DSL_ACC_GYRO_W_HPCF_XL(LSM6DSL_X_0_handle, LSM6DSL_ACC_GYRO_HPCF_XL_DIV100); /* Low pass filter @ ODR/100 */
+  (void) LSM6DSL_ACC_GYRO_W_HPCF_XL(LSM6DSL_X_0_handle, LSM6DSL_ACC_GYRO_HPCF_XL_DIV400); /* Low pass filter @ ODR/400 */
   uint8_t tmp_6axis_reg_value;
-  (void)BSP_ACCELERO_Read_Reg(LSM6DSL_X_0_handle, 0x10, &tmp_6axis_reg_value);
+  (void) BSP_ACCELERO_Read_Reg(LSM6DSL_X_0_handle, 0x10, &tmp_6axis_reg_value);
   //tmp_6axis_reg_value = tmp_6axis_reg_value | 0x01;                             /* Set LSB to 1 >> Analog filter 400Hz*/
   tmp_6axis_reg_value = tmp_6axis_reg_value & 0xFEu;                             /* Set LSB to 0 >> Analog filter 1500Hz*/
-  (void)BSP_ACCELERO_Write_Reg(LSM6DSL_X_0_handle, 0x10, tmp_6axis_reg_value);
+  (void) BSP_ACCELERO_Write_Reg(LSM6DSL_X_0_handle, 0x10, tmp_6axis_reg_value);
   
   /* Initialize settings for 6-axis MEMS Gyroscope */
   /* FS 2000dps */
   /* ODR 416Hz */
   /* LPF1 FTYPE set to 10b */
-  (void)LSM6DSL_ACC_GYRO_W_LP_BW_G(LSM6DSL_G_0_handle, LSM6DSL_ACC_GYRO_LP_G_NARROW); /* LPF1 FTYPE set to 10b */
-  (void)BSP_GYRO_Write_Reg(LSM6DSL_G_0_handle, 0x11, 0x6C);                           /* Gyroscope settings: full scale 2000dps, ODR 416Hz */
+  (void) LSM6DSL_ACC_GYRO_W_LP_BW_G(LSM6DSL_G_0_handle, LSM6DSL_ACC_GYRO_LP_G_NARROW); /* LPF1 FTYPE set to 10b */
+  (void) BSP_GYRO_Write_Reg(LSM6DSL_G_0_handle, 0x11, 0x6C);                           /* Gyroscope settings: full scale 2000dps, ODR 416Hz */
   
   /* Initialize settings for Magnetometer settings (By default after reset is in in idle mode) */
   /* Register CFG_REG_A 0x60 = 0x8c */
   /* Register 0x61 = 0x02 */
-  (void)BSP_MAGNETO_Write_Reg(LIS2MDL_M_0_handle, 0x60, 0x8c);
-  (void)BSP_MAGNETO_Write_Reg(LIS2MDL_M_0_handle, 0x61, 0x02);
+  (void) BSP_MAGNETO_Write_Reg(LIS2MDL_M_0_handle, 0x60, 0x8c);
+  (void) BSP_MAGNETO_Write_Reg(LIS2MDL_M_0_handle, 0x61, 0x02);
   
   /* Initialize Remote control*/
   init_remote_control();
 
   /* Initialize TIM2 for External Remocon RF receiver PWM Input*/
-  (void)HAL_TIM_IC_Start_IT(&htim2, TIM_CHANNEL_1);
-  (void)HAL_TIM_IC_Start_IT(&htim2, TIM_CHANNEL_2);
-  (void)HAL_TIM_IC_Start_IT(&htim2, TIM_CHANNEL_3);
-  (void)HAL_TIM_IC_Start_IT(&htim2, TIM_CHANNEL_4);
+  (void) HAL_TIM_IC_Start_IT(&htim2, TIM_CHANNEL_1);
+  (void) HAL_TIM_IC_Start_IT(&htim2, TIM_CHANNEL_2);
+  (void) HAL_TIM_IC_Start_IT(&htim2, TIM_CHANNEL_3);
+  (void) HAL_TIM_IC_Start_IT(&htim2, TIM_CHANNEL_4);
 
   /* Initialize TIM4 for Motors PWM Output*/
-  (void)HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
-  (void)HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);
-  (void)HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);
-  (void)HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_4);
+  (void) HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
+  (void) HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);
+  (void) HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);
+  (void) HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_4);
 
   /* Initialize General purpose TIM9 50Hz*/
-  (void)HAL_TIM_Base_Start_IT(&htim9);
+  (void) HAL_TIM_Base_Start_IT(&htim9);
 
   /* Initialize PID and set Motor PWM to zero */
   PIDControlInit(&pid);
@@ -301,15 +301,15 @@ int main(void)
   StartTimer(&tim);
   
   /* BLE communication */
-  (void)PRINTF("BLE communication initialization...\n\n");
+  (void) PRINTF("BLE communication initialization...\n\n");
   BlueNRG_Init();
 
   /* Initialize the BlueNRG Custom services */
   Init_BlueNRG_Custom_Services();
   
   /* Read initial value of Pressure and Temperature for Altitude estimation */ 
-  (void)BSP_PRESSURE_Get_Press(LPS22HB_P_0_handle, &press_zero_level);      /* Read the Pressure level when arming (0m reference) for altitude calculation */
-  (void)BSP_TEMPERATURE_Get_Temp(LPS22HB_T_0_handle, &temperature);         /* Read the Temperature when arming (0m reference) for altitude calculation */
+  (void) BSP_PRESSURE_Get_Press(LPS22HB_P_0_handle, &press_zero_level);      /* Read the Pressure level when arming (0m reference) for altitude calculation */
+  (void) BSP_TEMPERATURE_Get_Temp(LPS22HB_T_0_handle, &temperature);         /* Read the Temperature when arming (0m reference) for altitude calculation */
   
   /* USER CODE END 2 */
 

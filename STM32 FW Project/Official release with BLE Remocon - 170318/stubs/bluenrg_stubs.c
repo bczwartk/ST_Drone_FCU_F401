@@ -107,3 +107,38 @@ EXTERN_C_LINKAGE void CppTest_Stub_BlueNRG_RST (void)
     }
 
 }
+
+/** User stub definition for function: void BNRG_SPI_Init(void) */
+EXTERN_C_LINKAGE void BNRG_SPI_Init () ;
+EXTERN_C_LINKAGE void CppTest_Stub_BNRG_SPI_Init (void) 
+{
+    CPPTEST_STUB_CALLED("BNRG_SPI_Init");
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("BNRG_SPI_Init", &CppTest_StubCallback_SomeName);
+     *
+     * 3. Fill out the body of the stub callback function according to intent.
+     * The following line may be used to call original function inside stub callback:
+     *     BNRG_SPI_Init();
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS();
+        CPPTEST_STUB_INVOKE_CALLBACK();
+
+    } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
+        BNRG_SPI_Init();
+
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
+}

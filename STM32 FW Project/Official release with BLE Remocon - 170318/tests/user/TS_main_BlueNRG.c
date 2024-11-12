@@ -21,6 +21,10 @@ CPPTEST_TEST(TS_main_BlueNRG_test_BlueNRG_Init_aci_hal_write_config_data_fail);
 CPPTEST_TEST(TS_main_BlueNRG_test_BlueNRG_Init_aci_gatt_init_fail);
 CPPTEST_TEST(TS_main_BlueNRG_test_BlueNRG_Init_aci_gap_init_IDB05A1_fail);
 CPPTEST_TEST(TS_main_BlueNRG_test_BlueNRG_Init_aci_gap_set_auth_requirement_fail);
+CPPTEST_TEST(TS_main_BlueNRG_test_BlueNRG_Init_console_w2st_svc_fail);
+CPPTEST_TEST(TS_main_BlueNRG_test_BlueNRG_Init_console_w2st_svc_ok);
+CPPTEST_TEST(TS_main_BlueNRG_test_BlueNRG_Init_config_w2st_svc_fail);
+CPPTEST_TEST(TS_main_BlueNRG_test_BlueNRG_Init_config_w2st_svc_ok);
 CPPTEST_TEST_SUITE_END();
         
 void TS_main_BlueNRG_test_Init_BlueNRG_Custom_Services_all_OK(void);
@@ -33,6 +37,10 @@ void TS_main_BlueNRG_test_BlueNRG_Init_aci_hal_write_config_data_fail(void);
 void TS_main_BlueNRG_test_BlueNRG_Init_aci_gatt_init_fail(void);
 void TS_main_BlueNRG_test_BlueNRG_Init_aci_gap_init_IDB05A1_fail(void);
 void TS_main_BlueNRG_test_BlueNRG_Init_aci_gap_set_auth_requirement_fail(void);
+void TS_main_BlueNRG_test_BlueNRG_Init_console_w2st_svc_fail(void);
+void TS_main_BlueNRG_test_BlueNRG_Init_console_w2st_svc_ok(void);
+void TS_main_BlueNRG_test_BlueNRG_Init_config_w2st_svc_fail(void);
+void TS_main_BlueNRG_test_BlueNRG_Init_config_w2st_svc_ok(void);
 CPPTEST_TEST_SUITE_REGISTRATION(TS_main_BlueNRG);
 
 void TS_main_BlueNRG_testSuiteSetUp(void);
@@ -69,47 +77,19 @@ void CppTest_StubCallback_Add_HWServW2ST_Service_fail(CppTest_StubCallInfo* stub
 {
 	*__return = BLE_STATUS_ERROR;
 }
-void CppTest_StubCallback_Add_ConsoleW2ST_Service_fail(CppTest_StubCallInfo* stubCallInfo, tBleStatus* __return)
+static tBleStatus CppTest_StubCallback_Add_ConsoleW2ST_Service_ret = BLE_STATUS_SUCCESS;
+void CppTest_StubCallback_Add_ConsoleW2ST_Service(CppTest_StubCallInfo* stubCallInfo, tBleStatus* __return)
 {
-	*__return = BLE_STATUS_ERROR;
+	*__return = CppTest_StubCallback_Add_ConsoleW2ST_Service_ret;
 }
-void CppTest_StubCallback_Add_ConfigW2ST_Service_fail(CppTest_StubCallInfo* stubCallInfo, tBleStatus* __return)
+// CPPTEST_REGISTER_STUB_CALLBACK("Add_ConsoleW2ST_Service", &CppTest_StubCallback_Add_ConsoleW2ST_Service);
+
+static tBleStatus CppTest_StubCallback_Add_ConfigW2ST_Service_ret = BLE_STATUS_SUCCESS;
+void CppTest_StubCallback_Add_ConfigW2ST_Service(CppTest_StubCallInfo* stubCallInfo, tBleStatus* __return)
 {
-	*__return = BLE_STATUS_ERROR;
+	*__return = CppTest_StubCallback_Add_ConfigW2ST_Service_ret;
 }
-
-
-/* CPPTEST_TEST_CASE_BEGIN test_Init_BlueNRG_Custom_Services_all_OK */
-void TS_main_BlueNRG_test_Init_BlueNRG_Custom_Services_all_OK()
-{
-	Init_BlueNRG_Custom_Services();
-}
-/* CPPTEST_TEST_CASE_END test_Init_BlueNRG_Custom_Services_all_OK */
-
-/* CPPTEST_TEST_CASE_BEGIN test_Init_BlueNRG_Custom_Services_hw_serv_fail */
-void TS_main_BlueNRG_test_Init_BlueNRG_Custom_Services_hw_serv_fail()
-{
-	CPPTEST_REGISTER_STUB_CALLBACK("Add_HWServW2ST_Service", &CppTest_StubCallback_Add_HWServW2ST_Service_fail);
-	Init_BlueNRG_Custom_Services();
-}
-/* CPPTEST_TEST_CASE_END test_Init_BlueNRG_Custom_Services_hw_serv_fail */
-
-/* CPPTEST_TEST_CASE_BEGIN test_Init_BlueNRG_Custom_Services_console_fail */
-void TS_main_BlueNRG_test_Init_BlueNRG_Custom_Services_console_fail()
-{
-	CPPTEST_REGISTER_STUB_CALLBACK("Add_ConsoleW2ST_Service", &CppTest_StubCallback_Add_ConsoleW2ST_Service_fail);
-	Init_BlueNRG_Custom_Services();
-}
-/* CPPTEST_TEST_CASE_END test_Init_BlueNRG_Custom_Services_console_fail */
-
-/* CPPTEST_TEST_CASE_BEGIN test_Init_BlueNRG_Custom_Services_config_fail */
-void TS_main_BlueNRG_test_Init_BlueNRG_Custom_Services_config_fail()
-{
-	CPPTEST_REGISTER_STUB_CALLBACK("Add_ConfigW2ST_Service", &CppTest_StubCallback_Add_ConfigW2ST_Service_fail);
-	Init_BlueNRG_Custom_Services();
-}
-/* CPPTEST_TEST_CASE_END test_Init_BlueNRG_Custom_Services_config_fail */
-
+// CPPTEST_REGISTER_STUB_CALLBACK("Add_ConfigW2ST_Service", &CppTest_StubCallback_Add_ConfigW2ST_Service);
 
 uint8_t CppTest_StubCallback_getBlueNRGVersion_ret = BLE_STATUS_SUCCESS;  // BLE_STATUS_ERROR
 void CppTest_StubCallback_getBlueNRGVersion(CppTest_StubCallInfo* stubCallInfo, uint8_t* __return, uint8_t * hwVersion, uint16_t * fwVersion)
@@ -118,52 +98,17 @@ void CppTest_StubCallback_getBlueNRGVersion(CppTest_StubCallInfo* stubCallInfo, 
 }
 // CPPTEST_REGISTER_STUB_CALLBACK("getBlueNRGVersion", &CppTest_StubCallback_getBlueNRGVersion);
 
-/* CPPTEST_TEST_CASE_BEGIN test_BlueNRG_Init_version_fail */
-void TS_main_BlueNRG_test_BlueNRG_Init_version_fail()
-{
-	CPPTEST_REGISTER_STUB_CALLBACK("getBlueNRGVersion", &CppTest_StubCallback_getBlueNRGVersion);
-	CppTest_StubCallback_getBlueNRGVersion_ret = BLE_STATUS_ERROR;
-
-	BlueNRG_Init();
-}
-/* CPPTEST_TEST_CASE_END test_BlueNRG_Init_version_fail */
-
-
 void CppTest_StubCallback_aci_hal_write_config_data_fail(CppTest_StubCallInfo* stubCallInfo, tBleStatus* __return, uint8_t en_high_power, uint8_t pa_level)
 {
     *__return = BLE_STATUS_ERROR;
 }
 // CPPTEST_REGISTER_STUB_CALLBACK("aci_hal_write_config_data", &CppTest_StubCallback_aci_hal_write_config_data_fail);
 
-/* CPPTEST_TEST_CASE_BEGIN test_BlueNRG_Init_aci_hal_write_config_data_fail */
-void TS_main_BlueNRG_test_BlueNRG_Init_aci_hal_write_config_data_fail()
-{
-	CPPTEST_REGISTER_STUB_CALLBACK("aci_hal_write_config_data", &CppTest_StubCallback_aci_hal_write_config_data_fail);
-	CPPTEST_REGISTER_STUB_CALLBACK("getBlueNRGVersion", &CppTest_StubCallback_getBlueNRGVersion);
-	CppTest_StubCallback_getBlueNRGVersion_ret = BLE_STATUS_SUCCESS;
-
-	BlueNRG_Init();
-}
-/* CPPTEST_TEST_CASE_END test_BlueNRG_Init_aci_hal_write_config_data_fail */
-
-
 void CppTest_StubCallback_aci_gatt_init_fail(CppTest_StubCallInfo* stubCallInfo, tBleStatus* __return)
 {
 	*__return = BLE_STATUS_ERROR;
 }
 // CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_init", &CppTest_StubCallback_aci_gatt_init_fail);
-
-/* CPPTEST_TEST_CASE_BEGIN test_BlueNRG_Init_aci_gatt_init_fail */
-void TS_main_BlueNRG_test_BlueNRG_Init_aci_gatt_init_fail()
-{
-	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_init", &CppTest_StubCallback_aci_gatt_init_fail);
-	CPPTEST_REGISTER_STUB_CALLBACK("getBlueNRGVersion", &CppTest_StubCallback_getBlueNRGVersion);
-	CppTest_StubCallback_getBlueNRGVersion_ret = BLE_STATUS_SUCCESS;
-
-	BlueNRG_Init();
-}
-/* CPPTEST_TEST_CASE_END test_BlueNRG_Init_aci_gatt_init_fail */
-
 
 void CppTest_StubCallback_aci_gap_init_IDB05A1_fail(
 			CppTest_StubCallInfo* stubCallInfo, tBleStatus* __return,
@@ -175,18 +120,6 @@ void CppTest_StubCallback_aci_gap_init_IDB05A1_fail(
 }
 // CPPTEST_REGISTER_STUB_CALLBACK("aci_gap_init_IDB05A1", &CppTest_StubCallback_aci_gap_init_IDB05A1_fail);
 
-/* CPPTEST_TEST_CASE_BEGIN test_BlueNRG_Init_aci_gap_init_IDB05A1_fail */
-void TS_main_BlueNRG_test_BlueNRG_Init_aci_gap_init_IDB05A1_fail()
-{
-	CPPTEST_REGISTER_STUB_CALLBACK("aci_gap_init_IDB05A1", &CppTest_StubCallback_aci_gap_init_IDB05A1_fail);
-	CPPTEST_REGISTER_STUB_CALLBACK("getBlueNRGVersion", &CppTest_StubCallback_getBlueNRGVersion);
-	CppTest_StubCallback_getBlueNRGVersion_ret = BLE_STATUS_SUCCESS;
-
-	BlueNRG_Init();
-}
-/* CPPTEST_TEST_CASE_END test_BlueNRG_Init_aci_gap_init_IDB05A1_fail */
-
-
 void CppTest_StubCallback_aci_gap_set_auth_requirement_fail(
 		CppTest_StubCallInfo* stubCallInfo, tBleStatus* __return,
 		uint8_t mitm_mode, uint8_t oob_enable, uint8_t * oob_data,
@@ -197,9 +130,159 @@ void CppTest_StubCallback_aci_gap_set_auth_requirement_fail(
 }
 // CPPTEST_REGISTER_STUB_CALLBACK("aci_gap_set_auth_requirement", &CppTest_StubCallback_aci_gap_set_auth_requirement_fail);
 
+
+
+/* CPPTEST_TEST_CASE_BEGIN test_Init_BlueNRG_Custom_Services_all_OK */
+void TS_main_BlueNRG_test_Init_BlueNRG_Custom_Services_all_OK()
+{
+	CPPTEST_EXPECT_NCALLS("Add_HWServW2ST_Service", 1);
+	CPPTEST_EXPECT_NCALLS("Add_ConsoleW2ST_Service", 1);
+	CPPTEST_EXPECT_NCALLS("Add_ConfigW2ST_Service", 1);
+	Init_BlueNRG_Custom_Services();
+}
+/* CPPTEST_TEST_CASE_END test_Init_BlueNRG_Custom_Services_all_OK */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Init_BlueNRG_Custom_Services_hw_serv_fail */
+void TS_main_BlueNRG_test_Init_BlueNRG_Custom_Services_hw_serv_fail()
+{
+	CPPTEST_EXPECT_NCALLS("Add_HWServW2ST_Service", 1);
+	CPPTEST_EXPECT_NCALLS("Add_ConsoleW2ST_Service", 1);
+	CPPTEST_EXPECT_NCALLS("Add_ConfigW2ST_Service", 1);
+	CPPTEST_REGISTER_STUB_CALLBACK("Add_HWServW2ST_Service", &CppTest_StubCallback_Add_HWServW2ST_Service_fail);
+	Init_BlueNRG_Custom_Services();
+}
+/* CPPTEST_TEST_CASE_END test_Init_BlueNRG_Custom_Services_hw_serv_fail */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Init_BlueNRG_Custom_Services_console_fail */
+void TS_main_BlueNRG_test_Init_BlueNRG_Custom_Services_console_fail()
+{
+	CPPTEST_EXPECT_NCALLS("Add_HWServW2ST_Service", 1);
+	CPPTEST_EXPECT_NCALLS("Add_ConsoleW2ST_Service", 1);
+	CPPTEST_EXPECT_NCALLS("Add_ConfigW2ST_Service", 1);
+	CPPTEST_REGISTER_STUB_CALLBACK("Add_ConsoleW2ST_Service", &CppTest_StubCallback_Add_ConsoleW2ST_Service);
+	CppTest_StubCallback_Add_ConsoleW2ST_Service_ret = BLE_STATUS_ERROR;
+	Init_BlueNRG_Custom_Services();
+}
+/* CPPTEST_TEST_CASE_END test_Init_BlueNRG_Custom_Services_console_fail */
+
+/* CPPTEST_TEST_CASE_BEGIN test_Init_BlueNRG_Custom_Services_config_fail */
+void TS_main_BlueNRG_test_Init_BlueNRG_Custom_Services_config_fail()
+{
+	CPPTEST_EXPECT_NCALLS("Add_HWServW2ST_Service", 1);
+	CPPTEST_EXPECT_NCALLS("Add_ConsoleW2ST_Service", 1);
+	CPPTEST_EXPECT_NCALLS("Add_ConfigW2ST_Service", 1);
+	CPPTEST_REGISTER_STUB_CALLBACK("Add_ConfigW2ST_Service", &CppTest_StubCallback_Add_ConfigW2ST_Service);
+	CppTest_StubCallback_Add_ConfigW2ST_Service_ret = BLE_STATUS_ERROR;
+	Init_BlueNRG_Custom_Services();
+}
+/* CPPTEST_TEST_CASE_END test_Init_BlueNRG_Custom_Services_config_fail */
+
+/* CPPTEST_TEST_CASE_BEGIN test_BlueNRG_Init_version_fail */
+void TS_main_BlueNRG_test_BlueNRG_Init_version_fail()
+{
+ 	CPPTEST_EXPECT_NCALLS("BNRG_SPI_Init", 1);
+ 	CPPTEST_EXPECT_NCALLS("HCI_Init", 1);
+	CPPTEST_EXPECT_NCALLS("BlueNRG_RST", 1);
+	CPPTEST_EXPECT_NCALLS("getBlueNRGVersion", 1);
+	CPPTEST_EXPECT_NCALLS("aci_hal_write_config_data", 0);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_init", 0);
+	CPPTEST_EXPECT_NCALLS("aci_gap_init_IDB05A1", 0);
+	CPPTEST_EXPECT_NCALLS("aci_gap_set_auth_requirement", 0);
+	CPPTEST_EXPECT_NCALLS("aci_hal_set_tx_power_level", 0);
+	CPPTEST_EXPECT_NCALLS("Add_ConsoleW2ST_Service", 0);
+	CPPTEST_EXPECT_NCALLS("Add_ConfigW2ST_Service", 0);
+
+	CPPTEST_REGISTER_STUB_CALLBACK("getBlueNRGVersion", &CppTest_StubCallback_getBlueNRGVersion);
+	CppTest_StubCallback_getBlueNRGVersion_ret = BLE_STATUS_ERROR;
+
+	BlueNRG_Init();
+}
+/* CPPTEST_TEST_CASE_END test_BlueNRG_Init_version_fail */
+
+/* CPPTEST_TEST_CASE_BEGIN test_BlueNRG_Init_aci_hal_write_config_data_fail */
+void TS_main_BlueNRG_test_BlueNRG_Init_aci_hal_write_config_data_fail()
+{
+ 	CPPTEST_EXPECT_NCALLS("BNRG_SPI_Init", 1);
+ 	CPPTEST_EXPECT_NCALLS("HCI_Init", 1);
+	CPPTEST_EXPECT_NCALLS("BlueNRG_RST", 2);
+	CPPTEST_EXPECT_NCALLS("getBlueNRGVersion", 1);
+	CPPTEST_EXPECT_NCALLS("aci_hal_write_config_data", 1);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_init", 0);
+	CPPTEST_EXPECT_NCALLS("aci_gap_init_IDB05A1", 0);
+	CPPTEST_EXPECT_NCALLS("aci_gap_set_auth_requirement", 0);
+	CPPTEST_EXPECT_NCALLS("aci_hal_set_tx_power_level", 0);
+	CPPTEST_EXPECT_NCALLS("Add_ConsoleW2ST_Service", 0);
+	CPPTEST_EXPECT_NCALLS("Add_ConfigW2ST_Service", 0);
+
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_hal_write_config_data", &CppTest_StubCallback_aci_hal_write_config_data_fail);
+	CPPTEST_REGISTER_STUB_CALLBACK("getBlueNRGVersion", &CppTest_StubCallback_getBlueNRGVersion);
+	CppTest_StubCallback_getBlueNRGVersion_ret = BLE_STATUS_SUCCESS;
+
+	BlueNRG_Init();
+}
+/* CPPTEST_TEST_CASE_END test_BlueNRG_Init_aci_hal_write_config_data_fail */
+
+/* CPPTEST_TEST_CASE_BEGIN test_BlueNRG_Init_aci_gatt_init_fail */
+void TS_main_BlueNRG_test_BlueNRG_Init_aci_gatt_init_fail()
+{
+ 	CPPTEST_EXPECT_NCALLS("BNRG_SPI_Init", 1);
+ 	CPPTEST_EXPECT_NCALLS("HCI_Init", 1);
+	CPPTEST_EXPECT_NCALLS("BlueNRG_RST", 2);
+	CPPTEST_EXPECT_NCALLS("getBlueNRGVersion", 1);
+	CPPTEST_EXPECT_NCALLS("aci_hal_write_config_data", 1);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_init", 1);
+	CPPTEST_EXPECT_NCALLS("aci_gap_init_IDB05A1", 0);
+	CPPTEST_EXPECT_NCALLS("aci_gap_set_auth_requirement", 0);
+	CPPTEST_EXPECT_NCALLS("aci_hal_set_tx_power_level", 0);
+	CPPTEST_EXPECT_NCALLS("Add_ConsoleW2ST_Service", 0);
+	CPPTEST_EXPECT_NCALLS("Add_ConfigW2ST_Service", 0);
+
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gatt_init", &CppTest_StubCallback_aci_gatt_init_fail);
+	CPPTEST_REGISTER_STUB_CALLBACK("getBlueNRGVersion", &CppTest_StubCallback_getBlueNRGVersion);
+	CppTest_StubCallback_getBlueNRGVersion_ret = BLE_STATUS_SUCCESS;
+
+	BlueNRG_Init();
+}
+/* CPPTEST_TEST_CASE_END test_BlueNRG_Init_aci_gatt_init_fail */
+
+/* CPPTEST_TEST_CASE_BEGIN test_BlueNRG_Init_aci_gap_init_IDB05A1_fail */
+void TS_main_BlueNRG_test_BlueNRG_Init_aci_gap_init_IDB05A1_fail()
+{
+ 	CPPTEST_EXPECT_NCALLS("BNRG_SPI_Init", 1);
+ 	CPPTEST_EXPECT_NCALLS("HCI_Init", 1);
+	CPPTEST_EXPECT_NCALLS("BlueNRG_RST", 2);
+	CPPTEST_EXPECT_NCALLS("getBlueNRGVersion", 1);
+	CPPTEST_EXPECT_NCALLS("aci_hal_write_config_data", 1);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_init", 1);
+	CPPTEST_EXPECT_NCALLS("aci_gap_init_IDB05A1", 1);
+	CPPTEST_EXPECT_NCALLS("aci_gap_set_auth_requirement", 0);
+	CPPTEST_EXPECT_NCALLS("aci_hal_set_tx_power_level", 0);
+	CPPTEST_EXPECT_NCALLS("Add_ConsoleW2ST_Service", 0);
+	CPPTEST_EXPECT_NCALLS("Add_ConfigW2ST_Service", 0);
+
+	CPPTEST_REGISTER_STUB_CALLBACK("aci_gap_init_IDB05A1", &CppTest_StubCallback_aci_gap_init_IDB05A1_fail);
+	CPPTEST_REGISTER_STUB_CALLBACK("getBlueNRGVersion", &CppTest_StubCallback_getBlueNRGVersion);
+	CppTest_StubCallback_getBlueNRGVersion_ret = BLE_STATUS_SUCCESS;
+
+	BlueNRG_Init();
+}
+/* CPPTEST_TEST_CASE_END test_BlueNRG_Init_aci_gap_init_IDB05A1_fail */
+
 /* CPPTEST_TEST_CASE_BEGIN test_BlueNRG_Init_aci_gap_set_auth_requirement_fail */
 void TS_main_BlueNRG_test_BlueNRG_Init_aci_gap_set_auth_requirement_fail()
 {
+ 	CPPTEST_EXPECT_NCALLS("BNRG_SPI_Init", 1);
+ 	CPPTEST_EXPECT_NCALLS("HCI_Init", 1);
+	CPPTEST_EXPECT_NCALLS("BlueNRG_RST", 2);
+	CPPTEST_EXPECT_NCALLS("getBlueNRGVersion", 1);
+	CPPTEST_EXPECT_NCALLS("aci_hal_write_config_data", 1);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_init", 1);
+	CPPTEST_EXPECT_NCALLS("aci_gap_init_IDB05A1", 1);
+	CPPTEST_EXPECT_NCALLS("aci_gap_set_auth_requirement", 1);
+	CPPTEST_EXPECT_NCALLS("aci_hal_set_tx_power_level", 0);
+	CPPTEST_EXPECT_NCALLS("Add_ConsoleW2ST_Service", 0);
+	CPPTEST_EXPECT_NCALLS("Add_ConfigW2ST_Service", 0);
+
 	CPPTEST_REGISTER_STUB_CALLBACK("aci_gap_set_auth_requirement", &CppTest_StubCallback_aci_gap_set_auth_requirement_fail);
 	CPPTEST_REGISTER_STUB_CALLBACK("getBlueNRGVersion", &CppTest_StubCallback_getBlueNRGVersion);
 	CppTest_StubCallback_getBlueNRGVersion_ret = BLE_STATUS_SUCCESS;
@@ -207,3 +290,101 @@ void TS_main_BlueNRG_test_BlueNRG_Init_aci_gap_set_auth_requirement_fail()
 	BlueNRG_Init();
 }
 /* CPPTEST_TEST_CASE_END test_BlueNRG_Init_aci_gap_set_auth_requirement_fail */
+
+
+/* CPPTEST_TEST_CASE_BEGIN test_BlueNRG_Init_console_w2st_svc_fail */
+void TS_main_BlueNRG_test_BlueNRG_Init_console_w2st_svc_fail()
+{
+ 	CPPTEST_EXPECT_NCALLS("BNRG_SPI_Init", 1);
+ 	CPPTEST_EXPECT_NCALLS("HCI_Init", 1);
+	CPPTEST_EXPECT_NCALLS("BlueNRG_RST", 2);
+	CPPTEST_EXPECT_NCALLS("getBlueNRGVersion", 1);
+	CPPTEST_EXPECT_NCALLS("aci_hal_write_config_data", 1);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_init", 1);
+	CPPTEST_EXPECT_NCALLS("aci_gap_init_IDB05A1", 1);
+	CPPTEST_EXPECT_NCALLS("aci_gap_set_auth_requirement", 1);
+	CPPTEST_EXPECT_NCALLS("aci_hal_set_tx_power_level", 1);
+	CPPTEST_EXPECT_NCALLS("Add_ConsoleW2ST_Service", 1);
+	CPPTEST_EXPECT_NCALLS("Add_ConfigW2ST_Service", 1);
+
+	CPPTEST_REGISTER_STUB_CALLBACK("getBlueNRGVersion", &CppTest_StubCallback_getBlueNRGVersion);
+	CppTest_StubCallback_getBlueNRGVersion_ret = BLE_STATUS_SUCCESS;
+	CPPTEST_REGISTER_STUB_CALLBACK("Add_ConsoleW2ST_Service", &CppTest_StubCallback_Add_ConsoleW2ST_Service);
+	CppTest_StubCallback_Add_ConsoleW2ST_Service_ret = BLE_STATUS_ERROR;
+
+	BlueNRG_Init();
+}
+/* CPPTEST_TEST_CASE_END test_BlueNRG_Init_console_w2st_svc_fail */
+
+/* CPPTEST_TEST_CASE_BEGIN test_BlueNRG_Init_console_w2st_svc_ok */
+void TS_main_BlueNRG_test_BlueNRG_Init_console_w2st_svc_ok()
+{
+ 	CPPTEST_EXPECT_NCALLS("BNRG_SPI_Init", 1);
+ 	CPPTEST_EXPECT_NCALLS("HCI_Init", 1);
+	CPPTEST_EXPECT_NCALLS("BlueNRG_RST", 2);
+	CPPTEST_EXPECT_NCALLS("getBlueNRGVersion", 1);
+	CPPTEST_EXPECT_NCALLS("aci_hal_write_config_data", 1);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_init", 1);
+	CPPTEST_EXPECT_NCALLS("aci_gap_init_IDB05A1", 1);
+	CPPTEST_EXPECT_NCALLS("aci_gap_set_auth_requirement", 1);
+	CPPTEST_EXPECT_NCALLS("aci_hal_set_tx_power_level", 1);
+	CPPTEST_EXPECT_NCALLS("Add_ConsoleW2ST_Service", 1);
+	CPPTEST_EXPECT_NCALLS("Add_ConfigW2ST_Service", 1);
+
+	CPPTEST_REGISTER_STUB_CALLBACK("getBlueNRGVersion", &CppTest_StubCallback_getBlueNRGVersion);
+	CppTest_StubCallback_getBlueNRGVersion_ret = BLE_STATUS_SUCCESS;
+	CPPTEST_REGISTER_STUB_CALLBACK("Add_ConsoleW2ST_Service", &CppTest_StubCallback_Add_ConsoleW2ST_Service);
+	CppTest_StubCallback_Add_ConsoleW2ST_Service_ret = BLE_STATUS_SUCCESS;
+
+	BlueNRG_Init();
+}
+/* CPPTEST_TEST_CASE_END test_BlueNRG_Init_console_w2st_svc_ok */
+
+
+/* CPPTEST_TEST_CASE_BEGIN test_BlueNRG_Init_config_w2st_svc_fail */
+void TS_main_BlueNRG_test_BlueNRG_Init_config_w2st_svc_fail()
+{
+ 	CPPTEST_EXPECT_NCALLS("BNRG_SPI_Init", 1);
+ 	CPPTEST_EXPECT_NCALLS("HCI_Init", 1);
+	CPPTEST_EXPECT_NCALLS("BlueNRG_RST", 2);
+	CPPTEST_EXPECT_NCALLS("getBlueNRGVersion", 1);
+	CPPTEST_EXPECT_NCALLS("aci_hal_write_config_data", 1);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_init", 1);
+	CPPTEST_EXPECT_NCALLS("aci_gap_init_IDB05A1", 1);
+	CPPTEST_EXPECT_NCALLS("aci_gap_set_auth_requirement", 1);
+	CPPTEST_EXPECT_NCALLS("aci_hal_set_tx_power_level", 1);
+	CPPTEST_EXPECT_NCALLS("Add_ConsoleW2ST_Service", 1);
+	CPPTEST_EXPECT_NCALLS("Add_ConfigW2ST_Service", 1);
+
+	CPPTEST_REGISTER_STUB_CALLBACK("getBlueNRGVersion", &CppTest_StubCallback_getBlueNRGVersion);
+	CppTest_StubCallback_getBlueNRGVersion_ret = BLE_STATUS_SUCCESS;
+	CPPTEST_REGISTER_STUB_CALLBACK("Add_ConfigW2ST_Service", &CppTest_StubCallback_Add_ConfigW2ST_Service);
+	CppTest_StubCallback_Add_ConfigW2ST_Service_ret = BLE_STATUS_ERROR;
+
+	BlueNRG_Init();
+}
+/* CPPTEST_TEST_CASE_END test_BlueNRG_Init_config_w2st_svc_fail */
+
+/* CPPTEST_TEST_CASE_BEGIN test_BlueNRG_Init_config_w2st_svc_ok */
+void TS_main_BlueNRG_test_BlueNRG_Init_config_w2st_svc_ok()
+{
+ 	CPPTEST_EXPECT_NCALLS("BNRG_SPI_Init", 1);
+ 	CPPTEST_EXPECT_NCALLS("HCI_Init", 1);
+	CPPTEST_EXPECT_NCALLS("BlueNRG_RST", 2);
+	CPPTEST_EXPECT_NCALLS("getBlueNRGVersion", 1);
+	CPPTEST_EXPECT_NCALLS("aci_hal_write_config_data", 1);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_init", 1);
+	CPPTEST_EXPECT_NCALLS("aci_gap_init_IDB05A1", 1);
+	CPPTEST_EXPECT_NCALLS("aci_gap_set_auth_requirement", 1);
+	CPPTEST_EXPECT_NCALLS("aci_hal_set_tx_power_level", 1);
+	CPPTEST_EXPECT_NCALLS("Add_ConsoleW2ST_Service", 1);
+	CPPTEST_EXPECT_NCALLS("Add_ConfigW2ST_Service", 1);
+
+	CPPTEST_REGISTER_STUB_CALLBACK("getBlueNRGVersion", &CppTest_StubCallback_getBlueNRGVersion);
+	CppTest_StubCallback_getBlueNRGVersion_ret = BLE_STATUS_SUCCESS;
+	CPPTEST_REGISTER_STUB_CALLBACK("Add_ConfigW2ST_Service", &CppTest_StubCallback_Add_ConfigW2ST_Service);
+	CppTest_StubCallback_Add_ConfigW2ST_Service_ret = BLE_STATUS_SUCCESS;
+
+	BlueNRG_Init();
+}
+/* CPPTEST_TEST_CASE_END test_BlueNRG_Init_config_w2st_svc_ok */
