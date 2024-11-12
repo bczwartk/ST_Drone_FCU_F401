@@ -19,7 +19,7 @@ CPPTEST_TEST(TS_main_periph_test_enableAllSensors);
 CPPTEST_TEST(TS_main_periph_test_MX_GPIO_Init);
 CPPTEST_TEST(TS_main_periph_test_MX_USART1_UART_Init);
 CPPTEST_TEST(TS_main_periph_test_MX_ADC1_Init);
-CPPTEST_TEST_DISABLED(TS_main_periph_test_SystemClock_Config);
+CPPTEST_TEST(TS_main_periph_test_SystemClock_Config);
 CPPTEST_TEST(TS_main_periph_test_SendBattEnvData_default);
 CPPTEST_TEST(TS_main_periph_test_SendBattEnvData_conv_fail);
 CPPTEST_TEST(TS_main_periph_test_SendBattEnvData_conv_ok);
@@ -140,14 +140,28 @@ void TS_main_periph_test_MX_ADC1_Init()
 }
 /* CPPTEST_TEST_CASE_END test_MX_ADC1_Init */
 
+
+// system clock configuration tests - sensitive and dangerous as we tamper with system clock
+// a strategic set of stub callbacks disabling original calls will be needed
+void CppTest_StubCallback_HAL_RCC_OscConfig(CppTest_StubCallInfo* stubCallInfo, HAL_StatusTypeDef* __return, RCC_OscInitTypeDef * RCC_OscInitStruct)
+{
+    *__return = HAL_OK;
+}
+// CPPTEST_REGISTER_STUB_CALLBACK("HAL_RCC_OscConfig", &CppTest_StubCallback_HAL_RCC_OscConfig);
+
 /* CPPTEST_TEST_CASE_BEGIN test_SystemClock_Config */
 void TS_main_periph_test_SystemClock_Config()
 {
-	//CPPTEST_EXPECT_NCALLS("HAL_ADC_Init", 1);
-	//CPPTEST_EXPECT_NCALLS("HAL_ADC_ConfigChannel", 1);
+	CPPTEST_REGISTER_STUB_CALLBACK("HAL_RCC_OscConfig", &CppTest_StubCallback_HAL_RCC_OscConfig);
+
+	CPPTEST_EXPECT_NCALLS("HAL_RCC_OscConfig", 1);
+	CPPTEST_EXPECT_NCALLS("HAL_RCC_ClockConfig", 1);
+	CPPTEST_EXPECT_NCALLS("HAL_SYSTICK_Config", 1);
+	CPPTEST_EXPECT_NCALLS("HAL_SYSTICK_CLKSourceConfig", 1);
+	CPPTEST_EXPECT_NCALLS("HAL_NVIC_SetPriority", 1);
 
 	// test call
-	SystemClock_Config();
+    SystemClock_Config();
 
 	// TODO: cannot really tamper with clock configuration
 	//		 while the system is already running

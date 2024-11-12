@@ -129,11 +129,11 @@ static void SendArmingData(void);
 
 /* USER CODE BEGIN 0 */
 static P_PI_PIDControlTypeDef pid;
-static EulerAngleTypeDef euler_rc, euler_ahrs, euler_rc_fil;
+static EulerAngleTypeDef euler_rc, euler_ahrs;
 static AxesRaw_TypeDef acc, gyro, mag;
-static AxesRaw_TypeDef_Float acc_ahrs_FIFO[FIFO_Order], acc_FIFO[FIFO_Order], acc_ahrs;
+static AxesRaw_TypeDef_Float acc_ahrs_FIFO[FIFO_Order], acc_ahrs;
 static AxesRaw_TypeDef_Float gyro_fil, gyro_y_pre[4], gyro_x_pre[4];
-static AxesRaw_TypeDef_Float gyro_ahrs_FIFO[FIFO_Order], gyro_FIFO[FIFO_Order], gyro_ahrs;
+static AxesRaw_TypeDef_Float gyro_ahrs_FIFO[FIFO_Order], gyro_ahrs;
 static AxesRaw_TypeDef acc_off_calc, gyro_off_calc, acc_offset, gyro_offset;
 int32_t gyro_cali_count = 0;
 
@@ -171,6 +171,7 @@ int main(void)
   static int16_t gJoystick_status = 0;
   static int32_t count1 = 0, count2 = 0;
   static float32_t press_zero_level = 0.0f;
+  static EulerAngleTypeDef euler_rc_fil = {0.0f, 0.0f, 0.0f };
 
   gyro_fil.AXIS_X = 0.0f;
   gyro_fil.AXIS_Y = 0.0f;
@@ -728,6 +729,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   //100hz, 800hz
   static IIR_Coeff gyro_fil_coeff = {0.94280904158206336f, -0.33333333333333343f, 0.09763107293781749f, 0.19526214587563498f, 0.09763107293781749f };
   static Gyro_Rad gyro_in_rad = { 0.0f, 0.0f, 0.0f };
+  static AxesRaw_TypeDef_Float acc_FIFO[FIFO_Order] = { 0.0f, 0.0f, 0.0f };
+  static AxesRaw_TypeDef_Float gyro_FIFO[FIFO_Order] = { 0.0f, 0.0f, 0.0f };
 
   if (sensor_init_cali == 0) {
     sensor_init_cali_count++;

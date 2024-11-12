@@ -37,6 +37,7 @@
 #include "sensor_service.h"
 #include "bluenrg_utils.h"
 #include "bluenrg_l2cap_aci.h"
+#include "bluenrg_gap_aci.h"
 
 
 /** User stub definition for function: tBleStatus aci_gap_set_discoverable(uint8_t, uint16_t, uint16_t, uint8_t, uint8_t, uint8_t, const char *, uint8_t, uint8_t *, uint16_t, uint16_t) */
@@ -45,7 +46,7 @@ EXTERN_C_LINKAGE tBleStatus CppTest_Stub_aci_gap_set_discoverable (uint8_t AdvTy
 {
     CPPTEST_STUB_CALLED("aci_gap_set_discoverable");
 
-    tBleStatus __return = (unsigned char)0;
+    tBleStatus __return = BLE_STATUS_SUCCESS;
 
     /**
      * This section enables Dynamic Stub Configuration with Stub Callbacks.
@@ -89,7 +90,7 @@ EXTERN_C_LINKAGE tBleStatus CppTest_Stub_aci_gap_update_adv_data (uint8_t AdvLen
 {
     CPPTEST_STUB_CALLED("aci_gap_update_adv_data");
 
-    tBleStatus __return = (unsigned char)0;
+    tBleStatus __return = BLE_STATUS_SUCCESS;
 
     /**
      * This section enables Dynamic Stub Configuration with Stub Callbacks.
@@ -113,6 +114,84 @@ EXTERN_C_LINKAGE tBleStatus CppTest_Stub_aci_gap_update_adv_data (uint8_t AdvLen
     } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
     	// block the original as it causes exceptions inside HCI/BLE driver code
     	// __return = aci_gap_update_adv_data(AdvLen, AdvData);
+
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
+    return __return;
+}
+
+/** User stub definition for function: tBleStatus aci_gap_init_IDB05A1(uint8_t, uint8_t, uint8_t, uint16_t *, uint16_t *, uint16_t *) */
+EXTERN_C_LINKAGE tBleStatus aci_gap_init_IDB05A1 (uint8_t role, uint8_t privacy_enabled, uint8_t device_name_char_len, uint16_t * service_handle, uint16_t * dev_name_char_handle, uint16_t * appearance_char_handle) ;
+EXTERN_C_LINKAGE tBleStatus CppTest_Stub_aci_gap_init_IDB05A1 (uint8_t role, uint8_t privacy_enabled, uint8_t device_name_char_len, uint16_t * service_handle, uint16_t * dev_name_char_handle, uint16_t * appearance_char_handle) 
+{
+    CPPTEST_STUB_CALLED("aci_gap_init_IDB05A1");
+
+    tBleStatus __return = BLE_STATUS_SUCCESS;
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo, tBleStatus* __return, uint8_t role, uint8_t privacy_enabled, uint8_t device_name_char_len, uint16_t * service_handle, uint16_t * dev_name_char_handle, uint16_t * appearance_char_handle)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("aci_gap_init_IDB05A1", &CppTest_StubCallback_SomeName);
+     *
+     * 3. Fill out the body of the stub callback function according to intent.
+     * The following line may be used to call original function inside stub callback:
+     *     *__return = aci_gap_init_IDB05A1(role, privacy_enabled, device_name_char_len, service_handle, dev_name_char_handle, appearance_char_handle);
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS(tBleStatus* __return, uint8_t role, uint8_t privacy_enabled, uint8_t device_name_char_len, uint16_t * service_handle, uint16_t * dev_name_char_handle, uint16_t * appearance_char_handle);
+        CPPTEST_STUB_INVOKE_CALLBACK(&__return, role, privacy_enabled, device_name_char_len, service_handle, dev_name_char_handle, appearance_char_handle);
+
+    } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
+    	// seem to hang - disable
+        // __return = aci_gap_init_IDB05A1(role, privacy_enabled, device_name_char_len, service_handle, dev_name_char_handle, appearance_char_handle);
+
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
+    return __return;
+}
+
+/** User stub definition for function: tBleStatus aci_gap_set_auth_requirement(uint8_t, uint8_t, uint8_t *, uint8_t, uint8_t, uint8_t, uint32_t, uint8_t) */
+EXTERN_C_LINKAGE tBleStatus aci_gap_set_auth_requirement (uint8_t mitm_mode, uint8_t oob_enable, uint8_t  oob_data[16], uint8_t min_encryption_key_size, uint8_t max_encryption_key_size, uint8_t use_fixed_pin, uint32_t fixed_pin, uint8_t bonding_mode) ;
+EXTERN_C_LINKAGE tBleStatus CppTest_Stub_aci_gap_set_auth_requirement (uint8_t mitm_mode, uint8_t oob_enable, uint8_t  oob_data[16], uint8_t min_encryption_key_size, uint8_t max_encryption_key_size, uint8_t use_fixed_pin, uint32_t fixed_pin, uint8_t bonding_mode) 
+{
+    CPPTEST_STUB_CALLED("aci_gap_set_auth_requirement");
+
+    tBleStatus __return = BLE_STATUS_SUCCESS;
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo, tBleStatus* __return, uint8_t mitm_mode, uint8_t oob_enable, uint8_t * oob_data, uint8_t min_encryption_key_size, uint8_t max_encryption_key_size, uint8_t use_fixed_pin, uint32_t fixed_pin, uint8_t bonding_mode)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("aci_gap_set_auth_requirement", &CppTest_StubCallback_SomeName);
+     *
+     * 3. Fill out the body of the stub callback function according to intent.
+     * The following line may be used to call original function inside stub callback:
+     *     *__return = aci_gap_set_auth_requirement(mitm_mode, oob_enable, oob_data, min_encryption_key_size, max_encryption_key_size, use_fixed_pin, fixed_pin, bonding_mode);
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS(tBleStatus* __return, uint8_t mitm_mode, uint8_t oob_enable, uint8_t * oob_data, uint8_t min_encryption_key_size, uint8_t max_encryption_key_size, uint8_t use_fixed_pin, uint32_t fixed_pin, uint8_t bonding_mode);
+        CPPTEST_STUB_INVOKE_CALLBACK(&__return, mitm_mode, oob_enable, oob_data, min_encryption_key_size, max_encryption_key_size, use_fixed_pin, fixed_pin, bonding_mode);
+
+    } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
+    	// seem to hang - disable
+        // __return = aci_gap_set_auth_requirement(mitm_mode, oob_enable, oob_data, min_encryption_key_size, max_encryption_key_size, use_fixed_pin, fixed_pin, bonding_mode);
 
     } else {
         /* You can put additional stub logic here. */

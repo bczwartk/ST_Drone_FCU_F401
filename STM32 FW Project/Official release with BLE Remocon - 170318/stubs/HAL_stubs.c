@@ -40,6 +40,7 @@
 #include "stm32f4xx_hal_adc.h"
 #include "stm32f4xx_hal_tim.h"
 #include "stm32f4xx_hal_tim_ex.h"
+#include "stm32f4xx_hal_rcc.h"
 
 /** User stub definition for function: uint32_t HAL_GetTick(void) */
 EXTERN_C_LINKAGE uint32_t HAL_GetTick () ;
@@ -1350,4 +1351,153 @@ EXTERN_C_LINKAGE HAL_StatusTypeDef CppTest_Stub_HAL_ADC_Stop (ADC_HandleTypeDef 
     }
 
     return __return;
+}
+
+/** User stub definition for function: HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef *) */
+EXTERN_C_LINKAGE HAL_StatusTypeDef HAL_RCC_OscConfig (RCC_OscInitTypeDef * RCC_OscInitStruct) ;
+EXTERN_C_LINKAGE HAL_StatusTypeDef CppTest_Stub_HAL_RCC_OscConfig (RCC_OscInitTypeDef * RCC_OscInitStruct) 
+{
+    CPPTEST_STUB_CALLED("HAL_RCC_OscConfig");
+
+    HAL_StatusTypeDef __return = HAL_OK;
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo, HAL_StatusTypeDef* __return, RCC_OscInitTypeDef * RCC_OscInitStruct)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("HAL_RCC_OscConfig", &CppTest_StubCallback_SomeName);
+     *
+     * 3. Fill out the body of the stub callback function according to intent.
+     * The following line may be used to call original function inside stub callback:
+     *     *__return = HAL_RCC_OscConfig(RCC_OscInitStruct);
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS(HAL_StatusTypeDef* __return, RCC_OscInitTypeDef * RCC_OscInitStruct);
+        CPPTEST_STUB_INVOKE_CALLBACK(&__return, RCC_OscInitStruct);
+
+    } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
+        __return = HAL_RCC_OscConfig(RCC_OscInitStruct);
+
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
+    return __return;
+}
+
+/** User stub definition for function: HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef *, uint32_t) */
+EXTERN_C_LINKAGE HAL_StatusTypeDef HAL_RCC_ClockConfig (RCC_ClkInitTypeDef * RCC_ClkInitStruct, uint32_t FLatency) ;
+EXTERN_C_LINKAGE HAL_StatusTypeDef CppTest_Stub_HAL_RCC_ClockConfig (RCC_ClkInitTypeDef * RCC_ClkInitStruct, uint32_t FLatency) 
+{
+    CPPTEST_STUB_CALLED("HAL_RCC_ClockConfig");
+
+    HAL_StatusTypeDef __return = HAL_OK;
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo, HAL_StatusTypeDef* __return, RCC_ClkInitTypeDef * RCC_ClkInitStruct, uint32_t FLatency)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("HAL_RCC_ClockConfig", &CppTest_StubCallback_SomeName);
+     *
+     * 3. Fill out the body of the stub callback function according to intent.
+     * The following line may be used to call original function inside stub callback:
+     *     *__return = HAL_RCC_ClockConfig(RCC_ClkInitStruct, FLatency);
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS(HAL_StatusTypeDef* __return, RCC_ClkInitTypeDef * RCC_ClkInitStruct, uint32_t FLatency);
+        CPPTEST_STUB_INVOKE_CALLBACK(&__return, RCC_ClkInitStruct, FLatency);
+
+    } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
+        __return = HAL_RCC_ClockConfig(RCC_ClkInitStruct, FLatency);
+
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
+    return __return;
+}
+
+/** User stub definition for function: uint32_t HAL_SYSTICK_Config(uint32_t) */
+EXTERN_C_LINKAGE uint32_t HAL_SYSTICK_Config (uint32_t TicksNumb) ;
+EXTERN_C_LINKAGE uint32_t CppTest_Stub_HAL_SYSTICK_Config (uint32_t TicksNumb) 
+{
+    CPPTEST_STUB_CALLED("HAL_SYSTICK_Config");
+
+    uint32_t __return = 0U;
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo, uint32_t* __return, uint32_t TicksNumb)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("HAL_SYSTICK_Config", &CppTest_StubCallback_SomeName);
+     *
+     * 3. Fill out the body of the stub callback function according to intent.
+     * The following line may be used to call original function inside stub callback:
+     *     *__return = HAL_SYSTICK_Config(TicksNumb);
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS(uint32_t* __return, uint32_t TicksNumb);
+        CPPTEST_STUB_INVOKE_CALLBACK(&__return, TicksNumb);
+
+    } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
+        __return = HAL_SYSTICK_Config(TicksNumb);
+
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
+    return __return;
+}
+
+/** User stub definition for function: void HAL_SYSTICK_CLKSourceConfig(uint32_t) */
+EXTERN_C_LINKAGE void HAL_SYSTICK_CLKSourceConfig (uint32_t CLKSource) ;
+EXTERN_C_LINKAGE void CppTest_Stub_HAL_SYSTICK_CLKSourceConfig (uint32_t CLKSource) 
+{
+    CPPTEST_STUB_CALLED("HAL_SYSTICK_CLKSourceConfig");
+
+    /**
+     * This section enables Dynamic Stub Configuration with Stub Callbacks.
+     *
+     * IMPORTANT: THIS COMMENT BLOCK SHOULD NOT BE DELETED OR MODIFIED
+     *
+     * 1. Define stub callback function in test suite file - use the following signature:
+     *     void CppTest_StubCallback_SomeName(CppTest_StubCallInfo* stubCallInfo, uint32_t CLKSource)
+     *
+     * 2. Register stub callback in test case function - use the following code:
+     *     CPPTEST_REGISTER_STUB_CALLBACK("HAL_SYSTICK_CLKSourceConfig", &CppTest_StubCallback_SomeName);
+     *
+     * 3. Fill out the body of the stub callback function according to intent.
+     * The following line may be used to call original function inside stub callback:
+     *     HAL_SYSTICK_CLKSourceConfig(CLKSource);
+     */
+    if (CPPTEST_STUB_HAS_CALLBACK()) {
+        CPPTEST_STUB_CALLBACK_PARAMS(uint32_t CLKSource);
+        CPPTEST_STUB_INVOKE_CALLBACK(CLKSource);
+
+    } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
+        HAL_SYSTICK_CLKSourceConfig(CLKSource);
+
+    } else {
+        /* You can put additional stub logic here. */
+
+    }
+
 }
