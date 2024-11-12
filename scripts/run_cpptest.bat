@@ -4,7 +4,7 @@ set WORK_DIR=%CD%
 set WORKSPACE=%WORK_DIR%\workspace_cli
 set REPORTS=%WORK_DIR%\reports_cli
 set BUILD_ID=%1
-rem set PUBLISH=-publish
+set PUBLISH=-publish
 rem set DEBUG=echo 
 set DEBUG=
 
