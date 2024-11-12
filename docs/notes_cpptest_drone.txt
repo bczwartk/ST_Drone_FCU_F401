@@ -19,6 +19,9 @@ Building the project
     cd ...\ST_Drone_FCU_F401_cpptest\STM32 FW Project\Official release with BLE Remocon - 170318\EWARM
     iarbuild ToyDrone.ewp -clean "ToyDrone Configuration" -log all
     iarbuild ToyDrone.ewp -make  "ToyDrone Configuration" -log all
+* Note: newer EWARM versions, like 9.40 have problems opening the project.  Error message is:
+    Could not launch te tool "C:\Program Files\IAR Systems\Embedded Workbench 9.2\arm\cstat\cstat_update" --infile ...
+    The system cannot find the file spcified.
 
 
 Prepare IAR EWARM project for C/C++test
