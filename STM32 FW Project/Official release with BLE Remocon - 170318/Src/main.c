@@ -93,17 +93,13 @@ extern int16_t gAIL, gELE, gTHR, gRUD;
 int32_t rc_cal_flag = 0;
 uint8_t rc_enable_motor = 0u;
 int32_t fly_ready = 0;
-// uint8_t ch, ch_flag;
 
 extern uint32_t tim9_event_flag, tim9_cnt, tim9_cnt2;
 uint32_t tim9_event_flag = 0u, tim9_cnt = 0u, tim9_cnt2 = 0u;
 
 /* BLE module */
-extern DrvStatusTypeDef testStatus;
-DrvStatusTypeDef testStatus = COMPONENT_OK;
-extern uint8_t test_res_global, testEvent, bdaddr[6];
-uint8_t test_res_global = 0u;
-uint8_t testEvent = 0u;
+static DrvStatusTypeDef testStatus = COMPONENT_OK;
+extern uint8_t bdaddr[6];
 uint8_t bdaddr[6];
 
 
@@ -135,23 +131,17 @@ static AxesRaw_TypeDef_Float acc_ahrs_FIFO[FIFO_Order], acc_ahrs;
 static AxesRaw_TypeDef_Float gyro_fil, gyro_y_pre[4], gyro_x_pre[4];
 static AxesRaw_TypeDef_Float gyro_ahrs_FIFO[FIFO_Order], gyro_ahrs;
 static AxesRaw_TypeDef acc_off_calc, gyro_off_calc, acc_offset, gyro_offset;
-int32_t gyro_cali_count = 0;
 
 typedef struct
 {
   float32_t a1, a2, b0, b1, b2;
 } IIR_Coeff;
 
-extern uint8_t tmp_lis2mdl;
-extern SensorAxes_t tmp_mag;
 extern uint32_t ConnectionBleStatus;
 
 static MotorControlTypeDef motor_pwm;
 static float32_t press;
 static float32_t temperature;
-
-uint8_t tmp_lis2mdl;
-SensorAxes_t tmp_mag;
 
 /* BLE */
 uint32_t ConnectionBleStatus = 0u;
@@ -370,8 +360,6 @@ int main(void)
       //BSP_LED_Toggle(LED1);
       
       #ifdef REMOCON_BLE
-      
- 
 //          gRUD = (joydata[3]-128)*(-13);
 //          gTHR = joydata[4]*13;
 //          gAIL = (joydata[5]-128)*(-13);
@@ -422,8 +410,6 @@ int main(void)
             rc_cal_flag = 1;
             BSP_LED_On(LED1);
           }
-           
-      
           if ( (gTHR == 0) && (gELE < - RC_CAL_THRESHOLD) && (gAIL < - RC_CAL_THRESHOLD) && (gRUD > RC_CAL_THRESHOLD))
           {
             rc_enable_motor = 1;
@@ -461,11 +447,9 @@ int main(void)
     //PRINTF("Pressure [atm] = %f\n\n",pre);  
     /* Magnetometer data on UART for debug*/
     //PRINTF("Magnetometer X = %d\tY = %d\tZ = %d\n\n", mag.AXIS_X, mag.AXIS_Y, mag.AXIS_Z);  
-
-
     }
 
-  if (0u != isTimerEventExist(&tim)) {    // Check if a timer event is present
+    if (0u != isTimerEventExist(&tim)) {    // Check if a timer event is present
         ClearTimer(&tim);           // Clear current event;
 
         count2 ++;
@@ -481,7 +465,7 @@ int main(void)
           }
         }
     }
-  }
+  } // main loop
 #pragma diag_suppress = Pe111
   return 0; /* not reachable - just to make MISRAC2012-RULE_17_4-a happy */
 #pragma diag_warning = Pe111
@@ -495,14 +479,12 @@ static void SystemClock_Config(void)
   RCC_OscInitTypeDef RCC_OscInitStruct;
   RCC_ClkInitTypeDef RCC_ClkInitStruct;
 
-    /**Configure the main internal regulator output voltage 
-    */
+    /**Configure the main internal regulator output voltage */
   __HAL_RCC_PWR_CLK_ENABLE();
 
   __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE2);
 
-    /**Initializes the CPU, AHB and APB busses clocks 
-    */
+    /**Initializes the CPU, AHB and APB busses clocks */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
@@ -514,8 +496,7 @@ static void SystemClock_Config(void)
 
   (void) HAL_RCC_OscConfig(&RCC_OscInitStruct);
   
-    /**Initializes the CPU, AHB and APB busses clocks 
-    */
+    /**Initializes the CPU, AHB and APB busses clocks */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
@@ -524,12 +505,10 @@ static void SystemClock_Config(void)
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
   (void) HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2);
 
-    /**Configure the Systick interrupt time 
-    */
+    /**Configure the Systick interrupt time */
   (void) HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq() / 1000u);
 
-    /**Configure the Systick 
-    */
+    /**Configure the Systick */
   HAL_SYSTICK_CLKSourceConfig(SYSTICK_CLKSOURCE_HCLK);
 
   /* SysTick_IRQn interrupt configuration */
@@ -541,8 +520,7 @@ static void MX_ADC1_Init(void)
 {
   ADC_ChannelConfTypeDef sConfig;
 
-    /**Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion)
-    */
+    /**Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion) */
   hadc1.Instance = ADC1;
   hadc1.Init.ClockPrescaler = ADC_CLOCKPRESCALER_PCLK_DIV4;
   hadc1.Init.Resolution = ADC_RESOLUTION12b;
@@ -556,8 +534,7 @@ static void MX_ADC1_Init(void)
   hadc1.Init.EOCSelection = EOC_SINGLE_CONV;
   (void)HAL_ADC_Init(&hadc1);
 
-    /**Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time.
-    */
+    /**Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time. */
   sConfig.Channel = ADC_CHANNEL_9;
   sConfig.Rank = 1;
   sConfig.SamplingTime = ADC_SAMPLETIME_3CYCLES;
@@ -624,29 +601,25 @@ static void MX_TIM4_Init(void)
   #endif
                                        
   htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  (void)HAL_TIM_Base_Init(&htim4);
+  (void) HAL_TIM_Base_Init(&htim4);
 
   sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
-  (void)HAL_TIM_ConfigClockSource(&htim4, &sClockSourceConfig);
+  (void) HAL_TIM_ConfigClockSource(&htim4, &sClockSourceConfig);
 
-  (void)HAL_TIM_PWM_Init(&htim4);
+  (void) HAL_TIM_PWM_Init(&htim4);
 
   sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
   sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-  (void)HAL_TIMEx_MasterConfigSynchronization(&htim4, &sMasterConfig);
+  (void) HAL_TIMEx_MasterConfigSynchronization(&htim4, &sMasterConfig);
 
   sConfigOC.OCMode = TIM_OCMODE_PWM1;
   sConfigOC.Pulse = 0;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-  (void)HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_1);
-
-  (void)HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_2);
-
-  (void)HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_3);
-
-  (void)HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_4);
-
+  (void) HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_1);
+  (void) HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_2);
+  (void) HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_3);
+  (void) HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_4);
 }
 
 /* TIM9 init function */
@@ -659,10 +632,10 @@ static void MX_TIM9_Init(void)
   htim9.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim9.Init.Period = 1999;
   htim9.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  (void)HAL_TIM_Base_Init(&htim9);
+  (void) HAL_TIM_Base_Init(&htim9);
 
   sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
-  (void)HAL_TIM_ConfigClockSource(&htim9, &sClockSourceConfig);
+  (void) HAL_TIM_ConfigClockSource(&htim9, &sClockSourceConfig);
 }
 
 /* USART1 init function */
@@ -676,7 +649,7 @@ static void MX_USART1_UART_Init(void)
   huart1.Init.Mode = UART_MODE_TX_RX;
   huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
   huart1.Init.OverSampling = UART_OVERSAMPLING_16;
-  (void)HAL_UART_Init(&huart1);
+  (void) HAL_UART_Init(&huart1);
 }
 
 /** Configure pins as
@@ -926,16 +899,16 @@ static void initializeAllSensors( void )
 */
 static void enableAllSensors( void )
 {
-  (void)BSP_ACCELERO_Sensor_Enable( LSM6DSL_X_0_handle );
-  (void)PRINTF("LSM6DSL MEMS Accelerometer initialized and enabled\n");
-  (void)BSP_GYRO_Sensor_Enable( LSM6DSL_G_0_handle );
-  (void)PRINTF("LSM6DSL MEMS Gyroscope initialized and enabled\n");
-  (void)BSP_MAGNETO_Sensor_Enable( LIS2MDL_M_0_handle );
-  (void)PRINTF("LIS2MDL Magnetometer initialized and enabled\n");
-  (void)BSP_PRESSURE_Sensor_Enable( LPS22HB_P_0_handle );
-  (void)PRINTF("LPS22HB Pressure sensor initialized and enabled\n");
-  (void)BSP_TEMPERATURE_Sensor_Enable( LPS22HB_T_0_handle );
-  (void)PRINTF("LPS22HB Temperature sensor initialized and enabled\n");
+  (void) BSP_ACCELERO_Sensor_Enable( LSM6DSL_X_0_handle );
+  (void) PRINTF("LSM6DSL MEMS Accelerometer initialized and enabled\n");
+  (void) BSP_GYRO_Sensor_Enable( LSM6DSL_G_0_handle );
+  (void) PRINTF("LSM6DSL MEMS Gyroscope initialized and enabled\n");
+  (void) BSP_MAGNETO_Sensor_Enable( LIS2MDL_M_0_handle );
+  (void) PRINTF("LIS2MDL Magnetometer initialized and enabled\n");
+  (void) BSP_PRESSURE_Sensor_Enable( LPS22HB_P_0_handle );
+  (void) PRINTF("LPS22HB Pressure sensor initialized and enabled\n");
+  (void) BSP_TEMPERATURE_Sensor_Enable( LPS22HB_T_0_handle );
+  (void) PRINTF("LPS22HB Temperature sensor initialized and enabled\n");
 }
 
 
