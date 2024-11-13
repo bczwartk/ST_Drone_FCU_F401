@@ -54,8 +54,8 @@
 #define W2ST_OFF_CONNECTION(BleChar)   (ConnectionBleStatus &= (~(BleChar)))
 
 /* Exported variables ---------------------------------------------------------*/
-int32_t connected = FALSE;
-uint8_t set_connectable = TRUE;
+int8_t connected = FALSE;
+int8_t set_connectable = TRUE;
 
 /* Imported Variables -------------------------------------------------------------*/
 extern uint32_t ConnectionBleStatus;
@@ -90,7 +90,7 @@ static uint16_t connection_handle = 0u;
 
 
 /* Private functions ------------------------------------------------------------*/
-static void GAP_ConnectionComplete_CB(uint8_t addr[6], uint16_t handle);
+static void GAP_ConnectionComplete_CB(const uint8_t addr[6], uint16_t handle);
 static void GAP_DisconnectionComplete_CB(void);
 static uint32_t DebugConsoleCommandParsing(uint8_t * att_data, uint8_t data_length);
 static uint32_t ConfigCommandParsing(const uint8_t * att_data, uint8_t data_length);
@@ -120,12 +120,12 @@ extern tBleStatus safe_aci_gatt_update_char_value(uint16_t servHandle,
 					  uint16_t charHandle,
 					  uint8_t charValOffset,
 					  uint8_t charValueLen,
-					  const uint8_t *charValue);
+					  const uint8_t * charValue);
 tBleStatus safe_aci_gatt_update_char_value(uint16_t servHandle, 
 				      uint16_t charHandle,
 				      uint8_t charValOffset,
 				      uint8_t charValueLen,   
-				      const uint8_t *charValue)
+				      const uint8_t * charValue)
 {
   tBleStatus ret = BLE_STATUS_INSUFFICIENT_RESOURCES;
   
@@ -214,7 +214,7 @@ tBleStatus Add_ConsoleW2ST_Service(void)
  * @param  uint8_t lenght lengt of string to write
  * @retval tBleStatus      Status
  */
-tBleStatus Stderr_Update(uint8_t *data,uint8_t length)
+tBleStatus Stderr_Update(const uint8_t * data, uint8_t length)
 {
   tBleStatus ret;
   uint8_t Offset;
@@ -230,7 +230,7 @@ tBleStatus Stderr_Update(uint8_t *data,uint8_t length)
     (void) memcpy(LastStderrBuffer, data + Offset, DataToSend);
     LastStderrLen = DataToSend;
 
-    ret = aci_gatt_update_char_value(ConsoleW2STHandle, StdErrCharHandle, 0, DataToSend , data + Offset);
+    ret = aci_gatt_update_char_value(ConsoleW2STHandle, StdErrCharHandle, 0, DataToSend, data + Offset);
     if (ret != BLE_STATUS_SUCCESS) {
       ret = BLE_STATUS_ERROR;
     }
@@ -247,7 +247,7 @@ tBleStatus Stderr_Update(uint8_t *data,uint8_t length)
  * @param  uint8_t lenght lengt of string to write
  * @retval tBleStatus      Status
  */
-tBleStatus Term_Update(uint8_t *data,uint8_t length)
+tBleStatus Term_Update(const uint8_t * data, uint8_t length)
 {
   tBleStatus ret;
   uint8_t Offset;
@@ -375,9 +375,8 @@ tBleStatus AccEvent_Notify(uint16_t Command)
  */
 tBleStatus Add_HWServW2ST_Service(void)
 {
-  tBleStatus ret;
+  tBleStatus ret = BLE_STATUS_SUCCESS;
   uint8_t NumberChars = 5u;
-
   uint8_t uuid[16];
 
 #ifdef STM32_SENSORTILE
@@ -391,109 +390,90 @@ tBleStatus Add_HWServW2ST_Service(void)
   ret = aci_gatt_add_serv(UUID_TYPE_128,  uuid, PRIMARY_SERVICE,
                           1u + (3u * NumberChars),
                           &HWServW2STHandle);
+  if (BLE_STATUS_SUCCESS == ret) {
+	  /* Fill the Environmental BLE Characteristc */
+	  COPY_ENVIRONMENTAL_W2ST_CHAR_UUID(uuid);
+	#if 0
+	    /* Fill the Battery and Environmental BLE Characteristc */
+	    if (TargetBoardFeatures.NumTempSensors == 2) {
+	      uuid[14] |= 0x05u; /* Two Temperature values*/
+	      EnvironmentalCharSize += 2u * 2u;
+	    } else if (TargetBoardFeatures.NumTempSensors == 1) {
+	      uuid[14] |= 0x04u; /* One Temperature value*/
+	     EnvironmentalCharSize += 2u;
+	    }
+	#endif
 
-  if (ret != BLE_STATUS_SUCCESS) {
-    goto fail;
-  }
+	    uuid[14] |= 0x05u; /* Two Temperature values*/
+	    EnvironmentalCharSize += 2u * 2u;
 
-  /* Fill the Environmental BLE Characteristc */
-  COPY_ENVIRONMENTAL_W2ST_CHAR_UUID(uuid);
-#if 0
-    /* Fill the Battery and Environmental BLE Characteristc */
-    if (TargetBoardFeatures.NumTempSensors == 2) {
-      uuid[14] |= 0x05u; /* Two Temperature values*/
-      EnvironmentalCharSize += 2u * 2u;
-    } else if (TargetBoardFeatures.NumTempSensors == 1) {
-      uuid[14] |= 0x04u; /* One Temperature value*/
-     EnvironmentalCharSize += 2u;
-    }
-#endif
-  
-    uuid[14] |= 0x05u; /* Two Temperature values*/
-    EnvironmentalCharSize += 2u * 2u;
-  
-   uuid[14] |= 0x08u; /* Battery level (percentage of full battery) */
-   EnvironmentalCharSize += 2u;
- 
-    uuid[14] |= 0x10u; /* Pressure value*/
-    EnvironmentalCharSize += 4u;
-  
-  ret =  aci_gatt_add_char(HWServW2STHandle, UUID_TYPE_128, uuid, 2u + 4u + 2u + 2u + 2u,
-                           CHAR_PROP_NOTIFY|CHAR_PROP_READ,
-                           ATTR_PERMISSION_NONE,
-                           GATT_NOTIFY_READ_REQ_AND_WAIT_FOR_APPL_RESP,
-                           16, 0, &EnvironmentalCharHandle);
+	   uuid[14] |= 0x08u; /* Battery level (percentage of full battery) */
+	   EnvironmentalCharSize += 2u;
 
-  if (ret != BLE_STATUS_SUCCESS) {
-    goto fail;
-  }
+	    uuid[14] |= 0x10u; /* Pressure value*/
+	    EnvironmentalCharSize += 4u;
 
-  COPY_ACC_GYRO_MAG_W2ST_CHAR_UUID(uuid);
-  ret =  aci_gatt_add_char(HWServW2STHandle, UUID_TYPE_128, uuid, 2u + (3u * 3u * 2u),
-                           CHAR_PROP_NOTIFY,
-                           ATTR_PERMISSION_NONE,
-                           GATT_NOTIFY_READ_REQ_AND_WAIT_FOR_APPL_RESP,
-                           16, 0, &AccGyroMagCharHandle);
+	  ret =  aci_gatt_add_char(HWServW2STHandle, UUID_TYPE_128, uuid, 2u + 4u + 2u + 2u + 2u,
+	                           CHAR_PROP_NOTIFY|CHAR_PROP_READ,
+	                           ATTR_PERMISSION_NONE,
+	                           GATT_NOTIFY_READ_REQ_AND_WAIT_FOR_APPL_RESP,
+	                           16, 0, &EnvironmentalCharHandle);
+	  if (BLE_STATUS_SUCCESS == ret) {
+		  COPY_ACC_GYRO_MAG_W2ST_CHAR_UUID(uuid);
+		  ret =  aci_gatt_add_char(HWServW2STHandle, UUID_TYPE_128, uuid, 2u + (3u * 3u * 2u),
+		                           CHAR_PROP_NOTIFY,
+		                           ATTR_PERMISSION_NONE,
+		                           GATT_NOTIFY_READ_REQ_AND_WAIT_FOR_APPL_RESP,
+		                           16, 0, &AccGyroMagCharHandle);
 
-  if (ret != BLE_STATUS_SUCCESS) {
-    goto fail;
-  }
+		  if (BLE_STATUS_SUCCESS == ret) {
+			  COPY_ACC_EVENT_W2ST_CHAR_UUID(uuid);
+			  ret =  aci_gatt_add_char(HWServW2STHandle, UUID_TYPE_128, uuid, 2u + 2u,
+			                           CHAR_PROP_NOTIFY | CHAR_PROP_READ,
+			                           ATTR_PERMISSION_NONE,
+			                           GATT_NOTIFY_READ_REQ_AND_WAIT_FOR_APPL_RESP,
+			                           16, 0, &AccEventCharHandle);
 
-  COPY_ACC_EVENT_W2ST_CHAR_UUID(uuid);
-  ret =  aci_gatt_add_char(HWServW2STHandle, UUID_TYPE_128, uuid, 2u + 2u,
-                           CHAR_PROP_NOTIFY | CHAR_PROP_READ,
-                           ATTR_PERMISSION_NONE,
-                           GATT_NOTIFY_READ_REQ_AND_WAIT_FOR_APPL_RESP,
-                           16, 0, &AccEventCharHandle);
+			  if (BLE_STATUS_SUCCESS == ret) {
+				  COPY_ARMING_W2ST_CHAR_UUID(uuid);
+				  ret =  aci_gatt_add_char(HWServW2STHandle, UUID_TYPE_128, uuid, 2u + 1u,
+				                           CHAR_PROP_NOTIFY | CHAR_PROP_READ,
+				                           ATTR_PERMISSION_NONE,
+				                           GATT_NOTIFY_READ_REQ_AND_WAIT_FOR_APPL_RESP,
+				                           16, 0, &ArmingCharHandle);
 
-  if (ret != BLE_STATUS_SUCCESS) {
-    goto fail;
-  }
+				  if (BLE_STATUS_SUCCESS == ret) {
+#ifdef STM32_SENSORTILE
+					  if (TargetBoardFeatures.HandleGGComponent){
+						COPY_GG_W2ST_CHAR_UUID(uuid);
+						ret =  aci_gatt_add_char(HWServW2STHandle, UUID_TYPE_128, uuid, 2u + 2u + 2u + 2u + 1u,
+												 CHAR_PROP_NOTIFY | CHAR_PROP_READ,
+												 ATTR_PERMISSION_NONE,
+												 GATT_NOTIFY_READ_REQ_AND_WAIT_FOR_APPL_RESP,
+												 16, 0, &GGCharHandle);
 
-  COPY_ARMING_W2ST_CHAR_UUID(uuid);
-  ret =  aci_gatt_add_char(HWServW2STHandle, UUID_TYPE_128, uuid, 2u + 1u,
-                           CHAR_PROP_NOTIFY | CHAR_PROP_READ,
-                           ATTR_PERMISSION_NONE,
-                           GATT_NOTIFY_READ_REQ_AND_WAIT_FOR_APPL_RESP,
-                           16, 0, &ArmingCharHandle);
+						if (BLE_STATUS_SUCCESS == ret) {
+#endif /* STM32_SENSORTILE */
 
-  if (ret != BLE_STATUS_SUCCESS) {
-    goto fail;
-  }
+							/* MAX charecteristic */
+						  COPY_MAX_W2ST_CHAR_UUID(uuid);
+						  ret =  aci_gatt_add_char(HWServW2STHandle, UUID_TYPE_128, uuid, 7u,
+						                          CHAR_PROP_WRITE_WITHOUT_RESP | CHAR_PROP_WRITE,
+						                           ATTR_PERMISSION_NONE,
+						                           GATT_NOTIFY_ATTRIBUTE_WRITE,
+						                           16, 0, &MaxCharHandle);
 
 #ifdef STM32_SENSORTILE
-  if(TargetBoardFeatures.HandleGGComponent){
-    COPY_GG_W2ST_CHAR_UUID(uuid);
-    ret =  aci_gatt_add_char(HWServW2STHandle, UUID_TYPE_128, uuid, 2u + 2u + 2u + 2u + 1u,
-                             CHAR_PROP_NOTIFY | CHAR_PROP_READ,
-                             ATTR_PERMISSION_NONE,
-                             GATT_NOTIFY_READ_REQ_AND_WAIT_FOR_APPL_RESP,
-                             16, 0, &GGCharHandle);
-
-    if (ret != BLE_STATUS_SUCCESS) {
-      goto fail;
-    }
-  }
+						}
+					  }
 #endif /* STM32_SENSORTILE */
-	
-	
-	/* MAX charecteristic */
-	COPY_MAX_W2ST_CHAR_UUID(uuid);
-  ret =  aci_gatt_add_char(HWServW2STHandle, UUID_TYPE_128, uuid, 7u,
-                          CHAR_PROP_WRITE_WITHOUT_RESP | CHAR_PROP_WRITE,
-                           ATTR_PERMISSION_NONE,
-                           GATT_NOTIFY_ATTRIBUTE_WRITE,
-                           16, 0, &MaxCharHandle);
-	
-  if (ret != BLE_STATUS_SUCCESS) {
-    goto fail;
+				  }
+			  }
+		  }
+	  }
   }
-	
 
-  return BLE_STATUS_SUCCESS;
-
-fail:
-  return BLE_STATUS_ERROR;
+  return (BLE_STATUS_SUCCESS == ret) ? BLE_STATUS_SUCCESS : BLE_STATUS_ERROR;
 }
 
 /**
@@ -503,7 +483,7 @@ fail:
  * @param  SensorAxes_t Mag Structure containing magneto value
  * @retval tBleStatus      Status
  */
-tBleStatus AccGyroMag_Update(SensorAxes_t *Acc,SensorAxes_t *Gyro,SensorAxes_t *Mag)
+tBleStatus AccGyroMag_Update(const SensorAxes_t *Acc, SensorAxes_t *Gyro, const SensorAxes_t *Mag)
 {  
   tBleStatus ret;
 
@@ -681,7 +661,7 @@ void setConnectable(void)
  * @param  uint16_t handle Connection handle
  * @retval None
  */
-static void GAP_ConnectionComplete_CB(uint8_t addr[6], uint16_t handle)
+static void GAP_ConnectionComplete_CB(const uint8_t addr[6], uint16_t handle)
 {  
   connected = TRUE;
   connection_handle = handle;

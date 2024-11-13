@@ -34,8 +34,8 @@
 #include "sensor_service.h"
 
 /** User stub definition for function: tBleStatus Stderr_Update(uint8_t *, uint8_t) */
-EXTERN_C_LINKAGE tBleStatus Stderr_Update (uint8_t * data, uint8_t length) ;
-EXTERN_C_LINKAGE tBleStatus CppTest_Stub_Stderr_Update (uint8_t * data, uint8_t length) 
+EXTERN_C_LINKAGE tBleStatus Stderr_Update (const uint8_t * data, uint8_t length) ;
+EXTERN_C_LINKAGE tBleStatus CppTest_Stub_Stderr_Update (const uint8_t * data, uint8_t length)
 {
     CPPTEST_STUB_CALLED("Stderr_Update");
 
@@ -57,7 +57,7 @@ EXTERN_C_LINKAGE tBleStatus CppTest_Stub_Stderr_Update (uint8_t * data, uint8_t 
      *     *__return = Stderr_Update(data, length);
      */
     if (CPPTEST_STUB_HAS_CALLBACK()) {
-        CPPTEST_STUB_CALLBACK_PARAMS(tBleStatus* __return, uint8_t * data, uint8_t length);
+        CPPTEST_STUB_CALLBACK_PARAMS(tBleStatus* __return, const uint8_t * data, uint8_t length);
         CPPTEST_STUB_INVOKE_CALLBACK(&__return, data, length);
 
     // had to comment it out not to hang tests waiting for stderr
@@ -402,8 +402,8 @@ EXTERN_C_LINKAGE uint32_t CppTest_Stub_DebugConsoleCommandParsing (uint8_t * att
 }
 
 /** User stub definition for function: tBleStatus Term_Update(uint8_t *, uint8_t) */
-EXTERN_C_LINKAGE tBleStatus Term_Update (uint8_t * data, uint8_t length) ;
-EXTERN_C_LINKAGE tBleStatus CppTest_Stub_Term_Update (uint8_t * data, uint8_t length) 
+EXTERN_C_LINKAGE tBleStatus Term_Update (const uint8_t * data, uint8_t length) ;
+EXTERN_C_LINKAGE tBleStatus CppTest_Stub_Term_Update (const uint8_t * data, uint8_t length)
 {
     CPPTEST_STUB_CALLED("Term_Update");
 
@@ -425,7 +425,7 @@ EXTERN_C_LINKAGE tBleStatus CppTest_Stub_Term_Update (uint8_t * data, uint8_t le
      *     *__return = Term_Update(data, length);
      */
     if (CPPTEST_STUB_HAS_CALLBACK()) {
-        CPPTEST_STUB_CALLBACK_PARAMS(tBleStatus* __return, uint8_t * data, uint8_t length);
+        CPPTEST_STUB_CALLBACK_PARAMS(tBleStatus* __return, const uint8_t * data, uint8_t length);
         CPPTEST_STUB_INVOKE_CALLBACK(&__return, data, length);
 
     } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {
@@ -471,8 +471,8 @@ EXTERN_C_LINKAGE uint32_t CppTest_Stub_ConfigCommandParsing (const uint8_t * att
 }
 
 /** User stub definition for function: tBleStatus AccGyroMag_Update(SensorAxes_t *, SensorAxes_t *, SensorAxes_t *) */
-EXTERN_C_LINKAGE tBleStatus AccGyroMag_Update (SensorAxes_t * Acc, SensorAxes_t * Gyro, SensorAxes_t * Mag) ;
-EXTERN_C_LINKAGE tBleStatus CppTest_Stub_AccGyroMag_Update (SensorAxes_t * Acc, SensorAxes_t * Gyro, SensorAxes_t * Mag) 
+EXTERN_C_LINKAGE tBleStatus AccGyroMag_Update (const SensorAxes_t * Acc, SensorAxes_t * Gyro, const SensorAxes_t * Mag) ;
+EXTERN_C_LINKAGE tBleStatus CppTest_Stub_AccGyroMag_Update (const SensorAxes_t * Acc, SensorAxes_t * Gyro, const SensorAxes_t * Mag)
 {
     CPPTEST_STUB_CALLED("AccGyroMag_Update");
 
@@ -494,7 +494,7 @@ EXTERN_C_LINKAGE tBleStatus CppTest_Stub_AccGyroMag_Update (SensorAxes_t * Acc, 
      *     *__return = AccGyroMag_Update(Acc, Gyro, Mag);
      */
     if (CPPTEST_STUB_HAS_CALLBACK()) {
-        CPPTEST_STUB_CALLBACK_PARAMS(tBleStatus* __return, SensorAxes_t * Acc, SensorAxes_t * Gyro, SensorAxes_t * Mag);
+        CPPTEST_STUB_CALLBACK_PARAMS(tBleStatus* __return, const SensorAxes_t * Acc, SensorAxes_t * Gyro, const SensorAxes_t * Mag);
         CPPTEST_STUB_INVOKE_CALLBACK(&__return, Acc, Gyro, Mag);
 
     } else if (CPPTEST_STUB_HAS_ORIGINAL_DEFINITION()) {

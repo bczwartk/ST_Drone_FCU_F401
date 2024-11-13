@@ -21,7 +21,7 @@
         <stlinkfoundProbes />
     </stlink>
     <DebugChecksum>
-        <Checksum>2813211604</Checksum>
+        <Checksum>1256672419</Checksum>
     </DebugChecksum>
     <Exceptions>
         <StopOnUncaught>_ 0</StopOnUncaught>

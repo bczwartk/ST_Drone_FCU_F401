@@ -25,6 +25,7 @@ CPPTEST_TEST(TS_main_BlueNRG_test_BlueNRG_Init_console_w2st_svc_fail);
 CPPTEST_TEST(TS_main_BlueNRG_test_BlueNRG_Init_console_w2st_svc_ok);
 CPPTEST_TEST(TS_main_BlueNRG_test_BlueNRG_Init_config_w2st_svc_fail);
 CPPTEST_TEST(TS_main_BlueNRG_test_BlueNRG_Init_config_w2st_svc_ok);
+CPPTEST_TEST(TS_main_BlueNRG_test_BlueNRG_Init_all_ok);
 CPPTEST_TEST_SUITE_END();
         
 void TS_main_BlueNRG_test_Init_BlueNRG_Custom_Services_all_OK(void);
@@ -41,6 +42,7 @@ void TS_main_BlueNRG_test_BlueNRG_Init_console_w2st_svc_fail(void);
 void TS_main_BlueNRG_test_BlueNRG_Init_console_w2st_svc_ok(void);
 void TS_main_BlueNRG_test_BlueNRG_Init_config_w2st_svc_fail(void);
 void TS_main_BlueNRG_test_BlueNRG_Init_config_w2st_svc_ok(void);
+void TS_main_BlueNRG_test_BlueNRG_Init_all_ok(void);
 CPPTEST_TEST_SUITE_REGISTRATION(TS_main_BlueNRG);
 
 void TS_main_BlueNRG_testSuiteSetUp(void);
@@ -180,6 +182,8 @@ void TS_main_BlueNRG_test_Init_BlueNRG_Custom_Services_config_fail()
 /* CPPTEST_TEST_CASE_BEGIN test_BlueNRG_Init_version_fail */
 void TS_main_BlueNRG_test_BlueNRG_Init_version_fail()
 {
+	DrvStatusTypeDef ret = COMPONENT_OK;
+
  	CPPTEST_EXPECT_NCALLS("BNRG_SPI_Init", 1);
  	CPPTEST_EXPECT_NCALLS("HCI_Init", 1);
 	CPPTEST_EXPECT_NCALLS("BlueNRG_RST", 1);
@@ -195,13 +199,17 @@ void TS_main_BlueNRG_test_BlueNRG_Init_version_fail()
 	CPPTEST_REGISTER_STUB_CALLBACK("getBlueNRGVersion", &CppTest_StubCallback_getBlueNRGVersion);
 	CppTest_StubCallback_getBlueNRGVersion_ret = BLE_STATUS_ERROR;
 
-	BlueNRG_Init();
+	ret = BlueNRG_Init();
+
+	CPPTEST_ASSERT_ENUM_EQUAL(DrvStatusTypeDef, COMPONENT_ERROR, ret);
 }
 /* CPPTEST_TEST_CASE_END test_BlueNRG_Init_version_fail */
 
 /* CPPTEST_TEST_CASE_BEGIN test_BlueNRG_Init_aci_hal_write_config_data_fail */
 void TS_main_BlueNRG_test_BlueNRG_Init_aci_hal_write_config_data_fail()
 {
+	DrvStatusTypeDef ret = COMPONENT_OK;
+
  	CPPTEST_EXPECT_NCALLS("BNRG_SPI_Init", 1);
  	CPPTEST_EXPECT_NCALLS("HCI_Init", 1);
 	CPPTEST_EXPECT_NCALLS("BlueNRG_RST", 2);
@@ -218,13 +226,17 @@ void TS_main_BlueNRG_test_BlueNRG_Init_aci_hal_write_config_data_fail()
 	CPPTEST_REGISTER_STUB_CALLBACK("getBlueNRGVersion", &CppTest_StubCallback_getBlueNRGVersion);
 	CppTest_StubCallback_getBlueNRGVersion_ret = BLE_STATUS_SUCCESS;
 
-	BlueNRG_Init();
+	ret = BlueNRG_Init();
+
+	CPPTEST_ASSERT_ENUM_EQUAL(DrvStatusTypeDef, COMPONENT_ERROR, ret);
 }
 /* CPPTEST_TEST_CASE_END test_BlueNRG_Init_aci_hal_write_config_data_fail */
 
 /* CPPTEST_TEST_CASE_BEGIN test_BlueNRG_Init_aci_gatt_init_fail */
 void TS_main_BlueNRG_test_BlueNRG_Init_aci_gatt_init_fail()
 {
+	DrvStatusTypeDef ret = COMPONENT_OK;
+
  	CPPTEST_EXPECT_NCALLS("BNRG_SPI_Init", 1);
  	CPPTEST_EXPECT_NCALLS("HCI_Init", 1);
 	CPPTEST_EXPECT_NCALLS("BlueNRG_RST", 2);
@@ -241,13 +253,17 @@ void TS_main_BlueNRG_test_BlueNRG_Init_aci_gatt_init_fail()
 	CPPTEST_REGISTER_STUB_CALLBACK("getBlueNRGVersion", &CppTest_StubCallback_getBlueNRGVersion);
 	CppTest_StubCallback_getBlueNRGVersion_ret = BLE_STATUS_SUCCESS;
 
-	BlueNRG_Init();
+	ret = BlueNRG_Init();
+
+	CPPTEST_ASSERT_ENUM_EQUAL(DrvStatusTypeDef, COMPONENT_ERROR, ret);
 }
 /* CPPTEST_TEST_CASE_END test_BlueNRG_Init_aci_gatt_init_fail */
 
 /* CPPTEST_TEST_CASE_BEGIN test_BlueNRG_Init_aci_gap_init_IDB05A1_fail */
 void TS_main_BlueNRG_test_BlueNRG_Init_aci_gap_init_IDB05A1_fail()
 {
+	DrvStatusTypeDef ret = COMPONENT_OK;
+
  	CPPTEST_EXPECT_NCALLS("BNRG_SPI_Init", 1);
  	CPPTEST_EXPECT_NCALLS("HCI_Init", 1);
 	CPPTEST_EXPECT_NCALLS("BlueNRG_RST", 2);
@@ -264,13 +280,17 @@ void TS_main_BlueNRG_test_BlueNRG_Init_aci_gap_init_IDB05A1_fail()
 	CPPTEST_REGISTER_STUB_CALLBACK("getBlueNRGVersion", &CppTest_StubCallback_getBlueNRGVersion);
 	CppTest_StubCallback_getBlueNRGVersion_ret = BLE_STATUS_SUCCESS;
 
-	BlueNRG_Init();
+	ret = BlueNRG_Init();
+
+	CPPTEST_ASSERT_ENUM_EQUAL(DrvStatusTypeDef, COMPONENT_ERROR, ret);
 }
 /* CPPTEST_TEST_CASE_END test_BlueNRG_Init_aci_gap_init_IDB05A1_fail */
 
 /* CPPTEST_TEST_CASE_BEGIN test_BlueNRG_Init_aci_gap_set_auth_requirement_fail */
 void TS_main_BlueNRG_test_BlueNRG_Init_aci_gap_set_auth_requirement_fail()
 {
+	DrvStatusTypeDef ret = COMPONENT_OK;
+
  	CPPTEST_EXPECT_NCALLS("BNRG_SPI_Init", 1);
  	CPPTEST_EXPECT_NCALLS("HCI_Init", 1);
 	CPPTEST_EXPECT_NCALLS("BlueNRG_RST", 2);
@@ -287,7 +307,9 @@ void TS_main_BlueNRG_test_BlueNRG_Init_aci_gap_set_auth_requirement_fail()
 	CPPTEST_REGISTER_STUB_CALLBACK("getBlueNRGVersion", &CppTest_StubCallback_getBlueNRGVersion);
 	CppTest_StubCallback_getBlueNRGVersion_ret = BLE_STATUS_SUCCESS;
 
-	BlueNRG_Init();
+	ret = BlueNRG_Init();
+
+	CPPTEST_ASSERT_ENUM_EQUAL(DrvStatusTypeDef, COMPONENT_ERROR, ret);
 }
 /* CPPTEST_TEST_CASE_END test_BlueNRG_Init_aci_gap_set_auth_requirement_fail */
 
@@ -295,6 +317,8 @@ void TS_main_BlueNRG_test_BlueNRG_Init_aci_gap_set_auth_requirement_fail()
 /* CPPTEST_TEST_CASE_BEGIN test_BlueNRG_Init_console_w2st_svc_fail */
 void TS_main_BlueNRG_test_BlueNRG_Init_console_w2st_svc_fail()
 {
+	DrvStatusTypeDef ret = COMPONENT_OK;
+
  	CPPTEST_EXPECT_NCALLS("BNRG_SPI_Init", 1);
  	CPPTEST_EXPECT_NCALLS("HCI_Init", 1);
 	CPPTEST_EXPECT_NCALLS("BlueNRG_RST", 2);
@@ -312,13 +336,17 @@ void TS_main_BlueNRG_test_BlueNRG_Init_console_w2st_svc_fail()
 	CPPTEST_REGISTER_STUB_CALLBACK("Add_ConsoleW2ST_Service", &CppTest_StubCallback_Add_ConsoleW2ST_Service);
 	CppTest_StubCallback_Add_ConsoleW2ST_Service_ret = BLE_STATUS_ERROR;
 
-	BlueNRG_Init();
+	ret = BlueNRG_Init();
+
+	CPPTEST_ASSERT_ENUM_EQUAL(DrvStatusTypeDef, COMPONENT_ERROR, ret);
 }
 /* CPPTEST_TEST_CASE_END test_BlueNRG_Init_console_w2st_svc_fail */
 
 /* CPPTEST_TEST_CASE_BEGIN test_BlueNRG_Init_console_w2st_svc_ok */
 void TS_main_BlueNRG_test_BlueNRG_Init_console_w2st_svc_ok()
 {
+	DrvStatusTypeDef ret = COMPONENT_OK;
+
  	CPPTEST_EXPECT_NCALLS("BNRG_SPI_Init", 1);
  	CPPTEST_EXPECT_NCALLS("HCI_Init", 1);
 	CPPTEST_EXPECT_NCALLS("BlueNRG_RST", 2);
@@ -336,7 +364,9 @@ void TS_main_BlueNRG_test_BlueNRG_Init_console_w2st_svc_ok()
 	CPPTEST_REGISTER_STUB_CALLBACK("Add_ConsoleW2ST_Service", &CppTest_StubCallback_Add_ConsoleW2ST_Service);
 	CppTest_StubCallback_Add_ConsoleW2ST_Service_ret = BLE_STATUS_SUCCESS;
 
-	BlueNRG_Init();
+	ret = BlueNRG_Init();
+
+	CPPTEST_ASSERT_ENUM_EQUAL(DrvStatusTypeDef, COMPONENT_OK, ret);
 }
 /* CPPTEST_TEST_CASE_END test_BlueNRG_Init_console_w2st_svc_ok */
 
@@ -344,6 +374,8 @@ void TS_main_BlueNRG_test_BlueNRG_Init_console_w2st_svc_ok()
 /* CPPTEST_TEST_CASE_BEGIN test_BlueNRG_Init_config_w2st_svc_fail */
 void TS_main_BlueNRG_test_BlueNRG_Init_config_w2st_svc_fail()
 {
+	DrvStatusTypeDef ret = COMPONENT_OK;
+
  	CPPTEST_EXPECT_NCALLS("BNRG_SPI_Init", 1);
  	CPPTEST_EXPECT_NCALLS("HCI_Init", 1);
 	CPPTEST_EXPECT_NCALLS("BlueNRG_RST", 2);
@@ -361,13 +393,17 @@ void TS_main_BlueNRG_test_BlueNRG_Init_config_w2st_svc_fail()
 	CPPTEST_REGISTER_STUB_CALLBACK("Add_ConfigW2ST_Service", &CppTest_StubCallback_Add_ConfigW2ST_Service);
 	CppTest_StubCallback_Add_ConfigW2ST_Service_ret = BLE_STATUS_ERROR;
 
-	BlueNRG_Init();
+	ret = BlueNRG_Init();
+
+	CPPTEST_ASSERT_ENUM_EQUAL(DrvStatusTypeDef, COMPONENT_ERROR, ret);
 }
 /* CPPTEST_TEST_CASE_END test_BlueNRG_Init_config_w2st_svc_fail */
 
 /* CPPTEST_TEST_CASE_BEGIN test_BlueNRG_Init_config_w2st_svc_ok */
 void TS_main_BlueNRG_test_BlueNRG_Init_config_w2st_svc_ok()
 {
+	DrvStatusTypeDef ret = COMPONENT_OK;
+
  	CPPTEST_EXPECT_NCALLS("BNRG_SPI_Init", 1);
  	CPPTEST_EXPECT_NCALLS("HCI_Init", 1);
 	CPPTEST_EXPECT_NCALLS("BlueNRG_RST", 2);
@@ -385,6 +421,34 @@ void TS_main_BlueNRG_test_BlueNRG_Init_config_w2st_svc_ok()
 	CPPTEST_REGISTER_STUB_CALLBACK("Add_ConfigW2ST_Service", &CppTest_StubCallback_Add_ConfigW2ST_Service);
 	CppTest_StubCallback_Add_ConfigW2ST_Service_ret = BLE_STATUS_SUCCESS;
 
-	BlueNRG_Init();
+	ret = BlueNRG_Init();
+
+	CPPTEST_ASSERT_ENUM_EQUAL(DrvStatusTypeDef, COMPONENT_OK, ret);
 }
 /* CPPTEST_TEST_CASE_END test_BlueNRG_Init_config_w2st_svc_ok */
+
+/* CPPTEST_TEST_CASE_BEGIN test_BlueNRG_Init_all_ok */
+void TS_main_BlueNRG_test_BlueNRG_Init_all_ok()
+{
+	DrvStatusTypeDef ret = COMPONENT_OK;
+
+ 	CPPTEST_EXPECT_NCALLS("BNRG_SPI_Init", 1);
+ 	CPPTEST_EXPECT_NCALLS("HCI_Init", 1);
+	CPPTEST_EXPECT_NCALLS("BlueNRG_RST", 2);
+	CPPTEST_EXPECT_NCALLS("getBlueNRGVersion", 1);
+	CPPTEST_EXPECT_NCALLS("aci_hal_write_config_data", 1);
+	CPPTEST_EXPECT_NCALLS("aci_gatt_init", 1);
+	CPPTEST_EXPECT_NCALLS("aci_gap_init_IDB05A1", 1);
+	CPPTEST_EXPECT_NCALLS("aci_gap_set_auth_requirement", 1);
+	CPPTEST_EXPECT_NCALLS("aci_hal_set_tx_power_level", 1);
+	CPPTEST_EXPECT_NCALLS("Add_ConsoleW2ST_Service", 1);
+	CPPTEST_EXPECT_NCALLS("Add_ConfigW2ST_Service", 1);
+
+	CPPTEST_REGISTER_STUB_CALLBACK("getBlueNRGVersion", &CppTest_StubCallback_getBlueNRGVersion);
+	CppTest_StubCallback_getBlueNRGVersion_ret = BLE_STATUS_SUCCESS;
+
+	ret = BlueNRG_Init();
+
+	CPPTEST_ASSERT_ENUM_EQUAL(DrvStatusTypeDef, COMPONENT_OK, ret);
+}
+/* CPPTEST_TEST_CASE_END test_BlueNRG_Init_all_ok */

@@ -75,21 +75,21 @@
 
 /* Exported functions ------------------------------------------------------- */
 extern tBleStatus Add_HWServW2ST_Service(void);
-extern tBleStatus AccGyroMag_Update(SensorAxes_t *Acc,SensorAxes_t *Gyro,SensorAxes_t *Mag);
+extern tBleStatus AccGyroMag_Update(const SensorAxes_t * Acc, SensorAxes_t * Gyro, const SensorAxes_t * Mag);
 extern tBleStatus AccEvent_Notify(uint16_t Command);
 
 extern tBleStatus ARMING_Update(uint8_t ArmingStatus);
-extern tBleStatus Batt_Env_RSSI_Update(int32_t Press,uint16_t Batt,int16_t Temp,int16_t RSSI);
+extern tBleStatus Batt_Env_RSSI_Update(int32_t Press, uint16_t Batt, int16_t Temp, int16_t RSSI);
 
 extern tBleStatus Add_ConsoleW2ST_Service(void);
-extern tBleStatus Stderr_Update(uint8_t *data,uint8_t length);
-extern tBleStatus Term_Update(uint8_t *data,uint8_t length);
+extern tBleStatus Stderr_Update(const uint8_t * data, uint8_t length);
+extern tBleStatus Term_Update(const uint8_t * data, uint8_t length);
 
 extern tBleStatus Add_ConfigW2ST_Service(void);
 extern tBleStatus Config_Notify(uint32_t feature, uint8_t command, uint8_t data);
 
 extern void       setConnectable(void);
-extern void       HCI_Event_CB(void *pckt);
+extern void       HCI_Event_CB(void * pckt);
 
 /* Exported constants --------------------------------------------------------*/
 
@@ -164,8 +164,8 @@ used in Console service */
 // define W2ST_CONNECT_GG_EVENT      (1u << 11u)
 
 /* Exported variables ---------------------------------------------------------*/
-extern int32_t connected;
-extern uint8_t set_connectable;
+extern int8_t connected;
+extern int8_t set_connectable;
 
 #ifdef __cplusplus
 }

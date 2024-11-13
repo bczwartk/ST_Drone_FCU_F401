@@ -67,7 +67,7 @@
 /* Private variables ---------------------------------------------------------*/
 volatile uint32_t HCI_ProcessEvent = 0u;
 extern uint8_t joydata[8];
-uint8_t joydata[8] = {0,0,0,0,0,0,0,0};
+uint8_t joydata[8] = { 0, 0, 0, 0, 0, 0, 0, 0};
 
 static ADC_HandleTypeDef hadc1;
 
@@ -94,11 +94,9 @@ int32_t rc_cal_flag = 0;
 uint8_t rc_enable_motor = 0u;
 int32_t fly_ready = 0;
 
-extern uint32_t tim9_event_flag, tim9_cnt, tim9_cnt2;
-uint32_t tim9_event_flag = 0u, tim9_cnt = 0u, tim9_cnt2 = 0u;
+static uint32_t tim9_event_flag = 0u;
 
 /* BLE module */
-static DrvStatusTypeDef testStatus = COMPONENT_OK;
 extern uint8_t bdaddr[6];
 uint8_t bdaddr[6];
 
@@ -115,7 +113,7 @@ static void MX_USART1_UART_Init(void);
 static void initializeAllSensors( void );
 static void enableAllSensors( void );
 
-static void BlueNRG_Init(void);
+static DrvStatusTypeDef BlueNRG_Init(void);
 static void Init_BlueNRG_Custom_Services(void);
 static void SendMotionData(void);
 static void SendBattEnvData(void);
@@ -127,9 +125,9 @@ static void SendArmingData(void);
 static P_PI_PIDControlTypeDef pid;
 static EulerAngleTypeDef euler_rc, euler_ahrs;
 static AxesRaw_TypeDef acc, gyro, mag;
-static AxesRaw_TypeDef_Float acc_ahrs_FIFO[FIFO_Order], acc_ahrs;
+static AxesRaw_TypeDef_Float acc_ahrs_FIFO[FIFO_Order];
 static AxesRaw_TypeDef_Float gyro_fil, gyro_y_pre[4], gyro_x_pre[4];
-static AxesRaw_TypeDef_Float gyro_ahrs_FIFO[FIFO_Order], gyro_ahrs;
+static AxesRaw_TypeDef_Float gyro_ahrs_FIFO[FIFO_Order];
 static AxesRaw_TypeDef acc_off_calc, gyro_off_calc, acc_offset, gyro_offset;
 
 typedef struct
@@ -153,15 +151,21 @@ int32_t BytesToWrite = 0;
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-  int16_t pid_interval;
+  uint32_t pid_interval;
   uint16_t i;
   int32_t mytimcnt = 0;
   
   static AHRS_State_TypeDef ahrs;
-  static int16_t gJoystick_status = 0;
+  static AxesRaw_TypeDef_Float acc_ahrs = {0.0f, 0.0f, 0.0f };
+  static AxesRaw_TypeDef_Float gyro_ahrs = {0.0f, 0.0f, 0.0f };
+  static uint8_t gJoystick_status = 0;
   static int32_t count1 = 0, count2 = 0;
   static float32_t press_zero_level = 0.0f;
   static EulerAngleTypeDef euler_rc_fil = {0.0f, 0.0f, 0.0f };
+
+  // shut up rule MISRAC2012-RULE_2_8.a - the objects are needed by middle ware code
+  (void) hspi1;
+  (void) hspi2;
 
   gyro_fil.AXIS_X = 0.0f;
   gyro_fil.AXIS_Y = 0.0f;
@@ -284,7 +288,7 @@ int main(void)
   set_motor_pwm_zero(&motor_pwm);
 
   /* Setup a timer with 1ms interval */
-  pid_interval = (int16_t)(PID_SAMPLING_TIME * 1000.0f);
+  pid_interval = (uint32_t)(PID_SAMPLING_TIME * 1000.0f);
   SetupTimer(&tim, pid_interval);
 
   /* Start timer */
@@ -292,7 +296,7 @@ int main(void)
   
   /* BLE communication */
   (void) PRINTF("BLE communication initialization...\n\n");
-  BlueNRG_Init();
+  (void) BlueNRG_Init();
 
   /* Initialize the BlueNRG Custom services */
   Init_BlueNRG_Custom_Services();
@@ -356,8 +360,6 @@ int main(void)
 
       // Calculate euler angle drone
       QuaternionToEuler(&ahrs.q, &euler_ahrs);
-
-      //BSP_LED_Toggle(LED1);
       
       #ifdef REMOCON_BLE
 //          gRUD = (joydata[3]-128)*(-13);
@@ -690,6 +692,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   static int32_t rc_cal_cnt = 0;
   static int32_t sensor_init_cali = 0;
   static int32_t sensor_init_cali_count = 0;
+  static uint32_t tim9_cnt = 0u, tim9_cnt2 = 0u;
+
   //sensor filter
   //7hz, 800hz
   //IIR_Coeff gyro_fil_coeff = {1.922286512869545,  -0.92519529534950118, 0.00072719561998898304, 0.0014543912399779661, 0.00072719561998898304};
@@ -700,13 +704,13 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   //60hz, 800hz
   //IIR_Coeff gyro_fil_coeff = {1.3489677452527946 ,  -0.51398189421967566, 0.041253537241720303, 0.082507074483440607, 0.041253537241720303};
   //100hz, 800hz
-  static IIR_Coeff gyro_fil_coeff = {0.94280904158206336f, -0.33333333333333343f, 0.09763107293781749f, 0.19526214587563498f, 0.09763107293781749f };
+  static IIR_Coeff gyro_fil_coeff = { 0.94280904158206336f, -0.33333333333333343f, 0.09763107293781749f, 0.19526214587563498f, 0.09763107293781749f };
   static Gyro_Rad gyro_in_rad = { 0.0f, 0.0f, 0.0f };
-  static AxesRaw_TypeDef_Float acc_FIFO[FIFO_Order] = { 0.0f, 0.0f, 0.0f };
-  static AxesRaw_TypeDef_Float gyro_FIFO[FIFO_Order] = { 0.0f, 0.0f, 0.0f };
+  static AxesRaw_TypeDef_Float acc_FIFO[FIFO_Order] = { 0.0f };
+  static AxesRaw_TypeDef_Float gyro_FIFO[FIFO_Order] = { 0.0f };
 
   if (sensor_init_cali == 0) {
-    sensor_init_cali_count++;
+    sensor_init_cali_count ++;
 
     if (sensor_init_cali_count > 800) {
       // Read sensor data and prepare for specific coodinate system
@@ -743,8 +747,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   }
 
   if (sensor_init_cali == 1) {
-    tim9_cnt++;
-    tim9_cnt2++;
+    tim9_cnt ++;
+    tim9_cnt2 ++;
 
     // Read sensor data and prepare for specific coodinate system
     ReadSensorRawData(LSM6DSL_X_0_handle, LSM6DSL_G_0_handle, LIS2MDL_M_0_handle, LPS22HB_P_0_handle, &acc, &gyro, &mag, &press);
@@ -758,7 +762,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
       gyro_off_calc.AXIS_Y += gyro.AXIS_Y;
       gyro_off_calc.AXIS_Z += gyro.AXIS_Z;
 
-      rc_cal_cnt++;
+      rc_cal_cnt ++;
 
       if (rc_cal_cnt >= 800) {
         acc_offset.AXIS_X = (int32_t) (acc_off_calc.AXIS_X * 0.00125f);
@@ -825,7 +829,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     if (tim9_cnt2 == FIFO_Order) {
       tim9_cnt2 = 0u;
       tim9_event_flag = 1u;
-      for (int32_t i = 0; i < FIFO_Order; i++) {
+      for (uint32_t i = 0u; i < FIFO_Order; i++) {
         acc_ahrs_FIFO[i].AXIS_X = acc_FIFO[i].AXIS_X;
         acc_ahrs_FIFO[i].AXIS_Y = acc_FIFO[i].AXIS_Y;
         acc_ahrs_FIFO[i].AXIS_Z = acc_FIFO[i].AXIS_Z;
@@ -912,9 +916,10 @@ static void enableAllSensors( void )
 }
 
 
-
-static void BlueNRG_Init(void)
+static DrvStatusTypeDef BlueNRG_Init(void)
 {
+  DrvStatusTypeDef testStatus = COMPONENT_OK;
+
   tBleStatus ret = 1u;
   uint8_t  hwVersion = 0u;
   uint16_t fwVersion = 0u;
@@ -941,96 +946,80 @@ static void BlueNRG_Init(void)
   PRINTF("\r\nReading BlueNRG version ...\r\n");
   if (getBlueNRGVersion(&hwVersion, &fwVersion) == BLE_STATUS_SUCCESS) {
     
-    /* 
-     * Reset BlueNRG again otherwise it will fail.
-     */
+    /* Reset BlueNRG again otherwise it will fail.  */
     BlueNRG_RST();
     
-    PRINTF("Setting Pubblic Address...\r\n");
+    PRINTF("Setting Public Address...\r\n");
     ret = aci_hal_write_config_data(CONFIG_DATA_PUBADDR_OFFSET,
                                     CONFIG_DATA_PUBADDR_LEN,
                                     bdaddr);
-    if (BLE_STATUS_SUCCESS != ret) {
-      testStatus = COMPONENT_ERROR;
-      PRINTF("\r\nSetting Pubblic BD_ADDR failed *****\r\n");
-      goto fail;
-    }
-    
-    PRINTF("GATT Initializzation...\r\n");
-    ret = aci_gatt_init();    
-    if (BLE_STATUS_SUCCESS !=  ret) {
-      testStatus = COMPONENT_ERROR;
-      PRINTF("\r\nGATT_Init failed ****\r\n");
-      goto fail;
-    }
 
-//    ret = aci_gatt_update_char_value(service_handle, dev_name_char_handle, 0,
-//                                     7/*strlen(BoardName)*/, (uint8_t *)BoardName);
-//  
-//    if(ret){
-//       PRINTF("\r\naci_gatt_update_char_value failed\r\n");
-//      while(1);
-//    }
-    
-    /* Set the GAP INIT like X-NUCLEO-IDB05A1 eval board  since using same SPBTLE_RF module*/
-    ret = aci_gap_init_IDB05A1(GAP_PERIPHERAL_ROLE_IDB05A1, 0, 0x07, &service_handle, &dev_name_char_handle, &appearance_char_handle);
-  
-    if (ret != BLE_STATUS_SUCCESS) {
-      PRINTF("\r\nGAP_Init failed\r\n");
-      goto fail;
-    }
-    
-    PRINTF("GAP setting Authentication ....\r\n");
-    ret = aci_gap_set_auth_requirement(MITM_PROTECTION_REQUIRED,
-                                       OOB_AUTH_DATA_ABSENT,
-                                       NULL, 7, 16,
-                                       USE_FIXED_PIN_FOR_PAIRING, 123456,
-                                       BONDING);
-    if (ret != BLE_STATUS_SUCCESS) {
-      testStatus = COMPONENT_ERROR;
-       PRINTF("\r\nGAP setting Authentication failed ******\r\n");
-       goto fail;
-    }
-
-    PRINTF("SERVER: BLE Stack Initialized \r\n"
-           "Board HWver=%d, FWver=%d.%d.%c\r\n"
-           "BoardMAC = %x:%x:%x:%x:%x:%x\r\n",
-           hwVersion,
-           fwVersion >> 8u,
-           (fwVersion >> 4u) & 0xFu,
-           (hwVersion > 0x30u) ? ('a' + (fwVersion & 0xFu) - 1) : 'a',
-           bdaddr[5], bdaddr[4], bdaddr[3], bdaddr[2], bdaddr[1], bdaddr[0]);
-
-    /* Set output power level */
-    (void) aci_hal_set_tx_power_level(1u, 4u);    /* -2.1dBm */
-    
-    ret = Add_ConsoleW2ST_Service();
     if (ret == BLE_STATUS_SUCCESS) {
-       PRINTF("Console Service W2ST added successfully\r\n");
+        PRINTF("GATT Initialization...\r\n");
+        ret = aci_gatt_init();
+        if (ret == BLE_STATUS_SUCCESS) {
+            /* Set the GAP INIT like X-NUCLEO-IDB05A1 eval board  since using same SPBTLE_RF module*/
+            ret = aci_gap_init_IDB05A1(GAP_PERIPHERAL_ROLE_IDB05A1, 0, 0x07, &service_handle, &dev_name_char_handle, &appearance_char_handle);
+            if (ret == BLE_STATUS_SUCCESS) {
+                PRINTF("GAP setting Authentication ....\r\n");
+                ret = aci_gap_set_auth_requirement(MITM_PROTECTION_REQUIRED,
+                                                   OOB_AUTH_DATA_ABSENT,
+                                                   NULL, 7, 16,
+                                                   USE_FIXED_PIN_FOR_PAIRING, 123456,
+                                                   BONDING);
+                if (ret == BLE_STATUS_SUCCESS) {
+                    PRINTF("SERVER: BLE Stack Initialized \r\n"
+                           "Board HWver=%d, FWver=%d.%d.%c\r\n"
+                           "BoardMAC = %x:%x:%x:%x:%x:%x\r\n",
+                           hwVersion,
+                           fwVersion >> 8u,
+                           (fwVersion >> 4u) & 0xFu,
+                           (hwVersion > 0x30u) ? ('a' + (fwVersion & 0xFu) - 1) : 'a',
+                           bdaddr[5], bdaddr[4], bdaddr[3], bdaddr[2], bdaddr[1], bdaddr[0]);
+
+                    /* Set output power level */
+                    (void) aci_hal_set_tx_power_level(1u, 4u);    /* -2.1dBm */
+
+                    ret = Add_ConsoleW2ST_Service();
+                    if (ret == BLE_STATUS_SUCCESS) {
+                      PRINTF("Console Service W2ST added successfully\r\n");
+                    } else {
+                      testStatus = COMPONENT_ERROR;
+                      PRINTF("\r\nError while adding Console Service W2ST\r\n");
+                    }
+
+                    ret = Add_ConfigW2ST_Service();
+                    if (ret == BLE_STATUS_SUCCESS) {
+                      PRINTF("Config  Service W2ST added successfully\r\n");
+                    } else {
+                      testStatus = COMPONENT_ERROR;
+                      PRINTF("\r\nError while adding Config Service W2ST\r\n");
+                    }
+
+                    PRINTF("\r\nAll test passed!\r\n");
+                } else {
+                  testStatus = COMPONENT_ERROR;
+                  PRINTF("\r\nGAP setting Authentication failed ******\r\n");
+                }
+            } else {
+              testStatus = COMPONENT_ERROR;
+              PRINTF("\r\nGAP_Init failed\r\n");
+            }
+        } else {
+          testStatus = COMPONENT_ERROR;
+          PRINTF("\r\nGATT_Init failed ****\r\n");
+        }
     } else {
-       testStatus = COMPONENT_ERROR;
-       PRINTF("\r\nError while adding Console Service W2ST\r\n");
+      testStatus = COMPONENT_ERROR;
+      PRINTF("\r\nSetting Public BD_ADDR failed *****\r\n");
     }
-    
-    ret = Add_ConfigW2ST_Service();
-    if (ret == BLE_STATUS_SUCCESS) {
-       PRINTF("Config  Service W2ST added successfully\r\n");
-    } else {
-       testStatus = COMPONENT_ERROR;
-       PRINTF("\r\nError while adding Config Service W2ST\r\n");
-    }
-    
-    PRINTF("\r\nAll test passed!\r\n");
   } else {
-       testStatus = COMPONENT_ERROR;
-       PRINTF("\r\nError in BlueNRG tests. ******\r\n");
+    testStatus = COMPONENT_ERROR;
+    PRINTF("\r\nError in BlueNRG tests. ******\r\n");
   }
-  PRINTF("****** END BLE TESTS ******\r\n");
-  return;
 
-fail:
-  testStatus = COMPONENT_ERROR;
-  return;
+  PRINTF("****** END BLE TESTS ******\r\n");
+  return testStatus;
 }
 
 /** @brief Initialize all the Custom BlueNRG services
@@ -1043,23 +1032,23 @@ static void Init_BlueNRG_Custom_Services(void)
   
   ret = Add_HWServW2ST_Service();
   if (ret == BLE_STATUS_SUCCESS) {
-     PRINTF("HW      Service W2ST added successfully\r\n");
+    PRINTF("HW      Service W2ST added successfully\r\n");
   } else {
-     PRINTF("\r\nError while adding HW Service W2ST\r\n");
+    PRINTF("\r\nError while adding HW Service W2ST\r\n");
   }
 
   ret = Add_ConsoleW2ST_Service();
   if (ret == BLE_STATUS_SUCCESS) {
-     PRINTF("Console Service W2ST added successfully\r\n");
+    PRINTF("Console Service W2ST added successfully\r\n");
   } else {
-     PRINTF("\r\nError while adding Console Service W2ST\r\n");
+    PRINTF("\r\nError while adding Console Service W2ST\r\n");
   }
 
   ret = Add_ConfigW2ST_Service();
   if (ret == BLE_STATUS_SUCCESS) {
-     PRINTF("Config  Service W2ST added successfully\r\n");
+    PRINTF("Config  Service W2ST added successfully\r\n");
   } else {
-     PRINTF("\r\nError while adding Config Service W2ST\r\n");
+    PRINTF("\r\nError while adding Config Service W2ST\r\n");
   }
 }
 
@@ -1107,8 +1096,7 @@ static void SendBattEnvData(void)
    (void) HAL_ADC_Start(&hadc1);
         if (HAL_ADC_PollForConversion(&hadc1, 1000000u) == HAL_OK) {
             VBAT_Sense = HAL_ADC_GetValue(&hadc1);
-            VBAT = (((VBAT_Sense * 3.3) / 4095) * (BAT_RUP + BAT_RDW)) / BAT_RDW;
-            //PRINTF("Battery voltage = %fV\n\n", VBAT);
+            VBAT = (((VBAT_Sense * 3.3) / 4095) * (BAT_RUP + BAT_RDW)) / BAT_RDW;  // battery voltage
         }
     (void) HAL_ADC_Stop(&hadc1);
     

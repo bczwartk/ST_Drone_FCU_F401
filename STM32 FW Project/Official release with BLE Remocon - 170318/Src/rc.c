@@ -35,19 +35,26 @@ int32_t ele_center = ELE_MIDDLE;
 int32_t rud_center = RUD_MIDDLE;
 #endif
 
+extern int32_t rc_z_control_flag;
 int32_t rc_z_control_flag = 1;
 
+extern volatile int32_t rc_timeout;
 volatile int32_t rc_timeout;    // R/C timeout counter
 uint8_t rc_connection_flag;    // R/C connection status
+extern char rc_flag[4];
 char rc_flag[4];            // flag for received input capture interrupt count
 /* timer data for rising and falling edge and pulse width */
+extern int32_t rc_t_rise[4], rc_t_fall[4], rc_t[4];
 int32_t rc_t_rise[4], rc_t_fall[4], rc_t[4];
 /* Global R/C data */
+extern int16_t gAIL, gELE, gTHR, gRUD;
 int16_t gAIL, gELE, gTHR, gRUD;
 
 
 // A queue for testing purpose (to print R/C data in main function)
+extern Queue_TypeDef que;
 Queue_TypeDef que;
+extern int32_t cnt;
 int32_t cnt;
 
 extern uint8_t joydata[8];
