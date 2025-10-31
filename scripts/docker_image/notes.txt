@@ -1,0 +1,16 @@
+Docker image for STM32CubeIDE environment.
+The setup uses:
+* STM32CubeIDE v1.12.1 - see here: https://www.st.com/en/development-tools/stm32cubeide.html#overview
+  Download the STM32CubeIDE binary for Debian and save next to the Docker file as
+        st-stm32cubeide_1.12.1_16088_20230420_1057_amd64.deb_bundle.sh.zip
+  or modify Docker file to use a different version. 
+* Docker image for STM32CubeIDE - see here for starting point: https://github.com/xanderhendriks/docker-stm32cubeide/releases/tag/v9.0
+  The Docker file we use was adapter from this one.
+
+Useful links:
+* STM32CubeIDE download: https://www.st.com/en/development-tools/stm32cubeide.html#overview
+* CLI example: https://community.st.com/t5/stm32cubeide-mcus/how-do-i-build-my-stm32cubeide-code-via-the-command-line-on/td-p/112919
+* STM32CubeIDE docker files: https://github.com/xanderhendriks/docker-stm32cubeide
+* https://stackoverflow.com/questions/65896336/how-to-compile-baremetal-hello-world-c-and-run-it-on-qemu-system-aarch64
+
+
